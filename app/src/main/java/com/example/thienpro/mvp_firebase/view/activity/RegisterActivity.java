@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityRegisterBinding;
 import com.example.thienpro.mvp_firebase.model.entity.User;
+import com.example.thienpro.mvp_firebase.presenter.impl.MainPresenterImpl;
 import com.example.thienpro.mvp_firebase.view.RegisterView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,6 +29,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private ActivityRegisterBinding binding;
+    private MainPresenterImpl mainPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,7 +61,6 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
                             FirebaseUser user = mAuth.getCurrentUser();
                             writeNewUser(user.getUid().toString(), binding.etRegisterun.getText().toString(), binding.etRegistername.getText().toString(), binding.etRegisteradd.getText().toString(), binding.rbNam.isChecked());
                             navigationToHome();
-
                         } else {
                             onRegisterFail();
                         }

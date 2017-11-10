@@ -18,4 +18,8 @@ public interface MainView {
     void onLoginClick();
 
     void onRegisterClick();
+
+    boolean onUnPwError();
+
+    void onUnPwNullShow();
 }

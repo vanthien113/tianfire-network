@@ -1,24 +1,32 @@
 package com.example.thienpro.mvp_firebase.view.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.example.thienpro.mvp_firebase.R;
-import com.google.firebase.auth.FirebaseUser;
+import com.example.thienpro.mvp_firebase.databinding.ActivityHomeBinding;
+import com.example.thienpro.mvp_firebase.view.HomeView;
+import com.google.firebase.auth.FirebaseAuth;
 
-public class HomeActivity extends AppCompatActivity {
-    private static FirebaseUser user;
-
-    public static void start(Context context, FirebaseUser currentUser) {
-        context.startActivity(new Intent(context, HomeActivity.class));
-        user = currentUser;
-    }
-
+public class HomeActivity extends AppCompatActivity implements HomeView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        ActivityHomeBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
+        binding.setEvent(this);
+    }
+
+    @Override
+    public void onSignOutClick() {
+        FirebaseAuth.getInstance().signOut();
+        navigationToMain();
+    }
+
+    @Override
+    public void navigationToMain() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

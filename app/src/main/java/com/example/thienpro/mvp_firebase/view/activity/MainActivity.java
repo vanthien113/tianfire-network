@@ -1,6 +1,5 @@
 package com.example.thienpro.mvp_firebase.view.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -34,10 +33,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
-
-    private void updateUI(FirebaseUser currentUser) {
+        if (currentUser != null)
+            navigationToHome();
     }
 
     @Override
@@ -54,24 +51,38 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void onLoginClick() {
-        mAuth.signInWithEmailAndPassword(mainBinding.etUsename.getText().toString(), mainBinding.etPassword.getText().toString())
-                .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            navigationToHome();
-                        } else {
-                            onLoginFail();
-                            updateUI(null);
+        if (onUnPwError()) {
+            mAuth.signInWithEmailAndPassword(mainBinding.etUsename.getText().toString(), mainBinding.etPassword.getText().toString())
+                    .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                navigationToHome();
+                            } else {
+                                onLoginFail();
+                            }
                         }
-                    }
-                });
+                    });
+        } else onUnPwNullShow();
     }
 
     @Override
     public void onRegisterClick() {
         navigationToRegister();
+    }
+
+    @Override
+    public boolean onUnPwError() {
+        if (mainBinding.etUsename.isDirty() || mainBinding.etPassword.isDirty())
+            return true;
+        return false;
+    }
+
+    @Override
+    public void onUnPwNullShow() {
+        Toast.makeText(MainActivity.this, "Nhập UserName và Password!", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
