@@ -15,7 +15,6 @@
         tools:context=".view.activity.HomeActivity">
 
         <android.support.v7.widget.Toolbar
-            app:title="Trang chủ"
             android:id="@+id/tbHome"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -23,20 +22,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-        </android.support.v7.widget.Toolbar>
+            <TextView
+                android:gravity="center"
+                android:text="Trang chủ"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="112dp"
-            android:onClick="@{()->event.onSignOutClick()}"
-            android:text="SignOut"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.529"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        </android.support.v7.widget.Toolbar>
 
     </android.support.constraint.ConstraintLayout>
 </layout>

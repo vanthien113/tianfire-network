@@ -6,6 +6,9 @@
     <item
         android:id="@+id/it_profile"
         android:title="Trang cá nhân" />
+    <item
+        android:id="@+id/it_edit"
+        android:title="Chỉnh sửa thông tin" />
 
     <item
         android:id="@+id/it_logout"

@@ -43,22 +43,25 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
 
     @Override
     public void onRegisterClick() {
-        mAuth.createUserWithEmailAndPassword(binding.etRegisterun.getText().toString(), binding.etRegisterpw.getText().toString())
-                .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            registerPresenter.writeNewUser(user.getUid().toString(), binding.etRegisterun.getText().toString(),
-                                    binding.etRegistername.getText().toString(), binding.etRegisteradd.getText().toString(),
-                                    binding.rbNam.isChecked());
-                            navigationToHome();
-                        } else {
-                            onRegisterFail();
-                        }
+        if (binding.etRegisterpw.getText().equals(binding.etRegisterrepw.getText())) {
+            mAuth.createUserWithEmailAndPassword(binding.etRegisterun.getText().toString(), binding.etRegisterpw.getText().toString())
+                    .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                registerPresenter.writeNewUser(user.getUid().toString(), binding.etRegisterun.getText().toString(),
+                                        binding.etRegistername.getText().toString(), binding.etRegisteradd.getText().toString(),
+                                        binding.rbNam.isChecked());
+                                navigationToHome();
+                            } else {
+                                onRegisterFail();
+                            }
 
-                    }
-                });
+                        }
+                    });
+        }
+        else onRegisterFail();
     }
 
     @Override
@@ -69,6 +72,6 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
 
     @Override
     public void onRegisterFail() {
-        Toast.makeText(RegisterActivity.this, "Đăng kí thất bại!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(RegisterActivity.this, "Đăng kí không thành công!", Toast.LENGTH_SHORT).show();
     }
 }

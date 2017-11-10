@@ -6,17 +6,16 @@
         android:layout_height="match_parent">
 
         <TextView
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:gravity="center"
-            android:text="Trang cá nhân"
+            android:text="Chỉnh sửa thông tin"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            android:textStyle="bold" />
     </android.support.constraint.ConstraintLayout>
 </layout>

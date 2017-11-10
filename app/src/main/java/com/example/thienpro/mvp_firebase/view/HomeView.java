@@ -8,4 +8,8 @@ public interface HomeView {
     void onSignOutClick();
 
     void navigationToMain();
+
+    void navigationToProfile();
+
+    void navigationToEditInfo();
 }

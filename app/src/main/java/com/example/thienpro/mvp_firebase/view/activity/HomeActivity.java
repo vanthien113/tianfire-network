@@ -1,11 +1,9 @@
 package com.example.thienpro.mvp_firebase.view.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,7 +39,10 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.it_profile:
-                ;
+                navigationToProfile();
+                return true;
+            case R.id.it_edit:
+                navigationToEditInfo();
                 return true;
             case R.id.it_logout:
                 onSignOutClick();
@@ -54,6 +55,18 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     @Override
     public void navigationToMain() {
         Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void navigationToEditInfo() {
+        Intent intent = new Intent(this, EditInfoActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void navigationToProfile() {
+        Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
     }
 }
