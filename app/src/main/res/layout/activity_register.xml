@@ -105,6 +105,7 @@
         </RadioGroup>
 
         <Button
+            android:textSize="16sp"
             android:id="@+id/bt_register"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
