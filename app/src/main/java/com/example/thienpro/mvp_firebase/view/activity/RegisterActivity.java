@@ -41,16 +41,6 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
         binding.setEvent(this);
     }
 
-    public void updateUI(FirebaseUser user) {
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
-
     @Override
     public void onRegisterClick() {
         mAuth.createUserWithEmailAndPassword(binding.etRegisterun.getText().toString(), binding.etRegisterpw.getText().toString())

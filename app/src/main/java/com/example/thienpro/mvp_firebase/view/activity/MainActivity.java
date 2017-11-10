@@ -51,38 +51,23 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void onLoginClick() {
-        if (onUnPwError()) {
-            mAuth.signInWithEmailAndPassword(mainBinding.etUsename.getText().toString(), mainBinding.etPassword.getText().toString())
-                    .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                navigationToHome();
-                            } else {
-                                onLoginFail();
-                            }
+        mAuth.signInWithEmailAndPassword(mainBinding.etUsename.getText().toString(), mainBinding.etPassword.getText().toString())
+                .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            navigationToHome();
+                        } else {
+                            onLoginFail();
                         }
-                    });
-        } else onUnPwNullShow();
+                    }
+                });
     }
 
     @Override
     public void onRegisterClick() {
         navigationToRegister();
-    }
-
-    @Override
-    public boolean onUnPwError() {
-        if (mainBinding.etUsename.isDirty() || mainBinding.etPassword.isDirty())
-            return true;
-        return false;
-    }
-
-    @Override
-    public void onUnPwNullShow() {
-        Toast.makeText(MainActivity.this, "Nhập UserName và Password!", Toast.LENGTH_SHORT).show();
-
     }
 
     @Override

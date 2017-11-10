@@ -6,5 +6,6 @@ package com.example.thienpro.mvp_firebase.view;
 
 public interface HomeView {
     void onSignOutClick();
+
     void navigationToMain();
 }
