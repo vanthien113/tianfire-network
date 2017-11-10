@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "350004797794",
+    "firebase_url": "https://mvp-f-42b3f.firebaseio.com",
+    "project_id": "mvp-f-42b3f",
+    "storage_bucket": "mvp-f-42b3f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:350004797794:android:860c146a633c96b6",
+        "android_client_info": {
+          "package_name": "com.example.thienpro.mvp_firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "350004797794-jbvsae6l9tr8d5rphuo3mgoq9oiinntf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGTGfyE8-xeCJuJn9_ECMd97VSjJGDnow"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
