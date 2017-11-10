@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseUser;
 public interface MainView {
     void onLoginFail();
 
-    void navigationToHome(Context context, FirebaseUser user);
+    void navigationToHome();
 
     void navigationToRegister();
 

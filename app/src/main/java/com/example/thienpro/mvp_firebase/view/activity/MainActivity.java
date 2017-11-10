@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityMainBinding;
-import com.example.thienpro.mvp_firebase.eventhandler.ActivityMainEH;
 import com.example.thienpro.mvp_firebase.view.MainView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,8 +17,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity implements MainView{
-    private HomeActivity homeActivity;
+public class MainActivity extends AppCompatActivity implements MainView {
     private ActivityMainBinding mainBinding;
     private FirebaseAuth mAuth;
 
@@ -43,8 +41,9 @@ public class MainActivity extends AppCompatActivity implements MainView{
     }
 
     @Override
-    public void navigationToHome(Context context, FirebaseUser user) {
-        homeActivity.start(MainActivity.this, user);
+    public void navigationToHome() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -61,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements MainView{
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            navigationToHome(MainActivity.this, user);
+                            navigationToHome();
                         } else {
                             onLoginFail();
                             updateUI(null);
