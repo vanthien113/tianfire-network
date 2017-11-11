@@ -7,4 +7,5 @@ package com.example.thienpro.mvp_firebase.presenter;
 public interface RegisterPresenter {
 
     void writeNewUser(String userId, String email, String name, String address, Boolean sex);
+    void updateUser(String userId, String email, String name, String address, Boolean sex);
 }
