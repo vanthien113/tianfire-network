@@ -38,62 +38,39 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView {
     private String day;
     private ProfilePresenter mProfilePresenter;
     private ActivityProfileBinding binding;
-    private ArrayList<String> listtime;
     private ArrayList<Post> listPost;
     private HomeAdapter homeAdapter;
     private LinearLayoutManager mLinearLayoutManager;
+    private SimpleDateFormat format;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_profile);
+
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mProfilePresenter = new ProfilePresenterImpl(mDatabase);
+        user = mAuth.getCurrentUser();
+        listPost = new ArrayList<>();
         mLinearLayoutManager = new LinearLayoutManager(this);
         mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         binding.rvProfile.setLayoutManager(mLinearLayoutManager);
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        user = mAuth.getCurrentUser();
-        listtime = new ArrayList<>();
-        listPost = new ArrayList<>();
-//        fakedata();
+
         homeAdapter = new HomeAdapter(listPost);
         binding.rvProfile.setAdapter(homeAdapter);
         binding.setEvent(this);
+
+        ShowList();
     }
 
-    private void fakedata() {
-        listPost.add(new Post("2", "hôm nay", "sssssssss"));
-        listPost.add(new Post("2", "hôm nay", "sssssssss"));
-        listPost.add(new Post("2", "hôm nay", "sssssssss"));
-        listPost.add(new Post("2", "hôm nay", "sssssssss"));
-        listPost.add(new Post("2", "hôm nay", "sssssssss"));
-        listPost.add(new Post("2", "hôm nay", "sssssssss"));
-        listPost.add(new Post("2", "hôm nay", "sssssssss"));
-    }
-
-    @Override
-    public void onPost() {
-        user = mAuth.getCurrentUser();
-
-        today = new Date();
-        today.getDate();
-        SimpleDateFormat format = new SimpleDateFormat("dd:MM:yyyy HH:mm:ss");
-        day = format.format(today);
-
-        mProfilePresenter = new ProfilePresenterImpl(mDatabase);
-        //Tao post
-        mProfilePresenter.writeNewPost(user.getUid().toString(), day, binding.etPost.getText().toString());
-
+    public void ShowList() {
         mDatabase.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Result will be holded Here
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-//                    Log.e("THIEN", dsp.getValue().toString());
-//                    mDatabase.child(dsp.getKey().toString()).addValueEventListener(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(DataSnapshot dataSnapshot) {
                     @SuppressWarnings("unchecked")
                     Map<String, Object> map = (Map<String, Object>) dsp.getValue();
                     String firstValue = (String) map.get("id");
@@ -102,17 +79,9 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView {
 
                     Post post = new Post(firstValue, thirdValue, secondValue);
                     listPost.add(post);
-
                 }
-//                            Log.e("THIEN", "ListPost Listener" + listPost.size());
                 homeAdapter = new HomeAdapter(listPost);
                 binding.rvProfile.setAdapter(homeAdapter);
-//                        @Override
-//                        public void onCancelled(DatabaseError databaseError) {
-//
-//                        }
-//                    });
-//                }
             }
 
             @Override
@@ -121,5 +90,17 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView {
             }
 
         });
+    }
+
+    @Override
+    public void onPost() {
+        today = new Date();
+        today.getDate();
+        format = new SimpleDateFormat("dd:MM:yyyy HH:mm:ss");
+        day = format.format(today);
+
+        //Tao post
+        mProfilePresenter.writeNewPost(user.getUid().toString(), day, binding.etPost.getText().toString());
+        ShowList();
     }
 }
