@@ -3,11 +3,13 @@ package com.example.thienpro.mvp_firebase.view.activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityHomeBinding;
@@ -45,7 +47,14 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         binding.rvHome.setLayoutManager(linearLayoutManager);
 
-
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                binding.tvLoading.setVisibility(View.GONE);
+            }
+        };
+        Handler handler = new Handler();
+        handler.postDelayed(runnable, 2000);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         binding.setEvent(this);
