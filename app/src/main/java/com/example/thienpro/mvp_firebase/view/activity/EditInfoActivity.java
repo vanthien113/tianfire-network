@@ -76,10 +76,6 @@ public class EditInfoActivity extends AppCompatActivity implements EditInfoView 
 
     @Override
     public void onSaveClick() {
-        Log.e("THIEN", user.getUid());
-        Log.e("THIEN", binding.etEditun.getText().toString());
-        Log.e("THIEN", binding.etEditname.getText().toString());
-        Log.e("THIEN", binding.etEditadd.getText().toString());
         try {
             registerPresenter.updateUser(user.getUid().toString(), binding.etEditun.getText().toString(),
                     binding.etEditname.getText().toString(), binding.etEditadd.getText().toString(),

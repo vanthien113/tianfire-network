@@ -2,7 +2,6 @@ package com.example.thienpro.mvp_firebase.model.entity;
 
 import com.google.firebase.database.Exclude;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,20 +10,25 @@ import java.util.Map;
  */
 
 public class Post {
+    private String id;
     private String timePost;
     private String post;
 
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
+        result.put("id", id);
         result.put("timePost", timePost);
         result.put("post", post);
         return result;
     }
 
-    public Post(String timePost, String post) {
-        this.timePost = timePost;
-        this.post = post;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTimePost() {
@@ -40,6 +44,12 @@ public class Post {
     }
 
     public void setPost(String post) {
+        this.post = post;
+    }
+
+    public Post(String id, String timePost, String post) {
+        this.id = id;
+        this.timePost = timePost;
         this.post = post;
     }
 }
