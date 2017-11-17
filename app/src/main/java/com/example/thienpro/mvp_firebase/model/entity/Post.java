@@ -15,16 +15,6 @@ public class Post {
     private String timePost;
     private String post;
 
-//    @Exclude
-//    public Map<String, Object> toMap() {
-//        HashMap<String, Object> result = new HashMap<>();
-//        result.put("id", id);
-//        result.put("name", name);
-//        result.put("timePost", timePost);
-//        result.put("post", post);
-//        return result;
-//    }
-
     public String getId() {
         return id;
     }

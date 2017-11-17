@@ -9,5 +9,4 @@ import java.util.ArrayList;
  */
 
 public interface LoadPostListener {
-    ArrayList<Post> tomap(Post post);
 }

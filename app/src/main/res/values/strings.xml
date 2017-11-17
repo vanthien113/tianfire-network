@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">mvp-firebase</string>
+    <string name="app_name">FireBase Demo</string>
     <string name="title_activity_menu">Menu</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
