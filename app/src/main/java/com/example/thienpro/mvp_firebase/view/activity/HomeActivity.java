@@ -15,37 +15,71 @@ import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.view.HomeView;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity implements HomeView {
-    private HomeAdapter mAdapter;
-    private ArrayList<Post> mListPost;
-
+    private ActivityHomeBinding binding;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
-    private FirebaseUser user;
+    private ArrayList<Post> listPost;
+    private HomeAdapter homeAdapter;
+    private LinearLayoutManager mLinearLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityHomeBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         binding.setEvent(this);
+
         setSupportActionBar(binding.tbHome);
+        listPost = new ArrayList<>();
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         binding.rvHome.setLayoutManager(linearLayoutManager);
 
-        //mAdapter = new HomeAdapter(mListPost);
-        //binding.rvHome.setAdapter(mAdapter);
-
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         binding.setEvent(this);
+
+        ShowList();
+    }
+
+    public void ShowList() {
+        mDatabase.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Result will be holded Here
+                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                    @SuppressWarnings("unchecked")
+                    Map<String, Object> map = (Map<String, Object>) dsp.getValue();
+                    String firstValue = (String) map.get("id");
+                    String secondValue = (String) map.get("name");
+                    String thirdValue = (String) map.get("timePost");
+                    String foureValue = (String) map.get("timePost");
+
+
+
+                    Post post = new Post(firstValue, thirdValue, foureValue);
+                    listPost.add(post);
+                }
+                homeAdapter = new HomeAdapter(listPost);
+                binding.rvHome.setAdapter(homeAdapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
     }
 
     @Override

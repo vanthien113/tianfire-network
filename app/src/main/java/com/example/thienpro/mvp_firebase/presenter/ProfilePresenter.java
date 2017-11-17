@@ -1,5 +1,7 @@
 package com.example.thienpro.mvp_firebase.presenter;
 
+import com.example.thienpro.mvp_firebase.model.entity.Post;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -9,5 +11,4 @@ import java.util.Date;
 
 public interface ProfilePresenter {
     void writeNewPost(String id, String today, String post);
-    ArrayList<String> getTime();
 }

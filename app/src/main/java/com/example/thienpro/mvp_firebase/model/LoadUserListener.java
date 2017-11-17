@@ -1,7 +1,9 @@
 package com.example.thienpro.mvp_firebase.model;
 
+import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**

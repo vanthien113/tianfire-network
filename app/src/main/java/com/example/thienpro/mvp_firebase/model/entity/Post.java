@@ -11,6 +11,7 @@ import java.util.Map;
 
 public class Post {
     private String id;
+    private String name;
     private String timePost;
     private String post;
 

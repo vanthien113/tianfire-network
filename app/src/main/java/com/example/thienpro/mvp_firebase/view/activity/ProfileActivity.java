@@ -65,7 +65,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView {
         ShowList();
     }
 
-    public void ShowList() {
+    public void ShowList(){
         mDatabase.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
