@@ -19,16 +19,14 @@ import java.util.ArrayList;
 
 public class ProfilePresenterImpl implements ProfilePresenter {
     private DatabaseReference mDatabase;
-    private PostInteractor postInteractor;
 
     public ProfilePresenterImpl(DatabaseReference mDatabase) {
         this.mDatabase = mDatabase;
-        postInteractor = new PostInteractor();
     }
 
     @Override
-    public void writeNewPost(String id, String today, String content) {
-        Post post = new Post(id, today, content);
+    public void writeNewPost(String id, String name, String today, String content) {
+        Post post = new Post(id, name, today, content);
         mDatabase.child("posts").child(today).setValue(post); //setValue để thêm node
     }
 }

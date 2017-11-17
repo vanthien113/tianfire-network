@@ -15,14 +15,15 @@ public class Post {
     private String timePost;
     private String post;
 
-    @Exclude
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("id", id);
-        result.put("timePost", timePost);
-        result.put("post", post);
-        return result;
-    }
+//    @Exclude
+//    public Map<String, Object> toMap() {
+//        HashMap<String, Object> result = new HashMap<>();
+//        result.put("id", id);
+//        result.put("name", name);
+//        result.put("timePost", timePost);
+//        result.put("post", post);
+//        return result;
+//    }
 
     public String getId() {
         return id;
@@ -30,6 +31,14 @@ public class Post {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getTimePost() {
@@ -48,8 +57,9 @@ public class Post {
         this.post = post;
     }
 
-    public Post(String id, String timePost, String post) {
+    public Post(String id, String name, String timePost, String post) {
         this.id = id;
+        this.name = name;
         this.timePost = timePost;
         this.post = post;
     }

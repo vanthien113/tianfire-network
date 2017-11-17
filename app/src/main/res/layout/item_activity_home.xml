@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="15dp"
-            android:text="@{data.id}"
+            android:text="@{data.name}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

@@ -2,6 +2,7 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,6 +35,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
+    private Post post;
     private Date today;
     private String day;
     private ProfilePresenter mProfilePresenter;
@@ -60,6 +62,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView {
 
         homeAdapter = new HomeAdapter(listPost);
         binding.rvProfile.setAdapter(homeAdapter);
+
         binding.setEvent(this);
 
         ShowList();
@@ -74,14 +77,18 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView {
                     @SuppressWarnings("unchecked")
                     Map<String, Object> map = (Map<String, Object>) dsp.getValue();
                     String firstValue = (String) map.get("id");
-                    String secondValue = (String) map.get("post");
+                    String secondValue = (String) map.get("name");
                     String thirdValue = (String) map.get("timePost");
+                    String foureValue = (String) map.get("post");
 
-                    Post post = new Post(firstValue, thirdValue, secondValue);
-                    listPost.add(post);
+                    if(firstValue.equals(user.getUid().toString()))
+                    {
+                        post = new Post(firstValue, secondValue, thirdValue, foureValue);
+                        listPost.add(post);
+                    }
+                    homeAdapter.notifyDataSetChanged();
                 }
-                homeAdapter = new HomeAdapter(listPost);
-                binding.rvProfile.setAdapter(homeAdapter);
+
             }
 
             @Override
@@ -100,7 +107,33 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView {
         day = format.format(today);
 
         //Tao post
-        mProfilePresenter.writeNewPost(user.getUid().toString(), day, binding.etPost.getText().toString());
+        mDatabase.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                String name = (String) map.get("name");
+
+                mProfilePresenter.writeNewPost(user.getUid().toString(), name, day, binding.etPost.getText().toString());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        Handler handler = new Handler();
+        handler.postDelayed(runnable, 500);
+
+        listPost.clear();
         ShowList();
     }
+
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            binding.etPost.setText("");
+        }
+    };
 }

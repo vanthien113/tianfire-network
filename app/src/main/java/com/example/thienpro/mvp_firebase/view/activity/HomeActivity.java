@@ -15,6 +15,7 @@ import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.view.HomeView;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,7 +27,6 @@ import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity implements HomeView {
     private ActivityHomeBinding binding;
-    private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private ArrayList<Post> listPost;
     private HomeAdapter homeAdapter;
@@ -45,10 +45,12 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         binding.rvHome.setLayoutManager(linearLayoutManager);
 
-        mAuth = FirebaseAuth.getInstance();
+
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
         binding.setEvent(this);
-
+        homeAdapter = new HomeAdapter(listPost);
+        binding.rvHome.setAdapter(homeAdapter);
         ShowList();
     }
 
@@ -63,15 +65,12 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
                     String firstValue = (String) map.get("id");
                     String secondValue = (String) map.get("name");
                     String thirdValue = (String) map.get("timePost");
-                    String foureValue = (String) map.get("timePost");
+                    String foureValue = (String) map.get("post");
 
-
-
-                    Post post = new Post(firstValue, thirdValue, foureValue);
+                    Post post = new Post(firstValue, secondValue, thirdValue, foureValue);
                     listPost.add(post);
                 }
-                homeAdapter = new HomeAdapter(listPost);
-                binding.rvHome.setAdapter(homeAdapter);
+                homeAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -80,6 +79,13 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
             }
 
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        listPost.clear();
+        ShowList();
     }
 
     @Override

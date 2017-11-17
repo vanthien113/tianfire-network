@@ -10,5 +10,5 @@ import java.util.Date;
  */
 
 public interface ProfilePresenter {
-    void writeNewPost(String id, String today, String post);
+    void writeNewPost(String id, String name, String today, String post);
 }
