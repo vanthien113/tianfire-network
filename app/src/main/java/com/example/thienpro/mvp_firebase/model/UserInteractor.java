@@ -5,6 +5,10 @@ import com.example.thienpro.mvp_firebase.model.entity.User;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+*- Lớp M: xử lý dữ liệu -> Trả dữ liệu về P thông qua callback
+* */
+
 /**
  * Created by ThienPro on 11/10/2017.
  */

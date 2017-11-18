@@ -5,6 +5,12 @@ import com.example.thienpro.mvp_firebase.presenter.ProfilePresenter;
 import com.google.firebase.database.DatabaseReference;
 
 /**
+ * - Presenter: Là lớp xử lý logic từ dữ liệu nhận được.
+ * - Nhận dữ liệu từ lớp Model
+ * - Đẩy dữ liệu lên lớp V.
+ */
+
+/**
  * Created by ThienPro on 11/16/2017.
  */
 
