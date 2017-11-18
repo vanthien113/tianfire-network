@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityProfileBinding;
@@ -62,7 +63,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView {
 
         homeAdapter = new HomeAdapter(listPost);
         binding.rvProfile.setAdapter(homeAdapter);
-
+        binding.rvProfile.setNestedScrollingEnabled(false); //Scroll mượt khi sử dụng NesteScroll
         binding.setEvent(this);
 
         ShowList();
@@ -107,27 +108,30 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView {
         day = format.format(today);
 
         //Tao post
-        mDatabase.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                String name = (String) map.get("name");
+        if(binding.etPost.getText().toString().equals("")==false){
+            mDatabase.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                    String name = (String) map.get("name");
 
-                mProfilePresenter.writeNewPost(user.getUid().toString(), name, day, binding.etPost.getText().toString());
-            }
+                    mProfilePresenter.writeNewPost(user.getUid().toString(), name, day, binding.etPost.getText().toString());
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
 
 
-        Handler handler = new Handler();
-        handler.postDelayed(runnable, 500);
+            Handler handler = new Handler();
+            handler.postDelayed(runnable, 500);
 
-        listPost.clear();
-        ShowList();
+            listPost.clear();
+            ShowList();
+        }
+        else Toast.makeText(this, "Hãy nhập cái gì đó!", Toast.LENGTH_SHORT).show();
     }
 
     Runnable runnable = new Runnable() {

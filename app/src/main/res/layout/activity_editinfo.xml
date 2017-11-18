@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -16,20 +17,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:background="#4EEE94"
+            android:id="@+id/textView4"
+            android:layout_width="0dp"
+            android:padding="10dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="15dp"
+            android:gravity="center"
+            android:text="Chỉnh sửa thông tin"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <EditText
-            android:enabled="false"
+            android:layout_margin="15dp"
             android:id="@+id/et_editun"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="50dp"
+            android:enabled="false"
             android:hint="Nhập username(email):"
             android:text="@{data.email}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.189"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <EditText
             android:id="@+id/et_editname"
@@ -90,13 +105,13 @@
 
 
         <Button
-            android:onClick="@{()->event.onSaveClick()}"
             android:id="@+id/bt_save"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="30dp"
+            android:onClick="@{()->event.onSaveClick()}"
             android:text="Lưu"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
