@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
         mainBinding.setEvent(this);
+
     }
 
     @Override

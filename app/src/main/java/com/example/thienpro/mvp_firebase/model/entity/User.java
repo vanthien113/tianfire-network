@@ -1,5 +1,10 @@
 package com.example.thienpro.mvp_firebase.model.entity;
 
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by ThienPro on 11/10/2017.
  */
@@ -50,5 +55,15 @@ public class User {
         this.name = name;
         this.address = address;
         this.sex = sex;
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("email", email);
+        result.put("name", name);
+        result.put("address", address);
+        result.put("sex", sex);
+        return result;
     }
 }
