@@ -33,6 +33,7 @@ import java.util.Map;
  */
 
 public class ProfileActivity extends AppCompatActivity implements ProfileView {
+    //TODO like RegisterActivity, move it to presenter
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
@@ -68,7 +69,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView {
 
         ShowList();
     }
-
+    //TODO convention, why "public" ?
     public void ShowList(){
         mDatabase.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

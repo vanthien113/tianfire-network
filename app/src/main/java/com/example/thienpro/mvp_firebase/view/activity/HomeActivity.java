@@ -55,7 +55,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         };
         Handler handler = new Handler();
         handler.postDelayed(runnable, 2000);
-
+        //TODO nice idea about 2s loading, but not implement good.
         mDatabase = FirebaseDatabase.getInstance().getReference();
         binding.setEvent(this);
         homeAdapter = new HomeAdapter(listPost);

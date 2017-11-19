@@ -27,7 +27,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
+        <!--TODO register run ????-->
         <EditText
             android:id="@+id/et_registerun"
             android:layout_width="0dp"

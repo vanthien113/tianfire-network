@@ -37,6 +37,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeVH> {
 
     @Override
     public int getItemCount() {
-        return mLisPost.size() == 0 ? 0 : mLisPost.size();
+        return mLisPost == null ? 0 : mLisPost.size();
     }
 }

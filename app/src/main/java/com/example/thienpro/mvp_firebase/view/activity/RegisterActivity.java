@@ -25,7 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 /**
  * Created by ThienPro on 11/9/2017.
  */
-
+//TODO missing loading status, need improve UI. 
 public class RegisterActivity extends AppCompatActivity implements RegisterView {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -45,6 +45,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
     @Override
     public void onRegisterClick() {
         if (binding.etRegisterpw.getText().toString().equals(binding.etRegisterrepw.getText().toString())) {
+            //TODO why dont you move it to RegisterPresenter / UserInteractor ?
             mAuth.createUserWithEmailAndPassword(binding.etRegisterun.getText().toString(), binding.etRegisterpw.getText().toString())
                     .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -67,12 +68,14 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
 
     @Override
     public void navigationToHome() {
+        //TODO this activity still alive when Home start
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }
 
     @Override
     public void onRegisterFail() {
+        //TODO message to strings.xml
         Toast.makeText(RegisterActivity.this, "Đăng kí không thành công!", Toast.LENGTH_SHORT).show();
     }
 }

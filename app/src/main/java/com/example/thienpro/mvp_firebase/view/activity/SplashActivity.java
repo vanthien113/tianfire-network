@@ -20,6 +20,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         handler = new Handler();
         handler.postDelayed(runnable, 2000);
+        //TODO what will happen if I start app then press back ?
     }
     Runnable runnable = new Runnable() {
         @Override

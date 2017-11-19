@@ -10,7 +10,7 @@ import com.example.thienpro.mvp_firebase.model.entity.Post;
  */
 
 public class HomeVH extends RecyclerView.ViewHolder {
-    ItemActivityHomeBinding binding;
+    private ItemActivityHomeBinding binding;
 
     public HomeVH(ItemActivityHomeBinding binding) {
         super(binding.getRoot());
