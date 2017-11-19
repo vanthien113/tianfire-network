@@ -15,7 +15,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
+//TODO MainActivity and HomeActivity ?
 public class MainActivity extends AppCompatActivity implements MainView {
     private ActivityMainBinding mainBinding;
     private FirebaseAuth mAuth;
