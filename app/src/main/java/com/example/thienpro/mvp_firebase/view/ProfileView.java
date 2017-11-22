@@ -1,5 +1,7 @@
 package com.example.thienpro.mvp_firebase.view;
 
+import com.example.thienpro.mvp_firebase.model.entity.Post;
+
 import java.util.ArrayList;
 
 /**
@@ -8,4 +10,6 @@ import java.util.ArrayList;
 
 public interface ProfileView {
     void onPost();
+
+    void showList(ArrayList<Post> list);
 }

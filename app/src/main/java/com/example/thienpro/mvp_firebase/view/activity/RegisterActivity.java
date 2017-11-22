@@ -1,78 +1,54 @@
 package com.example.thienpro.mvp_firebase.view.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityRegisterBinding;
-import com.example.thienpro.mvp_firebase.presenter.RegisterPresenter;
-import com.example.thienpro.mvp_firebase.presenter.impl.RegisterPresenterImpl;
+import com.example.thienpro.mvp_firebase.presenter.RegisterPresenterImpl;
 import com.example.thienpro.mvp_firebase.view.RegisterView;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by ThienPro on 11/9/2017.
  */
 
 public class RegisterActivity extends AppCompatActivity implements RegisterView {
-    private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase;
     private ActivityRegisterBinding binding;
-    private RegisterPresenter registerPresenter;
+    private RegisterPresenterImpl presenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        registerPresenter = new RegisterPresenterImpl(mDatabase);
         binding.setEvent(this);
+        presenter = new RegisterPresenterImpl(this, this);
     }
 
     @Override
     public void onRegisterClick() {
-        if (binding.etRegisterpw.getText().toString().equals(binding.etRegisterrepw.getText().toString())) {
-            mAuth.createUserWithEmailAndPassword(binding.etRegisterun.getText().toString(), binding.etRegisterpw.getText().toString())
-                    .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                registerPresenter.writeNewUser(user.getUid().toString(), binding.etRegisterun.getText().toString(),
-                                        binding.etRegistername.getText().toString(), binding.etRegisteradd.getText().toString(),
-                                        binding.rbNam.isChecked());
-                                navigationToHome();
-                            } else {
-                                onRegisterFail();
-                            }
+        presenter.register(binding.etEmail.getText().toString(), binding.etPassword.getText().toString(), binding.etRepassword.getText().toString(), binding.etName.getText().toString(), binding.etAddress.getText().toString(), binding.rbNam.isChecked());
+    }
 
-                        }
-                    });
-        }
-        else onRegisterFail();
+    public void navigationToHome(Context context) {
+        Intent intent = new Intent(context, HomeActivity.class);
+        context.startActivity(intent);
     }
 
     @Override
-    public void navigationToHome() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
+    public void onRegisterFail(Context context) {
+        Toast.makeText(this, "Mật khẩu không trùng khớp!", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onRegisterFail() {
-        Toast.makeText(RegisterActivity.this, "Đăng kí không thành công!", Toast.LENGTH_SHORT).show();
+    public void onRegisterNull(Context context) {
+        Toast.makeText(this, "Không được để trống các trường!", Toast.LENGTH_SHORT).show();
+    }
+
+    public void onRegisterEmailFail(Context context) {
+        Toast.makeText(context, "Địa chỉ email không dúng!", Toast.LENGTH_SHORT).show();
     }
 }

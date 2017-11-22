@@ -29,7 +29,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/et_registerun"
+            android:id="@+id/et_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -42,7 +42,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <EditText
-            android:id="@+id/et_registerpw"
+            android:id="@+id/et_password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
@@ -51,10 +51,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.196"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_registerun" />
+            app:layout_constraintTop_toBottomOf="@+id/et_email" />
 
         <EditText
-            android:id="@+id/et_registerrepw"
+            android:id="@+id/et_repassword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
@@ -63,10 +63,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.188"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_registerpw" />
+            app:layout_constraintTop_toBottomOf="@+id/et_password" />
 
         <EditText
-            android:id="@+id/et_registername"
+            android:id="@+id/et_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
@@ -74,10 +74,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.188"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_registerrepw" />
+            app:layout_constraintTop_toBottomOf="@+id/et_repassword" />
 
         <EditText
-            android:id="@+id/et_registeradd"
+            android:id="@+id/et_address"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
@@ -85,7 +85,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_registername" />
+            app:layout_constraintTop_toBottomOf="@+id/et_name" />
 
         <TextView
             android:id="@+id/textView2"
@@ -94,7 +94,7 @@
             android:layout_margin="15dp"
             android:text="Giới tính:"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_registeradd" />
+            app:layout_constraintTop_toBottomOf="@+id/et_address" />
 
         <RadioGroup
             android:id="@+id/radioGroup"
@@ -103,7 +103,7 @@
             android:layout_margin="10dp"
             android:orientation="horizontal"
             app:layout_constraintStart_toEndOf="@+id/textView2"
-            app:layout_constraintTop_toBottomOf="@+id/et_registeradd">
+            app:layout_constraintTop_toBottomOf="@+id/et_address">
 
             <RadioButton
                 android:id="@+id/rb_nam"

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,25 +15,21 @@ import android.view.View;
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityHomeBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
+import com.example.thienpro.mvp_firebase.presenter.HomePresenter;
 import com.example.thienpro.mvp_firebase.view.HomeView;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
+import com.example.thienpro.mvp_firebase.view.adapters.loadmore;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Map;
 
-public class HomeActivity extends AppCompatActivity implements HomeView {
+public class HomeActivity extends AppCompatActivity implements HomeView, loadmore{
     private ActivityHomeBinding binding;
-    private DatabaseReference mDatabase;
-    private ArrayList<Post> listPost;
     private HomeAdapter homeAdapter;
-    private LinearLayoutManager mLinearLayoutManager;
+    private LinearLayoutManager LinearLayoutManager;
+    private HomePresenter homePresenter;
+    private ArrayList<Post> listpost;
+    private ArrayList<Post> arrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,61 +38,24 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         binding.setEvent(this);
 
         setSupportActionBar(binding.tbHome);
-        listPost = new ArrayList<>();
+        listpost = new ArrayList<>();
+        arrayList = new ArrayList<>();
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        binding.rvHome.setLayoutManager(linearLayoutManager);
+        homePresenter = new HomePresenter(this);
+        homePresenter.loadAllListPost();
 
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                binding.tvLoading.setVisibility(View.GONE);
-            }
-        };
-        Handler handler = new Handler();
-        handler.postDelayed(runnable, 2000);
+        LinearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        binding.rvHome.setLayoutManager(LinearLayoutManager);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
         binding.setEvent(this);
-        homeAdapter = new HomeAdapter(listPost);
-        binding.rvHome.setAdapter(homeAdapter);
-        ShowList();
     }
 
-    public void ShowList() {
-        mDatabase.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Result will be holded Here
-                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    @SuppressWarnings("unchecked")
-                    Map<String, Object> map = (Map<String, Object>) dsp.getValue();
-                    String firstValue = (String) map.get("id");
-                    String secondValue = (String) map.get("name");
-                    String thirdValue = (String) map.get("timePost");
-                    String foureValue = (String) map.get("post");
-
-                    Post post = new Post(firstValue, secondValue, thirdValue, foureValue);
-                    listPost.add(post);
-                }
-                homeAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-        });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        listPost.clear();
-        ShowList();
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        homePresenter.loadAllListPost();
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -129,7 +89,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
     @Override
     public void navigationToMain() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 
@@ -140,8 +100,45 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     }
 
     @Override
+    public void showAllPost(ArrayList<Post> list) {
+        binding.tvLoading.setVisibility(View.GONE);
+        listpost = list;
+
+        for(int i = 0; i<10; i++){
+            arrayList.add(listpost.get(i));
+            Log.e("THIEN", "arrl "+ i +" "+ String.valueOf(arrayList.size()));
+        }
+
+        homeAdapter = new HomeAdapter(arrayList, this);
+        binding.rvHome.setAdapter(homeAdapter);
+    }
+
+    @Override
     public void navigationToProfile() {
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
+    }
+    private boolean isLoadMore = false;
+
+    @Override
+    public void onLoadmore() {
+        if (isLoadMore){
+            return;
+        }
+        isLoadMore = true;
+        Handler handler= new Handler();
+        handler.removeCallbacksAndMessages(null);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Post> mlist = new ArrayList<>();
+                for(int i = homeAdapter.getItemCount(); (i<homeAdapter.getItemCount()+10) && i<listpost.size();i++)
+                {
+                    mlist.add(listpost.get(i));
+                }
+                    homeAdapter.appendItem(mlist);
+                isLoadMore = false;
+            }
+        },300);
     }
 }

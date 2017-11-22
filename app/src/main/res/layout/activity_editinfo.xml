@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="event"
-            type="com.example.thienpro.mvp_firebase.view.EditInfoView"/>
+            type="com.example.thienpro.mvp_firebase.view.EditInfoView" />
 
         <variable
             name="data"
@@ -18,13 +17,13 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:background="#4EEE94"
             android:id="@+id/textView4"
             android:layout_width="0dp"
-            android:padding="10dp"
             android:layout_height="60dp"
             android:layout_marginBottom="15dp"
+            android:background="#4EEE94"
             android:gravity="center"
+            android:padding="10dp"
             android:text="Chỉnh sửa thông tin"
             android:textAlignment="center"
             android:textSize="20sp"
@@ -34,10 +33,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:layout_margin="15dp"
-            android:id="@+id/et_editun"
+            android:id="@+id/et_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="15dp"
             android:enabled="false"
             android:hint="Nhập username(email):"
             android:text="@{data.email}"
@@ -47,7 +46,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <EditText
-            android:id="@+id/et_editname"
+            android:id="@+id/et_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
@@ -56,10 +55,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.188"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_editun" />
+            app:layout_constraintTop_toBottomOf="@+id/et_email" />
 
         <EditText
-            android:id="@+id/et_editadd"
+            android:id="@+id/et_address"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
@@ -68,7 +67,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_editname" />
+            app:layout_constraintTop_toBottomOf="@+id/et_name" />
 
         <TextView
             android:id="@+id/textView2"
@@ -77,7 +76,7 @@
             android:layout_margin="15dp"
             android:text="Giới tính:"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_editadd" />
+            app:layout_constraintTop_toBottomOf="@+id/et_address" />
 
         <RadioGroup
             android:id="@+id/radioGroup"
@@ -86,7 +85,7 @@
             android:layout_margin="10dp"
             android:orientation="horizontal"
             app:layout_constraintStart_toEndOf="@+id/textView2"
-            app:layout_constraintTop_toBottomOf="@+id/et_editadd">
+            app:layout_constraintTop_toBottomOf="@+id/et_address">
 
             <RadioButton
                 android:id="@+id/rb_editnam"
@@ -118,6 +117,19 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+        <TextView
+            android:id="@+id/tv_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Loading..."
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.453" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

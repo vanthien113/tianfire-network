@@ -7,4 +7,13 @@ import com.example.thienpro.mvp_firebase.model.entity.User;
  */
 
 public interface LoadUserListener {
+    void getUser(User user);
+
+    void navigationToHome();
+
+    void onRegisterFail();
+
+    void onSignInNull();
+
+    void onLoginFail();
 }

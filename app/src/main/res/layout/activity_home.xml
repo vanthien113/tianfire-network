@@ -15,19 +15,19 @@
         tools:context=".view.activity.HomeActivity">
 
         <android.support.v7.widget.Toolbar
-            android:background="#4EEE94"
             android:id="@+id/tbHome"
             android:layout_width="0dp"
             android:layout_height="60dp"
+            android:background="#4EEE94"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:padding="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:padding="15dp"
                 android:text="Trang chủ"
                 android:textAlignment="center"
                 android:textSize="20sp"
@@ -39,6 +39,7 @@
             android:id="@+id/rv_home"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -47,8 +48,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tbHome" />
 
+
         <TextView
-            android:textSize="14sp"
             android:id="@+id/tv_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -57,6 +58,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="Loading..."
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
