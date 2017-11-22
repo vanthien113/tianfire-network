@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * Created by ThienPro on 11/21/2017.
  */
 
-public class HomePresenter implements LoadPostListener{
+public class HomePresenter implements LoadPostListener {
     private HomeView homeView;
     private PostInteractor postInteractor;
 
@@ -20,7 +20,7 @@ public class HomePresenter implements LoadPostListener{
         postInteractor = new PostInteractor(this);
     }
 
-    public void loadAllListPost(){
+    public void loadAllListPost() {
         postInteractor.loadAllPost();
     }
 
