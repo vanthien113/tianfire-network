@@ -9,13 +9,5 @@ import java.util.ArrayList;
  */
 
 public interface HomeView {
-    void onSignOutClick();
-
-    void navigationToMain();
-
-    void navigationToProfile();
-
-    void navigationToEditInfo();
-
     void showAllPost(ArrayList<Post> list);
 }

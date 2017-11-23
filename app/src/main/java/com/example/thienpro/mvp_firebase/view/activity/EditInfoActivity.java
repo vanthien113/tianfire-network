@@ -40,6 +40,9 @@ public class EditInfoActivity extends AppCompatActivity implements EditInfoView 
     public void getUser(User user) {
         binding.tvLoading.setVisibility(View.GONE);
         binding.setData(user);
+        if(user.getSex())
+            binding.rbEditnam.setChecked(true);
+        else binding.rbEditnu.setChecked(true);
     }
 
     @Override

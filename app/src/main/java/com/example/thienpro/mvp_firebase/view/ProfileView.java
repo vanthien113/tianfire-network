@@ -12,4 +12,6 @@ public interface ProfileView {
     void onPost();
 
     void showList(ArrayList<Post> list);
+
+    void onNullContent();
 }

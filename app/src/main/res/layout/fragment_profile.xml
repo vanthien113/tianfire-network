@@ -10,14 +10,18 @@
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
+        android:background="#FFF"
+
         android:layout_height="match_parent">
 
         <EditText
+            android:layout_marginLeft="15dp"
             android:id="@+id/et_post"
+            android:layout_marginRight="5dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="Cảm nhận của bạn hôm nay thế nào?"
+            android:hint="Hôm nay bạn cảm thấy thế nào?"
             android:textColorHint="@color/cardview_dark_background"
             app:layout_constraintEnd_toStartOf="@+id/bt_post"
             app:layout_constraintHorizontal_bias="0.0"
@@ -25,13 +29,13 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
+            android:background="@drawable/ic_up"
             android:id="@+id/bt_post"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginBottom="8dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="8dp"
-            android:="@drawable/ic_up"
             android:onClick="@{()->event.onPost()}"
             app:layout_constraintBottom_toBottomOf="@+id/et_post"
             app:layout_constraintEnd_toEndOf="parent"

@@ -29,9 +29,9 @@ public class HomeFragmentPagerAdapter extends FragmentStatePagerAdapter {
         return mListFragments.size();
     }
 
-    @Override
-    public CharSequence getPageTitle(int position) {
-        String title = mListFragments.get(position).getArguments().getString("msg");
-        return title;
-    }
+//    @Override
+//    public CharSequence getPageTitle(int position) {
+//        String title = mListFragments.get(position).getArguments().getString("msg");
+//        return title;
+//    }
 }

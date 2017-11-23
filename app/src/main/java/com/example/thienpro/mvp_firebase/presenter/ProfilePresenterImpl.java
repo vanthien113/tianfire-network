@@ -1,11 +1,8 @@
 package com.example.thienpro.mvp_firebase.presenter;
 
 import com.example.thienpro.mvp_firebase.model.LoadPostListener;
-import com.example.thienpro.mvp_firebase.model.LoadUserListener;
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
-import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
-import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
 
 import java.util.ArrayList;
@@ -39,6 +36,9 @@ public class ProfilePresenterImpl implements LoadPostListener {
     }
 
     public void newPost(String content) {
-        postInteractor.writeNewPost(content);
+        if (content.equals(""))
+            profileView.onNullContent();
+        else
+            postInteractor.writeNewPost(content);
     }
 }

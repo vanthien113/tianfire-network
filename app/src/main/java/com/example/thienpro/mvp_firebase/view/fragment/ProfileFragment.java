@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.FragmentProfileBinding;
@@ -32,14 +33,6 @@ public class ProfileFragment extends android.support.v4.app.DialogFragment imple
     private HomeAdapter homeAdapter;
     private LinearLayoutManager mLinearLayoutManager;
     private ProfilePresenterImpl profilePresenter;
-
-    public static ProfileFragment newInstance(String text) {
-        ProfileFragment f = new ProfileFragment();
-        Bundle b = new Bundle();
-        b.putString("msg", text);
-        f.setArguments(b);
-        return f;
-    }
 
     @Nullable
     @Override
@@ -77,15 +70,16 @@ public class ProfileFragment extends android.support.v4.app.DialogFragment imple
 
         for (int i = 0; i < 10; i++) {
             arrayList.add(listpost.get(i));
-            Log.e("THIEN", "arrl " + i + " " + String.valueOf(arrayList.size()));
         }
-        homeAdapter = new HomeAdapter(arrayList, (loadmore) this);
-
+        homeAdapter = new HomeAdapter(arrayList, this);
         binding.rvProfile.setAdapter(homeAdapter);
-
         binding.tvLoading.setVisibility(View.GONE); // Ẩn Loading...
     }
 
+    @Override
+    public void onNullContent() {
+        Toast.makeText(getContext(), "Hãy nhập cảm nhận của bạn!", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void onLoadmore() {
