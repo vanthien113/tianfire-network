@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -12,22 +13,23 @@
             type="com.example.thienpro.mvp_firebase.model.entity.User" />
     </data>
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="#FFF"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite">
+
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="15dp"
-            android:background="#4EEE94"
+            android:layout_height="@dimen/height_normal"
+            android:background="@color/colorGray"
+            android:elevation="@dimen/elevation_normal"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="@dimen/space_normal"
             android:text="Chỉnh sửa thông tin"
             android:textAlignment="center"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size_xlarge"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,10 +39,11 @@
             android:id="@+id/et_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_margin="@dimen/space_normal"
             android:enabled="false"
-            android:hint="Nhập username(email):"
+            android:hint="@string/nhap_email"
             android:text="@{data.email}"
+            android:textSize="@dimen/text_size_standard"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.189"
             app:layout_constraintStart_toStartOf="parent"
@@ -50,9 +53,10 @@
             android:id="@+id/et_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:hint="Nhập họ tên:"
+            android:layout_margin="@dimen/space_normal"
+            android:hint="@string/nhap_ho_ten"
             android:text="@{data.name}"
+            android:textSize="@dimen/text_size_standard"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.188"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,9 +66,10 @@
             android:id="@+id/et_address"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:hint="Nhập địa chỉ:"
+            android:layout_margin="@dimen/space_normal"
+            android:hint="@string/nhap_dia_chi"
             android:text="@{data.address}"
+            android:textSize="@dimen/text_size_standard"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,16 +79,18 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:text="Giới tính:"
+            android:layout_margin="@dimen/space_normal"
+            android:text="@string/gioi_tinh"
+            android:textSize="@dimen/text_size_standard"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_address" />
 
         <RadioGroup
+
             android:id="@+id/radioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/space_normal"
             android:orientation="horizontal"
             app:layout_constraintStart_toEndOf="@+id/textView2"
             app:layout_constraintTop_toBottomOf="@+id/et_address">
@@ -93,14 +100,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="Nam" />
+                android:text="@string/nam"
+                android:textSize="@dimen/text_size_standard" />
 
             <RadioButton
                 android:id="@+id/rb_editnu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:text="Nữ" />
+                android:layout_marginLeft="@dimen/space_large"
+                android:text="@string/n"
+                android:textSize="@dimen/text_size_standard" />
         </RadioGroup>
 
 
@@ -108,12 +117,12 @@
             android:id="@+id/bt_save"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginLeft="@dimen/space_large"
+            android:layout_marginRight="@dimen/space_large"
+            android:layout_marginTop="@dimen/space_xxx_large"
             android:onClick="@{()->event.onSaveClick()}"
-            android:text="Lưu"
-            android:textSize="16sp"
+            android:text="@string/l_u"
+            android:textSize="@dimen/text_size_large"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
@@ -123,8 +132,8 @@
             android:id="@+id/tv_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Loading..."
-            android:textSize="14sp"
+            android:text="@string/loading"
+            android:textSize="@dimen/text_size_large"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"

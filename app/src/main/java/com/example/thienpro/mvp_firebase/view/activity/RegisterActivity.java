@@ -39,16 +39,16 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
         context.startActivity(intent);
     }
 
-    @Override
-    public void onRegisterFail(Context context) {
-        Toast.makeText(this, "Mật khẩu không trùng khớp!", Toast.LENGTH_SHORT).show();
-    }
-
     public void onRegisterNull(Context context) {
         Toast.makeText(this, "Không được để trống các trường!", Toast.LENGTH_SHORT).show();
     }
 
     public void onRegisterEmailFail(Context context) {
         Toast.makeText(context, "Địa chỉ email không dúng!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRePasswordFail(Context context) {
+        Toast.makeText(context, "Mật khẩu không trùng khớp!", Toast.LENGTH_SHORT).show();
     }
 }

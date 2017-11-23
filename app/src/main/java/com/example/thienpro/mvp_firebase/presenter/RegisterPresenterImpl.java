@@ -1,6 +1,7 @@
 package com.example.thienpro.mvp_firebase.presenter;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.thienpro.mvp_firebase.model.LoadUserListener;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
@@ -23,7 +24,11 @@ public class RegisterPresenterImpl implements LoadUserListener {
     public void register(String email, String password, String repassword, String name, String address, boolean sex) {
         if(email.equals("") || password.equals("") || repassword.equals("") || name.equals("") || address.equals(""))
             registerView.onRegisterNull((Context) registerView);
-        userInteractor.register(email, password, repassword, name, address, sex);
+        if(password.equals(repassword)){
+            userInteractor.register(email, password, name, address, sex);
+            Log.e("THIEN", "g" +password + " " + repassword);
+        }
+        else registerView.onRePasswordFail((Context) registerView);
     }
 
     @Override
@@ -37,7 +42,7 @@ public class RegisterPresenterImpl implements LoadUserListener {
 
     @Override
     public void onRegisterFail() {
-        registerView.onRegisterFail((Context) registerView);
+        registerView.onRegisterEmailFail((Context) registerView);
     }
 
     @Override

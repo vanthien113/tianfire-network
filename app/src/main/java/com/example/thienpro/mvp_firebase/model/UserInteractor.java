@@ -39,24 +39,22 @@ public class UserInteractor {
     public UserInteractor(LoadUserListener loadUserListener, Context context) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
-        users = mAuth.getCurrentUser();
         this.loadUserListener = loadUserListener;
         this.context = context;
     }
 
-    public void register(final String email, String password, String repassword, final String name, final String address, final boolean sex) {
-        if (password.equals(repassword))
-            mAuth.createUserWithEmailAndPassword(email, password)
+    public void register(final String email, String password, final String name, final String address, final boolean sex) {
+        mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
+                                users = mAuth.getCurrentUser();
                                 User user = new User(email, name, address, sex);
                                 mDatabase.child("users").child(users.getUid()).setValue(user); //setValue để thêm node
                                 loadUserListener.navigationToHome();
                             }
                             else loadUserListener.onRegisterFail();
-
                         }
                     });
     }
@@ -72,6 +70,8 @@ public class UserInteractor {
     }
 
     public void getUser() {
+        users = mAuth.getCurrentUser();
+
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

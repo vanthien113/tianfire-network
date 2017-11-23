@@ -9,22 +9,22 @@
     </data>
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:background="#FFF"
+        android:background="@color/colorWhite"
 
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:background="#4EEE94"
+            android:background="@color/colorGray"
             android:id="@+id/textView4"
             android:layout_width="0dp"
-            android:padding="10dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="15dp"
+            android:padding="@dimen/space_smallest"
+            android:layout_height="@dimen/height_normal"
+            android:layout_marginBottom="@dimen/space_large"
             android:gravity="center"
-            android:text="Đăng kí tài khoản"
+            android:text="@string/dang_ki_tai_khoan"
             android:textAlignment="center"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size_xxlarge"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,10 +34,10 @@
             android:id="@+id/et_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:hint="Nhập username(email):"
+            android:layout_marginTop="@dimen/space_normal"
+            android:layout_marginLeft="@dimen/space_large"
+            android:layout_marginRight="@dimen/space_large"
+            android:hint="@string/nhap_email"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.189"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,8 +47,8 @@
             android:id="@+id/et_password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:hint="Nhập password:"
+            android:layout_margin="@dimen/space_large"
+            android:hint="@string/nhap_password"
             android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.196"
@@ -59,8 +59,8 @@
             android:id="@+id/et_repassword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:hint="Nhập lại password:"
+            android:layout_margin="@dimen/space_large"
+            android:hint="@string/nhap_lai_password"
             android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.188"
@@ -71,8 +71,8 @@
             android:id="@+id/et_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:hint="Nhập họ tên:"
+            android:layout_margin="@dimen/space_large"
+            android:hint="@string/nhap_ho_ten"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.188"
             app:layout_constraintStart_toStartOf="parent"
@@ -82,8 +82,8 @@
             android:id="@+id/et_address"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:hint="Nhập địa chỉ:"
+            android:layout_margin="@dimen/space_large"
+            android:hint="@string/nhap_dia_chi"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -93,8 +93,8 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:text="Giới tính:"
+            android:layout_margin="@dimen/space_large"
+            android:text="@string/gioi_tinh"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_address" />
 
@@ -102,7 +102,7 @@
             android:id="@+id/radioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/space_normal"
             android:orientation="horizontal"
             app:layout_constraintStart_toEndOf="@+id/textView2"
             app:layout_constraintTop_toBottomOf="@+id/et_address">
@@ -112,14 +112,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="Nam" />
+                android:text="@string/nam" />
 
             <RadioButton
                 android:id="@+id/rb_nu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:text="Nữ" />
+                android:layout_marginLeft="@dimen/space_large"
+                android:text="@string/nu" />
         </RadioGroup>
 
         <Button
@@ -127,11 +127,11 @@
             android:id="@+id/bt_register"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginEnd="@dimen/space_large"
+            android:layout_marginStart="@dimen/space_large"
+            android:layout_marginTop="@dimen/space_xxx_large"
             android:onClick="@{()->event.onRegisterClick()}"
-            android:text="Đăng kí"
+            android:text="@string/dang_ki"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"

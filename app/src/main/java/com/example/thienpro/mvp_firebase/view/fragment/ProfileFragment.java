@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,8 +46,12 @@ public class ProfileFragment extends android.support.v4.app.DialogFragment imple
         mLinearLayoutManager = new LinearLayoutManager(getContext());
         mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         binding.rvProfile.setLayoutManager(mLinearLayoutManager);
+
         profilePresenter.loadPost();
         binding.setEvent(this);
+
+        homeAdapter = new HomeAdapter(arrayList, this);
+        binding.rvProfile.setAdapter(homeAdapter);
 
         return binding.getRoot(); // Lưu ý: binding.getRoot();
     }
@@ -56,11 +59,13 @@ public class ProfileFragment extends android.support.v4.app.DialogFragment imple
     @Override
     public void onPost() {
         binding.tvLoading.setVisibility(View.VISIBLE); // Ẩn Loading...
-
         profilePresenter.newPost(binding.etPost.getText().toString());
+
+        arrayList.clear();
+        listpost.clear();
+
         profilePresenter.loadPost();
         binding.etPost.setText("");
-
         binding.tvLoading.setVisibility(View.GONE); // Ẩn Loading...
     }
 
@@ -68,11 +73,12 @@ public class ProfileFragment extends android.support.v4.app.DialogFragment imple
     public void showList(ArrayList<Post> list) {
         listpost = list;
 
-        for (int i = 0; i < 10; i++) {
+        for (int i= listpost.size() - 1; i > listpost.size() - 10 && i>= 0; i--) {
             arrayList.add(listpost.get(i));
         }
-        homeAdapter = new HomeAdapter(arrayList, this);
-        binding.rvProfile.setAdapter(homeAdapter);
+
+        homeAdapter.notifyDataSetChanged();
+
         binding.tvLoading.setVisibility(View.GONE); // Ẩn Loading...
     }
 
@@ -93,7 +99,7 @@ public class ProfileFragment extends android.support.v4.app.DialogFragment imple
             @Override
             public void run() {
                 ArrayList<Post> mlist = new ArrayList<>();
-                for (int i = homeAdapter.getItemCount(); (i < homeAdapter.getItemCount() + 10) && i < listpost.size(); i++) {
+                for (int i = listpost.size() - homeAdapter.getItemCount() - 1; (i > listpost.size() - homeAdapter.getItemCount() - 9) && i >= 0; i--) {
                     mlist.add(listpost.get(i));
                 }
                 homeAdapter.appendItem(mlist);

@@ -46,6 +46,9 @@ public class HomeFragment extends android.support.v4.app.DialogFragment implemen
         LinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         binding.rvHome.setLayoutManager(LinearLayoutManager);
 
+        homeAdapter = new HomeAdapter(arrayList, this);
+        binding.rvHome.setAdapter(homeAdapter);
+
         binding.setEvent(this);
         return binding.getRoot();
     }
@@ -54,6 +57,7 @@ public class HomeFragment extends android.support.v4.app.DialogFragment implemen
     public void setUserVisibleHint(boolean isVisibleToUser) { // Hàm sẽ được chạy sau khi ấn sang tab Home
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+            arrayList.clear();
             homePresenter.loadAllListPost();
         }
     }
@@ -63,11 +67,10 @@ public class HomeFragment extends android.support.v4.app.DialogFragment implemen
         binding.tvLoading.setVisibility(View.GONE);
         listpost = list;
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = listpost.size() - 1; i > listpost.size() - 11 && i >= 0; i--) {
             arrayList.add(listpost.get(i));
         }
-        homeAdapter = new HomeAdapter(arrayList, this);
-        binding.rvHome.setAdapter(homeAdapter);
+        homeAdapter.notifyDataSetChanged();
     }
 
     private boolean isLoadMore = false;
@@ -84,7 +87,8 @@ public class HomeFragment extends android.support.v4.app.DialogFragment implemen
             @Override
             public void run() {
                 ArrayList<Post> mlist = new ArrayList<>();
-                for (int i = homeAdapter.getItemCount(); (i < homeAdapter.getItemCount() + 10) && i < listpost.size(); i++) {
+                int position = listpost.size() - homeAdapter.getItemCount() - 1;
+                for (int i = position; (i > position - 10) && i >= 0; i--) {
                     mlist.add(listpost.get(i));
                 }
                 homeAdapter.appendItem(mlist);
