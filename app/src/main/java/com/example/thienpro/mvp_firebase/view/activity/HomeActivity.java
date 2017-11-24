@@ -1,147 +1,48 @@
 package com.example.thienpro.mvp_firebase.view.activity;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityHomeBinding;
-import com.example.thienpro.mvp_firebase.model.entity.Post;
-import com.example.thienpro.mvp_firebase.view.HomeView;
-import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.example.thienpro.mvp_firebase.view.adapters.HomeFragmentPagerAdapter;
+import com.example.thienpro.mvp_firebase.view.fragment.HomeFragment;
+import com.example.thienpro.mvp_firebase.view.fragment.ProfileFragment;
+import com.example.thienpro.mvp_firebase.view.fragment.SettingFragment;
 
 import java.util.ArrayList;
-import java.util.Map;
 
-public class HomeActivity extends AppCompatActivity implements HomeView {
+public class HomeActivity extends AppCompatActivity {
+    private ArrayList<Fragment> mListFragments;
     private ActivityHomeBinding binding;
-    private DatabaseReference mDatabase;
-    private ArrayList<Post> listPost;
-    private HomeAdapter homeAdapter;
-    private LinearLayoutManager mLinearLayoutManager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
-        binding.setEvent(this);
 
-        setSupportActionBar(binding.tbHome);
-        listPost = new ArrayList<>();
+        mListFragments = new ArrayList<>();
+        final HomeFragment homeFragment = new HomeFragment();
+        mListFragments.add(homeFragment);
+        ProfileFragment profileFragment = new ProfileFragment();
+        mListFragments.add(profileFragment);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        binding.rvHome.setLayoutManager(linearLayoutManager);
+        SettingFragment settingFragment = new SettingFragment();
+        mListFragments.add(settingFragment);
 
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                binding.tvLoading.setVisibility(View.GONE);
-            }
-        };
-        Handler handler = new Handler();
-        handler.postDelayed(runnable, 2000);
+        android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+        HomeFragmentPagerAdapter homeFragmentPagerAdapter = new HomeFragmentPagerAdapter(manager, mListFragments);
+        binding.vpHome.setAdapter(homeFragmentPagerAdapter);
+        binding.tlHome.setupWithViewPager(binding.vpHome);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        binding.setEvent(this);
-        homeAdapter = new HomeAdapter(listPost);
-        binding.rvHome.setAdapter(homeAdapter);
-        ShowList();
-    }
+        binding.tlHome.getTabAt(0).setIcon(R.drawable.ic_home);
+        binding.tlHome.getTabAt(1).setIcon(R.drawable.ic_profile);
+        binding.tlHome.getTabAt(2).setIcon(R.drawable.ic_menu);
 
-    public void ShowList() {
-        mDatabase.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Result will be holded Here
-                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    @SuppressWarnings("unchecked")
-                    Map<String, Object> map = (Map<String, Object>) dsp.getValue();
-                    String firstValue = (String) map.get("id");
-                    String secondValue = (String) map.get("name");
-                    String thirdValue = (String) map.get("timePost");
-                    String foureValue = (String) map.get("post");
-
-                    Post post = new Post(firstValue, secondValue, thirdValue, foureValue);
-                    listPost.add(post);
-                }
-                homeAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-        });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        listPost.clear();
-        ShowList();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.home_menu, menu);
-        return true;
-    }
-
-    @Override
-    public void onSignOutClick() {
-        FirebaseAuth.getInstance().signOut();
-        navigationToMain();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.it_profile:
-                navigationToProfile();
-                return true;
-            case R.id.it_edit:
-                navigationToEditInfo();
-                return true;
-            case R.id.it_logout:
-                onSignOutClick();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    public void navigationToMain() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
-    public void navigationToEditInfo() {
-        Intent intent = new Intent(this, EditInfoActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
-    public void navigationToProfile() {
-        Intent intent = new Intent(this, ProfileActivity.class);
-        startActivity(intent);
+        binding.vpHome.setCurrentItem(1);
+        binding.vpHome.setOffscreenPageLimit(0);
     }
 }

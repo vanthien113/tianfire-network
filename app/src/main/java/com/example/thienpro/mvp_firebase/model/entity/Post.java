@@ -1,9 +1,6 @@
 package com.example.thienpro.mvp_firebase.model.entity;
 
-import com.google.firebase.database.Exclude;
-
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Date;
 
 /**
  * Created by ThienPro on 11/11/2017.

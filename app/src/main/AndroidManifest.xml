@@ -9,12 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.activity.MainActivity"/>
-        <activity android:name=".view.activity.HomeActivity"/>
+        <activity android:name=".view.activity.LoginActivity"/>
+        <activity android:name=".view.activity.HomeActivity"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".view.activity.RegisterActivity" />
         <activity android:name=".view.activity.EditInfoActivity"/>
-        <activity android:name=".view.activity.ProfileActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity android:name=".view.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

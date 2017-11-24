@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
     <data>
+
         <variable
             name="event"
-            type="com.example.thienpro.mvp_firebase.view.MainView"/>
+            type="com.example.thienpro.mvp_firebase.view.LoginView" />
     </data>
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.constraint.ConstraintLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.activity.MainActivity">
+        tools:context=".view.activity.LoginActivity">
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="72dp"
-            android:text="FireBase Demo"
-            android:textSize="20sp"
+            android:layout_marginTop="@dimen/space_xxxxxxx_large"
+            android:text="@string/firebase_demo"
+            android:textSize="@dimen/text_size_xxlarge"
             android:textStyle="bold"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -27,14 +29,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/et_usename"
+            android:id="@+id/et_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="@dimen/space_large"
+            android:layout_marginRight="@dimen/space_large"
             android:layout_marginTop="175dp"
-            android:hint="Nhập username:"
-            android:textSize="14sp"
+            android:hint="@string/nhap_email"
+            android:textSize="@dimen/text_size_standard"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -45,26 +47,26 @@
             android:id="@+id/et_password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="20dp"
-            android:hint="Nhập password:"
+            android:layout_marginLeft="@dimen/space_large"
+            android:layout_marginRight="@dimen/space_large"
+            android:layout_marginTop="@dimen/space_x_large"
+            android:hint="@string/nhap_password"
             android:inputType="textPassword"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_standard"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_usename" />
+            app:layout_constraintTop_toBottomOf="@+id/et_email" />
 
         <TextView
             android:id="@+id/tv_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="28dp"
+            android:layout_marginLeft="@dimen/space_large"
+            android:layout_marginRight="@dimen/space_large"
+            android:layout_marginTop="@dimen/space_xxx_large"
             android:onClick="@{()->event.onRegisterClick()}"
-            android:text="Đăng kí tài khoản"
+            android:text="@string/dang_ki_tai_khoan"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bt_login" />
@@ -73,13 +75,15 @@
             android:id="@+id/bt_login"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="@dimen/space_large"
+            android:layout_marginLeft="@dimen/text_size_standard"
+            android:layout_marginRight="@dimen/space_large"
+            android:layout_marginStart="@dimen/space_large"
             android:layout_marginTop="24dp"
             android:onClick="@{()->event.onLoginClick()}"
-            android:padding="20dp"
-            android:text="Đăng nhập"
-            android:textSize="14sp"
+            android:padding="@dimen/space_x_large"
+            android:text="@string/dang_nhap"
+            android:textSize="@dimen/text_size_standard"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"

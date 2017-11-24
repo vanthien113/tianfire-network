@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="event"
+            type="com.example.thienpro.mvp_firebase.view.ProfileView" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:background="@color/colorWhite"
+
+        android:layout_height="match_parent">
+
+        <EditText
+            android:backgroundTint="@color/colorWhite"
+            android:layout_marginLeft="@dimen/space_large"
+            android:id="@+id/et_post"
+            android:layout_marginRight="@dimen/space_small"
+            android:textSize="@dimen/text_size_standard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_normal"
+            android:hint="Hôm nay bạn cảm thấy thế nào?"
+            app:layout_constraintEnd_toStartOf="@+id/bt_post"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:background="@drawable/ic_up"
+            android:id="@+id/bt_post"
+            android:layout_width="@dimen/witdh_small"
+            android:layout_height="@dimen/height_small"
+            android:layout_marginBottom="@dimen/space_normal"
+            android:layout_marginRight="@dimen/space_normal"
+            android:layout_marginTop="@dimen/space_normal"
+            android:onClick="@{()->event.onPost()}"
+            app:layout_constraintBottom_toBottomOf="@+id/et_post"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/et_post" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_profile"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_post"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/tv_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:textSize="@dimen/text_size_standard"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

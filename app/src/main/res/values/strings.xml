@@ -8,4 +8,23 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="nhap_dia_chi">Nhập địa chỉ:</string>
+    <string name="nhap_ho_ten">Nhập họ tên:</string>
+    <string name="nhap_email">Nhập email:</string>
+    <string name="gioi_tinh">Giới tính:</string>
+    <string name="nam">Nam</string>
+    <string name="n">Nữ</string>
+    <string name="loading">Loading...</string>
+    <string name="l_u">Lưu</string>
+    <string name="nhap_password">Nhập password:</string>
+    <string name="dang_nhap">Đăng nhập</string>
+    <string name="firebase_demo">FireBase Demo</string>
+    <string name="dang_ki_tai_khoan">Đăng kí tài khoản</string>
+    <string name="nhap_lai_password">Nhập lại password:</string>
+    <string name="nu">Nữ</string>
+    <string name="dang_ki">Đăng kí</string>
+    <string name="chinh_sua_thong_tin">Chỉnh sửa thông tin</string>
+    <string name="dang_xuat">Đăng xuất</string>
+
+
 </resources>
