@@ -58,15 +58,17 @@ public class ProfileFragment extends android.support.v4.app.DialogFragment imple
 
     @Override
     public void onPost() {
-        binding.tvLoading.setVisibility(View.VISIBLE); // Ẩn Loading...
+        binding.rvProfile.setLayoutFrozen(true); // Đóng băng recyclerview, tránh trường hợp lỗi touch khi sroll
+        binding.tvLoading.setVisibility(View.VISIBLE); //  Loading...
         profilePresenter.newPost(binding.etPost.getText().toString());
 
         arrayList.clear();
         listpost.clear();
 
         profilePresenter.loadPost();
+        binding.tvLoading.setVisibility(View.GONE);
+
         binding.etPost.setText("");
-        binding.tvLoading.setVisibility(View.GONE); // Ẩn Loading...
     }
 
     @Override
@@ -78,8 +80,8 @@ public class ProfileFragment extends android.support.v4.app.DialogFragment imple
         }
 
         homeAdapter.notifyDataSetChanged();
-
         binding.tvLoading.setVisibility(View.GONE); // Ẩn Loading...
+        binding.rvProfile.setLayoutFrozen(false);
     }
 
     @Override

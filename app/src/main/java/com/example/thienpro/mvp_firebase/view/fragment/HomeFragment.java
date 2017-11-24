@@ -57,6 +57,7 @@ public class HomeFragment extends android.support.v4.app.DialogFragment implemen
     public void setUserVisibleHint(boolean isVisibleToUser) { // Hàm sẽ được chạy sau khi ấn sang tab Home
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+            binding.rvHome.setLayoutFrozen(true);
             arrayList.clear();
             homePresenter.loadAllListPost();
         }
@@ -71,6 +72,8 @@ public class HomeFragment extends android.support.v4.app.DialogFragment implemen
             arrayList.add(listpost.get(i));
         }
         homeAdapter.notifyDataSetChanged();
+        binding.rvHome.setLayoutFrozen(false);
+
     }
 
     private boolean isLoadMore = false;
