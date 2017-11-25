@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,8 +43,8 @@ public class HomeFragment extends android.support.v4.app.DialogFragment implemen
         homePresenter = new HomePresenter(this);
         homePresenter.loadAllListPost();
 
-        LinearLayoutManager = new LinearLayoutManager(binding.getRoot().getContext());
-        LinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        LinearLayoutManager = new LinearLayoutManager(binding.getRoot().getContext(),
+                OrientationHelper.VERTICAL, true);
         binding.rvHome.setLayoutManager(LinearLayoutManager);
 
         homeAdapter = new HomeAdapter(arrayList, this);
@@ -67,7 +68,8 @@ public class HomeFragment extends android.support.v4.app.DialogFragment implemen
     public void showAllPost(ArrayList<Post> list) {
         binding.tvLoading.setVisibility(View.GONE);
         listpost = list;
-
+        //TODO giai thuat nay de lam gi ?
+        // do phuc tap thuat toan ?
         for (int i = listpost.size() - 1; i > listpost.size() - 11 && i >= 0; i--) {
             arrayList.add(listpost.get(i));
         }

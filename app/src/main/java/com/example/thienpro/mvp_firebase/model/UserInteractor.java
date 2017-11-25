@@ -35,7 +35,7 @@ public class UserInteractor {
     private FirebaseAuth mAuth;
     private FirebaseUser users;
     private Context context;
-
+    // TODO Interactor la business cua 1 model, no tra ve callback cho moi usecase, ko phai don` chung vao 1, xem lai code Eatup de biet
     public UserInteractor(LoadUserListener loadUserListener, Context context) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
@@ -45,6 +45,7 @@ public class UserInteractor {
 
     public void register(final String email, String password, final String name, final String address, final boolean sex) {
         mAuth.createUserWithEmailAndPassword(email, password)
+                    // TODO k can phai dua context vao, dang bi context leak
                     .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -58,7 +59,7 @@ public class UserInteractor {
                         }
                     });
     }
-
+    //TODO : check logic here again
     public void updateUser(String email, String name, String address, Boolean sex) {
         String userId = users.getUid();
         User user = new User(email, name, address, sex);
@@ -93,6 +94,7 @@ public class UserInteractor {
         };
         mDatabase.child("users").child(users.getUid()).addValueEventListener(valueEventListener);
     }
+    //TODO sai Java convention
     public void Sigin(String email, String password) {
         mAuth = FirebaseAuth.getInstance();
 

@@ -22,7 +22,9 @@ public class RegisterPresenterImpl implements LoadUserListener {
     }
 
     public void register(String email, String password, String repassword, String name, String address, boolean sex) {
+        //TODO validate params la business cua View, ko phai cua Presenter
         if(email.equals("") || password.equals("") || repassword.equals("") || name.equals("") || address.equals(""))
+            //TODO ko dc ep kieu nhu the nay.
             registerView.onRegisterNull((Context) registerView);
         if(password.equals(repassword)){
             userInteractor.register(email, password, name, address, sex);
