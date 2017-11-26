@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
+        // TODO check signed or not : business cua presenter, View layer chi thuc hien viec show UI, coi lai MVP
         currentUser = mAuth.getCurrentUser();
         if (currentUser != null)
             navigationToHome(this);

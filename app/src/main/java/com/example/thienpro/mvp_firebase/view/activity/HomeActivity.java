@@ -23,7 +23,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
-
+        //TODO sao k de cai nay vao FragmentPagerAdapter ? 
         mListFragments = new ArrayList<>();
         final HomeFragment homeFragment = new HomeFragment();
         mListFragments.add(homeFragment);
