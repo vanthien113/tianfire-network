@@ -11,26 +11,21 @@ import com.example.thienpro.mvp_firebase.view.EditInfoView;
  * Created by ThienPro on 11/21/2017.
  */
 
-public class EditInfoPresenter implements LoadUserListener{
+public class EditInfoPresenter implements LoadUserListener {
     private EditInfoView editInfoView;
     private UserInteractor userInteractor;
 
-    public EditInfoPresenter(EditInfoView editInfoView, Context context) {
+    public EditInfoPresenter(EditInfoView editInfoView) {
         this.editInfoView = editInfoView;
-        userInteractor = new UserInteractor(this, context);
+        userInteractor = new UserInteractor(this);
     }
 
-    public void loadUser(){
+    public void loadUser() {
         userInteractor.getUser();
     }
 
-    public void updateUser(String email, String name, String address, boolean sex){
-        if(email.equals("") || name.equals("") || address.equals(""))
-            editInfoView.onNullInfoShow((Context) editInfoView);
-        else{
-            userInteractor.updateUser(email, name, address, sex);
-            editInfoView.onSaveComplete((Context) editInfoView);
-        }
+    public void updateUser(String email, String name, String address, boolean sex) {
+        userInteractor.updateUser(email, name, address, sex);
     }
 
     @Override
@@ -45,11 +40,6 @@ public class EditInfoPresenter implements LoadUserListener{
 
     @Override
     public void onRegisterFail() {
-
-    }
-
-    @Override
-    public void onSignInNull() {
 
     }
 

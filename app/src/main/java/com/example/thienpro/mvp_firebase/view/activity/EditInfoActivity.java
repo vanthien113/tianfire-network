@@ -26,32 +26,27 @@ public class EditInfoActivity extends AppCompatActivity implements EditInfoView 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_editinfo);
-        editInfoPresenter = new EditInfoPresenter(this, this);
+        editInfoPresenter = new EditInfoPresenter(this);
         binding.setEvent(this);
         editInfoPresenter.loadUser();
     }
 
     @Override
     public void onSaveClick() {
-        editInfoPresenter.updateUser(binding.etEmail.getText().toString(), binding.etName.getText().toString(), binding.etAddress.getText().toString(), binding.rbEditnam.isChecked());
+        if (binding.etEmail.getText().toString().equals("") || binding.etName.getText().toString().equals("") || binding.etAddress.getText().toString().equals(""))
+            Toast.makeText(this, "Nhập thông tin cho các trường!", Toast.LENGTH_SHORT).show();
+        else {
+            editInfoPresenter.updateUser(binding.etEmail.getText().toString(), binding.etName.getText().toString(), binding.etAddress.getText().toString(), binding.rbEditnam.isChecked());
+            Toast.makeText(this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void getUser(User user) {
         binding.tvLoading.setVisibility(View.GONE);
         binding.setData(user);
-        if(user.getSex())
+        if (user.getSex())
             binding.rbEditnam.setChecked(true);
         else binding.rbEditnu.setChecked(true);
-    }
-
-    @Override
-    public void onNullInfoShow(Context context) {
-        Toast.makeText(context, "Nhập thông tin cho các trường!", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onSaveComplete(Context context) {
-        Toast.makeText(context, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
     }
 }

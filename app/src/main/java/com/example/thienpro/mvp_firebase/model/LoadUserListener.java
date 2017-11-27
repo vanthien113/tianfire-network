@@ -13,7 +13,5 @@ public interface LoadUserListener {
 
     void onRegisterFail();
 
-    void onSignInNull();
-
     void onLoginFail();
 }

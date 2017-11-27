@@ -17,11 +17,11 @@ import java.util.ArrayList;
  * Created by ThienPro on 11/16/2017.
  */
 
-public class ProfilePresenterImpl implements LoadPostListener {
+public class ProfilePresenter implements LoadPostListener {
     private PostInteractor postInteractor;
     private ProfileView profileView;
 
-    public ProfilePresenterImpl(ProfileView profileView) { // Truyền tham sô profileview
+    public ProfilePresenter(ProfileView profileView) { // Truyền tham sô profileview
         postInteractor = new PostInteractor(this);
         this.profileView = profileView;
     }
@@ -36,9 +36,6 @@ public class ProfilePresenterImpl implements LoadPostListener {
     }
 
     public void newPost(String content) {
-        if (content.equals(""))
-            profileView.onNullContent();
-        else
-            postInteractor.writeNewPost(content);
+        postInteractor.writeNewPost(content);
     }
 }

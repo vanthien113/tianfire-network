@@ -18,7 +18,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     private ActivityLoginBinding mainBinding;
     private FirebaseAuth mAuth;
     private LoginPresenter loginPresenter;
-    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +32,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        // TODO check signed or not : business cua presenter, View layer chi thuc hien viec show UI, coi lai MVP
-        currentUser = mAuth.getCurrentUser();
-        if (currentUser != null)
-            navigationToHome(this);
+        loginPresenter.signedInCheck();
     }
 
     @Override
@@ -54,17 +50,15 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public void onLoginClick() {
-        loginPresenter.onSignIn(mainBinding.etEmail.getText().toString(), mainBinding.etPassword.getText().toString());
+        if (mainBinding.etEmail.getText().toString().equals(mainBinding.etPassword.getText().toString()))
+            Toast.makeText(this, "Hãy nhập email và password!", Toast.LENGTH_SHORT).show();
+        else
+            loginPresenter.onSignIn(mainBinding.etEmail.getText().toString(), mainBinding.etPassword.getText().toString());
     }
 
     @Override
     public void onRegisterClick() {
         navigationToRegister();
-    }
-
-    @Override
-    public void onSignInNull(Context context) {
-        Toast.makeText(context, "Hãy nhập email và password!", Toast.LENGTH_SHORT).show();
     }
 
     @Override

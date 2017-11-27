@@ -5,8 +5,6 @@ package com.example.thienpro.mvp_firebase.view;
  */
 
 
-import android.content.Context;
-
 import com.example.thienpro.mvp_firebase.model.entity.User;
 
 /**
@@ -17,8 +15,4 @@ public interface EditInfoView {
     void onSaveClick();
 
     void getUser(User user);
-
-    void onNullInfoShow(Context context);
-
-    void onSaveComplete(Context context);
 }

@@ -17,13 +17,18 @@ public class LoginPresenter implements LoadUserListener {
     private Context context;
 
     public LoginPresenter(LoginView loginView, Context context) {
-        this.userInteractor = new UserInteractor(this, context);
+        this.userInteractor = new UserInteractor(this);
         this.loginView = loginView;
         this.context = context;
     }
 
+    public void signedInCheck(){
+        if(userInteractor.signedInCheck())
+            loginView.navigationToHome(context);
+    }
+
     public void onSignIn(String email, String password){
-        userInteractor.Sigin(email, password);
+        userInteractor.sigIn(email, password);
     }
 
     @Override
@@ -38,16 +43,10 @@ public class LoginPresenter implements LoadUserListener {
 
     @Override
     public void onRegisterFail() {
-
-    }
-
-    @Override
-    public void onSignInNull() {
-        loginView.onSignInNull((Context) loginView);
     }
 
     @Override
     public void onLoginFail() {
-        loginView.onLoginFail((Context) loginView);
+        loginView.onLoginFail(context);
     }
 }
