@@ -62,12 +62,11 @@ public class HomeFragment extends Fragment implements HomeView {
     }
 
     public void loadData(){
-        binding.rvHome.setLayoutFrozen(true);
         if (listPost != null){
+            binding.rvHome.setLayoutFrozen(true);
             listPost.clear();
             homePresenter.loadAllListPost();
         }
-        binding.rvHome.setLayoutFrozen(false);
     }
 
     @Override

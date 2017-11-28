@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorGray"
-            android:elevation="5dp">
+            android:elevation="@dimen/elevation_normal">
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/constraintLayout"
@@ -34,10 +34,8 @@
 
                 <ImageView
                     android:id="@+id/imageView2"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_width="@dimen/witdh_small"
+                    android:layout_height="@dimen/height_small"
                     android:onClick="@{()->event.onBackClick()}"
                     android:src="@drawable/ic_back"
                     android:tint="@color/colorBlueLight"
@@ -50,9 +48,9 @@
                     android:id="@+id/textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Đăng bài viết"
+                    android:text="@string/dang_bai_viet"
                     android:textAlignment="center"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/text_size_xxlarge"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageView4"
@@ -61,9 +59,9 @@
 
                 <ImageView
                     android:id="@+id/imageView4"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_width="@dimen/witdh_small"
+                    android:layout_height="@dimen/height_small"
+                    android:layout_marginRight="@dimen/space_normal"
                     android:onClick="@{()->event.onPostClick()}"
                     android:src="@drawable/ic_up"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -76,10 +74,10 @@
             android:id="@+id/et_post"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_margin="15dp"
+            android:layout_margin="@dimen/space_large"
             android:background="@color/colorWhite"
             android:gravity="top"
-            android:hint="Hãy nhập cảm nhận của bạn"
+            android:hint="@string/hay_nhap_cam_nhan_cua_ban"
             android:scrollbars="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

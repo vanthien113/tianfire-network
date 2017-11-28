@@ -30,9 +30,9 @@
                     android:background="@color/colorWhite"
                     android:hint="Hôm nay bạn cảm thấy thế nào?"
                     android:onClick="@{()->event.onPost()}"
-                    android:paddingBottom="15dp"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="10dp"
+                    android:paddingBottom="@dimen/space_large"
+                    android:paddingLeft="@dimen/space_large"
+                    android:paddingTop="@dimen/space_normal"
                     android:textSize="@dimen/text_size_standard"
                     android:textStyle="bold" />
 
@@ -41,7 +41,7 @@
                     android:id="@+id/rv_profile"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="@dimen/space_large"
                     android:background="@color/colorWhite" />
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
