@@ -1,24 +1,25 @@
-package com.example.thienpro.mvp_firebase.presenter;
+package com.example.thienpro.mvp_firebase.presenter.Impl;
 
 import android.content.Context;
 
-import com.example.thienpro.mvp_firebase.model.LoadUserListener;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
+import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.entity.User;
+import com.example.thienpro.mvp_firebase.presenter.RegistrerPresenter;
 import com.example.thienpro.mvp_firebase.view.RegisterView;
 
 /**
  * Created by ThienPro on 11/10/2017.
  */
 
-public class RegisterPresenter implements LoadUserListener {
+public class RegisterPresenterImpl implements UserInteractor.LoadUserListener, RegistrerPresenter {
     private UserInteractor userInteractor;
     private RegisterView registerView;
     private Context context;
 
-    public RegisterPresenter(RegisterView registerView, Context context) {
+    public RegisterPresenterImpl(RegisterView registerView, Context context) {
         this.registerView = registerView;
-        userInteractor = new UserInteractor(this);
+        userInteractor = new UserInteractorImpl(this);
         this.context = context;
     }
 

@@ -1,5 +1,6 @@
 package com.example.thienpro.mvp_firebase.view.fragment;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,13 +10,14 @@ import android.support.v7.widget.OrientationHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.FragmentProfileBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
+import com.example.thienpro.mvp_firebase.presenter.Impl.ProfilePresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.ProfilePresenter;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
+import com.example.thienpro.mvp_firebase.view.activity.PostActivity;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
 
 import java.util.ArrayList;
@@ -37,11 +39,11 @@ public class ProfileFragment extends Fragment implements ProfileView {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false);
 
-        profilePresenter = new ProfilePresenter(this);
+        profilePresenter = new ProfilePresenterImpl(this);
 
         mLinearLayoutManager = new LinearLayoutManager(getContext(), OrientationHelper.VERTICAL, false);
         binding.rvProfile.setLayoutManager(mLinearLayoutManager);
-
+        binding.rvProfile.setNestedScrollingEnabled(false);
         profilePresenter.loadPost();
         binding.setEvent(this);
         return binding.getRoot(); // Lưu ý: binding.getRoot();
@@ -55,8 +57,10 @@ public class ProfileFragment extends Fragment implements ProfileView {
 
     public void loadData(){
         if (listPost != null){
+            binding.rvProfile.setLayoutFrozen(true);
             listPost.clear();
             profilePresenter.loadPost();
+            binding.rvProfile.setLayoutFrozen(false);
         }
     }
 
@@ -73,22 +77,13 @@ public class ProfileFragment extends Fragment implements ProfileView {
         ProfileFragment fragment = new ProfileFragment();
         fragment.setArguments(args);
         return fragment;
+
     }
 
     @Override
     public void onPost() {
-        if (binding.etPost.getText().toString().equals(""))
-            Toast.makeText(getContext(), "Hãy nhập cảm nhận của bạn!", Toast.LENGTH_SHORT).show();
-        else {
-            binding.rvProfile.setLayoutFrozen(true); // Đóng băng recyclerview, tránh trường hợp lỗi touch khi sroll
-            binding.tvLoading.setVisibility(View.VISIBLE); //  Loading...
-
-            profilePresenter.newPost(binding.etPost.getText().toString());
-            listPost.clear();
-            profilePresenter.loadPost();
-            binding.tvLoading.setVisibility(View.GONE);
-            binding.etPost.setText("");
-        }
+        Intent intent = new Intent(getContext(), PostActivity.class);
+        startActivity(intent);
     }
 
 

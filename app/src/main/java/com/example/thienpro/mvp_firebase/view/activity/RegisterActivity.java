@@ -10,7 +10,8 @@ import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityRegisterBinding;
-import com.example.thienpro.mvp_firebase.presenter.RegisterPresenter;
+import com.example.thienpro.mvp_firebase.presenter.Impl.RegisterPresenterImpl;
+import com.example.thienpro.mvp_firebase.presenter.RegistrerPresenter;
 import com.example.thienpro.mvp_firebase.view.RegisterView;
 
 /**
@@ -19,14 +20,14 @@ import com.example.thienpro.mvp_firebase.view.RegisterView;
 
 public class RegisterActivity extends AppCompatActivity implements RegisterView {
     private ActivityRegisterBinding binding;
-    private RegisterPresenter presenter;
+    private RegistrerPresenter presenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
         binding.setEvent(this);
-        presenter = new RegisterPresenter(this, this);
+        presenter = new RegisterPresenterImpl(this, this);
     }
 
     @Override
@@ -35,6 +36,8 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
                 binding.etRepassword.getText().toString().equals("") || binding.etName.getText().toString().equals("") ||
                 binding.etAddress.getText().toString().equals(""))
             Toast.makeText(this, "Không được để trống các trường!", Toast.LENGTH_SHORT).show();
+        else if(binding.etName.getText().toString().length()>= 20)
+            Toast.makeText(this, "Tên có độ dài dưới 20 ký tự!", Toast.LENGTH_SHORT).show();
         else if (binding.etRepassword.getText().toString().equals(binding.etRepassword.getText().toString()))
             presenter.register(binding.etEmail.getText().toString(), binding.etPassword.getText().toString(), binding.etName.getText().toString(), binding.etAddress.getText().toString(), binding.rbNam.isChecked());
         else Toast.makeText(this, "Mật khẩu không trùng khớp!", Toast.LENGTH_SHORT).show();

@@ -9,10 +9,10 @@ import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityLoginBinding;
+import com.example.thienpro.mvp_firebase.presenter.Impl.LoginPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.LoginPresenter;
 import com.example.thienpro.mvp_firebase.view.LoginView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity implements LoginView {
     private ActivityLoginBinding mainBinding;
@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
         mainBinding.setEvent(this);
-        loginPresenter = new LoginPresenter(this, this);
+        loginPresenter = new LoginPresenterImpl(this, this);
     }
 
     @Override

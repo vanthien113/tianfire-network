@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -8,50 +9,42 @@
             type="com.example.thienpro.mvp_firebase.view.ProfileView" />
     </data>
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="@color/colorWhite"
+        android:layout_height="match_parent"
+        android:background="@color/colorGray">
 
-        android:layout_height="match_parent">
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <EditText
-            android:backgroundTint="@color/colorWhite"
-            android:layout_marginLeft="@dimen/space_large"
-            android:id="@+id/et_post"
-            android:layout_marginRight="@dimen/space_small"
-            android:textSize="@dimen/text_size_standard"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_normal"
-            android:hint="Hôm nay bạn cảm thấy thế nào?"
-            app:layout_constraintEnd_toStartOf="@+id/bt_post"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <Button
-            android:background="@drawable/ic_up"
-            android:id="@+id/bt_post"
-            android:layout_width="@dimen/witdh_small"
-            android:layout_height="@dimen/height_small"
-            android:layout_marginBottom="@dimen/space_normal"
-            android:layout_marginRight="@dimen/space_normal"
-            android:layout_marginTop="@dimen/space_normal"
-            android:onClick="@{()->event.onPost()}"
-            app:layout_constraintBottom_toBottomOf="@+id/et_post"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/et_post" />
+                <TextView
+                    android:id="@+id/tv_post"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:hint="Hôm nay bạn cảm thấy thế nào?"
+                    android:onClick="@{()->event.onPost()}"
+                    android:paddingBottom="15dp"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="10dp"
+                    android:textSize="@dimen/text_size_standard"
+                    android:textStyle="bold" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_profile"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_post"
-            app:layout_constraintVertical_bias="0.0" />
+                <android.support.v7.widget.RecyclerView
+                    android:focusable="false"
+                    android:id="@+id/rv_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/colorWhite" />
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
 
         <TextView
             android:id="@+id/tv_loading"
@@ -63,6 +56,5 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
     </android.support.constraint.ConstraintLayout>
 </layout>

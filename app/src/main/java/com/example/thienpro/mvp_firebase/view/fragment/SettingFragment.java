@@ -5,11 +5,9 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.FragmentSettingBinding;
@@ -27,7 +25,6 @@ public class SettingFragment extends Fragment implements SettingView {
 
     @Override
     public void onResume() {
-        Log.e("THIEN", "SETTING FRAGMENT");
         super.onResume();
     }
 

@@ -14,6 +14,7 @@ import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.FragmentHomeBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.presenter.HomePresenter;
+import com.example.thienpro.mvp_firebase.presenter.Impl.HomePresenterImpl;
 import com.example.thienpro.mvp_firebase.view.HomeView;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
 
@@ -36,7 +37,7 @@ public class HomeFragment extends Fragment implements HomeView {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
 
-        homePresenter = new HomePresenter(this);
+        homePresenter = new HomePresenterImpl(this);
         homePresenter.loadAllListPost();
 
         LinearLayoutManager = new LinearLayoutManager(binding.getRoot().getContext(), OrientationHelper.VERTICAL, false);
@@ -61,10 +62,12 @@ public class HomeFragment extends Fragment implements HomeView {
     }
 
     public void loadData(){
+        binding.rvHome.setLayoutFrozen(true);
         if (listPost != null){
             listPost.clear();
             homePresenter.loadAllListPost();
         }
+        binding.rvHome.setLayoutFrozen(false);
     }
 
     @Override

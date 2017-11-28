@@ -1,6 +1,5 @@
 package com.example.thienpro.mvp_firebase.view.activity;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +11,7 @@ import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityEditinfoBinding;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.EditInfoPresenter;
+import com.example.thienpro.mvp_firebase.presenter.Impl.EditInfoPresenterImpl;
 import com.example.thienpro.mvp_firebase.view.EditInfoView;
 
 /**
@@ -26,7 +26,7 @@ public class EditInfoActivity extends AppCompatActivity implements EditInfoView 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_editinfo);
-        editInfoPresenter = new EditInfoPresenter(this);
+        editInfoPresenter = new EditInfoPresenterImpl(this);
         binding.setEvent(this);
         editInfoPresenter.loadUser();
     }
@@ -35,6 +35,8 @@ public class EditInfoActivity extends AppCompatActivity implements EditInfoView 
     public void onSaveClick() {
         if (binding.etEmail.getText().toString().equals("") || binding.etName.getText().toString().equals("") || binding.etAddress.getText().toString().equals(""))
             Toast.makeText(this, "Nhập thông tin cho các trường!", Toast.LENGTH_SHORT).show();
+        else if(binding.etName.getText().toString().length()>= 20)
+            Toast.makeText(this, "Tên có độ dài dưới 20 ký tự!", Toast.LENGTH_SHORT).show();
         else {
             editInfoPresenter.updateUser(binding.etEmail.getText().toString(), binding.etName.getText().toString(), binding.etAddress.getText().toString(), binding.rbEditnam.isChecked());
             Toast.makeText(this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
