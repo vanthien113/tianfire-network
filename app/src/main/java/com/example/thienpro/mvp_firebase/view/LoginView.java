@@ -16,4 +16,8 @@ public interface LoginView {
     void onLoginClick();
 
     void onRegisterClick();
+
+    void navigationToLogin(Context context);
+
+    void navigationToVerifiEmail(Context context);
 }

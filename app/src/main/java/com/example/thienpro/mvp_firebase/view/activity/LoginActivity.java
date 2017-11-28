@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
@@ -16,24 +17,22 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity implements LoginView {
     private ActivityLoginBinding mainBinding;
-    private FirebaseAuth mAuth;
     private LoginPresenter loginPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
-        mAuth = FirebaseAuth.getInstance();
         mainBinding.setEvent(this);
         loginPresenter = new LoginPresenterImpl(this, this);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
         loginPresenter.signedInCheck();
     }
+
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        loginPresenter.signedInCheck();
+//    }
 
     @Override
     public void navigationToHome(Context context) {
@@ -59,6 +58,20 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     @Override
     public void onRegisterClick() {
         navigationToRegister();
+    }
+
+    @Override
+    public void navigationToLogin(Context context) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void navigationToVerifiEmail(Context context) {
+        Intent intent = new Intent(context, VerifiEmailActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override

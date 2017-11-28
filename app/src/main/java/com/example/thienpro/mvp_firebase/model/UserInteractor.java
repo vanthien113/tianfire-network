@@ -7,7 +7,9 @@ import com.example.thienpro.mvp_firebase.model.entity.User;
  */
 
 public interface UserInteractor {
-    boolean signedInCheck();
+    int signedInCheck();
+
+    void verifiEmail();
 
     void register(String email, String password, String name, String address, boolean sex);
 
@@ -17,13 +19,23 @@ public interface UserInteractor {
 
     void sigIn(String email, String password);
 
+    void logOut();
+
     interface LoadUserListener {
+        void sendVerifiEmailComplete(String email);
+
+        void sendVerifiEmailFail(String email);
+
         void getUser(User user);
 
         void navigationToHome();
 
+        void navigationToLogin();
+
         void onRegisterFail();
 
         void onLoginFail();
+
+        void navigationToVerifiEmail();
     }
 }

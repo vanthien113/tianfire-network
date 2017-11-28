@@ -35,8 +35,8 @@ public class EditInfoActivity extends AppCompatActivity implements EditInfoView 
     public void onSaveClick() {
         if (binding.etEmail.getText().toString().equals("") || binding.etName.getText().toString().equals("") || binding.etAddress.getText().toString().equals(""))
             Toast.makeText(this, "Nhập thông tin cho các trường!", Toast.LENGTH_SHORT).show();
-        else if(binding.etName.getText().toString().length()>= 20)
-            Toast.makeText(this, "Tên có độ dài dưới 20 ký tự!", Toast.LENGTH_SHORT).show();
+        else if(binding.etName.getText().toString().length()>= 30)
+            Toast.makeText(this, "Tên có độ dài dưới 30 ký tự!", Toast.LENGTH_SHORT).show();
         else {
             editInfoPresenter.updateUser(binding.etEmail.getText().toString(), binding.etName.getText().toString(), binding.etAddress.getText().toString(), binding.rbEditnam.isChecked());
             Toast.makeText(this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
