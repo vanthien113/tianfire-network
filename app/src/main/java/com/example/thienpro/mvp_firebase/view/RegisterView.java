@@ -13,9 +13,5 @@ public interface RegisterView {
 
     void navigationToHome(Context context);
 
-    void onRegisterNull(Context context);
-
     void onRegisterEmailFail(Context context);
-
-    void onRePasswordFail(Context context);
 }

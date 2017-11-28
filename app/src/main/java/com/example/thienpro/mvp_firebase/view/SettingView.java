@@ -5,6 +5,6 @@ package com.example.thienpro.mvp_firebase.view;
  */
 
 public interface SettingView {
-    void onEditinfoClick();
+    void onEditInfoClick();
     void onLogout();
 }

@@ -13,20 +13,19 @@ import com.example.thienpro.mvp_firebase.R;
  */
 
 public class SplashActivity extends AppCompatActivity {
-    private Handler handler;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        handler = new Handler();
-        handler.postDelayed(runnable, 2000);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, 2000);
     }
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    };
 }

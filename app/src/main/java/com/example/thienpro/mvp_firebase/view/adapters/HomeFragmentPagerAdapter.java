@@ -4,6 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.example.thienpro.mvp_firebase.view.fragment.HomeFragment;
+import com.example.thienpro.mvp_firebase.view.fragment.ProfileFragment;
+import com.example.thienpro.mvp_firebase.view.fragment.SettingFragment;
+
 import java.util.ArrayList;
 
 /**
@@ -11,27 +15,25 @@ import java.util.ArrayList;
  */
 
 public class HomeFragmentPagerAdapter extends FragmentStatePagerAdapter {
-    private ArrayList<Fragment> mListFragments;
-
-    public HomeFragmentPagerAdapter(FragmentManager fm, ArrayList<Fragment> list) {
+    private static final int FRAGMENT_COUNT = 3;
+    public HomeFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
-        mListFragments = new ArrayList<>();
-        mListFragments = list;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return mListFragments.get(position);
+        switch (position){
+            case 0:
+                return HomeFragment.newInstance();
+            case 1:
+                return ProfileFragment.newInstance();
+            default:
+                return SettingFragment.newInstance();
+        }
     }
 
     @Override
     public int getCount() {
-        return mListFragments.size();
+        return FRAGMENT_COUNT;
     }
-
-//    @Override
-//    public CharSequence getPageTitle(int position) {
-//        String title = mListFragments.get(position).getArguments().getString("msg");
-//        return title;
-//    }
 }

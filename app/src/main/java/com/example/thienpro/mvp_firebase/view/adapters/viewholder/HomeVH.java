@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.example.thienpro.mvp_firebase.databinding.ItemActivityHomeBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
+import com.example.thienpro.mvp_firebase.model.entity.User;
 
 /**
  * Created by ThienPro on 11/11/2017.

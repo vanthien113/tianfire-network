@@ -16,6 +16,4 @@ public interface LoginView {
     void onLoginClick();
 
     void onRegisterClick();
-
-    void onSignInNull(Context context);
 }

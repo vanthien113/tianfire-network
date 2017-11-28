@@ -1,8 +1,9 @@
-package com.example.thienpro.mvp_firebase.presenter;
+package com.example.thienpro.mvp_firebase.presenter.Impl;
 
-import com.example.thienpro.mvp_firebase.model.LoadPostListener;
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
+import com.example.thienpro.mvp_firebase.model.Impl.PostInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
+import com.example.thienpro.mvp_firebase.presenter.ProfilePresenter;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
 
 import java.util.ArrayList;
@@ -17,12 +18,12 @@ import java.util.ArrayList;
  * Created by ThienPro on 11/16/2017.
  */
 
-public class ProfilePresenterImpl implements LoadPostListener {
+public class ProfilePresenterImpl implements PostInteractor.LoadPostListener, ProfilePresenter {
     private PostInteractor postInteractor;
     private ProfileView profileView;
 
     public ProfilePresenterImpl(ProfileView profileView) { // Truyền tham sô profileview
-        postInteractor = new PostInteractor(this);
+        postInteractor = new PostInteractorImpl(this);
         this.profileView = profileView;
     }
 
@@ -35,10 +36,4 @@ public class ProfilePresenterImpl implements LoadPostListener {
         postInteractor.LoadPersonalPost();
     }
 
-    public void newPost(String content) {
-        if (content.equals(""))
-            profileView.onNullContent();
-        else
-            postInteractor.writeNewPost(content);
-    }
 }

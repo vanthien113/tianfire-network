@@ -11,65 +11,59 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:background="@color/colorGray"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.CardView
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/space_normal"
-            android:layout_marginRight="@dimen/space_normal"
-            android:layout_marginTop="@dimen/space_small"
-            android:layout_marginBottom="@dimen/space_small">
+            android:background="@color/colorWhite"
+            android:layout_marginBottom="15dp"
+            android:layout_height="wrap_content">
 
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/space_large"
+                android:layout_marginTop="@dimen/space_large"
+                android:text="@{data.name}"
+                android:textSize="@dimen/text_size_standard"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:textSize="@dimen/text_size_standard"
-                    android:textStyle="bold"
-                    android:id="@+id/tv_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/space_large"
-                    android:layout_marginTop="@dimen/space_large"
-                    android:text="@{data.name}"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/space_large"
+                android:layout_marginStart="@dimen/space_large"
+                android:layout_marginTop="@dimen/space_large"
+                android:text="@{data.timePost}"
+                android:textColor="@color/colorPinkLight"
+                android:textSize="@dimen/text_size_standard"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_name"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:textColor="@color/colorPinkLight"
-                    android:textSize="@dimen/text_size_standard"
-                    android:id="@+id/tv_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/space_large"
-                    android:layout_marginStart="@dimen/space_large"
-                    android:layout_marginTop="@dimen/space_large"
-                    android:text="@{data.timePost}"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_name"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/tv_post"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/space_large"
+                android:layout_marginLeft="@dimen/space_large"
+                android:layout_marginRight="@dimen/space_large"
+                android:layout_marginTop="@dimen/space_large"
+                android:text="@{data.post}"
+                android:textSize="@dimen/text_size_standard"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_time"
+                app:layout_constraintVertical_bias="1.0" />
 
-                <TextView
-                    android:textSize="@dimen/text_size_standard"
-                    android:id="@+id/tv_post"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/space_large"
-                    android:layout_marginLeft="@dimen/space_large"
-                    android:layout_marginRight="@dimen/space_large"
-                    android:layout_marginTop="@dimen/space_large"
-                    android:text="@{data.post}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_time"
-                    app:layout_constraintVertical_bias="1.0" />
-
-            </android.support.constraint.ConstraintLayout>
-        </android.support.v7.widget.CardView>
+        </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 </layout>
