@@ -9,19 +9,20 @@
     </data>
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:background="@color/colorWhite"
-
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite">
 
         <TextView
-            android:background="@color/colorGray"
             android:id="@+id/textView4"
             android:layout_width="0dp"
-            android:padding="@dimen/space_smallest"
             android:layout_height="@dimen/height_normal"
             android:layout_marginBottom="@dimen/space_large"
+            android:background="@color/colorGray"
+            android:elevation="@dimen/elevation_normal"
             android:gravity="center"
+            android:padding="@dimen/space_smallest"
             android:text="@string/dang_ki_tai_khoan"
             android:textAlignment="center"
             android:textSize="@dimen/text_size_xxlarge"
@@ -34,9 +35,9 @@
             android:id="@+id/et_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_normal"
             android:layout_marginLeft="@dimen/space_large"
             android:layout_marginRight="@dimen/space_large"
+            android:layout_marginTop="@dimen/space_normal"
             android:hint="@string/nhap_email"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.189"
@@ -123,7 +124,6 @@
         </RadioGroup>
 
         <Button
-            android:textSize="16sp"
             android:id="@+id/bt_register"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -132,6 +132,7 @@
             android:layout_marginTop="@dimen/space_xxx_large"
             android:onClick="@{()->event.onRegisterClick()}"
             android:text="@string/dang_ki"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
