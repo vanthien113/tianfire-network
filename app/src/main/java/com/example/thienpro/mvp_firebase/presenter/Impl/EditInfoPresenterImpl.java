@@ -28,6 +28,16 @@ public class EditInfoPresenterImpl implements UserInteractor.LoadUserListener, E
     }
 
     @Override
+    public void sendVerifiEmailComplete(String email) {
+
+    }
+
+    @Override
+    public void sendVerifiEmailFail(String email) {
+
+    }
+
+    @Override
     public void getUser(User user) {
         editInfoView.getUser(user);
     }
@@ -38,12 +48,22 @@ public class EditInfoPresenterImpl implements UserInteractor.LoadUserListener, E
     }
 
     @Override
+    public void navigationToLogin() {
+
+    }
+
+    @Override
     public void onRegisterFail() {
 
     }
 
     @Override
     public void onLoginFail() {
+
+    }
+
+    @Override
+    public void navigationToVerifiEmail() {
 
     }
 }

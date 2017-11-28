@@ -11,10 +11,11 @@ import android.view.ViewGroup;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.FragmentSettingBinding;
+import com.example.thienpro.mvp_firebase.presenter.Impl.SettingPresenterImpl;
+import com.example.thienpro.mvp_firebase.presenter.SettingPresenter;
 import com.example.thienpro.mvp_firebase.view.SettingView;
 import com.example.thienpro.mvp_firebase.view.activity.EditInfoActivity;
 import com.example.thienpro.mvp_firebase.view.activity.LoginActivity;
-import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * Created by ThienPro on 11/22/2017.
@@ -22,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class SettingFragment extends Fragment implements SettingView {
     private FragmentSettingBinding binding;
+    private SettingPresenter settingPresenter;
 
     @Override
     public void onResume() {
@@ -41,6 +43,7 @@ public class SettingFragment extends Fragment implements SettingView {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_setting, container, false);
 
         binding.setEvent(this);
+        settingPresenter = new SettingPresenterImpl(this);
 
         return binding.getRoot();
     }
@@ -61,10 +64,9 @@ public class SettingFragment extends Fragment implements SettingView {
 
     @Override
     public void onLogout() {
-        FirebaseAuth.getInstance().signOut();
+        settingPresenter.logOut();
         Intent intent = new Intent(getContext(), LoginActivity.class);
         startActivity(intent);
         getActivity().finish();
     }
-
 }

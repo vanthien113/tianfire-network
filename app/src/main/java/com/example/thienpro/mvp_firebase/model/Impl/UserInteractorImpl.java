@@ -1,6 +1,7 @@
 package com.example.thienpro.mvp_firebase.model.Impl;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
@@ -39,11 +40,38 @@ public class UserInteractorImpl implements UserInteractor {
         users = mAuth.getCurrentUser();
     }
 
-    public boolean signedInCheck() {
+    public int signedInCheck() {
         if (users != null) {
-            return true;
+            users.reload();
+            if (users.isEmailVerified()) {
+                return 1;
+            } else if (users.isEmailVerified() == false) {
+                return 2;
+            }
         }
-        return false;
+        return 0;
+    }
+
+    public void verifiEmail() {
+        Log.e("THIEN", String.valueOf(signedInCheck()));
+        if (signedInCheck() == 1) {
+            loadUserListener.navigationToHome();
+            Log.e("THIEN", "Run");
+
+        } else {
+            loadUserListener.sendVerifiEmailFail(users.getEmail());
+            users.sendEmailVerification()
+                    .addOnCompleteListener(new OnCompleteListener() {
+                        @Override
+                        public void onComplete(@NonNull Task task) {
+                            if (task.isSuccessful()) {
+                                loadUserListener.sendVerifiEmailComplete(users.getEmail());
+                            } else {
+                                loadUserListener.sendVerifiEmailFail(users.getEmail());
+                            }
+                        }
+                    });
+        }
     }
 
     public void register(final String email, String password, final String name, final String address, final boolean sex) {
@@ -55,7 +83,7 @@ public class UserInteractorImpl implements UserInteractor {
                             users = mAuth.getCurrentUser();
                             User user = new User(email, name, address, sex);
                             mDatabase.child("users").child(users.getUid()).setValue(user); //setValue để thêm node
-                            loadUserListener.navigationToHome();
+                            loadUserListener.navigationToVerifiEmail();
                         } else loadUserListener.onRegisterFail();
                     }
                 });
@@ -137,11 +165,16 @@ public class UserInteractorImpl implements UserInteractor {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            loadUserListener.navigationToHome();
+                            loadUserListener.navigationToVerifiEmail();
                         } else {
                             loadUserListener.onLoginFail();
                         }
                     }
                 });
+    }
+
+    @Override
+    public void logOut() {
+        FirebaseAuth.getInstance().signOut();
     }
 }

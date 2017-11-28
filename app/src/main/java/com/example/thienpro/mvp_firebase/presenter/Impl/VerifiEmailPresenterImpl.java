@@ -5,46 +5,47 @@ import android.content.Context;
 import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
-import com.example.thienpro.mvp_firebase.presenter.RegistrerPresenter;
-import com.example.thienpro.mvp_firebase.view.RegisterView;
+import com.example.thienpro.mvp_firebase.presenter.VerifiEmailPresenter;
+import com.example.thienpro.mvp_firebase.view.VerifiEmailView;
 
 /**
- * Created by ThienPro on 11/10/2017.
+ * Created by ThienPro on 11/28/2017.
  */
 
-public class RegisterPresenterImpl implements UserInteractor.LoadUserListener, RegistrerPresenter {
+public class VerifiEmailPresenterImpl implements VerifiEmailPresenter, UserInteractor.LoadUserListener {
     private UserInteractor userInteractor;
-    private RegisterView registerView;
+    private VerifiEmailView verifiEmailView;
     private Context context;
 
-    public RegisterPresenterImpl(RegisterView registerView, Context context) {
-        this.registerView = registerView;
-        userInteractor = new UserInteractorImpl(this);
+    public VerifiEmailPresenterImpl(VerifiEmailView verifiEmailView, Context context) {
+        this.userInteractor = new UserInteractorImpl(this);
+        this.verifiEmailView = verifiEmailView;
         this.context = context;
     }
 
-    public void register(String email, String password, String name, String address, boolean sex) {
-        userInteractor.register(email, password, name, address, sex);
+    @Override
+    public void verifiEmail() {
+        userInteractor.verifiEmail();
     }
-
 
     @Override
     public void sendVerifiEmailComplete(String email) {
-
+        verifiEmailView.sendverifiEmailComplete(email);
     }
 
     @Override
     public void sendVerifiEmailFail(String email) {
-
+        verifiEmailView.sendverifiEmailFail(email);
     }
 
     @Override
     public void getUser(User user) {
+
     }
 
     @Override
     public void navigationToHome() {
-        registerView.navigationToVerifiEmail(context);
+        verifiEmailView.navigationToHome(context);
     }
 
     @Override
@@ -54,7 +55,7 @@ public class RegisterPresenterImpl implements UserInteractor.LoadUserListener, R
 
     @Override
     public void onRegisterFail() {
-        registerView.onRegisterEmailFail(context);
+
     }
 
     @Override
@@ -64,6 +65,6 @@ public class RegisterPresenterImpl implements UserInteractor.LoadUserListener, R
 
     @Override
     public void navigationToVerifiEmail() {
-        registerView.navigationToVerifiEmail(context);
+
     }
 }

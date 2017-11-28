@@ -24,12 +24,24 @@ public class LoginPresenterImpl implements UserInteractor.LoadUserListener, Logi
     }
 
     public void signedInCheck(){
-        if(userInteractor.signedInCheck())
+        if(userInteractor.signedInCheck()==1)
             loginView.navigationToHome(context);
+        else if(userInteractor.signedInCheck()==2)
+            loginView.navigationToVerifiEmail(context);
     }
 
     public void onSignIn(String email, String password){
         userInteractor.sigIn(email, password);
+    }
+
+    @Override
+    public void sendVerifiEmailComplete(String email) {
+
+    }
+
+    @Override
+    public void sendVerifiEmailFail(String email) {
+
     }
 
     @Override
@@ -43,11 +55,21 @@ public class LoginPresenterImpl implements UserInteractor.LoadUserListener, Logi
     }
 
     @Override
+    public void navigationToLogin() {
+        loginView.navigationToLogin(context);
+    }
+
+    @Override
     public void onRegisterFail() {
     }
 
     @Override
     public void onLoginFail() {
         loginView.onLoginFail(context);
+    }
+
+    @Override
+    public void navigationToVerifiEmail() {
+        loginView.navigationToVerifiEmail(context);
     }
 }
