@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
@@ -37,7 +38,7 @@ public class PostActivity extends AppCompatActivity implements PostView {
 
     @Override
     public void onPostClick() {
-        if (binding.etPost.getText().toString().equals(""))
+        if (TextUtils.isEmpty(binding.etPost.getText()))
             Toast.makeText(this, "Hãy nhập cảm nhận của bạn!", Toast.LENGTH_SHORT).show();
         else {
             postPresenter.newPost(binding.etPost.getText().toString());

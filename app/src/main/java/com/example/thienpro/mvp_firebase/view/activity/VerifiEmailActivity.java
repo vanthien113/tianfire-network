@@ -55,7 +55,7 @@ public class VerifiEmailActivity extends AppCompatActivity implements VerifiEmai
 
     @Override
     public void onCancelClick() {
-        FirebaseAuth.getInstance().signOut();
+        verifiEmailPresenter.logOut();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();

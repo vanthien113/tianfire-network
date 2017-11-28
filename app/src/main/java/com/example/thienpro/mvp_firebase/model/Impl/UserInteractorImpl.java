@@ -1,7 +1,6 @@
 package com.example.thienpro.mvp_firebase.model.Impl;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
@@ -53,11 +52,8 @@ public class UserInteractorImpl implements UserInteractor {
     }
 
     public void verifiEmail() {
-        Log.e("THIEN", String.valueOf(signedInCheck()));
         if (signedInCheck() == 1) {
             loadUserListener.navigationToHome();
-            Log.e("THIEN", "Run");
-
         } else {
             loadUserListener.sendVerifiEmailFail(users.getEmail());
             users.sendEmailVerification()

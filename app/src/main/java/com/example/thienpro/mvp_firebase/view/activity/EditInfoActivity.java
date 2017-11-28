@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
@@ -33,7 +34,7 @@ public class EditInfoActivity extends AppCompatActivity implements EditInfoView 
 
     @Override
     public void onSaveClick() {
-        if (binding.etEmail.getText().toString().equals("") || binding.etName.getText().toString().equals("") || binding.etAddress.getText().toString().equals(""))
+        if (TextUtils.isEmpty(binding.etEmail.getText()) || TextUtils.isEmpty(binding.etName.getText())|| TextUtils.isEmpty(binding.etAddress.getText()))
             Toast.makeText(this, "Nhập thông tin cho các trường!", Toast.LENGTH_SHORT).show();
         else if(binding.etName.getText().toString().length()>= 30)
             Toast.makeText(this, "Tên có độ dài dưới 30 ký tự!", Toast.LENGTH_SHORT).show();
