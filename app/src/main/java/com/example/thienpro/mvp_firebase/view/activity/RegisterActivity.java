@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
@@ -38,13 +39,13 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
 
     @Override
     public void onRegisterClick() {
-        if (binding.etEmail.getText().toString().equals("") || binding.etPassword.getText().toString().equals("") ||
-                binding.etRepassword.getText().toString().equals("") || binding.etName.getText().toString().equals("") ||
-                binding.etAddress.getText().toString().equals(""))
+        if (TextUtils.isEmpty(binding.etEmail.getText()) || TextUtils.isEmpty(binding.etPassword.getText()) ||
+                TextUtils.isEmpty(binding.etRepassword.getText()) || TextUtils.isEmpty(binding.etName.getText()) ||
+                TextUtils.isEmpty(binding.etAddress.getText()))
             Toast.makeText(this, "Không được để trống các trường!", Toast.LENGTH_SHORT).show();
-        else if(binding.etName.getText().toString().length()>= 30)
+        if (binding.etName.getText().toString().length() >= 30)
             Toast.makeText(this, "Tên có độ dài dưới 30 ký tự!", Toast.LENGTH_SHORT).show();
-        else if (binding.etRepassword.getText().toString().equals(binding.etRepassword.getText().toString()))
+        if (TextUtils.equals(binding.etPassword.getText(), binding.etRepassword.getText()))
             presenter.register(binding.etEmail.getText().toString(), binding.etPassword.getText().toString(), binding.etName.getText().toString(), binding.etAddress.getText().toString(), binding.rbNam.isChecked());
         else Toast.makeText(this, "Mật khẩu không trùng khớp!", Toast.LENGTH_SHORT).show();
     }

@@ -6,4 +6,5 @@ package com.example.thienpro.mvp_firebase.presenter;
 
 public interface VerifiEmailPresenter {
     void verifiEmail();
+    void logOut();
 }

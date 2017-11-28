@@ -28,12 +28,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         loginPresenter.signedInCheck();
     }
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        loginPresenter.signedInCheck();
-//    }
-
     @Override
     public void navigationToHome(Context context) {
         Intent intent = new Intent(context, HomeActivity.class);

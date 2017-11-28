@@ -29,6 +29,11 @@ public class VerifiEmailPresenterImpl implements VerifiEmailPresenter, UserInter
     }
 
     @Override
+    public void logOut() {
+        userInteractor.logOut();
+    }
+
+    @Override
     public void sendVerifiEmailComplete(String email) {
         verifiEmailView.sendverifiEmailComplete(email);
     }
