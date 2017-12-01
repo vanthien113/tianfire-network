@@ -27,15 +27,15 @@ import java.util.Map;
  */
 
 public class UserInteractorImpl implements UserInteractor {
-    private LoadUserListener loadUserListener;
+    private userListener userListener;
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser users;
 
-    public UserInteractorImpl(LoadUserListener loadUserListener) {
+    public UserInteractorImpl(userListener userListener) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
-        this.loadUserListener = loadUserListener;
+        this.userListener = userListener;
         users = mAuth.getCurrentUser();
     }
 
@@ -53,17 +53,17 @@ public class UserInteractorImpl implements UserInteractor {
 
     public void verifiEmail() {
         if (signedInCheck() == 1) {
-            loadUserListener.navigationToHome();
+            userListener.navigationToHome();
         } else {
-            loadUserListener.sendVerifiEmailFail(users.getEmail());
+            userListener.sendVerifiEmailFail(users.getEmail());
             users.sendEmailVerification()
                     .addOnCompleteListener(new OnCompleteListener() {
                         @Override
                         public void onComplete(@NonNull Task task) {
                             if (task.isSuccessful()) {
-                                loadUserListener.sendVerifiEmailComplete(users.getEmail());
+                                userListener.sendVerifiEmailComplete(users.getEmail());
                             } else {
-                                loadUserListener.sendVerifiEmailFail(users.getEmail());
+                                userListener.sendVerifiEmailFail(users.getEmail());
                             }
                         }
                     });
@@ -79,8 +79,8 @@ public class UserInteractorImpl implements UserInteractor {
                             users = mAuth.getCurrentUser();
                             User user = new User(email, name, address, sex);
                             mDatabase.child("users").child(users.getUid()).setValue(user); //setValue để thêm node
-                            loadUserListener.navigationToVerifiEmail();
-                        } else loadUserListener.onRegisterFail();
+                            userListener.navigationToVerifiEmail();
+                        } else userListener.onRegisterFail();
                     }
                 });
     }
@@ -143,7 +143,7 @@ public class UserInteractorImpl implements UserInteractor {
                 Boolean fourValue = (Boolean) map.get("sex");
 
                 User user = new User(secondValue, thirdValue, firstValue, fourValue);
-                loadUserListener.getUser(user);
+                userListener.getUser(user);
             }
 
             @Override
@@ -161,9 +161,9 @@ public class UserInteractorImpl implements UserInteractor {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            loadUserListener.navigationToVerifiEmail();
+                            userListener.navigationToVerifiEmail();
                         } else {
-                            loadUserListener.onLoginFail();
+                            userListener.onLoginFail();
                         }
                     }
                 });

@@ -1,7 +1,5 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
-import android.content.Context;
-
 import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
@@ -12,15 +10,13 @@ import com.example.thienpro.mvp_firebase.view.RegisterView;
  * Created by ThienPro on 11/10/2017.
  */
 
-public class RegisterPresenterImpl implements UserInteractor.LoadUserListener, RegistrerPresenter {
+public class RegisterPresenterImpl implements UserInteractor.userListener, RegistrerPresenter {
     private UserInteractor userInteractor;
     private RegisterView registerView;
-    private Context context;
 
-    public RegisterPresenterImpl(RegisterView registerView, Context context) {
+    public RegisterPresenterImpl(RegisterView registerView) {
         this.registerView = registerView;
         userInteractor = new UserInteractorImpl(this);
-        this.context = context;
     }
 
     public void register(String email, String password, String name, String address, boolean sex) {
@@ -44,7 +40,7 @@ public class RegisterPresenterImpl implements UserInteractor.LoadUserListener, R
 
     @Override
     public void navigationToHome() {
-        registerView.navigationToVerifiEmail(context);
+        registerView.navigationToVerifiEmail();
     }
 
     @Override
@@ -54,7 +50,7 @@ public class RegisterPresenterImpl implements UserInteractor.LoadUserListener, R
 
     @Override
     public void onRegisterFail() {
-        registerView.onRegisterEmailFail(context);
+        registerView.onRegisterEmailFail();
     }
 
     @Override
@@ -64,6 +60,6 @@ public class RegisterPresenterImpl implements UserInteractor.LoadUserListener, R
 
     @Override
     public void navigationToVerifiEmail() {
-        registerView.navigationToVerifiEmail(context);
+        registerView.navigationToVerifiEmail();
     }
 }

@@ -10,7 +10,7 @@ import com.example.thienpro.mvp_firebase.view.SettingView;
  * Created by ThienPro on 11/28/2017.
  */
 
-public class SettingPresenterImpl implements SettingPresenter, UserInteractor.LoadUserListener {
+public class SettingPresenterImpl implements SettingPresenter, UserInteractor.userListener {
     private UserInteractor userInteractor;
 
     public SettingPresenterImpl(SettingView settingView) {
@@ -44,7 +44,6 @@ public class SettingPresenterImpl implements SettingPresenter, UserInteractor.Lo
 
     @Override
     public void navigationToLogin() {
-
     }
 
     @Override

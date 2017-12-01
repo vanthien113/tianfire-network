@@ -49,14 +49,6 @@ public class SettingFragment extends Fragment implements SettingView {
     }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) { // Hàm sẽ được chạy sau khi ấn sang tab Home
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            onResume();
-        }
-    }
-
-    @Override
     public void onEditInfoClick() {
         Intent intent = new Intent(getContext(), EditInfoActivity.class);
         startActivity(intent);
@@ -65,6 +57,10 @@ public class SettingFragment extends Fragment implements SettingView {
     @Override
     public void onLogout() {
         settingPresenter.logOut();
+        navigationToLogin();
+    }
+
+    void navigationToLogin(){
         Intent intent = new Intent(getContext(), LoginActivity.class);
         startActivity(intent);
         getActivity().finish();

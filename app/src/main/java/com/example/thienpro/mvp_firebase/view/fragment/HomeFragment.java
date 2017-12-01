@@ -61,8 +61,9 @@ public class HomeFragment extends Fragment implements HomeView {
         super.onResume();
     }
 
-    public void loadData(){
-        if (listPost != null){
+    public void loadData() {
+        if (listPost != null) {
+            showLoading();
             binding.rvHome.setLayoutFrozen(true);
             listPost.clear();
             homePresenter.loadAllListPost();
@@ -71,12 +72,20 @@ public class HomeFragment extends Fragment implements HomeView {
 
     @Override
     public void showAllPost(ArrayList<Post> list) {
-        binding.tvLoading.setVisibility(View.GONE);
+        hideLoading();
         Collections.reverse(list);
         listPost = list;
         homeAdapter = new HomeAdapter(listPost);
         binding.rvHome.setAdapter(homeAdapter);
         binding.rvHome.setLayoutFrozen(false);
+    }
+
+    void hideLoading() {
+        binding.tvLoading.setVisibility(View.GONE);
+    }
+
+    void showLoading() {
+        binding.tvLoading.setVisibility(View.INVISIBLE);
     }
 
     public static HomeFragment newInstance() {

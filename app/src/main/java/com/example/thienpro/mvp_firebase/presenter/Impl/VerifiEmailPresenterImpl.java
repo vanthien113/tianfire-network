@@ -1,7 +1,5 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
-import android.content.Context;
-
 import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
@@ -12,15 +10,13 @@ import com.example.thienpro.mvp_firebase.view.VerifiEmailView;
  * Created by ThienPro on 11/28/2017.
  */
 
-public class VerifiEmailPresenterImpl implements VerifiEmailPresenter, UserInteractor.LoadUserListener {
+public class VerifiEmailPresenterImpl implements VerifiEmailPresenter, UserInteractor.userListener {
     private UserInteractor userInteractor;
     private VerifiEmailView verifiEmailView;
-    private Context context;
 
-    public VerifiEmailPresenterImpl(VerifiEmailView verifiEmailView, Context context) {
+    public VerifiEmailPresenterImpl(VerifiEmailView verifiEmailView) {
         this.userInteractor = new UserInteractorImpl(this);
         this.verifiEmailView = verifiEmailView;
-        this.context = context;
     }
 
     @Override
@@ -50,7 +46,7 @@ public class VerifiEmailPresenterImpl implements VerifiEmailPresenter, UserInter
 
     @Override
     public void navigationToHome() {
-        verifiEmailView.navigationToHome(context);
+        verifiEmailView.navigationToHome();
     }
 
     @Override

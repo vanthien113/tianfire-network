@@ -1,12 +1,11 @@
 package com.example.thienpro.mvp_firebase.view.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
@@ -28,29 +27,53 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
         binding.setEvent(this);
-        presenter = new RegisterPresenterImpl(this, this);
+        presenter = new RegisterPresenterImpl(this);
+
+        binding.sp.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.province_arrays)));
     }
 
     @Override
-    public void navigationToVerifiEmail(Context context) {
-        Intent intent = new Intent(context, VerifiEmailActivity.class);
-        context.startActivity(intent);
+    public void navigationToVerifiEmail() {
+        Intent intent = new Intent(this, VerifiEmailActivity.class);
+        this.startActivity(intent);
     }
 
     @Override
     public void onRegisterClick() {
-        if (TextUtils.isEmpty(binding.etEmail.getText()) || TextUtils.isEmpty(binding.etPassword.getText()) ||
-                TextUtils.isEmpty(binding.etRepassword.getText()) || TextUtils.isEmpty(binding.etName.getText()) ||
-                TextUtils.isEmpty(binding.etAddress.getText()))
+        String email = binding.etEmail.getText().toString();
+        String password = binding.etPassword.getText().toString();
+        String repassword = binding.etRepassword.getText().toString();
+        String name = binding.etName.getText().toString();
+
+        if (email.isEmpty() || password.isEmpty() || repassword.isEmpty() || name.isEmpty())
             Toast.makeText(this, "Không được để trống các trường!", Toast.LENGTH_SHORT).show();
-        if (binding.etName.getText().toString().length() >= 30)
-            Toast.makeText(this, "Tên có độ dài dưới 30 ký tự!", Toast.LENGTH_SHORT).show();
-        if (TextUtils.equals(binding.etPassword.getText(), binding.etRepassword.getText()))
-            presenter.register(binding.etEmail.getText().toString(), binding.etPassword.getText().toString(), binding.etName.getText().toString(), binding.etAddress.getText().toString(), binding.rbNam.isChecked());
-        else Toast.makeText(this, "Mật khẩu không trùng khớp!", Toast.LENGTH_SHORT).show();
+        else {
+            if (name.length() >= 30)
+                Toast.makeText(this, "Tên có độ dài dưới 30 ký tự!", Toast.LENGTH_SHORT).show();
+            else {
+                if (password.length() >= 6) {
+                    if (password.equals(repassword))
+                        presenter.register(email, password, name, binding.sp.getSelectedItem().toString(), binding.rbNam.isChecked());
+                    else
+                        Toast.makeText(this, "Mật khẩu không trùng khớp!", Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(this, "Mật khẩu phải lớn hơn 6 ký tự!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
-    public void onRegisterEmailFail(Context context) {
-        Toast.makeText(context, "Địa chỉ email không dúng!", Toast.LENGTH_SHORT).show();
+    public void onRegisterEmailFail() {
+        Toast.makeText(this, "Địa chỉ email không dúng!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackClick() {
+        navigationToLogin();
+    }
+
+    void navigationToLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

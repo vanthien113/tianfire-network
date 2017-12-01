@@ -10,7 +10,7 @@ import com.example.thienpro.mvp_firebase.view.EditInfoView;
  * Created by ThienPro on 11/21/2017.
  */
 
-public class EditInfoPresenterImpl implements UserInteractor.LoadUserListener, EditInfoPresenter{
+public class EditInfoPresenterImpl implements UserInteractor.userListener, EditInfoPresenter{
     private EditInfoView editInfoView;
     private UserInteractor userInteractor;
 

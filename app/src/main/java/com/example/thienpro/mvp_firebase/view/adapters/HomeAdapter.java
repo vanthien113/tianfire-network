@@ -16,7 +16,6 @@ import java.util.ArrayList;
  */
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeVH> {
-    private ItemActivityHomeBinding binding;
     private ArrayList<Post> mLisPost;
 
     public HomeAdapter(ArrayList<Post> mLisPost) {
@@ -26,7 +25,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeVH> {
     @Override
     public HomeVH onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        binding = ItemActivityHomeBinding.inflate(LayoutInflater.from(parent.getContext()));
+        ItemActivityHomeBinding binding = ItemActivityHomeBinding.inflate(LayoutInflater.from(parent.getContext()));
         binding.getRoot().setLayoutParams(layoutParams);
         return new HomeVH(binding);
     }

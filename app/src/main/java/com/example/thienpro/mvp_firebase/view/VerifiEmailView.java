@@ -9,7 +9,7 @@ import android.content.Context;
 public interface VerifiEmailView {
     void sendverifiEmailComplete(String email);
     void sendverifiEmailFail(String email);
-    void navigationToHome(Context context);
+    void navigationToHome();
 
     void onCancelClick();
     void onNextClick();

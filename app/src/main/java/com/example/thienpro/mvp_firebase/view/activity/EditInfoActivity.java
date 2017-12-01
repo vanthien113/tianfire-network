@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
@@ -29,17 +30,21 @@ public class EditInfoActivity extends AppCompatActivity implements EditInfoView 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_editinfo);
         editInfoPresenter = new EditInfoPresenterImpl(this);
         binding.setEvent(this);
+        binding.spProvince.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.province_arrays)));
         editInfoPresenter.loadUser();
     }
 
     @Override
     public void onSaveClick() {
-        if (TextUtils.isEmpty(binding.etEmail.getText()) || TextUtils.isEmpty(binding.etName.getText())|| TextUtils.isEmpty(binding.etAddress.getText()))
+        String email = binding.etEmail.getText().toString();
+        String name = binding.etName.getText().toString();
+
+        if (email.isEmpty() || name.isEmpty())
             Toast.makeText(this, "Nhập thông tin cho các trường!", Toast.LENGTH_SHORT).show();
         else if(binding.etName.getText().toString().length()>= 30)
             Toast.makeText(this, "Tên có độ dài dưới 30 ký tự!", Toast.LENGTH_SHORT).show();
         else {
-            editInfoPresenter.updateUser(binding.etEmail.getText().toString(), binding.etName.getText().toString(), binding.etAddress.getText().toString(), binding.rbEditnam.isChecked());
+            editInfoPresenter.updateUser(email, name, binding.spProvince.getSelectedItem().toString(), binding.rbNam.isChecked());
             Toast.makeText(this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -48,8 +53,15 @@ public class EditInfoActivity extends AppCompatActivity implements EditInfoView 
     public void getUser(User user) {
         binding.tvLoading.setVisibility(View.GONE);
         binding.setData(user);
+        int i =0;
+        for (String string : getResources().getStringArray(R.array.province_arrays)) {
+            if(string.equals(user.getAddress())){
+                binding.spProvince.setSelection(i);
+            }
+            i++;
+        }
         if (user.getSex())
-            binding.rbEditnam.setChecked(true);
-        else binding.rbEditnu.setChecked(true);
+            binding.rbNam.setChecked(true);
+        else binding.rbNu.setChecked(true);
     }
 }
