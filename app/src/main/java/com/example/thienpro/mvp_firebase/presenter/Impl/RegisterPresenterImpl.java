@@ -1,5 +1,7 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
+import android.net.Uri;
+
 import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
@@ -19,8 +21,8 @@ public class RegisterPresenterImpl implements UserInteractor.userListener, Regis
         userInteractor = new UserInteractorImpl(this);
     }
 
-    public void register(String email, String password, String name, String address, boolean sex) {
-        userInteractor.register(email, password, name, address, sex);
+    public void register(String email, String password, String name, String address, boolean sex, Uri filePath) {
+        userInteractor.register(email, password, name, address, sex, filePath);
     }
 
 

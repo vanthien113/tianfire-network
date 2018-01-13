@@ -51,7 +51,7 @@ public class EditInfoActivity extends AppCompatActivity implements EditInfoView 
 
     @Override
     public void getUser(User user) {
-        binding.tvLoading.setVisibility(View.GONE);
+        binding.pbLoading.setVisibility(View.GONE);
         binding.setData(user);
         int i =0;
         for (String string : getResources().getStringArray(R.array.province_arrays)) {

@@ -1,7 +1,5 @@
 package com.example.thienpro.mvp_firebase.model.entity;
 
-import java.util.Date;
-
 /**
  * Created by ThienPro on 11/11/2017.
  */
@@ -11,6 +9,7 @@ public class Post {
     private String name;
     private String timePost;
     private String post;
+    private String image;
 
     public String getId() {
         return id;
@@ -44,10 +43,19 @@ public class Post {
         this.post = post;
     }
 
-    public Post(String id, String name, String timePost, String post) {
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Post(String id, String name, String timePost, String post, String image) {
         this.id = id;
         this.name = name;
         this.timePost = timePost;
         this.post = post;
+        this.image = image;
     }
 }

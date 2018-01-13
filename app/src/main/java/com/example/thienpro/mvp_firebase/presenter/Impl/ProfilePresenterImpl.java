@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * Created by ThienPro on 11/16/2017.
  */
 
-public class ProfilePresenterImpl implements PostInteractor.LoadPostListener, ProfilePresenter {
+public class ProfilePresenterImpl implements PostInteractor.loadPostListener, ProfilePresenter {
     private PostInteractor postInteractor;
     private ProfileView profileView;
 
@@ -28,12 +28,17 @@ public class ProfilePresenterImpl implements PostInteractor.LoadPostListener, Pr
     }
 
     @Override
-    public void ListPost(ArrayList<Post> list) {
+    public void listPost(ArrayList<Post> list) {
         profileView.showList(list);
     }
 
+    @Override
+    public void onPostFail(Exception e) {
+
+    }
+
     public void loadPost() {
-        postInteractor.LoadPersonalPost();
+        postInteractor.loadPersonalPost();
     }
 
 }

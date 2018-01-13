@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +44,6 @@ public class HomeFragment extends Fragment implements HomeView {
 
         LinearLayoutManager = new LinearLayoutManager(binding.getRoot().getContext(), OrientationHelper.VERTICAL, false);
         binding.rvHome.setLayoutManager(LinearLayoutManager);
-
         binding.setEvent(this);
         return binding.getRoot();
     }
@@ -75,17 +76,18 @@ public class HomeFragment extends Fragment implements HomeView {
         hideLoading();
         Collections.reverse(list);
         listPost = list;
-        homeAdapter = new HomeAdapter(listPost);
+
+        homeAdapter = new HomeAdapter(listPost, getContext());
         binding.rvHome.setAdapter(homeAdapter);
         binding.rvHome.setLayoutFrozen(false);
     }
 
     void hideLoading() {
-        binding.tvLoading.setVisibility(View.GONE);
+        binding.pbLoading.setVisibility(View.GONE);
     }
 
     void showLoading() {
-        binding.tvLoading.setVisibility(View.INVISIBLE);
+        binding.pbLoading.setVisibility(View.VISIBLE);
     }
 
     public static HomeFragment newInstance() {

@@ -1,5 +1,7 @@
 package com.example.thienpro.mvp_firebase.model;
 
+import android.net.Uri;
+
 import com.example.thienpro.mvp_firebase.model.entity.User;
 
 /**
@@ -12,7 +14,7 @@ public interface UserInteractor {
 
     void verifiEmail();
 
-    void register(String email, String password, String name, String address, boolean sex);
+    void register(final String email, String password, final String name, final String address, final boolean sex, Uri filePath);
 
     void updateUser(String email, String name, String address, Boolean sex);
 

@@ -14,4 +14,6 @@ public interface RegisterView {
     void onRegisterEmailFail();
 
     void onBackClick();
+
+    void onAvatarClick();
 }

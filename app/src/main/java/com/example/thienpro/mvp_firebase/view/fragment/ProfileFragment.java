@@ -92,17 +92,17 @@ public class ProfileFragment extends Fragment implements ProfileView {
     public void showList(ArrayList<Post> list) {
         Collections.reverse(list);
         listPost = list;
-        homeAdapter = new HomeAdapter(listPost);
+        homeAdapter = new HomeAdapter(listPost, getContext());
         binding.rvProfile.setAdapter(homeAdapter);
         hideLoading();
         binding.rvProfile.setLayoutFrozen(false);
     }
 
     void hideLoading(){
-        binding.tvLoading.setVisibility(View.GONE);
+        binding.pbLoading.setVisibility(View.GONE);
     }
 
     void showLoading() {
-        binding.tvLoading.setVisibility(View.INVISIBLE);
+        binding.pbLoading.setVisibility(View.VISIBLE);
     }
 }

@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Created by ThienPro on 11/21/2017.
  */
 
-public class HomePresenterImpl implements PostInteractor.LoadPostListener, HomePresenter {
+public class HomePresenterImpl implements PostInteractor.loadPostListener, HomePresenter {
     private HomeView homeView;
     private PostInteractor postInteractor;
 
@@ -26,7 +26,12 @@ public class HomePresenterImpl implements PostInteractor.LoadPostListener, HomeP
     }
 
     @Override
-    public void ListPost(ArrayList<Post> list) {
+    public void listPost(ArrayList<Post> list) {
         homeView.showAllPost(list);
+    }
+
+    @Override
+    public void onPostFail(Exception e) {
+
     }
 }
