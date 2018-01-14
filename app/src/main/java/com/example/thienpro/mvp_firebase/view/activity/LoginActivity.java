@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public void navigationToRegister() {
-        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+        Intent intent = new Intent(LoginActivity.this, RegisterDetailActivity.class);
         startActivity(intent);
     }
 

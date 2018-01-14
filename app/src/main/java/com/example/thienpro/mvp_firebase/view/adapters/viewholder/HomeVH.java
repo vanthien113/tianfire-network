@@ -23,6 +23,9 @@ public class HomeVH extends RecyclerView.ViewHolder {
         // Load the image using Glide
         Glide.with(binding.getRoot().getContext())
                 .load(post.getImage())
-                .into(binding.ivPost);
+                .into(binding.ivImage);
+        Glide.with(binding.getRoot().getContext())
+                .load(post.getAvatar())
+                .into(binding.ivAvatar);
     }
 }

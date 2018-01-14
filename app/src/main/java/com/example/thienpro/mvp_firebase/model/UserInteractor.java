@@ -9,12 +9,13 @@ import com.example.thienpro.mvp_firebase.model.entity.User;
  */
 
 public interface UserInteractor {
+    void addAvatar(String email, final String name, String address, Boolean sex, Uri uri);
 
     int signedInCheck();
 
     void verifiEmail();
 
-    void register(final String email, String password, final String name, final String address, final boolean sex, Uri filePath);
+    void register(final String email, String password, final String name, final String address, final boolean sex);
 
     void updateUser(String email, String name, String address, Boolean sex);
 

@@ -16,7 +16,8 @@
         <activity android:name=".view.activity.RegisterActivity" />
         <activity android:name=".view.activity.EditInfoActivity" />
         <activity android:name=".view.activity.PostActivity" />
-        <activity android:name=".view.activity.VerifiEmailActivity"/>
+        <activity android:name=".view.activity.VerifiEmailActivity" />
+        <activity android:name=".view.activity.RegisterDetailActivity" />
         <activity android:name=".view.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,6 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".view.activity.ChangeAvatarActivity"></activity>
     </application>
 
 </manifest>

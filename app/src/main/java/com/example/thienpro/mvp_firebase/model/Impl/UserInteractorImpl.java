@@ -51,6 +51,7 @@ public class UserInteractorImpl implements UserInteractor {
         users = mAuth.getCurrentUser();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+
     }
 
     public int signedInCheck() {
@@ -84,8 +85,8 @@ public class UserInteractorImpl implements UserInteractor {
         }
     }
 
-    public void register(final String email, String password, final String name, final String address, final boolean sex, Uri filePath) {
-        uploadImage(email, password, name, address, sex, filePath);
+    public void register(final String email, String password, final String name, final String address, final boolean sex) {
+        uploadImage(email, password, name, address, sex, null);
     }
 
     private void uploadImage(final String email, final String password, final String name, final String address, final boolean sex, Uri filePath) {
@@ -114,7 +115,7 @@ public class UserInteractorImpl implements UserInteractor {
                         }
                     });
         } else {
-//            post(content, null);
+            createUser(email, password, name, address, sex, "null");
         }
     }
 
@@ -189,6 +190,78 @@ public class UserInteractorImpl implements UserInteractor {
             }
 
         });
+    }
+
+    public void addAvatar(final String email, final String name, final String address, final Boolean sex, final Uri uri) {
+        //Up im
+        if (uri != null) {
+            ref = storageReference.child("avatars/" + UUID.randomUUID().toString());
+            ref.putFile(uri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                  @Override
+                                  public void onSuccess(final Uri uri) {
+                                      //add in usr
+                                      String userId = users.getUid();
+                                      User user = new User(email, name, address, sex, uri.toString());
+                                      Map<String, Object> postValues = user.toMap();
+                                      Map<String, Object> childUpdates = new HashMap<>();
+                                      childUpdates.put("/users/" + userId, postValues);
+
+                                      mDatabase.updateChildren(childUpdates);
+
+                                      //Edit avatar in post
+                                      mDatabase.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
+                                          @Override
+                                          public void onDataChange(DataSnapshot dataSnapshot) {
+                                              for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                                                  @SuppressWarnings("unchecked")
+                                                  Map<String, Object> map = (Map<String, Object>) dsp.getValue();
+                                                  String firstValue = (String) map.get("id");
+                                                  String thirdValue = (String) map.get("timePost");
+                                                  String foureValue = (String) map.get("post");
+                                                  String fiveValue = (String) map.get("image");
+
+                                                  if (firstValue.equals(users.getUid().toString())) {
+                                                      Map<String, Object> childUpdates1 = new HashMap<>();
+
+                                                      HashMap<String, Object> result = new HashMap<>();
+                                                      result.put("id", firstValue);
+                                                      result.put("name", name);
+                                                      result.put("timePost", thirdValue);
+                                                      result.put("post", foureValue);
+                                                      result.put("image", fiveValue);
+                                                      result.put("avatar", uri.toString());
+
+                                                      childUpdates1.put("/posts/" + thirdValue, result);
+                                                      mDatabase.updateChildren(childUpdates1);
+                                                  }
+                                              }
+                                          }
+
+                                          @Override
+                                          public void onCancelled(DatabaseError databaseError) {
+
+                                          }
+
+                                      });
+                                  }
+                              }
+                            );
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
+                                    .getTotalByteCount());
+//                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                        }
+                    });
+        }
     }
 
     public void getUser() {

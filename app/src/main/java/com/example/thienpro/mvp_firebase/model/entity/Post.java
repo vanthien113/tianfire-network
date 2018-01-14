@@ -10,6 +10,7 @@ public class Post {
     private String timePost;
     private String post;
     private String image;
+    private String avatar;
 
     public String getId() {
         return id;
@@ -51,11 +52,20 @@ public class Post {
         this.image = image;
     }
 
-    public Post(String id, String name, String timePost, String post, String image) {
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Post(String id, String name, String timePost, String post, String image, String avatar) {
         this.id = id;
         this.name = name;
         this.timePost = timePost;
         this.post = post;
         this.image = image;
+        this.avatar = avatar;
     }
 }

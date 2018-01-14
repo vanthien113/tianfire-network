@@ -1,7 +1,9 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
+import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.model.Impl.PostInteractorImpl;
+import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.presenter.HomePresenter;
 import com.example.thienpro.mvp_firebase.view.HomeView;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 public class HomePresenterImpl implements PostInteractor.loadPostListener, HomePresenter {
     private HomeView homeView;
     private PostInteractor postInteractor;
+    private UserInteractor userInteractor;
 
     public HomePresenterImpl(HomeView homeView) {
         this.homeView = homeView;

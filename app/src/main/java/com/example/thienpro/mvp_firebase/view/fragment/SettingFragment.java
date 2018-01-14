@@ -14,6 +14,7 @@ import com.example.thienpro.mvp_firebase.databinding.FragmentSettingBinding;
 import com.example.thienpro.mvp_firebase.presenter.Impl.SettingPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.SettingPresenter;
 import com.example.thienpro.mvp_firebase.view.SettingView;
+import com.example.thienpro.mvp_firebase.view.activity.ChangeAvatarActivity;
 import com.example.thienpro.mvp_firebase.view.activity.EditInfoActivity;
 import com.example.thienpro.mvp_firebase.view.activity.LoginActivity;
 
@@ -58,6 +59,11 @@ public class SettingFragment extends Fragment implements SettingView {
     public void onLogout() {
         settingPresenter.logOut();
         navigationToLogin();
+    }
+
+    @Override
+    public void onAvatarChange() {
+        ChangeAvatarActivity.startActivity(getContext());
     }
 
     void navigationToLogin(){

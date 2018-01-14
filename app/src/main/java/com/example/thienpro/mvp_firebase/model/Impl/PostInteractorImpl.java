@@ -116,7 +116,9 @@ public class PostInteractorImpl implements PostInteractor {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
                 String name = (String) map.get("name");
-                Post post = new Post(user.getUid(), name, day, content, url);
+                String avatar = (String) map.get("avatar");
+
+                Post post = new Post(user.getUid(), name, day, content, url, avatar);
                 mDatabase.child("posts").child(day).setValue(post); //setValue để thêm node
             }
 
@@ -140,9 +142,10 @@ public class PostInteractorImpl implements PostInteractor {
                     String thirdValue = (String) map.get("timePost");
                     String foureValue = (String) map.get("post");
                     String fiveValue = (String) map.get("image");
+                    String sixValue = (String) map.get("avatar");
 
                     if (firstValue.equals(user.getUid().toString())) {
-                        Post post = new Post(firstValue, secondValue, thirdValue, foureValue, fiveValue);
+                        Post post = new Post(firstValue, secondValue, thirdValue, foureValue, fiveValue, sixValue);
                         postList.add(post);
                     }
                 }
@@ -168,8 +171,9 @@ public class PostInteractorImpl implements PostInteractor {
                     String thirdValue = (String) map.get("timePost");
                     String foureValue = (String) map.get("post");
                     String fiveValue = (String) map.get("image");
+                    String sixValue = (String) map.get("avatar");
 
-                    Post post = new Post(firstValue, secondValue, thirdValue, foureValue, fiveValue);
+                    Post post = new Post(firstValue, secondValue, thirdValue, foureValue, fiveValue, sixValue);
                     postList.add(post);
 
                 }
