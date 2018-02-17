@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
@@ -14,62 +12,55 @@ import com.example.thienpro.mvp_firebase.databinding.ActivityLoginBinding;
 import com.example.thienpro.mvp_firebase.presenter.Impl.LoginPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.LoginPresenter;
 import com.example.thienpro.mvp_firebase.view.LoginView;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity implements LoginView {
-    private ActivityLoginBinding mainBinding;
+    private ActivityLoginBinding binding;
     private LoginPresenter loginPresenter;
+
+    public static void startActivity(Context context){
+        context.startActivity(new Intent(context, LoginActivity.class));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
-        mainBinding.setEvent(this);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        binding.setEvent(this);
         loginPresenter = new LoginPresenterImpl(this);
         loginPresenter.signedInCheck();
     }
 
     @Override
     public void navigationToHome() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        this.startActivity(intent); // Chuyển màn đến màn hình Home. sử dụng context.startactivity
+        HomeActivity.startActiviry(this);
         finish();
     }
 
     @Override
-    public void navigationToRegister() {
-        Intent intent = new Intent(LoginActivity.this, RegisterDetailActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
     public void onLoginClick() {
-        String email = mainBinding.etEmail.getText().toString();
-        String password = mainBinding.etPassword.getText().toString();
+        String email = binding.etEmail.getText().toString();
+        String password = binding.etPassword.getText().toString();
 
-        if(email.isEmpty() || password.isEmpty()){
+        if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Hãy nhập email và password!", Toast.LENGTH_SHORT).show();
-        }
-        else
+        } else
             loginPresenter.onSignIn(email, password);
     }
 
     @Override
     public void onRegisterClick() {
-        navigationToRegister();
+        RegisterDetailActivity.startActivity(this);
     }
 
     @Override
     public void navigationToLogin() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        LoginActivity.startActivity(this);
         finish();
     }
 
     @Override
     public void navigationToVerifiEmail() {
-        Intent intent = new Intent(this, VerifiEmailActivity.class);
-        startActivity(intent);
+        VerifiEmailActivity.startActivity(this);
         finish();
     }
 

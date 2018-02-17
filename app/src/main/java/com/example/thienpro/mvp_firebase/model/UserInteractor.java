@@ -9,9 +9,18 @@ import com.example.thienpro.mvp_firebase.model.entity.User;
  */
 
 public interface UserInteractor {
-    void addAvatar(String email, final String name, String address, Boolean sex, Uri uri);
+    interface LoginCheck {
+        void checker(boolean checker);
+    }
 
-    int signedInCheck();
+    void sigIn(String email, String password, LoginCheck loginCheck);
+
+    void signedInCheck(LoginCheck loginCheck);
+
+
+    //Fixed
+
+    void addAvatar(String email, final String name, String address, Boolean sex, Uri uri);
 
     void verifiEmail();
 
@@ -21,9 +30,9 @@ public interface UserInteractor {
 
     void getUser();
 
-    void sigIn(String email, String password);
 
     void logOut();
+
 
     interface userListener {
 

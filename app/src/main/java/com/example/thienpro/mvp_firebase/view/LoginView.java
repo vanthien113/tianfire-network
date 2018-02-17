@@ -11,8 +11,6 @@ public interface LoginView {
 
     void navigationToHome();
 
-    void navigationToRegister();
-
     void onLoginClick();
 
     void onRegisterClick();

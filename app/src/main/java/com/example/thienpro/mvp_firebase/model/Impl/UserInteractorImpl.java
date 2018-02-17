@@ -28,8 +28,8 @@ import java.util.Map;
 import java.util.UUID;
 
 /*
-*- Lớp M: xử lý dữ liệu -> Trả dữ liệu về P thông qua callback
-* */
+ *- Lớp M: xử lý dữ liệu -> Trả dữ liệu về P thông qua callback
+ * */
 
 /**
  * Created by ThienPro on 11/10/2017.
@@ -54,35 +54,34 @@ public class UserInteractorImpl implements UserInteractor {
 
     }
 
-    public int signedInCheck() {
-        if (users != null) {
-            users.reload();
-            if (users.isEmailVerified()) {
-                return 1;
-            } else if (users.isEmailVerified() == false) {
-                return 2;
-            }
-        }
-        return 0;
+    public UserInteractorImpl() {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        this.userListener = userListener;
+        users = mAuth.getCurrentUser();
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
     }
 
+
     public void verifiEmail() {
-        if (signedInCheck() == 1) {
-            userListener.navigationToHome();
-        } else {
-            userListener.sendVerifiEmailFail(users.getEmail());
-            users.sendEmailVerification()
-                    .addOnCompleteListener(new OnCompleteListener() {
-                        @Override
-                        public void onComplete(@NonNull Task task) {
-                            if (task.isSuccessful()) {
-                                userListener.sendVerifiEmailComplete(users.getEmail());
-                            } else {
-                                userListener.sendVerifiEmailFail(users.getEmail());
-                            }
-                        }
-                    });
-        }
+//        if (signedInCheck() == 1) {
+//            userListener.navigationToHome();
+//        } else {
+//            userListener.sendVerifiEmailFail(users.getEmail());
+//            users.sendEmailVerification()
+//                    .addOnCompleteListener(new OnCompleteListener() {
+//                        @Override
+//                        public void onComplete(@NonNull Task task) {
+//                            if (task.isSuccessful()) {
+//                                userListener.sendVerifiEmailComplete(users.getEmail());
+//                            } else {
+//                                userListener.sendVerifiEmailFail(users.getEmail());
+//                            }
+//                        }
+//                    });
+//        }
     }
 
     public void register(final String email, String password, final String name, final String address, final boolean sex) {
@@ -202,54 +201,54 @@ public class UserInteractorImpl implements UserInteractor {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                             ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                  @Override
-                                  public void onSuccess(final Uri uri) {
-                                      //add in usr
-                                      String userId = users.getUid();
-                                      User user = new User(email, name, address, sex, uri.toString());
-                                      Map<String, Object> postValues = user.toMap();
-                                      Map<String, Object> childUpdates = new HashMap<>();
-                                      childUpdates.put("/users/" + userId, postValues);
+                                                                          @Override
+                                                                          public void onSuccess(final Uri uri) {
+                                                                              //add in usr
+                                                                              String userId = users.getUid();
+                                                                              User user = new User(email, name, address, sex, uri.toString());
+                                                                              Map<String, Object> postValues = user.toMap();
+                                                                              Map<String, Object> childUpdates = new HashMap<>();
+                                                                              childUpdates.put("/users/" + userId, postValues);
 
-                                      mDatabase.updateChildren(childUpdates);
+                                                                              mDatabase.updateChildren(childUpdates);
 
-                                      //Edit avatar in post
-                                      mDatabase.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
-                                          @Override
-                                          public void onDataChange(DataSnapshot dataSnapshot) {
-                                              for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                                                  @SuppressWarnings("unchecked")
-                                                  Map<String, Object> map = (Map<String, Object>) dsp.getValue();
-                                                  String firstValue = (String) map.get("id");
-                                                  String thirdValue = (String) map.get("timePost");
-                                                  String foureValue = (String) map.get("post");
-                                                  String fiveValue = (String) map.get("image");
+                                                                              //Edit avatar in post
+                                                                              mDatabase.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                                  @Override
+                                                                                  public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                                      for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                                                                                          @SuppressWarnings("unchecked")
+                                                                                          Map<String, Object> map = (Map<String, Object>) dsp.getValue();
+                                                                                          String firstValue = (String) map.get("id");
+                                                                                          String thirdValue = (String) map.get("timePost");
+                                                                                          String foureValue = (String) map.get("post");
+                                                                                          String fiveValue = (String) map.get("image");
 
-                                                  if (firstValue.equals(users.getUid().toString())) {
-                                                      Map<String, Object> childUpdates1 = new HashMap<>();
+                                                                                          if (firstValue.equals(users.getUid().toString())) {
+                                                                                              Map<String, Object> childUpdates1 = new HashMap<>();
 
-                                                      HashMap<String, Object> result = new HashMap<>();
-                                                      result.put("id", firstValue);
-                                                      result.put("name", name);
-                                                      result.put("timePost", thirdValue);
-                                                      result.put("post", foureValue);
-                                                      result.put("image", fiveValue);
-                                                      result.put("avatar", uri.toString());
+                                                                                              HashMap<String, Object> result = new HashMap<>();
+                                                                                              result.put("id", firstValue);
+                                                                                              result.put("name", name);
+                                                                                              result.put("timePost", thirdValue);
+                                                                                              result.put("post", foureValue);
+                                                                                              result.put("image", fiveValue);
+                                                                                              result.put("avatar", uri.toString());
 
-                                                      childUpdates1.put("/posts/" + thirdValue, result);
-                                                      mDatabase.updateChildren(childUpdates1);
-                                                  }
-                                              }
-                                          }
+                                                                                              childUpdates1.put("/posts/" + thirdValue, result);
+                                                                                              mDatabase.updateChildren(childUpdates1);
+                                                                                          }
+                                                                                      }
+                                                                                  }
 
-                                          @Override
-                                          public void onCancelled(DatabaseError databaseError) {
+                                                                                  @Override
+                                                                                  public void onCancelled(DatabaseError databaseError) {
 
-                                          }
+                                                                                  }
 
-                                      });
-                                  }
-                              }
+                                                                              });
+                                                                          }
+                                                                      }
                             );
                         }
                     })
@@ -261,6 +260,18 @@ public class UserInteractorImpl implements UserInteractor {
 //                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
                         }
                     });
+        }
+    }
+
+    @Override
+    public void signedInCheck(LoginCheck loginCheck) {
+        if (users != null) {
+            users.reload();
+            if (users.isEmailVerified()) {
+                loginCheck.checker(true);
+            } else if (!users.isEmailVerified()) {
+                loginCheck.checker(false);
+            }
         }
     }
 
@@ -290,7 +301,7 @@ public class UserInteractorImpl implements UserInteractor {
         mDatabase.child("users").child(users.getUid()).addValueEventListener(valueEventListener);
     }
 
-    public void sigIn(String email, String password) {
+    public void sigIn(String email, String password, final LoginCheck loginCheck) {
         mAuth = FirebaseAuth.getInstance();
 
         mAuth.signInWithEmailAndPassword(email, password)
@@ -298,9 +309,9 @@ public class UserInteractorImpl implements UserInteractor {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            userListener.navigationToVerifiEmail();
+                            loginCheck.checker(true);
                         } else {
-                            userListener.onLoginFail();
+                            loginCheck.checker(false);
                         }
                     }
                 });

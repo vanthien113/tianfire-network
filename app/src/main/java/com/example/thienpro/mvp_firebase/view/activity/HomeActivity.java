@@ -1,5 +1,7 @@
 package com.example.thienpro.mvp_firebase.view.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +15,10 @@ import com.example.thienpro.mvp_firebase.view.adapters.HomeFragmentPagerAdapter;
 
 public class HomeActivity extends AppCompatActivity {
     private ActivityHomeBinding binding;
+
+    public static void startActiviry(Context context){
+        context.startActivity(new Intent(context, HomeActivity.class));
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -24,6 +24,10 @@ public class VerifiEmailActivity extends AppCompatActivity implements VerifiEmai
     private ActivityVerifiemailBinding binding;
     private VerifiEmailPresenter verifiEmailPresenter;
 
+    public static void startActivity(Context context){
+        context.startActivity(new Intent(context, VerifiEmailActivity.class));
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

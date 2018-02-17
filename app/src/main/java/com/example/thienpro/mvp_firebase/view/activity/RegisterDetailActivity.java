@@ -1,5 +1,7 @@
 package com.example.thienpro.mvp_firebase.view.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +19,10 @@ import com.example.thienpro.mvp_firebase.view.RegisterDetailView;
 
 public class RegisterDetailActivity extends AppCompatActivity implements RegisterDetailView {
     private ActivityRegisterAddDetailBinding binding;
+
+    public static void startActivity(Context context){
+        context.startActivity(new Intent(context, RegisterDetailActivity.class));
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
