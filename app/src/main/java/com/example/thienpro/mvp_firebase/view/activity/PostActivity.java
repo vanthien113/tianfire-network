@@ -1,5 +1,6 @@
 package com.example.thienpro.mvp_firebase.view.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
@@ -28,6 +29,10 @@ public class PostActivity extends AppCompatActivity implements PostView {
     private PostPresenter postPresenter;
     private Uri filePath;
     private static final int REQUEST_CODE_IMAGE = 1;
+
+    public static void startActivity(Context context){
+        context.startActivity(new Intent(context, PostActivity.class));
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -2,6 +2,7 @@ package com.example.thienpro.mvp_firebase.view;
 
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
+import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
 
@@ -13,4 +14,6 @@ public interface ProfileView {
     void onPost();
 
     void showList(ArrayList<Post> list);
+
+    void loadPostError(DatabaseError e);
 }

@@ -6,11 +6,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.FragmentHomeBinding;
@@ -19,6 +18,7 @@ import com.example.thienpro.mvp_firebase.presenter.HomePresenter;
 import com.example.thienpro.mvp_firebase.presenter.Impl.HomePresenterImpl;
 import com.example.thienpro.mvp_firebase.view.HomeView;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
+import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -80,6 +80,11 @@ public class HomeFragment extends Fragment implements HomeView {
         homeAdapter = new HomeAdapter(listPost, getContext());
         binding.rvHome.setAdapter(homeAdapter);
         binding.rvHome.setLayoutFrozen(false);
+    }
+
+    @Override
+    public void loadPostError(DatabaseError e) {
+        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     void hideLoading() {

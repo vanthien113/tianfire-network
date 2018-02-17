@@ -1,6 +1,5 @@
 package com.example.thienpro.mvp_firebase.view.fragment;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +9,7 @@ import android.support.v7.widget.OrientationHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.FragmentProfileBinding;
@@ -19,6 +19,7 @@ import com.example.thienpro.mvp_firebase.presenter.ProfilePresenter;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
 import com.example.thienpro.mvp_firebase.view.activity.PostActivity;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
+import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,8 +56,8 @@ public class ProfileFragment extends Fragment implements ProfileView {
         super.onResume();
     }
 
-    public void loadData(){
-        if (listPost != null){
+    public void loadData() {
+        if (listPost != null) {
             showLoading();
             binding.rvProfile.setLayoutFrozen(true);
             listPost.clear();
@@ -83,8 +84,7 @@ public class ProfileFragment extends Fragment implements ProfileView {
 
     @Override
     public void onPost() {
-        Intent intent = new Intent(getContext(), PostActivity.class);
-        startActivity(intent);
+        PostActivity.startActivity(getContext());
     }
 
 
@@ -98,7 +98,12 @@ public class ProfileFragment extends Fragment implements ProfileView {
         binding.rvProfile.setLayoutFrozen(false);
     }
 
-    void hideLoading(){
+    @Override
+    public void loadPostError(DatabaseError e) {
+        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    void hideLoading() {
         binding.pbLoading.setVisibility(View.GONE);
     }
 

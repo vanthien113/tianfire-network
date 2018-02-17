@@ -52,8 +52,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
 
     @Override
     public void navigationToVerifiEmail() {
-        Intent intent = new Intent(this, VerifiEmailActivity.class);
-        this.startActivity(intent);
+        VerifiEmailActivity.startActivity(this);
     }
 
     @Override
@@ -75,19 +74,14 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
         }
     }
 
-    public void onRegisterEmailFail() {
-        Toast.makeText(this, "Địa chỉ email không dúng!", Toast.LENGTH_SHORT).show();
+    @Override
+    public void onRegisterFail(Exception e) {
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onBackClick() {
-        navigationToLogin();
-    }
-
-
-    void navigationToLogin() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        LoginActivity.startActivity(this);
         finish();
     }
 }

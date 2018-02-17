@@ -20,7 +20,7 @@ import com.example.thienpro.mvp_firebase.view.RegisterDetailView;
 public class RegisterDetailActivity extends AppCompatActivity implements RegisterDetailView {
     private ActivityRegisterAddDetailBinding binding;
 
-    public static void startActivity(Context context){
+    public static void startActivity(Context context) {
         context.startActivity(new Intent(context, RegisterDetailActivity.class));
     }
 
@@ -34,8 +34,6 @@ public class RegisterDetailActivity extends AppCompatActivity implements Registe
 
     @Override
     public void onNextClick() {
-        String email = getIntent().getStringExtra("email");
-        String password = getIntent().getStringExtra("password");
         String name = binding.etName.getText().toString();
 
         if (name.isEmpty())
@@ -47,11 +45,6 @@ public class RegisterDetailActivity extends AppCompatActivity implements Registe
                 naviagationToRegister(name, binding.sp.getSelectedItem().toString(), binding.rbNam.isChecked());
             }
         }
-    }
-
-    @Override
-    public void navigationToVerifiEmail() {
-
     }
 
     public void naviagationToRegister(String name, String address, boolean sex) {

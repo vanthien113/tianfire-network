@@ -8,4 +8,6 @@ public interface SettingView {
     void onEditInfoClick();
     void onLogout();
     void onAvatarChange();
+
+    void navigationToLogin();
 }

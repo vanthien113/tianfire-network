@@ -15,4 +15,6 @@ public interface EditInfoView {
     void onSaveClick();
 
     void getUser(User user);
+
+    void getuser(Exception e);
 }

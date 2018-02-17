@@ -7,4 +7,6 @@ package com.example.thienpro.mvp_firebase.view;
 public interface ChangeAvatarView {
     void onChangeAvatarClick();
     void onAvatar();
+
+    void changeAvatarError(Exception e);
 }

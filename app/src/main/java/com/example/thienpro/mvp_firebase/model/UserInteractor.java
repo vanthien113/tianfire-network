@@ -13,43 +13,43 @@ public interface UserInteractor {
         void checker(boolean checker);
     }
 
+    interface RegisterCheck {
+        void checker(Exception checker);
+    }
+
+    interface VerifiEmailCheck {
+        void checker(Exception checker, String email);
+    }
+
+    interface LogoutCheck {
+        void checker(boolean checker);
+    }
+
+    interface GetUserListener {
+        void getUser(User user);
+    }
+
+    interface AddAvatarListener {
+        void addAvatar(Exception e);
+    }
+
+    interface UpdateUserListener {
+        void updateUser(Exception e);
+    }
+
     void sigIn(String email, String password, LoginCheck loginCheck);
 
     void signedInCheck(LoginCheck loginCheck);
 
+    void logOut(LogoutCheck logoutCheck);
 
-    //Fixed
+    void getUser(GetUserListener listener);
 
-    void addAvatar(String email, final String name, String address, Boolean sex, Uri uri);
+    void addAvatar(String email, final String name, String address, Boolean sex, Uri uri, AddAvatarListener addAvatarListener);
 
-    void verifiEmail();
+    void updateUser(String email, String name, String address, Boolean sex, UpdateUserListener updateUserListener);
 
-    void register(final String email, String password, final String name, final String address, final boolean sex);
+    void verifiEmail(VerifiEmailCheck verifiEmailCheck);
 
-    void updateUser(String email, String name, String address, Boolean sex);
-
-    void getUser();
-
-
-    void logOut();
-
-
-    interface userListener {
-
-        void sendVerifiEmailComplete(String email);
-
-        void sendVerifiEmailFail(String email);
-
-        void getUser(User user);
-
-        void navigationToHome();
-
-        void navigationToLogin();
-
-        void onRegisterFail();
-
-        void onLoginFail();
-
-        void navigationToVerifiEmail();
-    }
+    void register(final String email, String password, final String name, final String address, final boolean sex, RegisterCheck registerCheck);
 }

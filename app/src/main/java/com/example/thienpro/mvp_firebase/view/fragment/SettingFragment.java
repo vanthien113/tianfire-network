@@ -1,6 +1,5 @@
 package com.example.thienpro.mvp_firebase.view.fragment;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -51,14 +50,12 @@ public class SettingFragment extends Fragment implements SettingView {
 
     @Override
     public void onEditInfoClick() {
-        Intent intent = new Intent(getContext(), EditInfoActivity.class);
-        startActivity(intent);
+        EditInfoActivity.startActivity(getContext());
     }
 
     @Override
     public void onLogout() {
         settingPresenter.logOut();
-        navigationToLogin();
     }
 
     @Override
@@ -66,9 +63,9 @@ public class SettingFragment extends Fragment implements SettingView {
         ChangeAvatarActivity.startActivity(getContext());
     }
 
-    void navigationToLogin(){
-        Intent intent = new Intent(getContext(), LoginActivity.class);
-        startActivity(intent);
+    @Override
+    public void navigationToLogin() {
+        LoginActivity.startActivity(getContext());
         getActivity().finish();
     }
 }

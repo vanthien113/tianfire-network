@@ -7,14 +7,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityVerifiemailBinding;
 import com.example.thienpro.mvp_firebase.presenter.Impl.VerifiEmailPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.VerifiEmailPresenter;
 import com.example.thienpro.mvp_firebase.view.VerifiEmailView;
-import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * Created by ThienPro on 11/28/2017.
@@ -24,7 +22,7 @@ public class VerifiEmailActivity extends AppCompatActivity implements VerifiEmai
     private ActivityVerifiemailBinding binding;
     private VerifiEmailPresenter verifiEmailPresenter;
 
-    public static void startActivity(Context context){
+    public static void startActivity(Context context) {
         context.startActivity(new Intent(context, VerifiEmailActivity.class));
     }
 
@@ -52,23 +50,24 @@ public class VerifiEmailActivity extends AppCompatActivity implements VerifiEmai
 
     @Override
     public void navigationToHome() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
+        HomeActivity.startActiviry(this);
         finish();
+    }
+
+    @Override
+    public void navigationToLogin() {
+        LoginActivity.startActivity(this);
     }
 
     @Override
     public void onCancelClick() {
         verifiEmailPresenter.logOut();
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
         finish();
     }
 
     @Override
     public void onNextClick() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        LoginActivity.startActivity(this);
         finish();
     }
 }

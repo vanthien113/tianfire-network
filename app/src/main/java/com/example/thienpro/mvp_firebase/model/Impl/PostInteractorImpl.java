@@ -34,7 +34,6 @@ public class PostInteractorImpl implements PostInteractor {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
-    private loadPostListener loadPostListener;
     private ArrayList<Post> postList;
     private Date today;
     private String day;
@@ -43,14 +42,13 @@ public class PostInteractorImpl implements PostInteractor {
     private StorageReference storageReference;
     private StorageReference ref;
 
-    public PostInteractorImpl(loadPostListener loadPostListener) {
+    public PostInteractorImpl() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         postList = new ArrayList<>();
-        this.loadPostListener = loadPostListener;
     }
 
     @Override
@@ -128,14 +126,12 @@ public class PostInteractorImpl implements PostInteractor {
         });
     }
 
-    public void loadPersonalPost() {
+    @Override
+    public void loadPersonalPost(final ListPost listPost) {
         mDatabase.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                // Result will be holded Here
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    @SuppressWarnings("unchecked")
                     Map<String, Object> map = (Map<String, Object>) dsp.getValue();
                     String firstValue = (String) map.get("id");
                     String secondValue = (String) map.get("name");
@@ -149,22 +145,22 @@ public class PostInteractorImpl implements PostInteractor {
                         postList.add(post);
                     }
                 }
-                loadPostListener.listPost(postList);
+                listPost.listPost(null, postList);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                listPost.listPost(databaseError, null);
             }
         });
     }
 
-    public void loadAllPost() {
+    @Override
+    public void loadAllPost(final ListPost listPost) {
         mDatabase.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Result will be holded Here
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    @SuppressWarnings("unchecked")
                     Map<String, Object> map = (Map<String, Object>) dsp.getValue();
                     String firstValue = (String) map.get("id");
                     String secondValue = (String) map.get("name");
@@ -175,16 +171,15 @@ public class PostInteractorImpl implements PostInteractor {
 
                     Post post = new Post(firstValue, secondValue, thirdValue, foureValue, fiveValue, sixValue);
                     postList.add(post);
-
                 }
-                loadPostListener.listPost(postList);
+
+                listPost.listPost(null, postList);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                listPost.listPost(null, null);
             }
-
         });
     }
 }
