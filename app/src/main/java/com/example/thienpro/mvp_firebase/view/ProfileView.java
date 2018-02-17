@@ -16,4 +16,8 @@ public interface ProfileView {
     void showList(ArrayList<Post> list);
 
     void loadPostError(DatabaseError e);
+
+    void showLoading();
+
+    void hideLoading();
 }

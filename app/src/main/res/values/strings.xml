@@ -27,6 +27,9 @@
     <string name="dang_xuat">Đăng xuất</string>
     <string name="dang_bai_viet">Đăng bài viết</string>
     <string name="hay_nhap_cam_nhan_cua_ban">Hãy nhập cảm nhận của bạn</string>
+    <string name="dang">Đăng</string>
+    <string name="chon_anh">Chọn ảnh</string>
+    <string name="cap_nhat_thanh_cong">Cập nhật thành công</string>
 
 
     <string-array name="province_arrays">

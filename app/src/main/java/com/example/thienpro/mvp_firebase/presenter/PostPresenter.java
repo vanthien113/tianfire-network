@@ -8,6 +8,4 @@ import android.net.Uri;
 
 public interface PostPresenter {
     void newPost(String content, Uri filePath);
-
-    void postError(Exception e);
 }

@@ -23,7 +23,7 @@ import com.example.thienpro.mvp_firebase.view.activity.LoginActivity;
 
 public class SettingFragment extends Fragment implements SettingView {
     private FragmentSettingBinding binding;
-    private SettingPresenter settingPresenter;
+    private SettingPresenter presenter;
 
     @Override
     public void onResume() {
@@ -43,7 +43,7 @@ public class SettingFragment extends Fragment implements SettingView {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_setting, container, false);
 
         binding.setEvent(this);
-        settingPresenter = new SettingPresenterImpl(this);
+        presenter = new SettingPresenterImpl(this);
 
         return binding.getRoot();
     }
@@ -55,7 +55,7 @@ public class SettingFragment extends Fragment implements SettingView {
 
     @Override
     public void onLogout() {
-        settingPresenter.logOut();
+        presenter.logOut();
     }
 
     @Override

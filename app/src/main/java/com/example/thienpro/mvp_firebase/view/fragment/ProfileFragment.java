@@ -16,6 +16,7 @@ import com.example.thienpro.mvp_firebase.databinding.FragmentProfileBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.presenter.Impl.ProfilePresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.ProfilePresenter;
+import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
 import com.example.thienpro.mvp_firebase.view.activity.PostActivity;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
@@ -32,20 +33,29 @@ public class ProfileFragment extends Fragment implements ProfileView {
     private FragmentProfileBinding binding;
     private HomeAdapter homeAdapter;
     private LinearLayoutManager mLinearLayoutManager;
-    private ProfilePresenter profilePresenter;
+    private ProfilePresenter presenter;
     private ArrayList<Post> listPost;
+    private LoadingDialog loadingDialog;
+
+    public static ProfileFragment newInstance() {
+        Bundle args = new Bundle();
+        ProfileFragment fragment = new ProfileFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false);
 
-        profilePresenter = new ProfilePresenterImpl(this);
-
+        presenter = new ProfilePresenterImpl(this);
+        loadingDialog = new LoadingDialog(getContext());
         mLinearLayoutManager = new LinearLayoutManager(getContext(), OrientationHelper.VERTICAL, false);
+
         binding.rvProfile.setLayoutManager(mLinearLayoutManager);
         binding.rvProfile.setNestedScrollingEnabled(false);
-        profilePresenter.loadPost();
+        presenter.loadPost();
         binding.setEvent(this);
         return binding.getRoot(); // Lưu ý: binding.getRoot();
     }
@@ -58,10 +68,9 @@ public class ProfileFragment extends Fragment implements ProfileView {
 
     public void loadData() {
         if (listPost != null) {
-            showLoading();
             binding.rvProfile.setLayoutFrozen(true);
             listPost.clear();
-            profilePresenter.loadPost();
+            presenter.loadPost();
             binding.rvProfile.setLayoutFrozen(false);
         }
     }
@@ -72,14 +81,6 @@ public class ProfileFragment extends Fragment implements ProfileView {
         if (isVisibleToUser) {
             loadData();
         }
-    }
-
-    public static ProfileFragment newInstance() {
-        Bundle args = new Bundle();
-        ProfileFragment fragment = new ProfileFragment();
-        fragment.setArguments(args);
-        return fragment;
-
     }
 
     @Override
@@ -94,7 +95,6 @@ public class ProfileFragment extends Fragment implements ProfileView {
         listPost = list;
         homeAdapter = new HomeAdapter(listPost, getContext());
         binding.rvProfile.setAdapter(homeAdapter);
-        hideLoading();
         binding.rvProfile.setLayoutFrozen(false);
     }
 
@@ -103,11 +103,13 @@ public class ProfileFragment extends Fragment implements ProfileView {
         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
-    void hideLoading() {
-        binding.pbLoading.setVisibility(View.GONE);
+    @Override
+    public void hideLoading() {
+        loadingDialog.dismiss();
     }
 
-    void showLoading() {
-        binding.pbLoading.setVisibility(View.VISIBLE);
+    @Override
+    public void showLoading() {
+        loadingDialog.show();
     }
 }

@@ -218,7 +218,6 @@ public class UserInteractorImpl implements UserInteractor {
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
                             ref.getDownloadUrl()
                                     .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                         @Override
@@ -234,7 +233,43 @@ public class UserInteractorImpl implements UserInteractor {
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
-                                                            addAvatarListener.addAvatar(null);
+
+                                                            //Edit avatar in post
+                                                            mDatabase.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                @Override
+                                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                    for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                                                                        @SuppressWarnings("unchecked")
+                                                                        Map<String, Object> map = (Map<String, Object>) dsp.getValue();
+                                                                        String firstValue = (String) map.get("id");
+                                                                        String thirdValue = (String) map.get("timePost");
+                                                                        String foureValue = (String) map.get("post");
+                                                                        String fiveValue = (String) map.get("image");
+
+                                                                        if (firstValue.equals(users.getUid().toString())) {
+                                                                            Map<String, Object> childUpdates1 = new HashMap<>();
+
+                                                                            HashMap<String, Object> result = new HashMap<>();
+                                                                            result.put("id", firstValue);
+                                                                            result.put("name", name);
+                                                                            result.put("timePost", thirdValue);
+                                                                            result.put("post", foureValue);
+                                                                            result.put("image", fiveValue);
+                                                                            result.put("avatar", uri.toString());
+
+                                                                            childUpdates1.put("/posts/" + thirdValue, result);
+                                                                            mDatabase.updateChildren(childUpdates1);
+                                                                        }
+                                                                    }
+                                                                    addAvatarListener.addAvatar(null);
+
+                                                                }
+
+                                                                @Override
+                                                                public void onCancelled(DatabaseError databaseError) {
+                                                                }
+
+                                                            });
                                                         }
                                                     })
                                                     .addOnFailureListener(new OnFailureListener() {
@@ -243,42 +278,6 @@ public class UserInteractorImpl implements UserInteractor {
                                                             addAvatarListener.addAvatar(e);
                                                         }
                                                     });
-
-                                            //Edit avatar in post
-                                            mDatabase.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                                    for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                                                        @SuppressWarnings("unchecked")
-                                                        Map<String, Object> map = (Map<String, Object>) dsp.getValue();
-                                                        String firstValue = (String) map.get("id");
-                                                        String thirdValue = (String) map.get("timePost");
-                                                        String foureValue = (String) map.get("post");
-                                                        String fiveValue = (String) map.get("image");
-
-                                                        if (firstValue.equals(users.getUid().toString())) {
-                                                            Map<String, Object> childUpdates1 = new HashMap<>();
-
-                                                            HashMap<String, Object> result = new HashMap<>();
-                                                            result.put("id", firstValue);
-                                                            result.put("name", name);
-                                                            result.put("timePost", thirdValue);
-                                                            result.put("post", foureValue);
-                                                            result.put("image", fiveValue);
-                                                            result.put("avatar", uri.toString());
-
-                                                            childUpdates1.put("/posts/" + thirdValue, result);
-                                                            mDatabase.updateChildren(childUpdates1);
-                                                        }
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onCancelled(DatabaseError databaseError) {
-
-                                                }
-
-                                            });
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -299,15 +298,16 @@ public class UserInteractorImpl implements UserInteractor {
     }
 
     @Override
-    public void signedInCheck(LoginCheck loginCheck) {
+    public void signedInCheck(LoggedInCheck loginCheck) {
         if (users != null) {
             users.reload();
             if (users.isEmailVerified()) {
-                loginCheck.checker(true);
+                loginCheck.checker(1);
             } else if (!users.isEmailVerified()) {
-                loginCheck.checker(false);
+                loginCheck.checker(2);
             }
         }
+        loginCheck.checker(0);
     }
 
     @Override
@@ -327,11 +327,12 @@ public class UserInteractorImpl implements UserInteractor {
                 String fivevalue = (String) map.get("avatar");
 
                 User user = new User(secondValue, thirdValue, firstValue, fourValue, fivevalue);
-                listener.getUser(user);
+                listener.getUser(null, user);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                listener.getUser(databaseError, null);
             }
         };
         mDatabase.child("users").child(users.getUid()).addValueEventListener(valueEventListener);
@@ -346,10 +347,14 @@ public class UserInteractorImpl implements UserInteractor {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            loginCheck.checker(true);
-                        } else {
-                            loginCheck.checker(false);
+                            loginCheck.checker(true, null);
                         }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        loginCheck.checker(false, e);
                     }
                 });
     }

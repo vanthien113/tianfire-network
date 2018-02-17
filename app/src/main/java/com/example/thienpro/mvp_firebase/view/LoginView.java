@@ -1,13 +1,11 @@
 package com.example.thienpro.mvp_firebase.view;
 
-import android.content.Context;
-
 /**
  * Created by ThienPro on 11/9/2017.
  */
 
 public interface LoginView {
-    void onLoginFail();
+    void onLoginFail(Exception e);
 
     void navigationToHome();
 
@@ -18,4 +16,8 @@ public interface LoginView {
     void navigationToLogin();
 
     void navigationToVerifiEmail();
+
+    void showLoading();
+
+    void hideLoading();
 }

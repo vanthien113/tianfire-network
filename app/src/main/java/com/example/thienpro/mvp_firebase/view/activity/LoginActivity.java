@@ -11,13 +11,15 @@ import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityLoginBinding;
 import com.example.thienpro.mvp_firebase.presenter.Impl.LoginPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.LoginPresenter;
+import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
 import com.example.thienpro.mvp_firebase.view.LoginView;
 
 public class LoginActivity extends AppCompatActivity implements LoginView {
     private ActivityLoginBinding binding;
-    private LoginPresenter loginPresenter;
+    private LoginPresenter presenter;
+    private LoadingDialog loadingDialog;
 
-    public static void startActivity(Context context){
+    public static void startActivity(Context context) {
         context.startActivity(new Intent(context, LoginActivity.class));
     }
 
@@ -26,8 +28,15 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         binding.setEvent(this);
-        loginPresenter = new LoginPresenterImpl(this);
-        loginPresenter.signedInCheck();
+
+        presenter = new LoginPresenterImpl(this);
+        loadingDialog = new LoadingDialog(this);
+
+        presenter.signedInCheck();
+
+        binding.etEmail.setText("vanthien113@gmail.com");
+        binding.etPassword.setText("123456");
+
     }
 
     @Override
@@ -44,7 +53,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Hãy nhập email và password!", Toast.LENGTH_SHORT).show();
         } else
-            loginPresenter.onSignIn(email, password);
+            presenter.onSignIn(email, password);
     }
 
     @Override
@@ -65,7 +74,17 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     }
 
     @Override
-    public void onLoginFail() {
-        Toast.makeText(this, "Đăng nhập không thành công!", Toast.LENGTH_SHORT).show();
+    public void showLoading() {
+        loadingDialog.show();
+    }
+
+    @Override
+    public void hideLoading() {
+        loadingDialog.dismiss();
+    }
+
+    @Override
+    public void onLoginFail(Exception e) {
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

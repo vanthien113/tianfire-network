@@ -15,7 +15,9 @@ import com.example.thienpro.mvp_firebase.databinding.ActivityEditinfoBinding;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.EditInfoPresenter;
 import com.example.thienpro.mvp_firebase.presenter.Impl.EditInfoPresenterImpl;
+import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
 import com.example.thienpro.mvp_firebase.view.EditInfoView;
+import com.google.firebase.database.DatabaseError;
 
 /**
  * Created by ThienPro on 11/10/2017.
@@ -23,7 +25,8 @@ import com.example.thienpro.mvp_firebase.view.EditInfoView;
 
 public class EditInfoActivity extends AppCompatActivity implements EditInfoView {
     private ActivityEditinfoBinding binding;
-    private EditInfoPresenter editInfoPresenter;
+    private EditInfoPresenter presenter;
+    private LoadingDialog loadingDialog;
 
     public static void startActivity(Context context) {
         context.startActivity(new Intent(context, EditInfoActivity.class));
@@ -33,10 +36,13 @@ public class EditInfoActivity extends AppCompatActivity implements EditInfoView 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_editinfo);
-        editInfoPresenter = new EditInfoPresenterImpl(this);
+
+        presenter = new EditInfoPresenterImpl(this);
+        loadingDialog = new LoadingDialog(this);
+
         binding.setEvent(this);
         binding.spProvince.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.province_arrays)));
-        editInfoPresenter.loadUser();
+        presenter.loadUser();
     }
 
     @Override
@@ -49,8 +55,8 @@ public class EditInfoActivity extends AppCompatActivity implements EditInfoView 
         else if (binding.etName.getText().toString().length() >= 30)
             Toast.makeText(this, "Tên có độ dài dưới 30 ký tự!", Toast.LENGTH_SHORT).show();
         else {
-            editInfoPresenter.updateUser(email, name, binding.spProvince.getSelectedItem().toString(), binding.rbNam.isChecked());
-            Toast.makeText(this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+            presenter.updateUser(email, name, binding.spProvince.getSelectedItem().toString(), binding.rbNam.isChecked());
+            Toast.makeText(this, R.string.cap_nhat_thanh_cong, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -71,7 +77,27 @@ public class EditInfoActivity extends AppCompatActivity implements EditInfoView 
     }
 
     @Override
-    public void getuser(Exception e) {
+    public void getUserError(DatabaseError e) {
         Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showDialog() {
+        loadingDialog.show();
+    }
+
+    @Override
+    public void hideDialog() {
+        loadingDialog.dismiss();
+    }
+
+    @Override
+    public void getUserError(Exception e) {
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void updateSuccess() {
+        Toast.makeText(this, R.string.cap_nhat_thanh_cong, Toast.LENGTH_SHORT).show();
     }
 }

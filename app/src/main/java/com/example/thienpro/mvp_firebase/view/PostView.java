@@ -6,8 +6,14 @@ package com.example.thienpro.mvp_firebase.view;
 
 public interface PostView {
     void onBackClick();
+
     void onPostClick();
-    void posted();
-    void onChoosePictureClick();
+
     void onPostFail(Exception e);
+
+    void navigationToHome();
+
+    void showLoading();
+
+    void hideLoading();
 }

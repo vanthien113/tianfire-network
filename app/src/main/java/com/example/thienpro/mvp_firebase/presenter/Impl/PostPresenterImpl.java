@@ -4,44 +4,37 @@ import android.net.Uri;
 
 import com.example.thienpro.mvp_firebase.model.Impl.PostInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
-import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.presenter.PostPresenter;
 import com.example.thienpro.mvp_firebase.view.PostView;
-import com.example.thienpro.mvp_firebase.view.ProfileView;
-
-import java.util.ArrayList;
 
 /**
  * Created by ThienPro on 11/28/2017.
  */
 
-public class PostPresenterImpl implements PostPresenter, PostInteractor.loadPostListener {
+public class PostPresenterImpl implements PostPresenter {
     private PostInteractor postInteractor;
-    private PostView postView;
+    private PostView view;
 
     public PostPresenterImpl(PostView postView) {
-        this.postView = postView;
-        postInteractor = new PostInteractorImpl(this);
+        this.view = postView;
+        postInteractor = new PostInteractorImpl();
     }
 
     @Override
     public void newPost(String content, Uri filePath) {
-        postInteractor.writeNewPost(content, filePath);
-    }
+        view.showLoading();
 
-    @Override
-    public void postError(Exception e) {
-
-    }
-
-    @Override
-    public void listPost(ArrayList<Post> list) {
-
-    }
-
-    @Override
-    public void onPostFail(Exception e) {
-        postView.onPostFail(e);
+        postInteractor.writeNewPost(content, filePath, new PostInteractor.PostListener() {
+            @Override
+            public void postListener(Exception e) {
+                view.hideLoading();
+                if (e != null) {
+                    view.onPostFail(e);
+                } else {
+                    view.navigationToHome();
+                }
+            }
+        });
     }
 }
 

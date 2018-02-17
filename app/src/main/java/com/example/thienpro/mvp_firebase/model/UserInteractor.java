@@ -3,14 +3,19 @@ package com.example.thienpro.mvp_firebase.model;
 import android.net.Uri;
 
 import com.example.thienpro.mvp_firebase.model.entity.User;
+import com.google.firebase.database.DatabaseError;
 
 /**
  * Created by ThienPro on 11/28/2017.
  */
 
 public interface UserInteractor {
+    interface LoggedInCheck {
+        void checker(int checker);
+    }
+
     interface LoginCheck {
-        void checker(boolean checker);
+        void checker(boolean checker, Exception e);
     }
 
     interface RegisterCheck {
@@ -26,7 +31,7 @@ public interface UserInteractor {
     }
 
     interface GetUserListener {
-        void getUser(User user);
+        void getUser(DatabaseError error, User user);
     }
 
     interface AddAvatarListener {
@@ -39,7 +44,7 @@ public interface UserInteractor {
 
     void sigIn(String email, String password, LoginCheck loginCheck);
 
-    void signedInCheck(LoginCheck loginCheck);
+    void signedInCheck(LoggedInCheck loginCheck);
 
     void logOut(LogoutCheck logoutCheck);
 

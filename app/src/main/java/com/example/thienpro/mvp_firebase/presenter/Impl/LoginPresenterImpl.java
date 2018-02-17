@@ -11,34 +11,46 @@ import com.example.thienpro.mvp_firebase.view.LoginView;
 
 public class LoginPresenterImpl implements LoginPresenter {
     private UserInteractor userInteractor;
-    private LoginView loginView;
+    private LoginView view;
 
     public LoginPresenterImpl(LoginView loginView) {
         this.userInteractor = new UserInteractorImpl();
-        this.loginView = loginView;
+        this.view = loginView;
     }
 
     public void signedInCheck() {
-        userInteractor.signedInCheck(new UserInteractor.LoginCheck() {
+        view.showLoading();
+
+        userInteractor.signedInCheck(new UserInteractor.LoggedInCheck() {
             @Override
-            public void checker(boolean checker) {
-                if (checker) {
-                    loginView.navigationToHome();
-                } else {
-                    loginView.navigationToVerifiEmail();
+            public void checker(int checker) {
+                view.hideLoading();
+                switch (checker) {
+                    case 1:
+                        view.navigationToHome();
+                        break;
+                    case 2:
+                        view.navigationToVerifiEmail();
+                        break;
                 }
             }
         });
     }
 
     public void onSignIn(String email, String password) {
+        view.showLoading();
+
         userInteractor.sigIn(email, password, new UserInteractor.LoginCheck() {
             @Override
-            public void checker(boolean checker) {
+            public void checker(boolean checker, Exception e) {
                 if (checker) {
-                    loginView.navigationToVerifiEmail();
+                    view.hideLoading();
+                    view.navigationToVerifiEmail();
                 } else {
-                    loginView.navigationToLogin();
+                    view.hideLoading();
+                    view.onLoginFail(e);
+
+//                    view.navigationToLogin();
                 }
             }
         });

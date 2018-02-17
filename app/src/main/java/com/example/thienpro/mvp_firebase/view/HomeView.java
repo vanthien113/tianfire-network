@@ -15,4 +15,8 @@ public interface HomeView {
     void showAllPost(ArrayList<Post> list);
 
     void loadPostError(DatabaseError e);
+
+    void showLoading();
+
+    void hideLoading();
 }

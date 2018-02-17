@@ -1,13 +1,15 @@
 package com.example.thienpro.mvp_firebase.model.Impl;
 
+import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -16,7 +18,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -51,80 +52,183 @@ public class PostInteractorImpl implements PostInteractor {
         postList = new ArrayList<>();
     }
 
+    @SuppressLint("SimpleDateFormat")
     @Override
-    public void writeNewPost(final String content, final Uri filePath) {
+    public void writeNewPost(final String content, final Uri filePath, final PostListener postListener) {
         today = new Date();
         today.getDate();
         simpleDateFormat = new SimpleDateFormat("dd:MM:yyyy HH:mm:ss");
         day = simpleDateFormat.format(today);
 
-        uploadImage(content, filePath);
-    }
-
-    private void uploadImage(final String content, Uri filePath) {
         if (filePath != null) {
             ref = storageReference.child("images/" + UUID.randomUUID().toString());
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Log.e("THIEN", "UPLOAD OKE");
-                            getUrlImage(content);
+                            //get url image
+                            ref.getDownloadUrl()
+                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(final Uri uri) {
+                                            //Up Post with Image
+
+                                            mDatabase.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                                                    String name = (String) map.get("name");
+                                                    String avatar = (String) map.get("avatar");
+
+                                                    Post post = new Post(user.getUid(), name, day, content, uri.toString(), avatar);
+                                                    mDatabase.child("posts").child(day).setValue(post)
+                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                    postListener.postListener(null);
+                                                                }
+                                                            }) //setValue để thêm node
+                                                            .addOnFailureListener(new OnFailureListener() {
+                                                                @Override
+                                                                public void onFailure(@NonNull Exception e) {
+                                                                    postListener.postListener(e);
+                                                                }
+                                                            });
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                }
+                                            });
+
+
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception exception) {
+                                            postListener.postListener(exception);
+                                        }
+                                    });
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            onFailure(e);
-                            Log.e("THIEN", "UPLOAD NOT OKE");
+                            postListener.postListener(e);
 
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
-                                    .getTotalByteCount());
-//                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
                         }
                     });
         } else {
-            post(content, null);
+            mDatabase.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                    String name = (String) map.get("name");
+                    String avatar = (String) map.get("avatar");
+
+                    Post post = new Post(user.getUid(), name, day, content, null, avatar);
+                    mDatabase.child("posts").child(day).setValue(post)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    postListener.postListener(null);
+                                }
+                            }) //setValue để thêm node
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    postListener.postListener(e);
+                                }
+                            });
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
     }
-
-    private void getUrlImage(final String content) {
-        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                post(content, uri.toString());
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-                Log.e("THIEN", "GET NOT OKE");
-            }
-        });
-    }
-
-    private void post(final String content, final String url) {
-        mDatabase.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                String name = (String) map.get("name");
-                String avatar = (String) map.get("avatar");
-
-                Post post = new Post(user.getUid(), name, day, content, url, avatar);
-                mDatabase.child("posts").child(day).setValue(post); //setValue để thêm node
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-    }
+//
+//    private void uploadImage(final String content, Uri filePath) {
+//        if (filePath != null) {
+//            ref = storageReference.child("images/" + UUID.randomUUID().toString());
+//            ref.putFile(filePath)
+//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                            Log.e("THIEN", "UPLOAD OKE");
+//                            getUrlImage(content);
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                            onFailure(e);
+//                            Log.e("THIEN", "UPLOAD NOT OKE");
+//
+//                        }
+//                    })
+//                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+//                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
+//                                    .getTotalByteCount());
+////                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
+//                        }
+//                    });
+//        } else {
+//            post(content, null);
+//        }
+//    }
+//
+//    private void getUrlImage(final String content) {
+//        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//            @Override
+//            public void onSuccess(Uri uri) {
+//                post(content, uri.toString());
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception exception) {
+//                // Handle any errors
+//                Log.e("THIEN", "GET NOT OKE");
+//            }
+//        });
+//    }
+//
+//    private void post(final String content, final String url, final PostListener postListener) {
+//        mDatabase.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+//                String name = (String) map.get("name");
+//                String avatar = (String) map.get("avatar");
+//
+//                Post post = new Post(user.getUid(), name, day, content, url, avatar);
+//                mDatabase.child("posts").child(day).setValue(post)
+//                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<Void> task) {
+//                                postListener.postListener(null);
+//                            }
+//                        }) //setValue để thêm node
+//                        .addOnFailureListener(new OnFailureListener() {
+//                            @Override
+//                            public void onFailure(@NonNull Exception e) {
+//                                postListener.postListener(e);
+//                            }
+//                        });
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 
     @Override
     public void loadPersonalPost(final ListPost listPost) {

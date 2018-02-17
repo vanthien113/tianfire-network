@@ -53,12 +53,12 @@
                     android:textSize="@dimen/text_size_xxlarge"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView4"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_post"
                     app:layout_constraintStart_toEndOf="@+id/imageView2"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageView4"
+                    android:id="@+id/iv_post"
                     android:layout_width="@dimen/witdh_small"
                     android:layout_height="@dimen/height_small"
                     android:layout_marginRight="@dimen/space_normal"
@@ -69,17 +69,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </android.support.constraint.ConstraintLayout>
         </Toolbar>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginTop="84dp"
-            android:onClick="@{()->event.onChoosePictureClick()}"
-            android:text="Chọn ảnh"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/et_post"

@@ -14,7 +14,9 @@ import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityChangeAvatarBinding;
 import com.example.thienpro.mvp_firebase.presenter.ChangeAvatarPresenter;
 import com.example.thienpro.mvp_firebase.presenter.Impl.ChangeAvatarPresenterImpl;
+import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
 import com.example.thienpro.mvp_firebase.view.ChangeAvatarView;
+import com.google.firebase.database.DatabaseError;
 
 import java.io.IOException;
 
@@ -22,7 +24,8 @@ public class ChangeAvatarActivity extends AppCompatActivity implements ChangeAva
     private static final int REQUEST_CODE_IMAGE = 4;
     private Uri filePath;
     private ActivityChangeAvatarBinding binding;
-    private ChangeAvatarPresenter changeAvatarPresenter;
+    private ChangeAvatarPresenter presenter;
+    private LoadingDialog loadingDialog;
 
     public static void startActivity(Context context) {
         context.startActivity(new Intent(context, ChangeAvatarActivity.class));
@@ -31,8 +34,11 @@ public class ChangeAvatarActivity extends AppCompatActivity implements ChangeAva
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_change_avatar);
-        changeAvatarPresenter = new ChangeAvatarPresenterImpl(this);
+        presenter = new ChangeAvatarPresenterImpl(this);
+        loadingDialog = new LoadingDialog(this);
+
         binding.setEvent(this);
     }
 
@@ -53,7 +59,7 @@ public class ChangeAvatarActivity extends AppCompatActivity implements ChangeAva
 
     @Override
     public void onChangeAvatarClick() {
-        changeAvatarPresenter.changeAvatar(filePath);
+        presenter.changeAvatar(filePath);
     }
 
     @Override
@@ -67,5 +73,25 @@ public class ChangeAvatarActivity extends AppCompatActivity implements ChangeAva
     @Override
     public void changeAvatarError(Exception e) {
         Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void changeAvatarError(DatabaseError e) {
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void navigationToHome() {
+        HomeActivity.startActiviry(this);
+    }
+
+    @Override
+    public void showLoading() {
+        loadingDialog.show();
+    }
+
+    @Override
+    public void hideLoading() {
+        loadingDialog.dismiss();
     }
 }

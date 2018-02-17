@@ -23,13 +23,17 @@ public class HomePresenterImpl implements HomePresenter {
     }
 
     public void loadAllListPost() {
+        view.showLoading();
+
         postInteractor.loadAllPost(new PostInteractor.ListPost() {
             @Override
             public void listPost(DatabaseError e, ArrayList<Post> listPost) {
-                if (e != null) {
+                if (e == null) {
                     view.showAllPost(listPost);
+                    view.hideLoading();
                 } else {
                     view.loadPostError(e);
+                    view.hideLoading();
                 }
             }
         });

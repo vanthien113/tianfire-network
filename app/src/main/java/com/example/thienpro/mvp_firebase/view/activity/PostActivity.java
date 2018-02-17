@@ -10,12 +10,15 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.MenuItem;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityPostBinding;
 import com.example.thienpro.mvp_firebase.presenter.Impl.PostPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.PostPresenter;
+import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
 import com.example.thienpro.mvp_firebase.view.PostView;
 
 import java.io.IOException;
@@ -26,11 +29,13 @@ import java.io.IOException;
 
 public class PostActivity extends AppCompatActivity implements PostView {
     private ActivityPostBinding binding;
-    private PostPresenter postPresenter;
+    private PostPresenter presenter;
     private Uri filePath;
     private static final int REQUEST_CODE_IMAGE = 1;
+    private LoadingDialog loadingDialog;
+    private PopupMenu popupMenu;
 
-    public static void startActivity(Context context){
+    public static void startActivity(Context context) {
         context.startActivity(new Intent(context, PostActivity.class));
     }
 
@@ -38,34 +43,50 @@ public class PostActivity extends AppCompatActivity implements PostView {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_post);
-        postPresenter = new PostPresenterImpl(this);
+
+        presenter = new PostPresenterImpl(this);
+        loadingDialog = new LoadingDialog(this);
+        popupMenu = new PopupMenu(this, binding.ivPost);
+
+        popupMenu.getMenuInflater().inflate(R.menu.menu_post, popupMenu.getMenu());
         binding.setEvent(this);
     }
 
     @Override
     public void onBackClick() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
+        HomeActivity.startActiviry(this);
     }
 
     @Override
     public void onPostClick() {
+        popupMenu.show();
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.mn_post:
+                        post();
+                        break;
+                    case R.id.mn_choose_picture:
+                        onChoosePicture();
+                        break;
+
+                }
+                return false;
+            }
+        });
+    }
+
+    private void post() {
         if (TextUtils.isEmpty(binding.etPost.getText()))
             Toast.makeText(this, "Hãy nhập cảm nhận của bạn!", Toast.LENGTH_SHORT).show();
         else {
-            postPresenter.newPost(binding.etPost.getText().toString(), filePath);
-            posted();
+            presenter.newPost(binding.etPost.getText().toString(), filePath);
         }
     }
 
-    @Override
-    public void posted() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onChoosePictureClick() {
+    private void onChoosePicture() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -75,6 +96,21 @@ public class PostActivity extends AppCompatActivity implements PostView {
     @Override
     public void onPostFail(Exception e) {
         Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void navigationToHome() {
+        HomeActivity.startActiviry(this);
+    }
+
+    @Override
+    public void showLoading() {
+        loadingDialog.show();
+    }
+
+    @Override
+    public void hideLoading() {
+        loadingDialog.dismiss();
     }
 
     @Override

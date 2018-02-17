@@ -12,13 +12,18 @@ import java.util.ArrayList;
  */
 
 public interface PostInteractor {
-    void writeNewPost(String content, Uri filePath);
+    interface PostListener {
+        void postListener(Exception e);
+    }
+
+    interface ListPost {
+        void listPost(DatabaseError e, ArrayList<Post> listPost);
+    }
+
+    void writeNewPost(String content, Uri filePath, PostListener postListener);
 
     void loadPersonalPost(ListPost listPost);
 
     void loadAllPost(ListPost listPost);
 
-    interface ListPost {
-        void listPost(DatabaseError e, ArrayList<Post> listPost);
-    }
 }

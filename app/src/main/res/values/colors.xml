@@ -8,5 +8,6 @@
     <color name="colorGray">#EEEEEE</color>
     <color name="colorGreen">#4EEE94</color>
     <color name="colorPinkLight">#CDB5CD</color>
+    <color name="colorBlackTransparent">#da000000</color>
 
 </resources>

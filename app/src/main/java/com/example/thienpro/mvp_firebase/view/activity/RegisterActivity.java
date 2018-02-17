@@ -20,7 +20,7 @@ import com.example.thienpro.mvp_firebase.view.RegisterView;
 
 public class RegisterActivity extends AppCompatActivity implements RegisterView {
     private ActivityRegisterBinding binding;
-    private RegistrerPresenter registrerPresenter;
+    private RegistrerPresenter presenter;
 
     private static final String NAME = "name";
     private static final String ADDRESS = "address";
@@ -43,7 +43,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
         binding.setEvent(this);
-        registrerPresenter = new RegisterPresenterImpl(this);
+        presenter = new RegisterPresenterImpl(this);
 
         name = getIntent().getStringExtra(NAME);
         address = getIntent().getStringExtra(ADDRESS);
@@ -66,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
         else {
             if (password.length() >= 6) {
                 if (password.equals(repassword)) {
-                    registrerPresenter.register(email, password, name, address, sex);
+                    presenter.register(email, password, name, address, sex);
                 } else
                     Toast.makeText(this, "Mật khẩu không trùng khớp!", Toast.LENGTH_SHORT).show();
             } else

@@ -29,12 +29,16 @@ public class ProfilePresenterImpl implements ProfilePresenter {
     }
 
     public void loadPost() {
+        view.showLoading();
+
         postInteractor.loadPersonalPost(new PostInteractor.ListPost() {
             @Override
             public void listPost(DatabaseError e, ArrayList<Post> listPost) {
                 if (e == null) {
+                    view.hideLoading();
                     view.showList(listPost);
                 } else {
+                    view.hideLoading();
                     view.loadPostError(e);
                 }
             }

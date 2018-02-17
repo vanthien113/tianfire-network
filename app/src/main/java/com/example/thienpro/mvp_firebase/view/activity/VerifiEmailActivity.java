@@ -20,7 +20,7 @@ import com.example.thienpro.mvp_firebase.view.VerifiEmailView;
 
 public class VerifiEmailActivity extends AppCompatActivity implements VerifiEmailView {
     private ActivityVerifiemailBinding binding;
-    private VerifiEmailPresenter verifiEmailPresenter;
+    private VerifiEmailPresenter presenter;
 
     public static void startActivity(Context context) {
         context.startActivity(new Intent(context, VerifiEmailActivity.class));
@@ -32,8 +32,8 @@ public class VerifiEmailActivity extends AppCompatActivity implements VerifiEmai
         binding = DataBindingUtil.setContentView(this, R.layout.activity_verifiemail);
         binding.setEvent(this);
 
-        verifiEmailPresenter = new VerifiEmailPresenterImpl(this);
-        verifiEmailPresenter.verifiEmail();
+        presenter = new VerifiEmailPresenterImpl(this);
+        presenter.verifiEmail();
     }
 
     @Override
@@ -61,7 +61,7 @@ public class VerifiEmailActivity extends AppCompatActivity implements VerifiEmai
 
     @Override
     public void onCancelClick() {
-        verifiEmailPresenter.logOut();
+        presenter.logOut();
         finish();
     }
 
