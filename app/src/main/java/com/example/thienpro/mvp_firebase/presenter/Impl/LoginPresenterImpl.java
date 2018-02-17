@@ -1,7 +1,5 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
-import android.content.Context;
-
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.entity.User;
@@ -12,22 +10,20 @@ import com.example.thienpro.mvp_firebase.view.LoginView;
  * Created by ThienPro on 11/21/2017.
  */
 
-public class LoginPresenterImpl implements UserInteractor.LoadUserListener, LoginPresenter {
+public class LoginPresenterImpl implements UserInteractor.userListener, LoginPresenter {
     private UserInteractor userInteractor;
     private LoginView loginView;
-    private Context context;
 
-    public LoginPresenterImpl(LoginView loginView, Context context) {
+    public LoginPresenterImpl(LoginView loginView) {
         this.userInteractor = new UserInteractorImpl(this);
         this.loginView = loginView;
-        this.context = context;
     }
 
     public void signedInCheck(){
         if(userInteractor.signedInCheck()==1)
-            loginView.navigationToHome(context);
+            loginView.navigationToHome();
         else if(userInteractor.signedInCheck()==2)
-            loginView.navigationToVerifiEmail(context);
+            loginView.navigationToVerifiEmail();
     }
 
     public void onSignIn(String email, String password){
@@ -51,12 +47,12 @@ public class LoginPresenterImpl implements UserInteractor.LoadUserListener, Logi
 
     @Override
     public void navigationToHome() {
-        loginView.navigationToHome(context);
+        loginView.navigationToHome();
     }
 
     @Override
     public void navigationToLogin() {
-        loginView.navigationToLogin(context);
+        loginView.navigationToLogin();
     }
 
     @Override
@@ -65,11 +61,11 @@ public class LoginPresenterImpl implements UserInteractor.LoadUserListener, Logi
 
     @Override
     public void onLoginFail() {
-        loginView.onLoginFail(context);
+        loginView.onLoginFail();
     }
 
     @Override
     public void navigationToVerifiEmail() {
-        loginView.navigationToVerifiEmail(context);
+        loginView.navigationToVerifiEmail();
     }
 }

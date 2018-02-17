@@ -30,7 +30,7 @@ public class VerifiEmailActivity extends AppCompatActivity implements VerifiEmai
         binding = DataBindingUtil.setContentView(this, R.layout.activity_verifiemail);
         binding.setEvent(this);
 
-        verifiEmailPresenter = new VerifiEmailPresenterImpl(this, this);
+        verifiEmailPresenter = new VerifiEmailPresenterImpl(this);
         verifiEmailPresenter.verifiEmail();
     }
 
@@ -47,7 +47,7 @@ public class VerifiEmailActivity extends AppCompatActivity implements VerifiEmai
     }
 
     @Override
-    public void navigationToHome(Context context) {
+    public void navigationToHome() {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         finish();

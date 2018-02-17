@@ -7,9 +7,11 @@ import android.content.Context;
  */
 
 public interface RegisterView {
-    void navigationToVerifiEmail(Context context);
+    void navigationToVerifiEmail();
 
-    void onRegisterClick();
+    void onNextClick();
 
-    void onRegisterEmailFail(Context context);
+    void onRegisterEmailFail();
+
+    void onBackClick();
 }

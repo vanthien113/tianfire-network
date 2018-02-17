@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +44,6 @@ public class HomeFragment extends Fragment implements HomeView {
 
         LinearLayoutManager = new LinearLayoutManager(binding.getRoot().getContext(), OrientationHelper.VERTICAL, false);
         binding.rvHome.setLayoutManager(LinearLayoutManager);
-
         binding.setEvent(this);
         return binding.getRoot();
     }
@@ -61,8 +62,9 @@ public class HomeFragment extends Fragment implements HomeView {
         super.onResume();
     }
 
-    public void loadData(){
-        if (listPost != null){
+    public void loadData() {
+        if (listPost != null) {
+            showLoading();
             binding.rvHome.setLayoutFrozen(true);
             listPost.clear();
             homePresenter.loadAllListPost();
@@ -71,12 +73,21 @@ public class HomeFragment extends Fragment implements HomeView {
 
     @Override
     public void showAllPost(ArrayList<Post> list) {
-        binding.tvLoading.setVisibility(View.GONE);
+        hideLoading();
         Collections.reverse(list);
         listPost = list;
-        homeAdapter = new HomeAdapter(listPost);
+
+        homeAdapter = new HomeAdapter(listPost, getContext());
         binding.rvHome.setAdapter(homeAdapter);
         binding.rvHome.setLayoutFrozen(false);
+    }
+
+    void hideLoading() {
+        binding.pbLoading.setVisibility(View.GONE);
+    }
+
+    void showLoading() {
+        binding.pbLoading.setVisibility(View.VISIBLE);
     }
 
     public static HomeFragment newInstance() {

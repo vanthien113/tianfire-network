@@ -8,4 +8,6 @@ public interface PostView {
     void onBackClick();
     void onPostClick();
     void posted();
+    void onChoosePictureClick();
+    void onPostFail(Exception e);
 }

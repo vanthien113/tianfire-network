@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -24,29 +25,33 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         super.onCreate(savedInstanceState);
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         mainBinding.setEvent(this);
-        loginPresenter = new LoginPresenterImpl(this, this);
+        loginPresenter = new LoginPresenterImpl(this);
         loginPresenter.signedInCheck();
     }
 
     @Override
-    public void navigationToHome(Context context) {
-        Intent intent = new Intent(context, HomeActivity.class);
-        context.startActivity(intent); // Chuyển màn đến màn hình Home. sử dụng context.startactivity
+    public void navigationToHome() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        this.startActivity(intent); // Chuyển màn đến màn hình Home. sử dụng context.startactivity
         finish();
     }
 
     @Override
     public void navigationToRegister() {
-        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+        Intent intent = new Intent(LoginActivity.this, RegisterDetailActivity.class);
         startActivity(intent);
     }
 
     @Override
     public void onLoginClick() {
-        if (mainBinding.etEmail.getText().toString().equals(mainBinding.etPassword.getText().toString()))
+        String email = mainBinding.etEmail.getText().toString();
+        String password = mainBinding.etPassword.getText().toString();
+
+        if(email.isEmpty() || password.isEmpty()){
             Toast.makeText(this, "Hãy nhập email và password!", Toast.LENGTH_SHORT).show();
+        }
         else
-            loginPresenter.onSignIn(mainBinding.etEmail.getText().toString(), mainBinding.etPassword.getText().toString());
+            loginPresenter.onSignIn(email, password);
     }
 
     @Override
@@ -55,21 +60,21 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     }
 
     @Override
-    public void navigationToLogin(Context context) {
+    public void navigationToLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
     }
 
     @Override
-    public void navigationToVerifiEmail(Context context) {
-        Intent intent = new Intent(context, VerifiEmailActivity.class);
+    public void navigationToVerifiEmail() {
+        Intent intent = new Intent(this, VerifiEmailActivity.class);
         startActivity(intent);
         finish();
     }
 
     @Override
-    public void onLoginFail(Context context) {
-        Toast.makeText(context, "Đăng nhập không thành công!", Toast.LENGTH_SHORT).show();
+    public void onLoginFail() {
+        Toast.makeText(this, "Đăng nhập không thành công!", Toast.LENGTH_SHORT).show();
     }
 }

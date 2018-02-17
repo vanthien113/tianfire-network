@@ -7,9 +7,9 @@ import android.content.Context;
  */
 
 public interface LoginView {
-    void onLoginFail(Context context);
+    void onLoginFail();
 
-    void navigationToHome(Context context);
+    void navigationToHome();
 
     void navigationToRegister();
 
@@ -17,7 +17,7 @@ public interface LoginView {
 
     void onRegisterClick();
 
-    void navigationToLogin(Context context);
+    void navigationToLogin();
 
-    void navigationToVerifiEmail(Context context);
+    void navigationToVerifiEmail();
 }

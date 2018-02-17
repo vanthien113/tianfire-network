@@ -14,9 +14,7 @@ public class User {
     private String name;
     private String address;
     private Boolean sex;
-
-    public User() {
-    }
+    private String avatar;
 
     public String getEmail() {
         return email;
@@ -50,11 +48,23 @@ public class User {
         this.sex = sex;
     }
 
-    public User(String email, String name, String address, Boolean sex) {
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public User() {
+    }
+
+    public User(String email, String name, String address, Boolean sex, String avatar) {
         this.email = email;
         this.name = name;
         this.address = address;
         this.sex = sex;
+        this.avatar = avatar;
     }
 
     @Exclude
@@ -64,6 +74,7 @@ public class User {
         result.put("name", name);
         result.put("address", address);
         result.put("sex", sex);
+        result.put("avatar", avatar);
         return result;
     }
 }

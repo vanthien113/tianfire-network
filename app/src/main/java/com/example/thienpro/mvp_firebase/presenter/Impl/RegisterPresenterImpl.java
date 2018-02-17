@@ -1,32 +1,26 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
-import android.content.Context;
+import android.net.Uri;
 
 import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.RegistrerPresenter;
+import com.example.thienpro.mvp_firebase.view.RegisterAvatarView;
 import com.example.thienpro.mvp_firebase.view.RegisterView;
 
 /**
  * Created by ThienPro on 11/10/2017.
  */
 
-public class RegisterPresenterImpl implements UserInteractor.LoadUserListener, RegistrerPresenter {
-    private UserInteractor userInteractor;
+public class RegisterPresenterImpl implements UserInteractor.userListener, RegistrerPresenter {
     private RegisterView registerView;
-    private Context context;
+    private UserInteractor userInteractor;
 
-    public RegisterPresenterImpl(RegisterView registerView, Context context) {
+    public RegisterPresenterImpl(RegisterView registerView) {
         this.registerView = registerView;
-        userInteractor = new UserInteractorImpl(this);
-        this.context = context;
+        this.userInteractor = new UserInteractorImpl(this);
     }
-
-    public void register(String email, String password, String name, String address, boolean sex) {
-        userInteractor.register(email, password, name, address, sex);
-    }
-
 
     @Override
     public void sendVerifiEmailComplete(String email) {
@@ -44,7 +38,6 @@ public class RegisterPresenterImpl implements UserInteractor.LoadUserListener, R
 
     @Override
     public void navigationToHome() {
-        registerView.navigationToVerifiEmail(context);
     }
 
     @Override
@@ -54,7 +47,7 @@ public class RegisterPresenterImpl implements UserInteractor.LoadUserListener, R
 
     @Override
     public void onRegisterFail() {
-        registerView.onRegisterEmailFail(context);
+        registerView.onRegisterEmailFail();
     }
 
     @Override
@@ -64,6 +57,12 @@ public class RegisterPresenterImpl implements UserInteractor.LoadUserListener, R
 
     @Override
     public void navigationToVerifiEmail() {
-        registerView.navigationToVerifiEmail(context);
+        registerView.navigationToVerifiEmail();
+    }
+
+
+    @Override
+    public void register(String email, String password, String name, String address, boolean sex) {
+        userInteractor.register(email, password, name, address, sex);
     }
 }

@@ -1,5 +1,7 @@
 package com.example.thienpro.mvp_firebase.model;
 
+import android.net.Uri;
+
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 
 import java.util.ArrayList;
@@ -9,13 +11,15 @@ import java.util.ArrayList;
  */
 
 public interface PostInteractor {
-    void writeNewPost(String content);
+    void writeNewPost(String content, Uri filePath);
 
-    void LoadPersonalPost();
+    void loadPersonalPost();
 
     void loadAllPost();
 
-    interface LoadPostListener {
-        void ListPost(ArrayList<Post> list);
+    interface loadPostListener {
+        void listPost(ArrayList<Post> list);
+
+        void onPostFail(Exception e);
     }
 }

@@ -57,12 +57,34 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/space_normal"
             android:layout_marginLeft="@dimen/space_normal"
-            android:onClick="@{()->event.onLogout()}"
-            android:text="@string/dang_xuat"
+            android:layout_marginStart="@dimen/space_normal"
+            android:onClick="@{()->event.onAvatarChange()}"
+            android:text="Thay đổi ảnh đại diện"
             android:textSize="@dimen/text_size_large"
             app:layout_constraintBottom_toBottomOf="@+id/imageView3"
             app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="@+id/imageView3"
-            android:layout_marginStart="@dimen/space_normal" />
+            app:layout_constraintTop_toTopOf="@+id/imageView3" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="@dimen/height_small"
+            android:layout_height="@dimen/witdh_small"
+            android:layout_marginTop="@dimen/space_x_large"
+            android:src="@drawable/ic_logout"
+            app:layout_constraintEnd_toEndOf="@+id/imageView3"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/imageView3"
+            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+        <TextView
+            android:id="@+id/tv_changeAvatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->event.onLogout()}"
+            android:text="@string/dang_xuat"
+            android:textSize="@dimen/text_size_large"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+            app:layout_constraintStart_toStartOf="@+id/tv_logout"
+            app:layout_constraintTop_toTopOf="@+id/imageView4" />
     </android.support.constraint.ConstraintLayout>
 </layout>

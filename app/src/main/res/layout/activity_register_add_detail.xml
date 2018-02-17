@@ -1,91 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout>
 
     <data>
 
         <variable
             name="event"
-            type="com.example.thienpro.mvp_firebase.view.EditInfoView" />
-
-        <variable
-            name="data"
-            type="com.example.thienpro.mvp_firebase.model.entity.User" />
+            type="com.example.thienpro.mvp_firebase.view.RegisterDetailView" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorWhite">
 
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/height_normal"
-            android:background="@color/colorGray"
-            android:elevation="@dimen/elevation_normal"
-            android:gravity="center"
-            android:padding="@dimen/space_normal"
-            android:text="Chỉnh sửa thông tin"
-            android:textAlignment="center"
-            android:textSize="@dimen/text_size_xlarge"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:text="Email:"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-        <EditText
-            android:enabled="false"
-            android:text="@{data.email}"
-            android:id="@+id/et_email"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="15dp"
-            android:background="@color/colorWhite"
-            android:imeOptions="actionNext"
-            android:inputType="text"
-            android:maxLines="1"
-            android:scrollbars="horizontal"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView7"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.189"
-            app:layout_constraintStart_toEndOf="@+id/textView7"
-            app:layout_constraintTop_toTopOf="@+id/textView7" />
-
         <TextView
             android:id="@+id/textView10"
-            android:layout_marginLeft="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space_large"
             android:layout_marginTop="20dp"
             android:text="Họ tên"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:text="@{data.name}"
             android:id="@+id/et_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="50dp"
             android:background="@color/colorWhite"
+            android:hint="@string/nhap_ho_ten"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLength="30"
@@ -94,11 +41,12 @@
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/textView10"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/et_email"
+            app:layout_constraintStart_toEndOf="@+id/textView10"
             app:layout_constraintTop_toTopOf="@+id/textView10" />
 
         <TextView
             android:id="@+id/textView11"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -110,7 +58,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
         <Spinner
-            android:id="@+id/sp_province"
+            android:id="@+id/sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/textView11"
@@ -121,6 +69,7 @@
 
         <TextView
             android:id="@+id/textView2"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space_large"
@@ -141,7 +90,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="@+id/textView2"
-            app:layout_constraintStart_toStartOf="@+id/sp_province"
+            app:layout_constraintStart_toStartOf="@+id/sp"
             app:layout_constraintTop_toTopOf="@+id/textView2">
 
             <RadioButton
@@ -159,33 +108,22 @@
                 android:text="@string/nu" />
         </RadioGroup>
 
-        <Button
-            android:id="@+id/bt_save"
-            android:layout_width="0dp"
+            <Button
+            android:id="@+id/bt_register"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/space_large"
-            android:layout_marginRight="@dimen/space_large"
-            android:layout_marginTop="@dimen/space_xxx_large"
-            android:onClick="@{()->event.onSaveClick()}"
-            android:text="@string/l_u"
-            android:textSize="@dimen/text_size_large"
+            android:layout_marginTop="8dp"
+            android:onClick="@{()->event.onNextClick()}"
+            android:padding="@dimen/space_large"
+            android:text="Tiếp tục"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintHorizontal_bias="0.033"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
-        <ProgressBar
-            android:id="@+id/pb_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:indeterminateTint="@color/colorBlueLight"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bt_save"
-            app:layout_constraintVertical_bias="0.453" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

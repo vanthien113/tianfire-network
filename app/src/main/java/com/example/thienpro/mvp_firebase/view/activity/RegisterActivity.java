@@ -6,7 +6,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
@@ -21,36 +20,74 @@ import com.example.thienpro.mvp_firebase.view.RegisterView;
 
 public class RegisterActivity extends AppCompatActivity implements RegisterView {
     private ActivityRegisterBinding binding;
-    private RegistrerPresenter presenter;
+    private RegistrerPresenter registrerPresenter;
+
+    private static final String NAME = "name";
+    private static final String ADDRESS = "address";
+    private static final String SEX = "sex";
+
+    private String name;
+    private String address;
+    private boolean sex;
+
+    public static void startActivity(Context context, String name, String address, boolean sex) {
+        Intent intent = new Intent(context, RegisterActivity.class);
+        intent.putExtra(NAME, name);
+        intent.putExtra(ADDRESS, address);
+        intent.putExtra(SEX, sex);
+        context.startActivity(intent);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
         binding.setEvent(this);
-        presenter = new RegisterPresenterImpl(this, this);
+        registrerPresenter = new RegisterPresenterImpl(this);
+
+        name = getIntent().getStringExtra(NAME);
+        address = getIntent().getStringExtra(ADDRESS);
+        sex = getIntent().getBooleanExtra(SEX, false);
     }
 
     @Override
-    public void navigationToVerifiEmail(Context context) {
-        Intent intent = new Intent(context, VerifiEmailActivity.class);
-        context.startActivity(intent);
+    public void navigationToVerifiEmail() {
+        Intent intent = new Intent(this, VerifiEmailActivity.class);
+        this.startActivity(intent);
     }
 
     @Override
-    public void onRegisterClick() {
-        if (TextUtils.isEmpty(binding.etEmail.getText()) || TextUtils.isEmpty(binding.etPassword.getText()) ||
-                TextUtils.isEmpty(binding.etRepassword.getText()) || TextUtils.isEmpty(binding.etName.getText()) ||
-                TextUtils.isEmpty(binding.etAddress.getText()))
+    public void onNextClick() {
+        String email = binding.etEmail.getText().toString();
+        String password = binding.etPassword.getText().toString();
+        String repassword = binding.etRepassword.getText().toString();
+
+        if (email.isEmpty() || password.isEmpty() || repassword.isEmpty())
             Toast.makeText(this, "Không được để trống các trường!", Toast.LENGTH_SHORT).show();
-        if (binding.etName.getText().toString().length() >= 30)
-            Toast.makeText(this, "Tên có độ dài dưới 30 ký tự!", Toast.LENGTH_SHORT).show();
-        if (TextUtils.equals(binding.etPassword.getText(), binding.etRepassword.getText()))
-            presenter.register(binding.etEmail.getText().toString(), binding.etPassword.getText().toString(), binding.etName.getText().toString(), binding.etAddress.getText().toString(), binding.rbNam.isChecked());
-        else Toast.makeText(this, "Mật khẩu không trùng khớp!", Toast.LENGTH_SHORT).show();
+        else {
+            if (password.length() >= 6) {
+                if (password.equals(repassword)) {
+                    registrerPresenter.register(email, password, name, address, sex);
+                } else
+                    Toast.makeText(this, "Mật khẩu không trùng khớp!", Toast.LENGTH_SHORT).show();
+            } else
+                Toast.makeText(this, "Mật khẩu phải lớn hơn 6 ký tự!", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    public void onRegisterEmailFail(Context context) {
-        Toast.makeText(context, "Địa chỉ email không dúng!", Toast.LENGTH_SHORT).show();
+    public void onRegisterEmailFail() {
+        Toast.makeText(this, "Địa chỉ email không dúng!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackClick() {
+        navigationToLogin();
+    }
+
+
+    void navigationToLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

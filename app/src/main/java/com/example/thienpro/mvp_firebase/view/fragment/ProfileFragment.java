@@ -57,6 +57,7 @@ public class ProfileFragment extends Fragment implements ProfileView {
 
     public void loadData(){
         if (listPost != null){
+            showLoading();
             binding.rvProfile.setLayoutFrozen(true);
             listPost.clear();
             profilePresenter.loadPost();
@@ -91,10 +92,17 @@ public class ProfileFragment extends Fragment implements ProfileView {
     public void showList(ArrayList<Post> list) {
         Collections.reverse(list);
         listPost = list;
-        homeAdapter = new HomeAdapter(listPost);
+        homeAdapter = new HomeAdapter(listPost, getContext());
         binding.rvProfile.setAdapter(homeAdapter);
-
-        binding.tvLoading.setVisibility(View.GONE); // Ẩn Loading...
+        hideLoading();
         binding.rvProfile.setLayoutFrozen(false);
+    }
+
+    void hideLoading(){
+        binding.pbLoading.setVisibility(View.GONE);
+    }
+
+    void showLoading() {
+        binding.pbLoading.setVisibility(View.VISIBLE);
     }
 }

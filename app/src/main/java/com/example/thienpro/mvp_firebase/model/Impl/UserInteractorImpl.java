@@ -1,10 +1,14 @@
 package com.example.thienpro.mvp_firebase.model.Impl;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,9 +18,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /*
 *- Lớp M: xử lý dữ liệu -> Trả dữ liệu về P thông qua callback
@@ -27,16 +36,22 @@ import java.util.Map;
  */
 
 public class UserInteractorImpl implements UserInteractor {
-    private LoadUserListener loadUserListener;
+    private userListener userListener;
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser users;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+    private StorageReference ref;
 
-    public UserInteractorImpl(LoadUserListener loadUserListener) {
+    public UserInteractorImpl(userListener userListener) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
-        this.loadUserListener = loadUserListener;
+        this.userListener = userListener;
         users = mAuth.getCurrentUser();
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
     }
 
     public int signedInCheck() {
@@ -53,17 +68,17 @@ public class UserInteractorImpl implements UserInteractor {
 
     public void verifiEmail() {
         if (signedInCheck() == 1) {
-            loadUserListener.navigationToHome();
+            userListener.navigationToHome();
         } else {
-            loadUserListener.sendVerifiEmailFail(users.getEmail());
+            userListener.sendVerifiEmailFail(users.getEmail());
             users.sendEmailVerification()
                     .addOnCompleteListener(new OnCompleteListener() {
                         @Override
                         public void onComplete(@NonNull Task task) {
                             if (task.isSuccessful()) {
-                                loadUserListener.sendVerifiEmailComplete(users.getEmail());
+                                userListener.sendVerifiEmailComplete(users.getEmail());
                             } else {
-                                loadUserListener.sendVerifiEmailFail(users.getEmail());
+                                userListener.sendVerifiEmailFail(users.getEmail());
                             }
                         }
                     });
@@ -71,23 +86,72 @@ public class UserInteractorImpl implements UserInteractor {
     }
 
     public void register(final String email, String password, final String name, final String address, final boolean sex) {
+        uploadImage(email, password, name, address, sex, null);
+    }
+
+    private void uploadImage(final String email, final String password, final String name, final String address, final boolean sex, Uri filePath) {
+        if (filePath != null) {
+            ref = storageReference.child("avatars/" + UUID.randomUUID().toString());
+            ref.putFile(filePath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            getUrlImage(email, password, name, address, sex);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+//                            onFailure(e);
+                            Log.e("THIEN", e.toString());
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
+                                    .getTotalByteCount());
+//                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                        }
+                    });
+        } else {
+            createUser(email, password, name, address, sex, "null");
+        }
+    }
+
+    private void createUser(final String email, String password, final String name, final String address, final boolean sex, final String avatar) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             users = mAuth.getCurrentUser();
-                            User user = new User(email, name, address, sex);
+                            User user = new User(email, name, address, sex, avatar);
                             mDatabase.child("users").child(users.getUid()).setValue(user); //setValue để thêm node
-                            loadUserListener.navigationToVerifiEmail();
-                        } else loadUserListener.onRegisterFail();
+                            userListener.navigationToVerifiEmail();
+                        } else userListener.onRegisterFail();
                     }
                 });
     }
 
+    private void getUrlImage(final String email, final String password, final String name, final String address, final boolean sex) {
+        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                createUser(email, password, name, address, sex, uri.toString());
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+                Log.e("THIEN", "GET NOT OKE");
+            }
+        });
+    }
+
     public void updateUser(String email, final String name, String address, Boolean sex) {
         String userId = users.getUid();
-        User user = new User(email, name, address, sex);
+        User user = new User(email, name, address, sex, null);
         Map<String, Object> postValues = user.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/users/" + userId, postValues);
@@ -128,6 +192,78 @@ public class UserInteractorImpl implements UserInteractor {
         });
     }
 
+    public void addAvatar(final String email, final String name, final String address, final Boolean sex, final Uri uri) {
+        //Up im
+        if (uri != null) {
+            ref = storageReference.child("avatars/" + UUID.randomUUID().toString());
+            ref.putFile(uri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                  @Override
+                                  public void onSuccess(final Uri uri) {
+                                      //add in usr
+                                      String userId = users.getUid();
+                                      User user = new User(email, name, address, sex, uri.toString());
+                                      Map<String, Object> postValues = user.toMap();
+                                      Map<String, Object> childUpdates = new HashMap<>();
+                                      childUpdates.put("/users/" + userId, postValues);
+
+                                      mDatabase.updateChildren(childUpdates);
+
+                                      //Edit avatar in post
+                                      mDatabase.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
+                                          @Override
+                                          public void onDataChange(DataSnapshot dataSnapshot) {
+                                              for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                                                  @SuppressWarnings("unchecked")
+                                                  Map<String, Object> map = (Map<String, Object>) dsp.getValue();
+                                                  String firstValue = (String) map.get("id");
+                                                  String thirdValue = (String) map.get("timePost");
+                                                  String foureValue = (String) map.get("post");
+                                                  String fiveValue = (String) map.get("image");
+
+                                                  if (firstValue.equals(users.getUid().toString())) {
+                                                      Map<String, Object> childUpdates1 = new HashMap<>();
+
+                                                      HashMap<String, Object> result = new HashMap<>();
+                                                      result.put("id", firstValue);
+                                                      result.put("name", name);
+                                                      result.put("timePost", thirdValue);
+                                                      result.put("post", foureValue);
+                                                      result.put("image", fiveValue);
+                                                      result.put("avatar", uri.toString());
+
+                                                      childUpdates1.put("/posts/" + thirdValue, result);
+                                                      mDatabase.updateChildren(childUpdates1);
+                                                  }
+                                              }
+                                          }
+
+                                          @Override
+                                          public void onCancelled(DatabaseError databaseError) {
+
+                                          }
+
+                                      });
+                                  }
+                              }
+                            );
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
+                                    .getTotalByteCount());
+//                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                        }
+                    });
+        }
+    }
+
     public void getUser() {
         users = mAuth.getCurrentUser();
 
@@ -141,9 +277,10 @@ public class UserInteractorImpl implements UserInteractor {
                 String secondValue = (String) map.get("email");
                 String thirdValue = (String) map.get("name");
                 Boolean fourValue = (Boolean) map.get("sex");
+                String fivevalue = (String) map.get("avatar");
 
-                User user = new User(secondValue, thirdValue, firstValue, fourValue);
-                loadUserListener.getUser(user);
+                User user = new User(secondValue, thirdValue, firstValue, fourValue, fivevalue);
+                userListener.getUser(user);
             }
 
             @Override
@@ -161,9 +298,9 @@ public class UserInteractorImpl implements UserInteractor {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            loadUserListener.navigationToVerifiEmail();
+                            userListener.navigationToVerifiEmail();
                         } else {
-                            loadUserListener.onLoginFail();
+                            userListener.onLoginFail();
                         }
                     }
                 });

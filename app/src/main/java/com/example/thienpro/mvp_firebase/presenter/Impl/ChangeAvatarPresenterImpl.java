@@ -1,25 +1,26 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
+import android.net.Uri;
+import android.util.Log;
+
 import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
-import com.example.thienpro.mvp_firebase.presenter.SettingPresenter;
-import com.example.thienpro.mvp_firebase.view.SettingView;
+import com.example.thienpro.mvp_firebase.presenter.ChangeAvatarPresenter;
+import com.example.thienpro.mvp_firebase.view.ChangeAvatarView;
 
 /**
- * Created by ThienPro on 11/28/2017.
+ * Created by vanthien113 on 1/13/2018.
  */
 
-public class SettingPresenterImpl implements SettingPresenter, UserInteractor.userListener {
+public class ChangeAvatarPresenterImpl implements ChangeAvatarPresenter, UserInteractor.userListener {
+    private ChangeAvatarView changeAvatarView;
     private UserInteractor userInteractor;
+    private Uri uri;
 
-    public SettingPresenterImpl(SettingView settingView) {
-        this.userInteractor = new UserInteractorImpl(this);
-    }
-
-    @Override
-    public void logOut() {
-        userInteractor.logOut();
+    public ChangeAvatarPresenterImpl(ChangeAvatarView changeAvatarView) {
+        this.changeAvatarView = changeAvatarView;
+        userInteractor = new UserInteractorImpl(this);
     }
 
     @Override
@@ -34,7 +35,7 @@ public class SettingPresenterImpl implements SettingPresenter, UserInteractor.us
 
     @Override
     public void getUser(User user) {
-
+        userInteractor.addAvatar(user.getEmail(), user.getName(), user.getAddress(), user.getSex(), uri);
     }
 
     @Override
@@ -44,6 +45,7 @@ public class SettingPresenterImpl implements SettingPresenter, UserInteractor.us
 
     @Override
     public void navigationToLogin() {
+
     }
 
     @Override
@@ -59,5 +61,11 @@ public class SettingPresenterImpl implements SettingPresenter, UserInteractor.us
     @Override
     public void navigationToVerifiEmail() {
 
+    }
+
+    @Override
+    public void changeAvatar(Uri uri) {
+        this.uri = uri;
+        userInteractor.getUser();
     }
 }

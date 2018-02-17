@@ -8,19 +8,19 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-    <string name="nhap_dia_chi">Nhập địa chỉ:</string>
-    <string name="nhap_ho_ten">Nhập họ tên:</string>
-    <string name="nhap_email">Nhập email:</string>
-    <string name="gioi_tinh">Giới tính:</string>
+    <string name="nhap_dia_chi">Nhập địa chỉ</string>
+    <string name="nhap_ho_ten">Nhập họ tên</string>
+    <string name="nhap_email">Nhập email</string>
+    <string name="gioi_tinh">Giới tính</string>
     <string name="nam">Nam</string>
     <string name="n">Nữ</string>
     <string name="loading">Loading...</string>
     <string name="l_u">Lưu</string>
-    <string name="nhap_password">Nhập password:</string>
+    <string name="nhap_password">Nhập password</string>
     <string name="dang_nhap">Đăng nhập</string>
     <string name="firebase_demo">FireBase Demo</string>
     <string name="dang_ki_tai_khoan">Đăng kí tài khoản</string>
-    <string name="nhap_lai_password">Nhập lại password:</string>
+    <string name="nhap_lai_password">Nhập lại password</string>
     <string name="nu">Nữ</string>
     <string name="dang_ki">Đăng kí</string>
     <string name="chinh_sua_thong_tin">Chỉnh sửa thông tin</string>
@@ -28,5 +28,71 @@
     <string name="dang_bai_viet">Đăng bài viết</string>
     <string name="hay_nhap_cam_nhan_cua_ban">Hãy nhập cảm nhận của bạn</string>
 
+
+    <string-array name="province_arrays">
+        <item>An Giang</item>
+        <item>Bà Rịa–Vũng Tàu</item>
+        <item>Bình Dương</item>
+        <item>Bình Phước</item>
+        <item>Bình Thuận</item>
+        <item>Bình Định</item>
+        <item>Bạc Liêu</item>
+        <item>Bắc Giang</item>
+        <item>Bắc Kạn</item>
+        <item>Bắc Ninh</item>
+        <item>Bến Tre</item>
+        <item>Cao Bằng</item>
+        <item>Cà Mau</item>
+        <item>Cần Thơ</item>
+        <item>Điện Biên</item>
+        <item>Đà Nẵng</item>
+        <item>Đắk Lắk</item>
+        <item>Đắk Nông</item>
+        <item>Đồng Nai</item>
+        <item>Đồng Tháp</item>
+        <item>Gia Lai</item>
+        <item>Hà Giang</item>
+        <item>Hà Nam</item>
+        <item>Hà Nội</item>
+        <item>Hà Tĩnh</item>
+        <item>Hòa Bình</item>
+        <item>Hưng Yên</item>
+        <item>Hải Dương</item>
+        <item>Hải Phòng</item>
+        <item>Hậu Giang</item>
+        <item>Hồ Chí Minh</item>
+        <item>Khánh Hòa</item>
+        <item>Kiên Giang</item>
+        <item>Kon Tum</item>
+        <item>Lai Châu</item>
+        <item>Long An</item>
+        <item>Lào Cai</item>
+        <item>Lâm Đồng</item>
+        <item>Lạng Sơn</item>
+        <item>Nam Định</item>
+        <item>Nghệ An</item>
+        <item>Ninh Bình</item>
+        <item>Ninh Thuận</item>
+        <item>Phú Thọ</item>
+        <item>Phú Yên</item>
+        <item>Quảng Bình</item>
+        <item>Quảng Nam</item>
+        <item>Quảng Ngãi</item>
+        <item>Quảng Ninh</item>
+        <item>Quảng Trị</item>
+        <item>Sóc Trăng</item>
+        <item>Sơn La</item>
+        <item>Thanh Hóa</item>
+        <item>Thái Bình</item>
+        <item>Thái Nguyên</item>
+        <item>Thừa Thiên–Huế</item>
+        <item>Tiền Giang</item>
+        <item>Trà Vinh</item>
+        <item>Tuyên Quang</item>
+        <item>Tây Ninh</item>
+        <item>Vĩnh Long</item>
+        <item>Vĩnh Phúc</item>
+        <item>Yên Bái</item>
+    </string-array>
 
 </resources>
