@@ -42,19 +42,27 @@ public interface UserInteractor {
         void updateUser(Exception e);
     }
 
+    interface LoadCurrentLocalUserListener {
+        void currentLocalUser(User user);
+    }
+
     void sigIn(String email, String password, LoginCheck loginCheck);
 
     void signedInCheck(LoggedInCheck loginCheck);
 
     void logOut(LogoutCheck logoutCheck);
 
-    void getUser(GetUserListener listener);
+    void getUser(GetUserListener listener, boolean loadUser);
 
     void addAvatar(String email, final String name, String address, Boolean sex, Uri uri, AddAvatarListener addAvatarListener);
 
-    void updateUser(String email, String name, String address, Boolean sex, UpdateUserListener updateUserListener);
+    void updateUser(String email, String name, String address, Boolean sex, String avatar, UpdateUserListener updateUserListener);
 
     void verifiEmail(VerifiEmailCheck verifiEmailCheck);
 
     void register(final String email, String password, final String name, final String address, final boolean sex, RegisterCheck registerCheck);
+
+    void loadCurrentLocalUser(LoadCurrentLocalUserListener loadCurrentLocalUserListener);
+
+    void saveCurrentLocalUser(User user);
 }

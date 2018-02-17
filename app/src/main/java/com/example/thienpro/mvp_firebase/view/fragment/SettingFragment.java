@@ -43,7 +43,7 @@ public class SettingFragment extends Fragment implements SettingView {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_setting, container, false);
 
         binding.setEvent(this);
-        presenter = new SettingPresenterImpl(this);
+        presenter = new SettingPresenterImpl(this, getContext());
 
         return binding.getRoot();
     }

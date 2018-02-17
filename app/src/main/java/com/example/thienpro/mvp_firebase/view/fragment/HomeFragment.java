@@ -17,6 +17,7 @@ import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.presenter.HomePresenter;
 import com.example.thienpro.mvp_firebase.presenter.Impl.HomePresenterImpl;
 import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
+import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.example.thienpro.mvp_firebase.view.HomeView;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
 import com.google.firebase.database.DatabaseError;
@@ -68,6 +69,9 @@ public class HomeFragment extends Fragment implements HomeView {
 
     public void loadData() {
         if (listPost != null) {
+
+            LogUltil.log("RUN");
+
             binding.rvHome.setLayoutFrozen(true);
             listPost.clear();
             presenter.loadAllListPost();

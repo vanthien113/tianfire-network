@@ -43,7 +43,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
         binding.setEvent(this);
-        presenter = new RegisterPresenterImpl(this);
+        presenter = new RegisterPresenterImpl(this, this);
 
         name = getIntent().getStringExtra(NAME);
         address = getIntent().getStringExtra(ADDRESS);

@@ -1,5 +1,7 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
+import android.content.Context;
+
 import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.presenter.RegistrerPresenter;
@@ -10,12 +12,12 @@ import com.example.thienpro.mvp_firebase.view.RegisterView;
  */
 
 public class RegisterPresenterImpl implements RegistrerPresenter {
-    private RegisterView registerView;
+    private RegisterView view;
     private UserInteractor userInteractor;
 
-    public RegisterPresenterImpl(RegisterView registerView) {
-        this.registerView = registerView;
-        this.userInteractor = new UserInteractorImpl();
+    public RegisterPresenterImpl(RegisterView registerView, Context context) {
+        this.view = registerView;
+        this.userInteractor = new UserInteractorImpl(context);
     }
 
     @Override
@@ -24,9 +26,9 @@ public class RegisterPresenterImpl implements RegistrerPresenter {
             @Override
             public void checker(Exception checker) {
                 if (checker == null) {
-                    registerView.navigationToVerifiEmail();
+                    view.navigationToVerifiEmail();
                 } else {
-                    registerView.onRegisterFail(checker);
+                    view.onRegisterFail(checker);
                 }
             }
         });

@@ -1,5 +1,7 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
+import android.content.Context;
+
 import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.presenter.SettingPresenter;
@@ -13,9 +15,9 @@ public class SettingPresenterImpl implements SettingPresenter {
     private SettingView view;
     private UserInteractor userInteractor;
 
-    public SettingPresenterImpl(SettingView view) {
-        this.userInteractor = new UserInteractorImpl();
+    public SettingPresenterImpl(SettingView view, Context context) {
         this.view = view;
+        this.userInteractor = new UserInteractorImpl(context);
     }
 
     @Override

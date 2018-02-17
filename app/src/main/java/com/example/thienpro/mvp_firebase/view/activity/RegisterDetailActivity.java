@@ -37,10 +37,10 @@ public class RegisterDetailActivity extends AppCompatActivity implements Registe
         String name = binding.etName.getText().toString();
 
         if (name.isEmpty())
-            Toast.makeText(this, "Không được để trống tên!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.khong_duoc_de_trong_ten, Toast.LENGTH_SHORT).show();
         else {
             if (name.length() >= 30)
-                Toast.makeText(this, "Tên có độ dài dưới 30 ký tự!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.ten_co_do_dai_duoi_30_ki_tu, Toast.LENGTH_SHORT).show();
             else {
                 naviagationToRegister(name, binding.sp.getSelectedItem().toString(), binding.rbNam.isChecked());
             }

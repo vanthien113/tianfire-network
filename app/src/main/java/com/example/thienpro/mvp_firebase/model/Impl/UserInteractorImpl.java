@@ -1,10 +1,12 @@
 package com.example.thienpro.mvp_firebase.model.Impl;
 
+import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
+import com.example.thienpro.mvp_firebase.ultils.SharedPreferencesUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -40,13 +42,15 @@ public class UserInteractorImpl implements UserInteractor {
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private StorageReference ref;
+    private SharedPreferencesUtil currentUser;
 
-    public UserInteractorImpl() {
+    public UserInteractorImpl(Context context) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         users = mAuth.getCurrentUser();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+        currentUser = new SharedPreferencesUtil(context);
     }
 
     @Override
@@ -106,6 +110,16 @@ public class UserInteractorImpl implements UserInteractor {
                 });
     }
 
+    @Override
+    public void loadCurrentLocalUser(LoadCurrentLocalUserListener loadCurrentLocalUserListeners) {
+        loadCurrentLocalUserListeners.currentLocalUser(currentUser.getUser());
+    }
+
+    @Override
+    public void saveCurrentLocalUser(User user) {
+        currentUser.setUser(user);
+    }
+
 //    private void uploadImage(final String email, final String password, final String name, final String address, final boolean sex, Uri filePath) {
 //        if (filePath != null) {
 //            ref = storageReference.child("avatars/" + UUID.randomUUID().toString());
@@ -157,9 +171,9 @@ public class UserInteractorImpl implements UserInteractor {
 //        });
 //    }
 
-    public void updateUser(String email, final String name, String address, Boolean sex, final UpdateUserListener updateUserListener) {
+    public void updateUser(String email, final String name, String address, Boolean sex, String avatar, final UpdateUserListener updateUserListener) {
         String userId = users.getUid();
-        User user = new User(email, name, address, sex, null);
+        User user = new User(email, name, address, sex, avatar);
         Map<String, Object> postValues = user.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/users/" + userId, postValues);
@@ -178,26 +192,37 @@ public class UserInteractorImpl implements UserInteractor {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     @SuppressWarnings("unchecked")
                     Map<String, Object> map = (Map<String, Object>) dsp.getValue();
-                    String firstValue = (String) map.get("id");
-                    String thirdValue = (String) map.get("timePost");
-                    String foureValue = (String) map.get("post");
+                    String id = (String) map.get("id");
+                    String timePost = (String) map.get("timePost");
+                    String post = (String) map.get("post");
+                    String image = (String) map.get("image");
+                    String avatar = (String) map.get("avatar");
 
-                    if (firstValue.equals(users.getUid().toString())) {
+                    if (id.equals(users.getUid())) {
                         Map<String, Object> childUpdates1 = new HashMap<>();
 
                         HashMap<String, Object> result = new HashMap<>();
-                        result.put("id", firstValue);
+                        result.put("id", id);
                         result.put("name", name);
-                        result.put("timePost", thirdValue);
-                        result.put("post", foureValue);
+                        result.put("timePost", timePost);
+                        result.put("post", post);
+                        result.put("image", image);
+                        result.put("avatar", avatar);
 
-                        childUpdates1.put("/posts/" + thirdValue, result);
-                        mDatabase.updateChildren(childUpdates1).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                updateUserListener.updateUser(e);
-                            }
-                        });
+                        childUpdates1.put("/posts/" + timePost, result);
+                        mDatabase.updateChildren(childUpdates1)
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        updateUserListener.updateUser(e);
+                                    }
+                                })
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        updateUserListener.updateUser(null);
+                                    }
+                                });
                     }
                 }
             }
@@ -212,6 +237,7 @@ public class UserInteractorImpl implements UserInteractor {
 
     public void addAvatar(final String email, final String name, final String address, final Boolean sex, final Uri uri, final AddAvatarListener addAvatarListener) {
         //Up im
+
         if (uri != null) {
             ref = storageReference.child("avatars/" + UUID.randomUUID().toString());
             ref.putFile(uri)
@@ -241,23 +267,23 @@ public class UserInteractorImpl implements UserInteractor {
                                                                     for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                                                                         @SuppressWarnings("unchecked")
                                                                         Map<String, Object> map = (Map<String, Object>) dsp.getValue();
-                                                                        String firstValue = (String) map.get("id");
-                                                                        String thirdValue = (String) map.get("timePost");
-                                                                        String foureValue = (String) map.get("post");
-                                                                        String fiveValue = (String) map.get("image");
+                                                                        String id = (String) map.get("id");
+                                                                        String timePost = (String) map.get("timePost");
+                                                                        String post = (String) map.get("post");
+                                                                        String image = (String) map.get("image");
 
-                                                                        if (firstValue.equals(users.getUid().toString())) {
+                                                                        if (id.equals(users.getUid().toString())) {
                                                                             Map<String, Object> childUpdates1 = new HashMap<>();
 
                                                                             HashMap<String, Object> result = new HashMap<>();
-                                                                            result.put("id", firstValue);
+                                                                            result.put("id", id);
                                                                             result.put("name", name);
-                                                                            result.put("timePost", thirdValue);
-                                                                            result.put("post", foureValue);
-                                                                            result.put("image", fiveValue);
+                                                                            result.put("timePost", timePost);
+                                                                            result.put("post", post);
+                                                                            result.put("image", image);
                                                                             result.put("avatar", uri.toString());
 
-                                                                            childUpdates1.put("/posts/" + thirdValue, result);
+                                                                            childUpdates1.put("/posts/" + timePost, result);
                                                                             mDatabase.updateChildren(childUpdates1);
                                                                         }
                                                                     }
@@ -311,7 +337,7 @@ public class UserInteractorImpl implements UserInteractor {
     }
 
     @Override
-    public void getUser(final GetUserListener listener) {
+    public void getUser(final GetUserListener listener, boolean loadUser) {
         users = mAuth.getCurrentUser();
 
         ValueEventListener valueEventListener = new ValueEventListener() {
@@ -320,13 +346,16 @@ public class UserInteractorImpl implements UserInteractor {
                 // Get Post object and use the values to update the UI
                 @SuppressWarnings("unchecked")
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                String firstValue = (String) map.get("address");
-                String secondValue = (String) map.get("email");
-                String thirdValue = (String) map.get("name");
-                Boolean fourValue = (Boolean) map.get("sex");
-                String fivevalue = (String) map.get("avatar");
+                String address = (String) map.get("address");
+                String email = (String) map.get("email");
+                String name = (String) map.get("name");
+                Boolean sex = (Boolean) map.get("sex");
+                String avatar = (String) map.get("avatar");
 
-                User user = new User(secondValue, thirdValue, firstValue, fourValue, fivevalue);
+                User user = new User(email, name, address, sex, avatar);
+
+                currentUser.setUser(user);
+
                 listener.getUser(null, user);
             }
 
@@ -335,6 +364,7 @@ public class UserInteractorImpl implements UserInteractor {
                 listener.getUser(databaseError, null);
             }
         };
+
         mDatabase.child("users").child(users.getUid()).addValueEventListener(valueEventListener);
     }
 

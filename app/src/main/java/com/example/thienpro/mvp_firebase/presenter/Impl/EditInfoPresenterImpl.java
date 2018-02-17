@@ -1,11 +1,12 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
+import android.content.Context;
+
 import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.EditInfoPresenter;
 import com.example.thienpro.mvp_firebase.view.EditInfoView;
-import com.google.firebase.database.DatabaseError;
 
 /**
  * Created by ThienPro on 11/21/2017.
@@ -15,39 +16,40 @@ public class EditInfoPresenterImpl implements EditInfoPresenter {
     private EditInfoView view;
     private UserInteractor userInteractor;
 
-    public EditInfoPresenterImpl(EditInfoView editInfoView) {
+    public EditInfoPresenterImpl(EditInfoView editInfoView, Context context) {
         this.view = editInfoView;
-        userInteractor = new UserInteractorImpl();
+        userInteractor = new UserInteractorImpl(context);
     }
 
+    @Override
     public void loadUser() {
-        view.showDialog();
-
-        userInteractor.getUser(new UserInteractor.GetUserListener() {
+        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserListener() {
             @Override
-            public void getUser(DatabaseError e, User user) {
-                view.hideDialog();
-                if (e == null) {
-                    view.getUser(user);
-                } else {
-                    view.getUserError(e);
-                }
+            public void currentLocalUser(User user) {
+                view.getUser(user);
             }
         });
     }
 
-    public void updateUser(String email, String name, String address, boolean sex) {
+    @Override
+    public void updateUser(final String email, final String name, final String address, final boolean sex, final String avatar) {
         view.showDialog();
 
-        userInteractor.updateUser(email, name, address, sex, new UserInteractor.UpdateUserListener() {
+        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserListener() {
             @Override
-            public void updateUser(Exception e) {
-                view.hideDialog();
-                if (e != null) {
-                    view.getUserError(e);
-                } else {
-                    view.updateSuccess();
-                }
+            public void currentLocalUser(User user) {
+                userInteractor.updateUser(email, name, address, sex, avatar, new UserInteractor.UpdateUserListener() {
+                    @Override
+                    public void updateUser(Exception e) {
+                        view.hideDialog();
+                        if (e != null) {
+                            view.getUserError(e);
+                        } else {
+                            view.updateSuccess();
+                            userInteractor.saveCurrentLocalUser(new User(email, name, address, sex, null));
+                        }
+                    }
+                });
             }
         });
     }

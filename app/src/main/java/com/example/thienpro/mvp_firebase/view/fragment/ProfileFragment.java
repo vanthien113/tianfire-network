@@ -14,9 +14,11 @@ import android.widget.Toast;
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.FragmentProfileBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
+import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.Impl.ProfilePresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.ProfilePresenter;
 import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
+import com.example.thienpro.mvp_firebase.ultils.SharedPreferencesUtil;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
 import com.example.thienpro.mvp_firebase.view.activity.PostActivity;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
@@ -49,13 +51,16 @@ public class ProfileFragment extends Fragment implements ProfileView {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false);
 
-        presenter = new ProfilePresenterImpl(this);
+        presenter = new ProfilePresenterImpl(this, getContext());
         loadingDialog = new LoadingDialog(getContext());
         mLinearLayoutManager = new LinearLayoutManager(getContext(), OrientationHelper.VERTICAL, false);
 
         binding.rvProfile.setLayoutManager(mLinearLayoutManager);
         binding.rvProfile.setNestedScrollingEnabled(false);
+
         presenter.loadPost();
+        presenter.getCurrentUser();
+
         binding.setEvent(this);
         return binding.getRoot(); // Lưu ý: binding.getRoot();
     }

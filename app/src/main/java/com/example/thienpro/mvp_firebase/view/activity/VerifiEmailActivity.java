@@ -32,7 +32,7 @@ public class VerifiEmailActivity extends AppCompatActivity implements VerifiEmai
         binding = DataBindingUtil.setContentView(this, R.layout.activity_verifiemail);
         binding.setEvent(this);
 
-        presenter = new VerifiEmailPresenterImpl(this);
+        presenter = new VerifiEmailPresenterImpl(this, this);
         presenter.verifiEmail();
     }
 

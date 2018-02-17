@@ -6,7 +6,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -27,6 +26,7 @@ public class EditInfoActivity extends AppCompatActivity implements EditInfoView 
     private ActivityEditinfoBinding binding;
     private EditInfoPresenter presenter;
     private LoadingDialog loadingDialog;
+    private User user;
 
     public static void startActivity(Context context) {
         context.startActivity(new Intent(context, EditInfoActivity.class));
@@ -37,11 +37,12 @@ public class EditInfoActivity extends AppCompatActivity implements EditInfoView 
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_editinfo);
 
-        presenter = new EditInfoPresenterImpl(this);
+        presenter = new EditInfoPresenterImpl(this, this);
         loadingDialog = new LoadingDialog(this);
 
         binding.setEvent(this);
         binding.spProvince.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.province_arrays)));
+
         presenter.loadUser();
     }
 
@@ -51,18 +52,18 @@ public class EditInfoActivity extends AppCompatActivity implements EditInfoView 
         String name = binding.etName.getText().toString();
 
         if (email.isEmpty() || name.isEmpty())
-            Toast.makeText(this, "Nhập thông tin cho các trường!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.nhap_thong_tin_cho_cac_truong, Toast.LENGTH_SHORT).show();
         else if (binding.etName.getText().toString().length() >= 30)
-            Toast.makeText(this, "Tên có độ dài dưới 30 ký tự!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.ten_co_do_dai_duoi_30_ki_tu, Toast.LENGTH_SHORT).show();
         else {
-            presenter.updateUser(email, name, binding.spProvince.getSelectedItem().toString(), binding.rbNam.isChecked());
+            presenter.updateUser(email, name, binding.spProvince.getSelectedItem().toString(), binding.rbNam.isChecked(), user.getAvatar());
             Toast.makeText(this, R.string.cap_nhat_thanh_cong, Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     public void getUser(User user) {
-        binding.pbLoading.setVisibility(View.GONE);
+        this.user = user;
         binding.setData(user);
         int i = 0;
         for (String string : getResources().getStringArray(R.array.province_arrays)) {

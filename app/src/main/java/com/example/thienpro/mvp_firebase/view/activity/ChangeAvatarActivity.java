@@ -36,7 +36,7 @@ public class ChangeAvatarActivity extends AppCompatActivity implements ChangeAva
         super.onCreate(savedInstanceState);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_change_avatar);
-        presenter = new ChangeAvatarPresenterImpl(this);
+        presenter = new ChangeAvatarPresenterImpl(this, this);
         loadingDialog = new LoadingDialog(this);
 
         binding.setEvent(this);
@@ -59,7 +59,11 @@ public class ChangeAvatarActivity extends AppCompatActivity implements ChangeAva
 
     @Override
     public void onChangeAvatarClick() {
-        presenter.changeAvatar(filePath);
+        if (filePath == null) {
+            Toast.makeText(this, R.string.hay_chon_anh_dai_dien, Toast.LENGTH_SHORT).show();
+        } else {
+            presenter.changeAvatar(filePath);
+        }
     }
 
     @Override

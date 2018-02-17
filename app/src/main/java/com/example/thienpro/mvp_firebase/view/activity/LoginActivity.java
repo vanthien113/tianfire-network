@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         binding.setEvent(this);
 
-        presenter = new LoginPresenterImpl(this);
+        presenter = new LoginPresenterImpl(this, this);
         loadingDialog = new LoadingDialog(this);
 
         presenter.signedInCheck();
@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         String password = binding.etPassword.getText().toString();
 
         if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Hãy nhập email và password!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.hay_nhap_email_va_password, Toast.LENGTH_SHORT).show();
         } else
             presenter.onSignIn(email, password);
     }

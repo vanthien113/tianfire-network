@@ -1,5 +1,7 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
+import android.content.Context;
+
 import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.presenter.LoginPresenter;
@@ -13,9 +15,9 @@ public class LoginPresenterImpl implements LoginPresenter {
     private UserInteractor userInteractor;
     private LoginView view;
 
-    public LoginPresenterImpl(LoginView loginView) {
-        this.userInteractor = new UserInteractorImpl();
+    public LoginPresenterImpl(LoginView loginView, Context context) {
         this.view = loginView;
+        this.userInteractor = new UserInteractorImpl(context);
     }
 
     public void signedInCheck() {
@@ -49,7 +51,6 @@ public class LoginPresenterImpl implements LoginPresenter {
                 } else {
                     view.hideLoading();
                     view.onLoginFail(e);
-
 //                    view.navigationToLogin();
                 }
             }

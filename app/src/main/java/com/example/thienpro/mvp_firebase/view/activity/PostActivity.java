@@ -31,9 +31,11 @@ public class PostActivity extends AppCompatActivity implements PostView {
     private ActivityPostBinding binding;
     private PostPresenter presenter;
     private Uri filePath;
-    private static final int REQUEST_CODE_IMAGE = 1;
     private LoadingDialog loadingDialog;
     private PopupMenu popupMenu;
+
+    private static final int REQUEST_CODE_IMAGE = 1;
+    private static int CODE_FROM_GALLERY_CAMERA = 2;
 
     public static void startActivity(Context context) {
         context.startActivity(new Intent(context, PostActivity.class));
@@ -71,7 +73,9 @@ public class PostActivity extends AppCompatActivity implements PostView {
                     case R.id.mn_choose_picture:
                         onChoosePicture();
                         break;
-
+                    case R.id.mn_camera:
+                        onCamera();
+                        break;
                 }
                 return false;
             }
@@ -80,9 +84,16 @@ public class PostActivity extends AppCompatActivity implements PostView {
 
     private void post() {
         if (TextUtils.isEmpty(binding.etPost.getText()))
-            Toast.makeText(this, "Hãy nhập cảm nhận của bạn!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.hay_nhap_cam_nhan_cua_ban, Toast.LENGTH_SHORT).show();
         else {
             presenter.newPost(binding.etPost.getText().toString(), filePath);
+        }
+    }
+
+    private void onCamera() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(this.getPackageManager()) != null) {
+            this.startActivityForResult(takePictureIntent, CODE_FROM_GALLERY_CAMERA);
         }
     }
 
@@ -116,8 +127,7 @@ public class PostActivity extends AppCompatActivity implements PostView {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_IMAGE && resultCode == RESULT_OK
-                && data != null && data.getData() != null) {
+        if (requestCode == REQUEST_CODE_IMAGE && resultCode == RESULT_OK  && data != null && data.getData() != null) {
             filePath = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
@@ -125,6 +135,12 @@ public class PostActivity extends AppCompatActivity implements PostView {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+        if (requestCode == CODE_FROM_GALLERY_CAMERA && resultCode == RESULT_OK && data != null) {
+            Bundle extras = data.getExtras();
+            Bitmap bitmap = (Bitmap) extras.get("data");
+
+            binding.ivUploaded.setImageBitmap(bitmap);
         }
     }
 }

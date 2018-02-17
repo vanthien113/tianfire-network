@@ -1,5 +1,7 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
+import android.content.Context;
+
 import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.presenter.VerifiEmailPresenter;
@@ -11,11 +13,11 @@ import com.example.thienpro.mvp_firebase.view.VerifiEmailView;
 
 public class VerifiEmailPresenterImpl implements VerifiEmailPresenter {
     private UserInteractor userInteractor;
-    private VerifiEmailView verifiEmailView;
+    private VerifiEmailView view;
 
-    public VerifiEmailPresenterImpl(VerifiEmailView verifiEmailView) {
-        this.userInteractor = new UserInteractorImpl();
-        this.verifiEmailView = verifiEmailView;
+    public VerifiEmailPresenterImpl(VerifiEmailView verifiEmailView, Context context) {
+        this.view = verifiEmailView;
+        this.userInteractor = new UserInteractorImpl(context);
     }
 
     @Override
@@ -24,11 +26,11 @@ public class VerifiEmailPresenterImpl implements VerifiEmailPresenter {
             @Override
             public void checker(Exception checker, String email) {
                 if (checker == null && email == null) {
-                    verifiEmailView.navigationToHome();
+                    view.navigationToHome();
                 } else if (checker == null && email != null) {
-                    verifiEmailView.sendverifiEmailComplete(email);
+                    view.sendverifiEmailComplete(email);
                 } else {
-                    verifiEmailView.sendverifiEmailFail(email);
+                    view.sendverifiEmailFail(email);
                 }
             }
         });
@@ -40,7 +42,7 @@ public class VerifiEmailPresenterImpl implements VerifiEmailPresenter {
             @Override
             public void checker(boolean checker) {
                 if (checker) {
-                    verifiEmailView.navigationToLogin();
+                    view.navigationToLogin();
                 }
             }
         });
