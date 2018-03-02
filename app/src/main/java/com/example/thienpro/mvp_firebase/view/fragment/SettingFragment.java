@@ -13,7 +13,7 @@ import com.example.thienpro.mvp_firebase.databinding.FragmentSettingBinding;
 import com.example.thienpro.mvp_firebase.presenter.Impl.SettingPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.SettingPresenter;
 import com.example.thienpro.mvp_firebase.view.SettingView;
-import com.example.thienpro.mvp_firebase.view.activity.ChangeAvatarActivity;
+import com.example.thienpro.mvp_firebase.view.activity.AppSettingActivity;
 import com.example.thienpro.mvp_firebase.view.activity.EditInfoActivity;
 import com.example.thienpro.mvp_firebase.view.activity.LoginActivity;
 
@@ -59,13 +59,13 @@ public class SettingFragment extends Fragment implements SettingView {
     }
 
     @Override
-    public void onAvatarChange() {
-        ChangeAvatarActivity.startActivity(getContext());
-    }
-
-    @Override
     public void navigationToLogin() {
         LoginActivity.startActivity(getContext());
         getActivity().finish();
+    }
+
+    @Override
+    public void onAppSettingClick() {
+        AppSettingActivity.startActivity(getContext());
     }
 }

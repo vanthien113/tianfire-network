@@ -9,7 +9,7 @@ public interface SettingView {
 
     void onLogout();
 
-    void onAvatarChange();
-
     void navigationToLogin();
+
+    void onAppSettingClick();
 }
