@@ -35,7 +35,11 @@ public interface UserInteractor {
     }
 
     interface AddAvatarListener {
-        void addAvatar(Exception e);
+        void addAvatar(Exception e, String uri);
+    }
+
+    interface AddCoverListener {
+        void addCover(Exception e, String uri);
     }
 
     interface UpdateUserListener {
@@ -54,9 +58,11 @@ public interface UserInteractor {
 
     void getUser(GetUserListener listener, boolean loadUser);
 
-    void addAvatar(String email, final String name, String address, Boolean sex, Uri uri, AddAvatarListener addAvatarListener);
+    void addAvatar(String email, final String name, String address, Boolean sex, Uri uri, String coverUri, AddAvatarListener addAvatarListener);
 
-    void updateUser(String email, String name, String address, Boolean sex, String avatar, UpdateUserListener updateUserListener);
+    void addCover(final String email, final String name, final String address, final Boolean sex, final String avatar, final Uri coverUri, AddCoverListener addCoverListener);
+
+    void updateUser(String email, String name, String address, Boolean sex, String avatar, String cover, UpdateUserListener updateUserListener);
 
     void verifiEmail(VerifiEmailCheck verifiEmailCheck);
 

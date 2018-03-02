@@ -29,9 +29,9 @@ public class ChangeAvatarPresenterImpl implements ChangeAvatarPresenter {
         userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserListener() {
             @Override
             public void currentLocalUser(User user) {
-                userInteractor.addAvatar(user.getEmail(), user.getName(), user.getAddress(), user.getSex(), uri, new UserInteractor.AddAvatarListener() {
+                userInteractor.addAvatar(user.getEmail(), user.getName(), user.getAddress(), user.getSex(), uri, user.getCover(), new UserInteractor.AddAvatarListener() {
                     @Override
-                    public void addAvatar(Exception e) {
+                    public void addAvatar(Exception e, String uri) {
                         view.hideLoading();
                         if (e != null) {
                             view.changeAvatarError(e);

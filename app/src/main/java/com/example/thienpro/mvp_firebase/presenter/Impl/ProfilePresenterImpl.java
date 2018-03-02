@@ -1,6 +1,7 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
 import android.content.Context;
+import android.net.Uri;
 
 import com.example.thienpro.mvp_firebase.model.Impl.PostInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
@@ -42,22 +43,98 @@ public class ProfilePresenterImpl implements ProfilePresenter {
         postInteractor.loadPersonalPost(new PostInteractor.ListPost() {
             @Override
             public void listPost(DatabaseError e, ArrayList<Post> listPost) {
+                view.hideLoading();
+
                 if (e == null) {
-                    view.hideLoading();
                     view.showList(listPost);
                 } else {
-                    view.hideLoading();
                     view.loadPostError(e);
                 }
             }
         });
     }
+//
+//    @Override
+//    public void getCurrentUser() {
+//        view.showLoading();
+//
+//        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserListener() {
+//            @Override
+//            public void currentLocalUser(User user) {
+//                view.showUser(user);
+//                LogUltil.log(getClass(), user.getAvatar());
+//            }
+//        });
+//    }
 
-    public void getCurrentUser() {
+    @Override
+    public void getUser() {
+        view.showLoading();
         userInteractor.getUser(new UserInteractor.GetUserListener() {
             @Override
             public void getUser(DatabaseError error, User user) {
+                view.hideLoading();
+
+                if (error != null) {
+                } else {
+                    userInteractor.saveCurrentLocalUser(user);
+                    view.showUser(user);
+                }
             }
         }, true);
+    }
+
+    @Override
+    public void changeAvatar(final Uri uri) {
+        view.showLoading();
+
+        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserListener() {
+            @Override
+            public void currentLocalUser(final User user) {
+                userInteractor.addAvatar(user.getEmail(), user.getName(), user.getAddress(), user.getSex(), uri, user.getCover(), new UserInteractor.AddAvatarListener() {
+                    @Override
+                    public void addAvatar(Exception e, String uri) {
+                        view.hideLoading();
+                        if (e != null) {
+                            view.showError(e);
+                        } else {
+                            view.showMessenger("Thay đổi avatar thành công!");
+
+                            user.setAvatar(uri);
+                            userInteractor.saveCurrentLocalUser(user);
+
+                            view.showUser(user);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public void changeCover(final Uri uri) {
+        view.showLoading();
+
+        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserListener() {
+            @Override
+            public void currentLocalUser(final User user) {
+                userInteractor.addCover(user.getEmail(), user.getName(), user.getAddress(), user.getSex(), user.getAvatar(), uri, new UserInteractor.AddCoverListener() {
+                    @Override
+                    public void addCover(Exception e, String uri) {
+                        view.hideLoading();
+                        if (e != null) {
+                            view.showError(e);
+                        } else {
+                            view.showMessenger("Thay đổi ảnh bìa thành công!");
+
+                            user.setCover(uri);
+                            userInteractor.saveCurrentLocalUser(user);
+
+                            view.showUser(user);
+                        }
+                    }
+                });
+            }
+        });
     }
 }

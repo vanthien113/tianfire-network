@@ -14,7 +14,7 @@ import com.example.thienpro.mvp_firebase.R;
 
 public class LoadingDialog extends Dialog {
     public LoadingDialog(@NonNull Context context) {
-        super(context, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        super(context, android.R.style.Theme_Black_NoTitleBar);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_loading);
         setCancelable(false);

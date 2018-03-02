@@ -56,7 +56,7 @@ public class EditInfoActivity extends AppCompatActivity implements EditInfoView 
         else if (binding.etName.getText().toString().length() >= 30)
             Toast.makeText(this, R.string.ten_co_do_dai_duoi_30_ki_tu, Toast.LENGTH_SHORT).show();
         else {
-            presenter.updateUser(email, name, binding.spProvince.getSelectedItem().toString(), binding.rbNam.isChecked(), user.getAvatar());
+            presenter.updateUser(email, name, binding.spProvince.getSelectedItem().toString(), binding.rbNam.isChecked(), user.getAvatar(), user.getCover());
             Toast.makeText(this, R.string.cap_nhat_thanh_cong, Toast.LENGTH_SHORT).show();
         }
     }

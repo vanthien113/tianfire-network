@@ -85,7 +85,7 @@ public class UserInteractorImpl implements UserInteractor {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             users = mAuth.getCurrentUser();
-                            User user = new User(email, name, address, sex, null);
+                            User user = new User(email, name, address, sex, null, null);
                             mDatabase.child("users").child(users.getUid()).setValue(user)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
@@ -171,9 +171,9 @@ public class UserInteractorImpl implements UserInteractor {
 //        });
 //    }
 
-    public void updateUser(String email, final String name, String address, Boolean sex, String avatar, final UpdateUserListener updateUserListener) {
+    public void updateUser(String email, final String name, String address, Boolean sex, String avatar, String cover, final UpdateUserListener updateUserListener) {
         String userId = users.getUid();
-        User user = new User(email, name, address, sex, avatar);
+        User user = new User(email, name, address, sex, avatar, cover);
         Map<String, Object> postValues = user.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/users/" + userId, postValues);
@@ -235,7 +235,7 @@ public class UserInteractorImpl implements UserInteractor {
         });
     }
 
-    public void addAvatar(final String email, final String name, final String address, final Boolean sex, final Uri uri, final AddAvatarListener addAvatarListener) {
+    public void addAvatar(final String email, final String name, final String address, final Boolean sex, final Uri uri, final String coverUri, final AddAvatarListener addAvatarListener) {
         //Up im
 
         if (uri != null) {
@@ -250,7 +250,7 @@ public class UserInteractorImpl implements UserInteractor {
                                         public void onSuccess(final Uri uri) {
                                             //add in usr
                                             String userId = users.getUid();
-                                            User user = new User(email, name, address, sex, uri.toString());
+                                            User user = new User(email, name, address, sex, uri.toString(), coverUri);
                                             Map<String, Object> postValues = user.toMap();
                                             Map<String, Object> childUpdates = new HashMap<>();
                                             childUpdates.put("/users/" + userId, postValues);
@@ -287,7 +287,7 @@ public class UserInteractorImpl implements UserInteractor {
                                                                             mDatabase.updateChildren(childUpdates1);
                                                                         }
                                                                     }
-                                                                    addAvatarListener.addAvatar(null);
+                                                                    addAvatarListener.addAvatar(null, uri.toString());
 
                                                                 }
 
@@ -301,7 +301,7 @@ public class UserInteractorImpl implements UserInteractor {
                                                     .addOnFailureListener(new OnFailureListener() {
                                                         @Override
                                                         public void onFailure(@NonNull Exception e) {
-                                                            addAvatarListener.addAvatar(e);
+                                                            addAvatarListener.addAvatar(e, null);
                                                         }
                                                     });
                                         }
@@ -309,7 +309,7 @@ public class UserInteractorImpl implements UserInteractor {
                                     .addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            addAvatarListener.addAvatar(e);
+                                            addAvatarListener.addAvatar(e, null);
                                         }
                                     });
                         }
@@ -317,7 +317,61 @@ public class UserInteractorImpl implements UserInteractor {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            addAvatarListener.addAvatar(e);
+                            addAvatarListener.addAvatar(e, null);
+                        }
+                    });
+        }
+    }
+
+    @Override
+    public void addCover(final String email, final String name, final String address, final Boolean sex, final String avatar, final Uri coverUri, final AddCoverListener addCoverListener) {
+        //Up im
+
+        if (coverUri != null) {
+            ref = storageReference.child("covers/" + UUID.randomUUID().toString());
+            ref.putFile(coverUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            ref.getDownloadUrl()
+                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(final Uri uri) {
+                                            //add in usr
+                                            String userId = users.getUid();
+                                            User user = new User(email, name, address, sex, avatar, uri.toString());
+                                            Map<String, Object> postValues = user.toMap();
+                                            Map<String, Object> childUpdates = new HashMap<>();
+                                            childUpdates.put("/users/" + userId, postValues);
+
+                                            mDatabase.updateChildren(childUpdates)
+                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                                            addCoverListener.addCover(null, uri.toString());
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            addCoverListener.addCover(e, null);
+                                                        }
+                                                    });
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            addCoverListener.addCover(e, null);
+                                        }
+                                    });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            addCoverListener.addCover(e, null);
                         }
                     });
         }
@@ -351,8 +405,9 @@ public class UserInteractorImpl implements UserInteractor {
                 String name = (String) map.get("name");
                 Boolean sex = (Boolean) map.get("sex");
                 String avatar = (String) map.get("avatar");
+                String cover = (String) map.get("cover");
 
-                User user = new User(email, name, address, sex, avatar);
+                User user = new User(email, name, address, sex, avatar, cover);
 
                 currentUser.setUser(user);
 

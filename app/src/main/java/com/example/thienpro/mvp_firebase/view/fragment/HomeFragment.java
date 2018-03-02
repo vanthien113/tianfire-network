@@ -69,9 +69,6 @@ public class HomeFragment extends Fragment implements HomeView {
 
     public void loadData() {
         if (listPost != null) {
-
-            LogUltil.log("RUN");
-
             binding.rvHome.setLayoutFrozen(true);
             listPost.clear();
             presenter.loadAllListPost();

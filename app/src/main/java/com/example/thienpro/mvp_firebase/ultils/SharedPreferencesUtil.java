@@ -16,6 +16,7 @@ public class SharedPreferencesUtil {
     private static String EMAIL = "email";
     private static String SEX = "sex";
     private static String AVATAR = "avatar";
+    private static String COVER = "cover";
 
     public SharedPreferencesUtil(Context context) {
         this.sharedPreferencesUtil = context.getSharedPreferences(DATA, Context.MODE_PRIVATE);
@@ -34,6 +35,8 @@ public class SharedPreferencesUtil {
             editor.putBoolean(SEX, user.getSex());
         if (user.getAvatar() != null)
             editor.putString(AVATAR, user.getAvatar());
+        if (user.getCover() != null)
+            editor.putString(COVER, user.getCover());
         editor.apply();
     }
 
@@ -43,6 +46,7 @@ public class SharedPreferencesUtil {
         user.setName(sharedPreferencesUtil.getString(NAME, ""));
         user.setAddress(sharedPreferencesUtil.getString(ADDRESS, ""));
         user.setAvatar(sharedPreferencesUtil.getString(AVATAR, ""));
+        user.setCover(sharedPreferencesUtil.getString(COVER, ""));
         user.setEmail(sharedPreferencesUtil.getString(EMAIL, ""));
         user.setSex(sharedPreferencesUtil.getBoolean(SEX, false));
 

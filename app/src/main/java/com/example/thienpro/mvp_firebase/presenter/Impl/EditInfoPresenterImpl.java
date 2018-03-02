@@ -32,13 +32,13 @@ public class EditInfoPresenterImpl implements EditInfoPresenter {
     }
 
     @Override
-    public void updateUser(final String email, final String name, final String address, final boolean sex, final String avatar) {
+    public void updateUser(final String email, final String name, final String address, final boolean sex, final String avatar, final String cover) {
         view.showDialog();
 
         userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserListener() {
             @Override
             public void currentLocalUser(User user) {
-                userInteractor.updateUser(email, name, address, sex, avatar, new UserInteractor.UpdateUserListener() {
+                userInteractor.updateUser(email, name, address, sex, avatar, cover, new UserInteractor.UpdateUserListener() {
                     @Override
                     public void updateUser(Exception e) {
                         view.hideDialog();
@@ -46,7 +46,7 @@ public class EditInfoPresenterImpl implements EditInfoPresenter {
                             view.getUserError(e);
                         } else {
                             view.updateSuccess();
-                            userInteractor.saveCurrentLocalUser(new User(email, name, address, sex, null));
+                            userInteractor.saveCurrentLocalUser(new User(email, name, address, sex, avatar, cover));
                         }
                     }
                 });

@@ -15,6 +15,7 @@ import com.example.thienpro.mvp_firebase.databinding.ActivityChangeAvatarBinding
 import com.example.thienpro.mvp_firebase.presenter.ChangeAvatarPresenter;
 import com.example.thienpro.mvp_firebase.presenter.Impl.ChangeAvatarPresenterImpl;
 import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
+import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.example.thienpro.mvp_firebase.view.ChangeAvatarView;
 import com.google.firebase.database.DatabaseError;
 
@@ -50,6 +51,9 @@ public class ChangeAvatarActivity extends AppCompatActivity implements ChangeAva
             filePath = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+
+                LogUltil.log(getClass(), filePath);
+
                 binding.ivAvatar.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();

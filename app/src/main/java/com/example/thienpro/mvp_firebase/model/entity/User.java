@@ -15,6 +15,15 @@ public class User {
     private String address;
     private Boolean sex;
     private String avatar;
+    private String cover;
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
 
     public String getEmail() {
         return email;
@@ -59,12 +68,13 @@ public class User {
     public User() {
     }
 
-    public User(String email, String name, String address, Boolean sex, String avatar) {
+    public User(String email, String name, String address, Boolean sex, String avatar, String cover) {
         this.email = email;
         this.name = name;
         this.address = address;
         this.sex = sex;
         this.avatar = avatar;
+        this.cover = cover;
     }
 
     @Exclude
@@ -75,6 +85,7 @@ public class User {
         result.put("address", address);
         result.put("sex", sex);
         result.put("avatar", avatar);
+        result.put("cover", cover);
         return result;
     }
 }
