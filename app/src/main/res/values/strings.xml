@@ -2,6 +2,8 @@
     <string name="app_name">FireBase Demo</string>
     <string name="title_activity_menu">Menu</string>
 
+    <string name="google_maps_key"> AIzaSyB3PvvqjM0iVOWQ9Cao0QAhnpHuFDUU3ic</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>

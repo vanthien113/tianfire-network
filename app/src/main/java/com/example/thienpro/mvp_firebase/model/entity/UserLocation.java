@@ -2,10 +2,11 @@ package com.example.thienpro.mvp_firebase.model.entity;
 
 import com.google.firebase.database.Exclude;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserLocation {
+public class UserLocation implements Serializable {
     private String userName;
     private String userId;
     private double lng;

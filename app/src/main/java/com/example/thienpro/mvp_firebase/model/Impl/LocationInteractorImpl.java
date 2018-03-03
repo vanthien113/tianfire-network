@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,17 +22,20 @@ public class LocationInteractorImpl implements LocationInteractor {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
+    private ArrayList<UserLocation> listLocation;
 
     public LocationInteractorImpl() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+
+        listLocation = new ArrayList<>();
     }
 
     public void pushLocation(UserLocation location, final PushLocationListener listener) {
         String userId = user.getUid();
 
-        location.setUserName("dsdsd");
+        location.setUserName(location.getUserName());
         location.setUserId(userId);
 
         Map<String, Object> postValues = location.toMap();
@@ -53,20 +57,20 @@ public class LocationInteractorImpl implements LocationInteractor {
     }
 
     @Override
-    public void getLocation(final GetLocationListener listener) {
+    public void getLocation(String userId, final GetLocationListener listener) {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 @SuppressWarnings("unchecked")
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                String lng = (String) map.get("lng");
-                String lat = (String) map.get("lat");
-                String status = (String) map.get("status");
+                double lng = (double) map.get("lng");
+                double lat = (double) map.get("lat");
+                boolean status = (boolean) map.get("status");
                 String userName = (String) map.get("name");
                 String userId = (String) map.get("id");
 
-                UserLocation location = new UserLocation(userName, userId, Double.parseDouble(lng), Double.parseDouble(lat), Boolean.parseBoolean(status));
+                UserLocation location = new UserLocation(userName, userId, lng, lat, status);
 
                 listener.getLocation(null, location);
             }
@@ -77,6 +81,35 @@ public class LocationInteractorImpl implements LocationInteractor {
             }
         };
 
-        mDatabase.child("location").child(user.getUid()).addValueEventListener(valueEventListener);
+        mDatabase.child("locations").child(userId).addValueEventListener(valueEventListener);
+    }
+
+    @Override
+    public void getListLocation(final GetListLocationListener listener) {
+        mDatabase.child("locations").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                    Map<String, Object> map = (Map<String, Object>) dsp.getValue();
+                    double lng = (double) map.get("lng");
+                    double lat = (double) map.get("lat");
+                    boolean status = (boolean) map.get("status");
+                    String userName = (String) map.get("name");
+                    String userId = (String) map.get("id");
+
+                    if (status) {
+                        UserLocation location = new UserLocation(userName, userId, lng, lat, status);
+                        listLocation.add(location);
+                    }
+                }
+
+                listener.listLocation(listLocation, null);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.listLocation(null, databaseError);
+            }
+        });
     }
 }

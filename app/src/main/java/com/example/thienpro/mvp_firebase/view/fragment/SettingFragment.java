@@ -1,12 +1,9 @@
 package com.example.thienpro.mvp_firebase.view.fragment;
 
-import android.databinding.DataBindingUtil;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.FragmentSettingBinding;
@@ -16,18 +13,23 @@ import com.example.thienpro.mvp_firebase.view.SettingView;
 import com.example.thienpro.mvp_firebase.view.activity.AppSettingActivity;
 import com.example.thienpro.mvp_firebase.view.activity.EditInfoActivity;
 import com.example.thienpro.mvp_firebase.view.activity.LoginActivity;
+import com.example.thienpro.mvp_firebase.view.bases.BaseFragment;
 
 /**
  * Created by ThienPro on 11/22/2017.
  */
 
-public class SettingFragment extends Fragment implements SettingView {
-    private FragmentSettingBinding binding;
+public class SettingFragment extends BaseFragment<FragmentSettingBinding> implements SettingView {
     private SettingPresenter presenter;
 
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    protected void attach(Context context) {
+
     }
 
     public static SettingFragment newInstance() {
@@ -37,15 +39,30 @@ public class SettingFragment extends Fragment implements SettingView {
         return fragment;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_setting, container, false);
+    protected int getLayoutId() {
+        return R.layout.fragment_setting;
+    }
 
-        binding.setEvent(this);
+    @Override
+    protected void init(@Nullable View view) {
+        viewDataBinding.setEvent(this);
         presenter = new SettingPresenterImpl(this, getContext());
+    }
 
-        return binding.getRoot();
+    @Override
+    protected void screenResume() {
+
+    }
+
+    @Override
+    protected void screenPause() {
+
+    }
+
+    @Override
+    protected void screenStart(@Nullable Bundle saveInstanceState) {
+
     }
 
     @Override

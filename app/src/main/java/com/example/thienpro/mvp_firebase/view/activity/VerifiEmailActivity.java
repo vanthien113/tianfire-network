@@ -2,24 +2,20 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityVerifiemailBinding;
 import com.example.thienpro.mvp_firebase.presenter.Impl.VerifiEmailPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.VerifiEmailPresenter;
 import com.example.thienpro.mvp_firebase.view.VerifiEmailView;
+import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 
 /**
  * Created by ThienPro on 11/28/2017.
  */
 
-public class VerifiEmailActivity extends AppCompatActivity implements VerifiEmailView {
-    private ActivityVerifiemailBinding binding;
+public class VerifiEmailActivity extends BaseActivity<ActivityVerifiemailBinding> implements VerifiEmailView {
     private VerifiEmailPresenter presenter;
 
     public static void startActivity(Context context) {
@@ -27,25 +23,48 @@ public class VerifiEmailActivity extends AppCompatActivity implements VerifiEmai
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_verifiemail);
-        binding.setEvent(this);
+    protected int getLayoutId() {
+        return R.layout.activity_verifiemail;
+    }
+
+    @Override
+    protected void init() {
+        viewDataBinding.setEvent(this);
 
         presenter = new VerifiEmailPresenterImpl(this, this);
         presenter.verifiEmail();
     }
 
     @Override
+    protected void startScreen() {
+
+    }
+
+    @Override
+    protected void resumeScreen() {
+
+    }
+
+    @Override
+    protected void pauseScreen() {
+
+    }
+
+    @Override
+    protected void destroyScreen() {
+
+    }
+
+    @Override
     public void sendverifiEmailComplete(String email) {
-        binding.tvEmail.setText(email);
-        binding.tvEmail.setTextColor(Color.BLUE);
+        viewDataBinding.tvEmail.setText(email);
+        viewDataBinding.tvEmail.setTextColor(Color.BLUE);
     }
 
     @Override
     public void sendverifiEmailFail(String email) {
-        binding.tvEmail.setText(email);
-        binding.tvEmail.setTextColor(Color.RED);
+        viewDataBinding.tvEmail.setText(email);
+        viewDataBinding.tvEmail.setTextColor(Color.RED);
     }
 
     @Override

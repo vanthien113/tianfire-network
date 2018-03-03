@@ -1,7 +1,7 @@
 package com.example.thienpro.mvp_firebase.view.fragment;
 
+import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -9,14 +9,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -33,6 +30,7 @@ import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
 import com.example.thienpro.mvp_firebase.view.activity.PostActivity;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
+import com.example.thienpro.mvp_firebase.view.bases.BaseFragment;
 import com.google.firebase.database.DatabaseError;
 
 import java.io.File;
@@ -46,11 +44,10 @@ import static android.app.Activity.RESULT_OK;
  * Created by ThienPro on 11/22/2017.
  */
 
-public class ProfileFragment extends Fragment implements ProfileView {
+public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implements ProfileView {
     private static final int REQUEST_CHANGE_AVATAR = 1;
     private static final int REQUEST_CHANGE_COVER = 2;
 
-    private FragmentProfileBinding binding;
     private HomeAdapter homeAdapter;
     private LinearLayoutManager mLinearLayoutManager;
     private ProfilePresenter presenter;
@@ -64,24 +61,25 @@ public class ProfileFragment extends Fragment implements ProfileView {
         return fragment;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false);
+    protected int getLayoutId() {
+        return R.layout.fragment_profile;
+    }
 
+    @Override
+    protected void init(@Nullable View view) {
         presenter = new ProfilePresenterImpl(this, getContext());
         loadingDialog = new LoadingDialog(getContext());
         mLinearLayoutManager = new LinearLayoutManager(getContext(), OrientationHelper.VERTICAL, false);
 
-        binding.rvProfile.setLayoutManager(mLinearLayoutManager);
-        binding.rvProfile.setNestedScrollingEnabled(false);
+        viewDataBinding.rvProfile.setLayoutManager(mLinearLayoutManager);
+        viewDataBinding.rvProfile.setNestedScrollingEnabled(false);
 
         presenter.loadPost();
 //        presenter.getCurrentUser();
         presenter.getUser();
 
-        binding.setEvent(this);
-        return binding.getRoot(); // Lưu ý: binding.getRoot();
+        viewDataBinding.setEvent(this);
     }
 
     @Override
@@ -90,12 +88,17 @@ public class ProfileFragment extends Fragment implements ProfileView {
         super.onResume();
     }
 
+    @Override
+    protected void attach(Context context) {
+
+    }
+
     public void loadData() {
         if (listPost != null) {
-            binding.rvProfile.setLayoutFrozen(true);
+            viewDataBinding.rvProfile.setLayoutFrozen(true);
             listPost.clear();
             presenter.loadPost();
-            binding.rvProfile.setLayoutFrozen(false);
+            viewDataBinding.rvProfile.setLayoutFrozen(false);
         }
     }
 
@@ -117,8 +120,8 @@ public class ProfileFragment extends Fragment implements ProfileView {
         Collections.reverse(list);
         listPost = list;
         homeAdapter = new HomeAdapter(listPost, getContext());
-        binding.rvProfile.setAdapter(homeAdapter);
-        binding.rvProfile.setLayoutFrozen(false);
+        viewDataBinding.rvProfile.setAdapter(homeAdapter);
+        viewDataBinding.rvProfile.setLayoutFrozen(false);
     }
 
     @Override
@@ -133,33 +136,33 @@ public class ProfileFragment extends Fragment implements ProfileView {
 
     @Override
     public void showUser(User user) {
-        Glide.with(binding.getRoot().getContext())
+        Glide.with(viewDataBinding.getRoot().getContext())
                 .load(user.getAvatar())
                 .asBitmap().centerCrop()
-                .into(new BitmapImageViewTarget(binding.ivAvatar) {
+                .into(new BitmapImageViewTarget(viewDataBinding.ivAvatar) {
                     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
                     @Override
                     protected void setResource(Bitmap resource) {
-                        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(binding.getRoot().getResources(), resource);
+                        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(viewDataBinding.getRoot().getResources(), resource);
                         roundedBitmapDrawable.setCircular(true);
-                        binding.ivAvatar.setImageDrawable(roundedBitmapDrawable);
+                        viewDataBinding.ivAvatar.setImageDrawable(roundedBitmapDrawable);
                     }
                 });
 
-        Glide.with(binding.getRoot().getContext())
+        Glide.with(viewDataBinding.getRoot().getContext())
                 .load(user.getCover())
                 .asBitmap().centerCrop()
-                .into(new BitmapImageViewTarget(binding.ivCover) {
+                .into(new BitmapImageViewTarget(viewDataBinding.ivCover) {
                     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
                     @Override
                     protected void setResource(Bitmap resource) {
                         BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), resource);
 
-                        binding.llCover.setBackground(bitmapDrawable);
+                        viewDataBinding.llCover.setBackground(bitmapDrawable);
                     }
                 });
 
-        binding.tvName.setText(user.getName());
+        viewDataBinding.tvName.setText(user.getName());
     }
 
     @Override
@@ -220,4 +223,20 @@ public class ProfileFragment extends Fragment implements ProfileView {
             }
         }
     }
+
+    @Override
+    protected void screenResume() {
+
+    }
+
+    @Override
+    protected void screenPause() {
+
+    }
+
+    @Override
+    protected void screenStart(@Nullable Bundle saveInstanceState) {
+
+    }
+
 }

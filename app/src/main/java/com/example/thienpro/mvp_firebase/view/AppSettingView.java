@@ -4,4 +4,6 @@ public interface AppSettingView {
     void onCheckLocationClick();
 
     void showError(Exception e);
+
+    void onShowListLocationClick();
 }

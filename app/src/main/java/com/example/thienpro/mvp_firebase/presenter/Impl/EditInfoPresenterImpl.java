@@ -6,6 +6,7 @@ import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.EditInfoPresenter;
+import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.example.thienpro.mvp_firebase.view.EditInfoView;
 
 /**
@@ -26,6 +27,9 @@ public class EditInfoPresenterImpl implements EditInfoPresenter {
         userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserListener() {
             @Override
             public void currentLocalUser(User user) {
+
+                LogUltil.log(EditInfoPresenterImpl.class, user.getName());
+
                 view.getUser(user);
             }
         });

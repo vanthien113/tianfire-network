@@ -2,7 +2,6 @@ package com.example.thienpro.mvp_firebase.presenter.Impl;
 
 import android.content.Context;
 import android.location.Location;
-import android.util.Log;
 
 import com.example.thienpro.mvp_firebase.model.Impl.LocationInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
@@ -45,7 +44,7 @@ public class AppSettingPresenterImpl implements AppSettingPresenter {
                 scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
                     @Override
                     public void run() {
-                        final UserLocation currentLocation = new UserLocation(null, user.getName(), location.getLongitude(), location.getLatitude(), status);
+                        final UserLocation currentLocation = new UserLocation(user.getName(), null, location.getLongitude(), location.getLatitude(), status);
                         locationInteractor.pushLocation(currentLocation, new LocationInteractor.PushLocationListener() {
                             @Override
                             public void pushLocation(Exception e) {
@@ -64,14 +63,19 @@ public class AppSettingPresenterImpl implements AppSettingPresenter {
         });
     }
 
+
+
     @Override
     public void getLocation() {
     }
 
     @Override
     public void stopPushLocation() {
-        Log.e("THIEN", "RIM");
-        LogUltil.log(getClass(), "SHUTTDOWN");
         scheduledExecutorService.shutdownNow();
+    }
+
+    @Override
+    public void getListLocation() {
+
     }
 }

@@ -2,10 +2,6 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -16,14 +12,14 @@ import com.example.thienpro.mvp_firebase.presenter.EditInfoPresenter;
 import com.example.thienpro.mvp_firebase.presenter.Impl.EditInfoPresenterImpl;
 import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
 import com.example.thienpro.mvp_firebase.view.EditInfoView;
+import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 import com.google.firebase.database.DatabaseError;
 
 /**
  * Created by ThienPro on 11/10/2017.
  */
 
-public class EditInfoActivity extends AppCompatActivity implements EditInfoView {
-    private ActivityEditinfoBinding binding;
+public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> implements EditInfoView {
     private EditInfoPresenter presenter;
     private LoadingDialog loadingDialog;
     private User user;
@@ -33,30 +29,32 @@ public class EditInfoActivity extends AppCompatActivity implements EditInfoView 
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_editinfo);
+    protected int getLayoutId() {
+        return R.layout.activity_editinfo;
+    }
 
+    @Override
+    protected void init() {
         presenter = new EditInfoPresenterImpl(this, this);
         loadingDialog = new LoadingDialog(this);
 
-        binding.setEvent(this);
-        binding.spProvince.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.province_arrays)));
+        viewDataBinding.setEvent(this);
+        viewDataBinding.spProvince.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.province_arrays)));
 
         presenter.loadUser();
     }
 
     @Override
     public void onSaveClick() {
-        String email = binding.etEmail.getText().toString();
-        String name = binding.etName.getText().toString();
+        String email = viewDataBinding.etEmail.getText().toString();
+        String name = viewDataBinding.etName.getText().toString();
 
         if (email.isEmpty() || name.isEmpty())
             Toast.makeText(this, R.string.nhap_thong_tin_cho_cac_truong, Toast.LENGTH_SHORT).show();
-        else if (binding.etName.getText().toString().length() >= 30)
+        else if (viewDataBinding.etName.getText().toString().length() >= 30)
             Toast.makeText(this, R.string.ten_co_do_dai_duoi_30_ki_tu, Toast.LENGTH_SHORT).show();
         else {
-            presenter.updateUser(email, name, binding.spProvince.getSelectedItem().toString(), binding.rbNam.isChecked(), user.getAvatar(), user.getCover());
+            presenter.updateUser(email, name, viewDataBinding.spProvince.getSelectedItem().toString(), viewDataBinding.rbNam.isChecked(), user.getAvatar(), user.getCover());
             Toast.makeText(this, R.string.cap_nhat_thanh_cong, Toast.LENGTH_SHORT).show();
         }
     }
@@ -64,17 +62,17 @@ public class EditInfoActivity extends AppCompatActivity implements EditInfoView 
     @Override
     public void getUser(User user) {
         this.user = user;
-        binding.setData(user);
+        viewDataBinding.setData(user);
         int i = 0;
         for (String string : getResources().getStringArray(R.array.province_arrays)) {
             if (string.equals(user.getAddress())) {
-                binding.spProvince.setSelection(i);
+                viewDataBinding.spProvince.setSelection(i);
             }
             i++;
         }
         if (user.getSex())
-            binding.rbNam.setChecked(true);
-        else binding.rbNu.setChecked(true);
+            viewDataBinding.rbNam.setChecked(true);
+        else viewDataBinding.rbNu.setChecked(true);
     }
 
     @Override
@@ -100,5 +98,25 @@ public class EditInfoActivity extends AppCompatActivity implements EditInfoView 
     @Override
     public void updateSuccess() {
         Toast.makeText(this, R.string.cap_nhat_thanh_cong, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void startScreen() {
+
+    }
+
+    @Override
+    protected void resumeScreen() {
+
+    }
+
+    @Override
+    protected void pauseScreen() {
+
+    }
+
+    @Override
+    protected void destroyScreen() {
+
     }
 }

@@ -27,12 +27,9 @@ public class SHLocationManager {
 
     public static Location getLastKnowLocation(Context context) {
         if (checkPermission(context)) {
-            LocationManager locationManager = (LocationManager) context
-                    .getSystemService
-                            (Context.LOCATION_SERVICE);
+            LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
-            Location getLastLocation = locationManager.getLastKnownLocation
-                    (LocationManager.PASSIVE_PROVIDER);
+            Location getLastLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
 
             if (getLastLocation != null) {
                 return getLastLocation;

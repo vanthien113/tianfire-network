@@ -2,9 +2,6 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
@@ -13,9 +10,9 @@ import com.example.thienpro.mvp_firebase.presenter.Impl.LoginPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.LoginPresenter;
 import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
 import com.example.thienpro.mvp_firebase.view.LoginView;
+import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 
-public class LoginActivity extends AppCompatActivity implements LoginView {
-    private ActivityLoginBinding binding;
+public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements LoginView {
     private LoginPresenter presenter;
     private LoadingDialog loadingDialog;
 
@@ -24,19 +21,21 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
-        binding.setEvent(this);
+    protected int getLayoutId() {
+        return R.layout.activity_login;
+    }
+
+    @Override
+    protected void init() {
+        viewDataBinding.setEvent(this);
 
         presenter = new LoginPresenterImpl(this, this);
         loadingDialog = new LoadingDialog(this);
 
         presenter.signedInCheck();
 
-        binding.etEmail.setText("vanthien113@gmail.com");
-        binding.etPassword.setText("123456");
-
+        viewDataBinding.etEmail.setText("vanthien113@gmail.com");
+        viewDataBinding.etPassword.setText("123456");
     }
 
     @Override
@@ -47,8 +46,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public void onLoginClick() {
-        String email = binding.etEmail.getText().toString();
-        String password = binding.etPassword.getText().toString();
+        String email = viewDataBinding.etEmail.getText().toString();
+        String password = viewDataBinding.etPassword.getText().toString();
 
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, R.string.hay_nhap_email_va_password, Toast.LENGTH_SHORT).show();
@@ -86,5 +85,25 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     @Override
     public void onLoginFail(Exception e) {
         Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void startScreen() {
+
+    }
+
+    @Override
+    protected void resumeScreen() {
+
+    }
+
+    @Override
+    protected void pauseScreen() {
+
+    }
+
+    @Override
+    protected void destroyScreen() {
+
     }
 }

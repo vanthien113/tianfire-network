@@ -2,20 +2,15 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityAppSettingBinding;
 import com.example.thienpro.mvp_firebase.presenter.AppSettingPresenter;
 import com.example.thienpro.mvp_firebase.presenter.Impl.AppSettingPresenterImpl;
 import com.example.thienpro.mvp_firebase.view.AppSettingView;
+import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 
-public class AppSettingActivity extends AppCompatActivity implements AppSettingView {
-    private ActivityAppSettingBinding binding;
+public class AppSettingActivity extends BaseActivity<ActivityAppSettingBinding> implements AppSettingView {
     private AppSettingPresenter presenter;
 
     public static void startActivity(Context context) {
@@ -23,17 +18,19 @@ public class AppSettingActivity extends AppCompatActivity implements AppSettingV
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_app_setting);
+    protected int getLayoutId() {
+        return R.layout.activity_app_setting;
+    }
 
+    @Override
+    protected void init() {
         presenter = new AppSettingPresenterImpl(this, this);
-        binding.setEvent(this);
+        viewDataBinding.setEvent(this);
     }
 
     @Override
     public void onCheckLocationClick() {
-        if (binding.cbLocation.isChecked()) {
+        if (viewDataBinding.cbLocation.isChecked()) {
             presenter.pushLocation(true);
         } else {
             presenter.pushLocation(false);
@@ -42,6 +39,32 @@ public class AppSettingActivity extends AppCompatActivity implements AppSettingV
 
     @Override
     public void showError(Exception e) {
-        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        showToastMessage(e.getMessage());
+    }
+
+    @Override
+    public void onShowListLocationClick() {
+        ListLocationActivity.startActivity(this);
+    }
+
+
+    @Override
+    protected void startScreen() {
+
+    }
+
+    @Override
+    protected void resumeScreen() {
+
+    }
+
+    @Override
+    protected void pauseScreen() {
+
+    }
+
+    @Override
+    protected void destroyScreen() {
+
     }
 }

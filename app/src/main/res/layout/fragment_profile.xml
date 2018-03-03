@@ -76,6 +76,7 @@
                         android:layout_height="35dp"
                         android:onClick="@{()->event.onChangeAvatar()}"
                         android:src="@drawable/ic_camera"
+                        android:tint="@color/colorWhite"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
                         app:layout_constraintEnd_toEndOf="@+id/iv_avatar"
                         app:layout_constraintStart_toStartOf="@+id/iv_avatar" />
@@ -88,9 +89,9 @@
                         android:layout_marginBottom="8dp"
                         android:onClick="@{()->event.onChangeCover()}"
                         android:src="@drawable/ic_camera"
+                        android:tint="@color/colorWhite"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
-                    /
                 </android.support.constraint.ConstraintLayout>
 
                 <TextView

@@ -2,13 +2,10 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.PopupMenu;
@@ -20,6 +17,7 @@ import com.example.thienpro.mvp_firebase.presenter.Impl.PostPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.PostPresenter;
 import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
 import com.example.thienpro.mvp_firebase.view.PostView;
+import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 
 import java.io.IOException;
 
@@ -27,8 +25,7 @@ import java.io.IOException;
  * Created by ThienPro on 11/28/2017.
  */
 
-public class PostActivity extends AppCompatActivity implements PostView {
-    private ActivityPostBinding binding;
+public class PostActivity extends BaseActivity<ActivityPostBinding> implements PostView {
     private PostPresenter presenter;
     private Uri filePath;
     private LoadingDialog loadingDialog;
@@ -42,16 +39,18 @@ public class PostActivity extends AppCompatActivity implements PostView {
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_post);
+    protected int getLayoutId() {
+        return R.layout.activity_post;
+    }
 
+    @Override
+    protected void init() {
         presenter = new PostPresenterImpl(this);
         loadingDialog = new LoadingDialog(this);
-        popupMenu = new PopupMenu(this, binding.ivPost);
+        popupMenu = new PopupMenu(this, viewDataBinding.ivPost);
 
         popupMenu.getMenuInflater().inflate(R.menu.menu_post, popupMenu.getMenu());
-        binding.setEvent(this);
+        viewDataBinding.setEvent(this);
     }
 
     @Override
@@ -83,10 +82,10 @@ public class PostActivity extends AppCompatActivity implements PostView {
     }
 
     private void post() {
-        if (TextUtils.isEmpty(binding.etPost.getText()))
+        if (TextUtils.isEmpty(viewDataBinding.etPost.getText()))
             Toast.makeText(this, R.string.hay_nhap_cam_nhan_cua_ban, Toast.LENGTH_SHORT).show();
         else {
-            presenter.newPost(binding.etPost.getText().toString(), filePath);
+            presenter.newPost(viewDataBinding.etPost.getText().toString(), filePath);
         }
     }
 
@@ -127,11 +126,11 @@ public class PostActivity extends AppCompatActivity implements PostView {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_IMAGE && resultCode == RESULT_OK  && data != null && data.getData() != null) {
+        if (requestCode == REQUEST_CODE_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filePath = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                binding.ivUploaded.setImageBitmap(bitmap);
+                viewDataBinding.ivUploaded.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -140,7 +139,27 @@ public class PostActivity extends AppCompatActivity implements PostView {
             Bundle extras = data.getExtras();
             Bitmap bitmap = (Bitmap) extras.get("data");
 
-            binding.ivUploaded.setImageBitmap(bitmap);
+            viewDataBinding.ivUploaded.setImageBitmap(bitmap);
         }
+    }
+
+    @Override
+    protected void startScreen() {
+
+    }
+
+    @Override
+    protected void resumeScreen() {
+
+    }
+
+    @Override
+    protected void pauseScreen() {
+
+    }
+
+    @Override
+    protected void destroyScreen() {
+
     }
 }

@@ -6,4 +6,6 @@ public interface AppSettingPresenter {
     void getLocation();
 
     void stopPushLocation();
+
+    void getListLocation();
 }

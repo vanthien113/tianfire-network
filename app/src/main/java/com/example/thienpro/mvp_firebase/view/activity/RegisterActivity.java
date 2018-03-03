@@ -2,10 +2,6 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
@@ -13,13 +9,13 @@ import com.example.thienpro.mvp_firebase.databinding.ActivityRegisterBinding;
 import com.example.thienpro.mvp_firebase.presenter.Impl.RegisterPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.RegistrerPresenter;
 import com.example.thienpro.mvp_firebase.view.RegisterView;
+import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 
 /**
  * Created by ThienPro on 11/9/2017.
  */
 
-public class RegisterActivity extends AppCompatActivity implements RegisterView {
-    private ActivityRegisterBinding binding;
+public class RegisterActivity extends BaseActivity<ActivityRegisterBinding> implements RegisterView {
     private RegistrerPresenter presenter;
 
     private static final String NAME = "name";
@@ -39,10 +35,13 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
-        binding.setEvent(this);
+    protected int getLayoutId() {
+        return R.layout.activity_register;
+    }
+
+    @Override
+    protected void init() {
+        viewDataBinding.setEvent(this);
         presenter = new RegisterPresenterImpl(this, this);
 
         name = getIntent().getStringExtra(NAME);
@@ -57,9 +56,9 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
 
     @Override
     public void onNextClick() {
-        String email = binding.etEmail.getText().toString();
-        String password = binding.etPassword.getText().toString();
-        String repassword = binding.etRepassword.getText().toString();
+        String email = viewDataBinding.etEmail.getText().toString();
+        String password = viewDataBinding.etPassword.getText().toString();
+        String repassword = viewDataBinding.etRepassword.getText().toString();
 
         if (email.isEmpty() || password.isEmpty() || repassword.isEmpty())
             Toast.makeText(this, "Không được để trống các trường!", Toast.LENGTH_SHORT).show();
@@ -84,4 +83,25 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
         LoginActivity.startActivity(this);
         finish();
     }
+
+    @Override
+    protected void startScreen() {
+
+    }
+
+    @Override
+    protected void resumeScreen() {
+
+    }
+
+    @Override
+    protected void pauseScreen() {
+
+    }
+
+    @Override
+    protected void destroyScreen() {
+
+    }
+
 }
