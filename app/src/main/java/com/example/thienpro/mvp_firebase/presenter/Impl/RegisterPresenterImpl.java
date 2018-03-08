@@ -6,17 +6,16 @@ import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.presenter.RegistrerPresenter;
 import com.example.thienpro.mvp_firebase.view.RegisterView;
+import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
 
 /**
  * Created by ThienPro on 11/10/2017.
  */
 
-public class RegisterPresenterImpl implements RegistrerPresenter {
-    private RegisterView view;
+public class RegisterPresenterImpl extends BasePresentermpl<RegisterView> implements RegistrerPresenter {
     private UserInteractor userInteractor;
 
-    public RegisterPresenterImpl(RegisterView registerView, Context context) {
-        this.view = registerView;
+    public RegisterPresenterImpl(Context context) {
         this.userInteractor = new UserInteractorImpl(context);
     }
 
@@ -26,9 +25,9 @@ public class RegisterPresenterImpl implements RegistrerPresenter {
             @Override
             public void checker(Exception checker) {
                 if (checker == null) {
-                    view.navigationToVerifiEmail();
+                    getView().navigationToVerifiEmail();
                 } else {
-                    view.onRegisterFail(checker);
+                    getView().showExceptionError(checker);
                 }
             }
         });

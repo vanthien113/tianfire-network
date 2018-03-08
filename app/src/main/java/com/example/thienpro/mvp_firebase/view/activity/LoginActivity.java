@@ -14,7 +14,6 @@ import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 
 public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements LoginView {
     private LoginPresenter presenter;
-    private LoadingDialog loadingDialog;
 
     public static void startActivity(Context context) {
         context.startActivity(new Intent(context, LoginActivity.class));
@@ -29,8 +28,8 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
     protected void init() {
         viewDataBinding.setEvent(this);
 
-        presenter = new LoginPresenterImpl(this, this);
-        loadingDialog = new LoadingDialog(this);
+        presenter = new LoginPresenterImpl(this);
+        presenter.attachView(this);
 
         presenter.signedInCheck();
 
@@ -70,21 +69,6 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
     public void navigationToVerifiEmail() {
         VerifiEmailActivity.startActivity(this);
         finish();
-    }
-
-    @Override
-    public void showLoading() {
-        loadingDialog.show();
-    }
-
-    @Override
-    public void hideLoading() {
-        loadingDialog.dismiss();
-    }
-
-    @Override
-    public void onLoginFail(Exception e) {
-        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

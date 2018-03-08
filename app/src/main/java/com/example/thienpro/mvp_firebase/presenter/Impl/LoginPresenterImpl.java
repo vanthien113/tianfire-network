@@ -6,33 +6,32 @@ import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.presenter.LoginPresenter;
 import com.example.thienpro.mvp_firebase.view.LoginView;
+import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
 
 /**
  * Created by ThienPro on 11/21/2017.
  */
 
-public class LoginPresenterImpl implements LoginPresenter {
+public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements LoginPresenter {
     private UserInteractor userInteractor;
-    private LoginView view;
 
-    public LoginPresenterImpl(LoginView loginView, Context context) {
-        this.view = loginView;
+    public LoginPresenterImpl(Context context) {
         this.userInteractor = new UserInteractorImpl(context);
     }
 
     public void signedInCheck() {
-        view.showLoading();
+        getView().showLoadingDialog();
 
         userInteractor.signedInCheck(new UserInteractor.LoggedInCheckCallback() {
             @Override
             public void checker(int checker) {
-                view.hideLoading();
+                getView().hideLoadingDialog();
                 switch (checker) {
                     case 1:
-                        view.navigationToHome();
+                        getView().navigationToHome();
                         break;
                     case 2:
-                        view.navigationToVerifiEmail();
+                        getView().navigationToVerifiEmail();
                         break;
                 }
             }
@@ -40,18 +39,16 @@ public class LoginPresenterImpl implements LoginPresenter {
     }
 
     public void onSignIn(String email, String password) {
-        view.showLoading();
+        getView().showLoadingDialog();
 
         userInteractor.sigIn(email, password, new UserInteractor.LoginCheckCallback() {
             @Override
             public void checker(boolean checker, Exception e) {
+                getView().hideLoadingDialog();
                 if (checker) {
-                    view.hideLoading();
-                    view.navigationToVerifiEmail();
+                    getView().navigationToVerifiEmail();
                 } else {
-                    view.hideLoading();
-                    view.onLoginFail(e);
-//                    view.navigationToLogin();
+                    getView().showExceptionError(e);
                 }
             }
         });

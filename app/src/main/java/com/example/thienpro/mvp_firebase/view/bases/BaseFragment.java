@@ -5,25 +5,24 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.thienpro.mvp_firebase.R;
+import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
+import com.google.firebase.database.DatabaseError;
 
 
 public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment implements BaseView {
     protected T viewDataBinding;
+    protected LoadingDialog loadingDialog;
 
     private boolean isAttach;
 
@@ -49,6 +48,7 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment i
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        loadingDialog = new LoadingDialog(getContext());
         viewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
         isAttach = false;
         viewDataBinding.getRoot().setOnClickListener(new View.OnClickListener() {
@@ -62,6 +62,31 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment i
     }
 
     @Override
+    public void showExceptionError(Exception e) {
+        showToastMessage(e.getMessage());
+    }
+
+    @Override
+    public void showDatabaseError(DatabaseError error) {
+        showToastMessage(error.getMessage());
+    }
+
+    public void showMessenger(String messenger) {
+        showToastMessage(messenger);
+    }
+
+
+    @Override
+    public void showLoadingDialog() {
+        loadingDialog.show();
+    }
+
+    @Override
+    public void hideLoadingDialog() {
+        loadingDialog.dismiss();
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         screenStart(savedInstanceState);
@@ -71,11 +96,6 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment i
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         init(view);
-    }
-
-    @Override
-    public void displayError(Exception e) {
-        showToastMessage(e.getMessage());
     }
 
     @Override

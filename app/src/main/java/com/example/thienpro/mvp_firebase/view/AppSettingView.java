@@ -1,9 +1,9 @@
 package com.example.thienpro.mvp_firebase.view;
 
-public interface AppSettingView {
-    void onCheckLocationClick();
+import com.example.thienpro.mvp_firebase.view.bases.BaseView;
 
-    void showError(Exception e);
+public interface AppSettingView extends BaseView{
+    void onCheckLocationClick();
 
     void onShowListLocationClick();
 

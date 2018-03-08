@@ -14,7 +14,6 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.view.View;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
@@ -33,7 +32,6 @@ import com.example.thienpro.mvp_firebase.view.activity.EditPostActivity;
 import com.example.thienpro.mvp_firebase.view.activity.PostActivity;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
 import com.example.thienpro.mvp_firebase.view.bases.BaseFragment;
-import com.google.firebase.database.DatabaseError;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -54,7 +52,6 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
     private LinearLayoutManager mLinearLayoutManager;
     private ProfilePresenter presenter;
     private ArrayList<Post> listPost;
-    private LoadingDialog loadingDialog;
 
     public static ProfileFragment newInstance() {
         Bundle args = new Bundle();
@@ -70,15 +67,15 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
 
     @Override
     protected void init(@Nullable View view) {
-        presenter = new ProfilePresenterImpl(this, getContext());
-        loadingDialog = new LoadingDialog(getContext());
+        presenter = new ProfilePresenterImpl(getContext());
+        presenter.attachView(this);
+
         mLinearLayoutManager = new LinearLayoutManager(getContext(), OrientationHelper.VERTICAL, false);
 
         viewDataBinding.rvProfile.setLayoutManager(mLinearLayoutManager);
         viewDataBinding.rvProfile.setNestedScrollingEnabled(false);
 
         presenter.loadPost();
-//        presenter.getCurrentUser();
         presenter.getUser();
 
         viewDataBinding.setEvent(this);
@@ -124,16 +121,6 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
         homeAdapter = new HomeAdapter(listPost, getContext(), this, null);
         viewDataBinding.rvProfile.setAdapter(homeAdapter);
         viewDataBinding.rvProfile.setLayoutFrozen(false);
-    }
-
-    @Override
-    public void loadPostError(DatabaseError e) {
-        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void hideLoading() {
-        loadingDialog.dismiss();
     }
 
     @Override
@@ -187,23 +174,6 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
                 .single()
                 .imageDirectory("Camera")
                 .start(REQUEST_CHANGE_COVER);
-    }
-
-    @Override
-    public void showError(Exception e) {
-        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void showMessenger(String messenger) {
-        Toast.makeText(getContext(), messenger, Toast.LENGTH_SHORT).show();
-
-        loadData();
-    }
-
-    @Override
-    public void showLoading() {
-        loadingDialog.show();
     }
 
     @Override

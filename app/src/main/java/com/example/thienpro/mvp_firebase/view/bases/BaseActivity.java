@@ -14,11 +14,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.thienpro.mvp_firebase.R;
+import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
+import com.google.firebase.database.DatabaseError;
 
 public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity implements BaseView {
 
     protected T viewDataBinding;
+    protected LoadingDialog loadingDialog;
 
     /**
      * setup content layout
@@ -64,8 +66,7 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        setTheme(R.style.DarkTheme);
+        loadingDialog = new LoadingDialog(this);
 
         viewDataBinding = DataBindingUtil.setContentView(this, getLayoutId());
         init();
@@ -106,8 +107,17 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
     }
 
     @Override
-    public void displayError(Exception e) {
+    public void showExceptionError(Exception e) {
         showToastMessage(e.getMessage());
+    }
+
+    @Override
+    public void showDatabaseError(DatabaseError error) {
+        showToastMessage(error.getMessage());
+    }
+
+    public void showMessenger(String messenger) {
+        showToastMessage(messenger);
     }
 
     @Override
@@ -143,6 +153,7 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
      *
      * @param msg message want to show
      */
+
     public final void showToastMessage(final CharSequence msg) {
         if (isFinishing())
             return;
@@ -159,6 +170,16 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
             mToast.setText(msg);
             mToast.show();
         }
+    }
+
+    @Override
+    public void showLoadingDialog() {
+        loadingDialog.show();
+    }
+
+    @Override
+    public void hideLoadingDialog() {
+        loadingDialog.dismiss();
     }
 
     /**

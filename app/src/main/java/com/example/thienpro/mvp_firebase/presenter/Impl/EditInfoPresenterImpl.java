@@ -6,19 +6,17 @@ import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.EditInfoPresenter;
-import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.example.thienpro.mvp_firebase.view.EditInfoView;
+import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
 
 /**
  * Created by ThienPro on 11/21/2017.
  */
 
-public class EditInfoPresenterImpl implements EditInfoPresenter {
-    private EditInfoView view;
+public class EditInfoPresenterImpl extends BasePresentermpl<EditInfoView> implements EditInfoPresenter {
     private UserInteractor userInteractor;
 
-    public EditInfoPresenterImpl(EditInfoView editInfoView, Context context) {
-        this.view = editInfoView;
+    public EditInfoPresenterImpl(Context context) {
         userInteractor = new UserInteractorImpl(context);
     }
 
@@ -27,17 +25,14 @@ public class EditInfoPresenterImpl implements EditInfoPresenter {
         userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserCallback() {
             @Override
             public void currentLocalUser(User user) {
-
-                LogUltil.log(EditInfoPresenterImpl.class, user.getName());
-
-                view.getUser(user);
+                getView().getUser(user);
             }
         });
     }
 
     @Override
     public void updateUser(final String email, final String name, final String address, final boolean sex, final String avatar, final String cover) {
-        view.showDialog();
+        getView().showLoadingDialog();
 
         userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserCallback() {
             @Override
@@ -45,11 +40,11 @@ public class EditInfoPresenterImpl implements EditInfoPresenter {
                 userInteractor.updateUser(email, name, address, sex, avatar, cover, new UserInteractor.UpdateUserCallback() {
                     @Override
                     public void updateUser(Exception e) {
-                        view.hideDialog();
+                        getView().hideLoadingDialog();
                         if (e != null) {
-                            view.getUserError(e);
+                            getView().showExceptionError(e);
                         } else {
-                            view.updateSuccess();
+                            getView().updateSuccess();
                             userInteractor.saveCurrentLocalUser(new User(email, name, address, sex, avatar, cover));
                         }
                     }

@@ -35,7 +35,8 @@ public class UserLocationActivity extends BaseActivity<ActivityUserLocationBindi
 
     @Override
     protected void init() {
-        presenter = new UserLocationPresenterImpl(this, this);
+        presenter = new UserLocationPresenterImpl(this);
+        presenter.attachView(this);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);

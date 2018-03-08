@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.FragmentHomeBinding;
@@ -14,12 +13,10 @@ import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.HomePresenter;
 import com.example.thienpro.mvp_firebase.presenter.Impl.HomePresenterImpl;
-import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
-import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.example.thienpro.mvp_firebase.view.HomeView;
+import com.example.thienpro.mvp_firebase.view.activity.EditPostActivity;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
 import com.example.thienpro.mvp_firebase.view.bases.BaseFragment;
-import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +30,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
     private LinearLayoutManager linearLayoutManager;
     private HomePresenter presenter;
     private ArrayList<Post> listPost;
-    private LoadingDialog loadingDialog;
     private User user;
 
     public static HomeFragment newInstance() {
@@ -50,8 +46,9 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
 
     @Override
     protected void init(@Nullable View view) {
-        loadingDialog = new LoadingDialog(getContext());
-        presenter = new HomePresenterImpl(this, getContext());
+        presenter = new HomePresenterImpl(getContext());
+        presenter.attachView(this);
+
         linearLayoutManager = new LinearLayoutManager(viewDataBinding.getRoot().getContext(), OrientationHelper.VERTICAL, false);
 
         presenter.currentUser();
@@ -99,28 +96,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
     }
 
     @Override
-    public void loadPostError(DatabaseError e) {
-        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void showLoading() {
-        loadingDialog.show();
-    }
-
-    @Override
-    public void hideLoading() {
-        loadingDialog.dismiss();
-    }
-
-    @Override
     public void currentUser(User user) {
         this.user = user;
-    }
-
-    @Override
-    public void showError(Exception e) {
-        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -145,7 +122,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
 
     @Override
     public void onEditPost(Post post) {
-        LogUltil.log(HomeFragment.class, post.getId());
+        EditPostActivity.start(getContext(), post);
     }
 
     @Override

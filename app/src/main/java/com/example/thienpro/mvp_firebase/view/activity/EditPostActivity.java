@@ -31,6 +31,8 @@ public class EditPostActivity extends BaseActivity<ActivityEditPostBinding> impl
     @Override
     protected void init() {
         presenter = new EditPostPresenterImpl(this);
+        presenter.attachView(this);
+
         post = (Post) getIntent().getSerializableExtra("post");
 
         viewDataBinding.setPost(post);

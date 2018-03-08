@@ -42,7 +42,8 @@ public class RegisterActivity extends BaseActivity<ActivityRegisterBinding> impl
     @Override
     protected void init() {
         viewDataBinding.setEvent(this);
-        presenter = new RegisterPresenterImpl(this, this);
+        presenter = new RegisterPresenterImpl(this);
+        presenter.attachView(this);
 
         name = getIntent().getStringExtra(NAME);
         address = getIntent().getStringExtra(ADDRESS);
@@ -71,11 +72,6 @@ public class RegisterActivity extends BaseActivity<ActivityRegisterBinding> impl
             } else
                 Toast.makeText(this, "Mật khẩu phải lớn hơn 6 ký tự!", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @Override
-    public void onRegisterFail(Exception e) {
-        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

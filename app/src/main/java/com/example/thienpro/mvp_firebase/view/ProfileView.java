@@ -2,7 +2,7 @@ package com.example.thienpro.mvp_firebase.view;
 
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
-import com.google.firebase.database.DatabaseError;
+import com.example.thienpro.mvp_firebase.view.bases.BaseView;
 
 import java.util.ArrayList;
 
@@ -10,24 +10,14 @@ import java.util.ArrayList;
  * Created by ThienPro on 11/10/2017.
  */
 
-public interface ProfileView {
+public interface ProfileView extends BaseView {
     void onPost();
 
     void showList(ArrayList<Post> list);
-
-    void loadPostError(DatabaseError e);
-
-    void showLoading();
-
-    void hideLoading();
 
     void showUser(User user);
 
     void onChangeAvatar();
 
     void onChangeCover();
-
-    void showError(Exception e);
-
-    void showMessenger(String messenger);
 }

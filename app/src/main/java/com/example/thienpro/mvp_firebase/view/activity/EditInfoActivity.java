@@ -21,7 +21,6 @@ import com.google.firebase.database.DatabaseError;
 
 public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> implements EditInfoView {
     private EditInfoPresenter presenter;
-    private LoadingDialog loadingDialog;
     private User user;
 
     public static void startActivity(Context context) {
@@ -35,8 +34,8 @@ public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> impl
 
     @Override
     protected void init() {
-        presenter = new EditInfoPresenterImpl(this, this);
-        loadingDialog = new LoadingDialog(this);
+        presenter = new EditInfoPresenterImpl(this);
+        presenter.attachView(this);
 
         viewDataBinding.setEvent(this);
         viewDataBinding.spProvince.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.province_arrays)));
@@ -76,11 +75,6 @@ public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> impl
     }
 
     @Override
-    public void getUserError(DatabaseError e) {
-        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void showDialog() {
         loadingDialog.show();
     }
@@ -88,11 +82,6 @@ public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> impl
     @Override
     public void hideDialog() {
         loadingDialog.dismiss();
-    }
-
-    @Override
-    public void getUserError(Exception e) {
-        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

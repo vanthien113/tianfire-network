@@ -1,6 +1,9 @@
 package com.example.thienpro.mvp_firebase.presenter;
 
-public interface AppSettingPresenter {
+import com.example.thienpro.mvp_firebase.view.AppSettingView;
+import com.example.thienpro.mvp_firebase.view.bases.BasePresenter;
+
+public interface AppSettingPresenter extends BasePresenter<AppSettingView> {
     void pushLocation(boolean status);
 
     void getLocation();

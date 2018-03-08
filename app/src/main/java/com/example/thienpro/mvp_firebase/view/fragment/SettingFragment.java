@@ -47,7 +47,7 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> implem
     @Override
     protected void init(@Nullable View view) {
         viewDataBinding.setEvent(this);
-        presenter = new SettingPresenterImpl(this, getContext());
+        presenter = new SettingPresenterImpl(getContext());
     }
 
     @Override

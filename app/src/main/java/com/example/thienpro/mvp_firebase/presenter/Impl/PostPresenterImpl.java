@@ -6,32 +6,31 @@ import com.example.thienpro.mvp_firebase.model.Impl.PostInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.presenter.PostPresenter;
 import com.example.thienpro.mvp_firebase.view.PostView;
+import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
 
 /**
  * Created by ThienPro on 11/28/2017.
  */
 
-public class PostPresenterImpl implements PostPresenter {
+public class PostPresenterImpl extends BasePresentermpl<PostView> implements PostPresenter {
     private PostInteractor postInteractor;
-    private PostView view;
 
-    public PostPresenterImpl(PostView postView) {
-        this.view = postView;
+    public PostPresenterImpl() {
         postInteractor = new PostInteractorImpl();
     }
 
     @Override
     public void newPost(String content, Uri filePath) {
-        view.showLoading();
+        getView().showLoadingDialog();
 
         postInteractor.writeNewPost(content, filePath, new PostInteractor.PostCallback() {
             @Override
             public void postListener(Exception e) {
-                view.hideLoading();
+                getView().hideLoadingDialog();
                 if (e != null) {
-                    view.onPostFail(e);
+                    getView().showExceptionError(e);
                 } else {
-                    view.navigationToHome();
+                    getView().navigationToHome();
                 }
             }
         });

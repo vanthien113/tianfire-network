@@ -12,24 +12,23 @@ import com.example.thienpro.mvp_firebase.model.entity.UserLocation;
 import com.example.thienpro.mvp_firebase.presenter.AppSettingPresenter;
 import com.example.thienpro.mvp_firebase.ultils.SHLocationManager;
 import com.example.thienpro.mvp_firebase.view.AppSettingView;
+import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class AppSettingPresenterImpl implements AppSettingPresenter {
+public class AppSettingPresenterImpl extends BasePresentermpl<AppSettingView> implements AppSettingPresenter {
     private LocationInteractor locationInteractor;
     private Location location;
     private static ScheduledExecutorService scheduledExecutorService;
     private UserInteractor userInteractor;
-    private AppSettingView view;
 
-    public AppSettingPresenterImpl(Context context, AppSettingView view) {
+    public AppSettingPresenterImpl(Context context) {
         this.locationInteractor = new LocationInteractorImpl(context);
         this.location = SHLocationManager.getLastKnowLocation(context);
         this.userInteractor = new UserInteractorImpl(context);
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        this.view = view;
     }
 
     @Override
@@ -48,7 +47,7 @@ public class AppSettingPresenterImpl implements AppSettingPresenter {
                             @Override
                             public void pushLocation(Exception e) {
                                 if (e != null) {
-                                    view.showError(e);
+                                    getView().showExceptionError(e);
                                 } else {
                                     if (!status) {
                                         stopPushLocation();
@@ -81,7 +80,7 @@ public class AppSettingPresenterImpl implements AppSettingPresenter {
         locationInteractor.getShareLocation(new LocationInteractor.GetShareLocationCallback() {
             @Override
             public void getShareLocation(boolean isShare) {
-                view.shareLocation(isShare);
+                getView().shareLocation(isShare);
             }
         });
     }

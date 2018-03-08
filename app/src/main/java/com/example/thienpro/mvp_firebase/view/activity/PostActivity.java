@@ -45,7 +45,9 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
 
     @Override
     protected void init() {
-        presenter = new PostPresenterImpl(this);
+        presenter = new PostPresenterImpl();
+        presenter.attachView(this);
+
         loadingDialog = new LoadingDialog(this);
         popupMenu = new PopupMenu(this, viewDataBinding.ivPost);
 
@@ -111,16 +113,6 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
     @Override
     public void navigationToHome() {
         HomeActivity.startActiviry(this);
-    }
-
-    @Override
-    public void showLoading() {
-        loadingDialog.show();
-    }
-
-    @Override
-    public void hideLoading() {
-        loadingDialog.dismiss();
     }
 
     @Override

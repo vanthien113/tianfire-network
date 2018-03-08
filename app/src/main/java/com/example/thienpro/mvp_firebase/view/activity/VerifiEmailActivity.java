@@ -31,7 +31,9 @@ public class VerifiEmailActivity extends BaseActivity<ActivityVerifiemailBinding
     protected void init() {
         viewDataBinding.setEvent(this);
 
-        presenter = new VerifiEmailPresenterImpl(this, this);
+        presenter = new VerifiEmailPresenterImpl(this);
+        presenter.attachView(this);
+
         presenter.verifiEmail();
     }
 

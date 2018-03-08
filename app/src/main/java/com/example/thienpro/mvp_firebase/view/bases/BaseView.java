@@ -1,5 +1,15 @@
 package com.example.thienpro.mvp_firebase.view.bases;
 
+import com.google.firebase.database.DatabaseError;
+
 public interface BaseView {
-    void displayError(Exception e);
+    void showExceptionError(Exception e);
+
+    void showDatabaseError(DatabaseError error);
+
+    void showMessenger(String messenger);
+
+    void showLoadingDialog();
+
+    void hideLoadingDialog();
 }

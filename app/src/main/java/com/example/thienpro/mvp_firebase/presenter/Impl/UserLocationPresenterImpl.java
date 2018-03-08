@@ -7,19 +7,18 @@ import com.example.thienpro.mvp_firebase.model.LocationInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.UserLocation;
 import com.example.thienpro.mvp_firebase.presenter.UserLocationPresenter;
 import com.example.thienpro.mvp_firebase.view.UserLocationView;
+import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class UserLocationPresenterImpl implements UserLocationPresenter {
+public class UserLocationPresenterImpl extends BasePresentermpl<UserLocationView> implements UserLocationPresenter {
     private LocationInteractor interactor;
-    private UserLocationView view;
     private static ScheduledExecutorService scheduledExecutorService;
 
-    public UserLocationPresenterImpl(UserLocationView view, Context context) {
-        this.view = view;
+    public UserLocationPresenterImpl(Context context) {
         this.interactor = new LocationInteractorImpl(context);
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
     }
@@ -35,7 +34,7 @@ public class UserLocationPresenterImpl implements UserLocationPresenter {
                         if (e != null) {
 
                         } else {
-                            view.showUserLocation(location);
+                            getView().showUserLocation(location);
                         }
                     }
                 });

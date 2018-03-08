@@ -6,17 +6,16 @@ import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.presenter.SettingPresenter;
 import com.example.thienpro.mvp_firebase.view.SettingView;
+import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
 
 /**
  * Created by ThienPro on 11/28/2017.
  */
 
-public class SettingPresenterImpl implements SettingPresenter {
-    private SettingView view;
+public class SettingPresenterImpl extends BasePresentermpl<SettingView> implements SettingPresenter {
     private UserInteractor userInteractor;
 
-    public SettingPresenterImpl(SettingView view, Context context) {
-        this.view = view;
+    public SettingPresenterImpl(Context context) {
         this.userInteractor = new UserInteractorImpl(context);
     }
 
@@ -26,7 +25,7 @@ public class SettingPresenterImpl implements SettingPresenter {
             @Override
             public void checker(boolean checker) {
                 if (checker) {
-                    view.navigationToLogin();
+                    getView().navigationToLogin();
                 }
             }
         });

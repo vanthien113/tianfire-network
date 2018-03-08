@@ -10,6 +10,7 @@ import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.HomePresenter;
 import com.example.thienpro.mvp_firebase.view.HomeView;
+import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
@@ -18,28 +19,26 @@ import java.util.ArrayList;
  * Created by ThienPro on 11/21/2017.
  */
 
-public class HomePresenterImpl implements HomePresenter {
-    private HomeView view;
+public class HomePresenterImpl extends BasePresentermpl<HomeView> implements HomePresenter {
     private PostInteractor postInteractor;
     private UserInteractor userInteractor;
 
-    public HomePresenterImpl(HomeView homeView, Context context) {
-        this.view = homeView;
+    public HomePresenterImpl(Context context) {
         postInteractor = new PostInteractorImpl();
         userInteractor = new UserInteractorImpl(context);
     }
 
     public void loadAllListPost() {
-        view.showLoading();
+        getView().showLoadingDialog();
 
         postInteractor.loadAllPost(new PostInteractor.ListPostCallback() {
             @Override
             public void listPost(DatabaseError e, ArrayList<Post> listPost) {
-                view.hideLoading();
+                getView().hideLoadingDialog();
                 if (e == null) {
-                    view.showAllPost(listPost);
+                    getView().showAllPost(listPost);
                 } else {
-                    view.loadPostError(e);
+                    getView().showDatabaseError(e);
                 }
             }
         });
@@ -50,24 +49,23 @@ public class HomePresenterImpl implements HomePresenter {
         userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserCallback() {
             @Override
             public void currentLocalUser(User user) {
-                view.currentUser(user);
+                getView().currentUser(user);
             }
         });
     }
 
-    @Override
     public void deletePost(Post post) {
-        view.showLoading();
+        getView().showLoadingDialog();
 
         postInteractor.deletePost(post, new PostInteractor.DeletePostCallback() {
             @Override
             public void listPost(Exception e) {
-                view.hideLoading();
+                getView().hideLoadingDialog();
 
                 if (e != null) {
-                    view.showError(e);
+                    getView().showExceptionError(e);
                 } else {
-                    view.showMessenger("Đã xóa");
+                    getView().showMessenger("Đã xóa");
                 }
             }
         });

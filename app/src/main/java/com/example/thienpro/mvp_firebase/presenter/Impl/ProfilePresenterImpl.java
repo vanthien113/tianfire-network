@@ -11,6 +11,7 @@ import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.ProfilePresenter;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
+import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
@@ -25,60 +26,44 @@ import java.util.ArrayList;
  * Created by ThienPro on 11/16/2017.
  */
 
-public class ProfilePresenterImpl implements ProfilePresenter {
+public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implements ProfilePresenter {
     private PostInteractor postInteractor;
-    private ProfileView view;
     private UserInteractor userInteractor;
 
-    public ProfilePresenterImpl(ProfileView profileView, Context context) { // Truyền tham sô profileview
+    public ProfilePresenterImpl(Context context) {
         postInteractor = new PostInteractorImpl();
         userInteractor = new UserInteractorImpl(context);
-
-        this.view = profileView;
     }
 
     public void loadPost() {
-        view.showLoading();
+        getView().showLoadingDialog();
 
         postInteractor.loadPersonalPost(new PostInteractor.ListPostCallback() {
             @Override
             public void listPost(DatabaseError e, ArrayList<Post> listPost) {
-                view.hideLoading();
+                getView().hideLoadingDialog();
 
                 if (e == null) {
-                    view.showList(listPost);
+                    getView().showList(listPost);
                 } else {
-                    view.loadPostError(e);
+                    getView().showDatabaseError(e);
                 }
             }
         });
     }
-//
-//    @Override
-//    public void getCurrentUser() {
-//        view.showLoading();
-//
-//        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserCallback() {
-//            @Override
-//            public void currentLocalUser(User user) {
-//                view.showUser(user);
-//                LogUltil.log(getClass(), user.getAvatar());
-//            }
-//        });
-//    }
 
     @Override
     public void getUser() {
-        view.showLoading();
+        getView().showLoadingDialog();
         userInteractor.getUser(new UserInteractor.GetUserCallback() {
             @Override
             public void getUser(DatabaseError error, User user) {
-                view.hideLoading();
+                getView().hideLoadingDialog();
 
                 if (error != null) {
                 } else {
                     userInteractor.saveCurrentLocalUser(user);
-                    view.showUser(user);
+                    getView().showUser(user);
                 }
             }
         }, true);
@@ -86,17 +71,17 @@ public class ProfilePresenterImpl implements ProfilePresenter {
 
     @Override
     public void deletePost(Post post) {
-        view.showLoading();
+        getView().showLoadingDialog();
 
         postInteractor.deletePost(post, new PostInteractor.DeletePostCallback() {
             @Override
             public void listPost(Exception e) {
-                view.hideLoading();
+                getView().hideLoadingDialog();
 
                 if (e != null) {
-                    view.showError(e);
+                    getView().showExceptionError(e);
                 } else {
-                    view.showMessenger("Đã xóa");
+                    getView().showMessenger("Đã xóa");
                 }
             }
         });
@@ -104,7 +89,7 @@ public class ProfilePresenterImpl implements ProfilePresenter {
 
     @Override
     public void changeAvatar(final Uri uri) {
-        view.showLoading();
+        getView().showLoadingDialog();
 
         userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserCallback() {
             @Override
@@ -112,16 +97,16 @@ public class ProfilePresenterImpl implements ProfilePresenter {
                 userInteractor.addAvatar(user.getEmail(), user.getName(), user.getAddress(), user.getSex(), uri, user.getCover(), new UserInteractor.AddAvatarCallback() {
                     @Override
                     public void addAvatar(Exception e, String uri) {
-                        view.hideLoading();
+                        getView().hideLoadingDialog();
                         if (e != null) {
-                            view.showError(e);
+                            getView().showExceptionError(e);
                         } else {
-                            view.showMessenger("Thay đổi avatar thành công!");
+                            getView().showMessenger("Thay đổi avatar thành công!");
 
                             user.setAvatar(uri);
                             userInteractor.saveCurrentLocalUser(user);
 
-                            view.showUser(user);
+                            getView().showUser(user);
                         }
                     }
                 });
@@ -131,7 +116,7 @@ public class ProfilePresenterImpl implements ProfilePresenter {
 
     @Override
     public void changeCover(final Uri uri) {
-        view.showLoading();
+        getView().showLoadingDialog();
 
         userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserCallback() {
             @Override
@@ -139,16 +124,16 @@ public class ProfilePresenterImpl implements ProfilePresenter {
                 userInteractor.addCover(user.getEmail(), user.getName(), user.getAddress(), user.getSex(), user.getAvatar(), uri, new UserInteractor.AddCoverCallback() {
                     @Override
                     public void addCover(Exception e, String uri) {
-                        view.hideLoading();
+                        getView().hideLoadingDialog();
                         if (e != null) {
-                            view.showError(e);
+                            getView().showExceptionError(e);
                         } else {
-                            view.showMessenger("Thay đổi ảnh bìa thành công!");
+                            getView().showMessenger("Thay đổi ảnh bìa thành công!");
 
                             user.setCover(uri);
                             userInteractor.saveCurrentLocalUser(user);
 
-                            view.showUser(user);
+                            getView().showUser(user);
                         }
                     }
                 });

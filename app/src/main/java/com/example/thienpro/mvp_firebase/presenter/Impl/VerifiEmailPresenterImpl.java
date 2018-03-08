@@ -6,17 +6,16 @@ import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.presenter.VerifiEmailPresenter;
 import com.example.thienpro.mvp_firebase.view.VerifiEmailView;
+import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
 
 /**
  * Created by ThienPro on 11/28/2017.
  */
 
-public class VerifiEmailPresenterImpl implements VerifiEmailPresenter {
+public class VerifiEmailPresenterImpl extends BasePresentermpl<VerifiEmailView> implements VerifiEmailPresenter {
     private UserInteractor userInteractor;
-    private VerifiEmailView view;
 
-    public VerifiEmailPresenterImpl(VerifiEmailView verifiEmailView, Context context) {
-        this.view = verifiEmailView;
+    public VerifiEmailPresenterImpl(Context context) {
         this.userInteractor = new UserInteractorImpl(context);
     }
 
@@ -26,11 +25,11 @@ public class VerifiEmailPresenterImpl implements VerifiEmailPresenter {
             @Override
             public void checker(Exception checker, String email) {
                 if (checker == null && email == null) {
-                    view.navigationToHome();
+                    getView().navigationToHome();
                 } else if (checker == null && email != null) {
-                    view.sendverifiEmailComplete(email);
+                    getView().sendverifiEmailComplete(email);
                 } else {
-                    view.sendverifiEmailFail(email);
+                    getView().sendverifiEmailFail(email);
                 }
             }
         });
@@ -42,7 +41,7 @@ public class VerifiEmailPresenterImpl implements VerifiEmailPresenter {
             @Override
             public void checker(boolean checker) {
                 if (checker) {
-                    view.navigationToLogin();
+                    getView().navigationToLogin();
                 }
             }
         });

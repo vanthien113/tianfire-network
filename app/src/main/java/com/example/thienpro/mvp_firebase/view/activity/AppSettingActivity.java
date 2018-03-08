@@ -24,7 +24,9 @@ public class AppSettingActivity extends BaseActivity<ActivityAppSettingBinding> 
 
     @Override
     protected void init() {
-        presenter = new AppSettingPresenterImpl(this, this);
+        presenter = new AppSettingPresenterImpl(this);
+        presenter.attachView(this);
+
         viewDataBinding.setEvent(this);
 
         presenter.checkShareLocation();
@@ -39,11 +41,6 @@ public class AppSettingActivity extends BaseActivity<ActivityAppSettingBinding> 
             presenter.saveShareLocation(false);
             presenter.pushLocation(false);
         }
-    }
-
-    @Override
-    public void showError(Exception e) {
-        showToastMessage(e.getMessage());
     }
 
     @Override
