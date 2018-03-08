@@ -3,6 +3,7 @@ package com.example.thienpro.mvp_firebase.model.Impl;
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
@@ -32,6 +33,9 @@ import java.util.UUID;
  */
 
 public class PostInteractorImpl implements PostInteractor {
+    private static final String POST = "posts";
+    private static final String USER = "users";
+
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
@@ -54,10 +58,10 @@ public class PostInteractorImpl implements PostInteractor {
 
     @SuppressLint("SimpleDateFormat")
     @Override
-    public void writeNewPost(final String content, final Uri filePath, final PostListener postListener) {
+    public void writeNewPost(final String content, final Uri filePath, final PostCallback callback) {
         today = new Date();
         today.getDate();
-        simpleDateFormat = new SimpleDateFormat("dd:MM:yyyy HH:mm:ss");
+        simpleDateFormat = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
         day = simpleDateFormat.format(today);
 
         if (filePath != null) {
@@ -73,7 +77,7 @@ public class PostInteractorImpl implements PostInteractor {
                                         public void onSuccess(final Uri uri) {
                                             //Up Post with Image
 
-                                            mDatabase.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+                                            mDatabase.child(USER).child(user.getUid()).addValueEventListener(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                                     Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
@@ -81,17 +85,17 @@ public class PostInteractorImpl implements PostInteractor {
                                                     String avatar = (String) map.get("avatar");
 
                                                     Post post = new Post(user.getUid(), name, day, content, uri.toString(), avatar);
-                                                    mDatabase.child("posts").child(day).setValue(post)
+                                                    mDatabase.child(POST).child(day).setValue(post)
                                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<Void> task) {
-                                                                    postListener.postListener(null);
+                                                                    callback.postListener(null);
                                                                 }
                                                             }) //setValue để thêm node
                                                             .addOnFailureListener(new OnFailureListener() {
                                                                 @Override
                                                                 public void onFailure(@NonNull Exception e) {
-                                                                    postListener.postListener(e);
+                                                                    callback.postListener(e);
                                                                 }
                                                             });
                                                 }
@@ -108,7 +112,7 @@ public class PostInteractorImpl implements PostInteractor {
                                     .addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception exception) {
-                                            postListener.postListener(exception);
+                                            callback.postListener(exception);
                                         }
                                     });
                         }
@@ -116,12 +120,12 @@ public class PostInteractorImpl implements PostInteractor {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            postListener.postListener(e);
+                            callback.postListener(e);
 
                         }
                     });
         } else {
-            mDatabase.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            mDatabase.child(USER).child(user.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
@@ -129,17 +133,17 @@ public class PostInteractorImpl implements PostInteractor {
                     String avatar = (String) map.get("avatar");
 
                     Post post = new Post(user.getUid(), name, day, content, null, avatar);
-                    mDatabase.child("posts").child(day).setValue(post)
+                    mDatabase.child(POST).child(day).setValue(post)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    postListener.postListener(null);
+                                    callback.postListener(null);
                                 }
                             }) //setValue để thêm node
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    postListener.postListener(e);
+                                    callback.postListener(e);
                                 }
                             });
                 }
@@ -151,138 +155,91 @@ public class PostInteractorImpl implements PostInteractor {
             });
         }
     }
-//
-//    private void uploadImage(final String content, Uri filePath) {
-//        if (filePath != null) {
-//            ref = storageReference.child("images/" + UUID.randomUUID().toString());
-//            ref.putFile(filePath)
-//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                            Log.e("THIEN", "UPLOAD OKE");
-//                            getUrlImage(content);
-//                        }
-//                    })
-//                    .addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            onFailure(e);
-//                            Log.e("THIEN", "UPLOAD NOT OKE");
-//
-//                        }
-//                    })
-//                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-//                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
-//                                    .getTotalByteCount());
-////                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
-//                        }
-//                    });
-//        } else {
-//            post(content, null);
-//        }
-//    }
-//
-//    private void getUrlImage(final String content) {
-//        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//            @Override
-//            public void onSuccess(Uri uri) {
-//                post(content, uri.toString());
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception exception) {
-//                // Handle any errors
-//                Log.e("THIEN", "GET NOT OKE");
-//            }
-//        });
-//    }
-//
-//    private void post(final String content, final String url, final PostListener postListener) {
-//        mDatabase.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-//                String name = (String) map.get("name");
-//                String avatar = (String) map.get("avatar");
-//
-//                Post post = new Post(user.getUid(), name, day, content, url, avatar);
-//                mDatabase.child("posts").child(day).setValue(post)
-//                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<Void> task) {
-//                                postListener.postListener(null);
-//                            }
-//                        }) //setValue để thêm node
-//                        .addOnFailureListener(new OnFailureListener() {
-//                            @Override
-//                            public void onFailure(@NonNull Exception e) {
-//                                postListener.postListener(e);
-//                            }
-//                        });
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
 
     @Override
-    public void loadPersonalPost(final ListPost listPost) {
-        mDatabase.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
+    public void loadPersonalPost(final ListPostCallback callback) {
+        mDatabase.child(POST).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     Map<String, Object> map = (Map<String, Object>) dsp.getValue();
-                    String firstValue = (String) map.get("id");
-                    String secondValue = (String) map.get("name");
-                    String thirdValue = (String) map.get("timePost");
-                    String foureValue = (String) map.get("post");
-                    String fiveValue = (String) map.get("image");
-                    String sixValue = (String) map.get("avatar");
+                    String id = (String) map.get("id");
+                    String name = (String) map.get("name");
+                    String timePost = (String) map.get("timePost");
+                    String postBody = (String) map.get("post");
+                    String image = (String) map.get("image");
+                    String avatar = (String) map.get("avatar");
 
-                    if (firstValue.equals(user.getUid().toString())) {
-                        Post post = new Post(firstValue, secondValue, thirdValue, foureValue, fiveValue, sixValue);
+                    if (id.equals(user.getUid())) {
+                        Post post = new Post(id, name, timePost, postBody, image, avatar);
                         postList.add(post);
                     }
                 }
-                listPost.listPost(null, postList);
+                callback.listPost(null, postList);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                listPost.listPost(databaseError, null);
+                callback.listPost(databaseError, null);
             }
         });
     }
 
     @Override
-    public void loadAllPost(final ListPost listPost) {
-        mDatabase.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
+    public void loadAllPost(final ListPostCallback callback) {
+        mDatabase.child(POST).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     Map<String, Object> map = (Map<String, Object>) dsp.getValue();
-                    String firstValue = (String) map.get("id");
-                    String secondValue = (String) map.get("name");
-                    String thirdValue = (String) map.get("timePost");
-                    String foureValue = (String) map.get("post");
-                    String fiveValue = (String) map.get("image");
-                    String sixValue = (String) map.get("avatar");
+                    String id = (String) map.get("id");
+                    String name = (String) map.get("name");
+                    String timePost = (String) map.get("timePost");
+                    String postBody = (String) map.get("post");
+                    String image = (String) map.get("image");
+                    String avatar = (String) map.get("avatar");
 
-                    Post post = new Post(firstValue, secondValue, thirdValue, foureValue, fiveValue, sixValue);
+                    Post post = new Post(id, name, timePost, postBody, image, avatar);
                     postList.add(post);
                 }
 
-                listPost.listPost(null, postList);
+                callback.listPost(null, postList);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                listPost.listPost(null, null);
+                callback.listPost(null, null);
+            }
+        });
+    }
+
+    @Override
+    public void deletePost(final Post post, final DeletePostCallback callback) {
+        mDatabase.child(POST).child(post.getTimePost()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                //Delete Image in storage
+                if (!TextUtils.isEmpty(post.getImage())) {
+                    StorageReference photoRef = storage.getReferenceFromUrl(post.getImage());
+                    photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            callback.listPost(null);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            callback.listPost(exception);
+                        }
+                    });
+                } else {
+                    callback.listPost(null);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callback.listPost(e);
             }
         });
     }

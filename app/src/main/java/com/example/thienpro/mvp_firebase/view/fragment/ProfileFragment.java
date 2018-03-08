@@ -27,6 +27,7 @@ import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.Impl.ProfilePresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.ProfilePresenter;
 import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
+import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
 import com.example.thienpro.mvp_firebase.view.activity.PostActivity;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
@@ -44,7 +45,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by ThienPro on 11/22/2017.
  */
 
-public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implements ProfileView {
+public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implements ProfileView, HomeAdapter.ListPostMenuListener {
     private static final int REQUEST_CHANGE_AVATAR = 1;
     private static final int REQUEST_CHANGE_COVER = 2;
 
@@ -119,7 +120,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
     public void showList(ArrayList<Post> list) {
         Collections.reverse(list);
         listPost = list;
-        homeAdapter = new HomeAdapter(listPost, getContext());
+        homeAdapter = new HomeAdapter(listPost, getContext(), this, null);
         viewDataBinding.rvProfile.setAdapter(homeAdapter);
         viewDataBinding.rvProfile.setLayoutFrozen(false);
     }
@@ -239,4 +240,15 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
 
     }
 
+    @Override
+    public void onEditPost(Post post) {
+        LogUltil.log(ProfileFragment.class, post.getId());
+    }
+
+    @Override
+    public void onDeletePost(Post post) {
+        presenter.deletePost(post);
+
+        LogUltil.log(ProfileFragment.class, post.getTimePost());
+    }
 }

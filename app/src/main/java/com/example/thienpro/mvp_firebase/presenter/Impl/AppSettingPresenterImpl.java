@@ -10,7 +10,6 @@ import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.model.entity.UserLocation;
 import com.example.thienpro.mvp_firebase.presenter.AppSettingPresenter;
-import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.example.thienpro.mvp_firebase.ultils.SHLocationManager;
 import com.example.thienpro.mvp_firebase.view.AppSettingView;
 
@@ -26,7 +25,7 @@ public class AppSettingPresenterImpl implements AppSettingPresenter {
     private AppSettingView view;
 
     public AppSettingPresenterImpl(Context context, AppSettingView view) {
-        this.locationInteractor = new LocationInteractorImpl();
+        this.locationInteractor = new LocationInteractorImpl(context);
         this.location = SHLocationManager.getLastKnowLocation(context);
         this.userInteractor = new UserInteractorImpl(context);
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
@@ -38,14 +37,14 @@ public class AppSettingPresenterImpl implements AppSettingPresenter {
         if (scheduledExecutorService.isShutdown()) {
             scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         }
-        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserListener() {
+        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserCallback() {
             @Override
             public void currentLocalUser(final User user) {
                 scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
                     @Override
                     public void run() {
                         final UserLocation currentLocation = new UserLocation(user.getName(), null, location.getLongitude(), location.getLatitude(), status);
-                        locationInteractor.pushLocation(currentLocation, new LocationInteractor.PushLocationListener() {
+                        locationInteractor.pushLocation(currentLocation, new LocationInteractor.PushLocationCallback() {
                             @Override
                             public void pushLocation(Exception e) {
                                 if (e != null) {
@@ -63,8 +62,6 @@ public class AppSettingPresenterImpl implements AppSettingPresenter {
         });
     }
 
-
-
     @Override
     public void getLocation() {
     }
@@ -77,5 +74,20 @@ public class AppSettingPresenterImpl implements AppSettingPresenter {
     @Override
     public void getListLocation() {
 
+    }
+
+    @Override
+    public void checkShareLocation() {
+        locationInteractor.getShareLocation(new LocationInteractor.GetShareLocationCallback() {
+            @Override
+            public void getShareLocation(boolean isShare) {
+                view.shareLocation(isShare);
+            }
+        });
+    }
+
+    @Override
+    public void saveShareLocation(boolean isShared) {
+        locationInteractor.saveShareLocation(isShared);
     }
 }

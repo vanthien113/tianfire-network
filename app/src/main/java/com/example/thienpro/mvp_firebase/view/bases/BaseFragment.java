@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -48,18 +49,6 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment i
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        final ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(getContext(), R.style.NightTheme);
-
-        // clone the inflater using the ContextThemeWrapper
-//        LayoutInflater localInflater = getActivity().getLayoutInflater().cloneInContext(contextThemeWrapper);
-        // inflate the layout using the cloned inflater, not default inflater
-//        return localInflater.inflate(getLayoutId(), container, false);
-
-        //getContext().setTheme(R.style.NightTheme);
-
-//        inflater.cloneInContext(contextThemeWrapper);
-
-//        viewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
         viewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
         isAttach = false;
         viewDataBinding.getRoot().setOnClickListener(new View.OnClickListener() {
@@ -69,7 +58,6 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment i
                 // disable hiding view
             }
         });
-
         return viewDataBinding.getRoot();
     }
 

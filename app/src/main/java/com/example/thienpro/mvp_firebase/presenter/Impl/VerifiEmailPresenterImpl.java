@@ -22,7 +22,7 @@ public class VerifiEmailPresenterImpl implements VerifiEmailPresenter {
 
     @Override
     public void verifiEmail() {
-        userInteractor.verifiEmail(new UserInteractor.VerifiEmailCheck() {
+        userInteractor.verifiEmail(new UserInteractor.VerifiEmailCheckCallback() {
             @Override
             public void checker(Exception checker, String email) {
                 if (checker == null && email == null) {
@@ -38,7 +38,7 @@ public class VerifiEmailPresenterImpl implements VerifiEmailPresenter {
 
     @Override
     public void logOut() {
-        userInteractor.logOut(new UserInteractor.LogoutCheck() {
+        userInteractor.logOut(new UserInteractor.LogoutCheckCallback() {
             @Override
             public void checker(boolean checker) {
                 if (checker) {

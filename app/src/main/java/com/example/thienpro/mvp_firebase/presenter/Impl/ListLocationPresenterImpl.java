@@ -1,5 +1,7 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
+import android.content.Context;
+
 import com.example.thienpro.mvp_firebase.model.Impl.LocationInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.LocationInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.UserLocation;
@@ -13,15 +15,15 @@ public class ListLocationPresenterImpl implements ListLocationPresenter {
     private LocationInteractor interactor;
     private ListLocationView view;
 
-    public ListLocationPresenterImpl(ListLocationView view) {
-        this.interactor = new LocationInteractorImpl();
+    public ListLocationPresenterImpl(ListLocationView view, Context context) {
+        this.interactor = new LocationInteractorImpl(context);
         this.view = view;
     }
 
     @Override
     public void getListLocation() {
         view.showLoadingDialog();
-        interactor.getListLocation(new LocationInteractor.GetListLocationListener() {
+        interactor.getListLocation(new LocationInteractor.GetListLocationCallback() {
             @Override
             public void listLocation(ArrayList<UserLocation> locations, DatabaseError e) {
                 view.hideLoadingDialog();

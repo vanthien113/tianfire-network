@@ -17,6 +17,7 @@ public class SharedPreferencesUtil {
     private static String SEX = "sex";
     private static String AVATAR = "avatar";
     private static String COVER = "cover";
+    private static String LOCATION = "location";
 
     public SharedPreferencesUtil(Context context) {
         this.sharedPreferencesUtil = context.getSharedPreferences(DATA, Context.MODE_PRIVATE);
@@ -51,5 +52,18 @@ public class SharedPreferencesUtil {
         user.setSex(sharedPreferencesUtil.getBoolean(SEX, false));
 
         return user;
+    }
+
+    public void setShareLocation(boolean share) {
+        SharedPreferences.Editor editor = sharedPreferencesUtil.edit();
+        editor.putBoolean(LOCATION, share);
+
+        LogUltil.log(SharedPreferencesUtil.class, share);
+
+        editor.apply();
+    }
+
+    public boolean getShareLocation() {
+        return sharedPreferencesUtil.getBoolean(LOCATION, false);
     }
 }

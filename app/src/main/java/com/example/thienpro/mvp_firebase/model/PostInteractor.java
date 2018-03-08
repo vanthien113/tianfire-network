@@ -12,18 +12,24 @@ import java.util.ArrayList;
  */
 
 public interface PostInteractor {
-    interface PostListener {
+    interface PostCallback {
         void postListener(Exception e);
     }
 
-    interface ListPost {
+    interface ListPostCallback {
         void listPost(DatabaseError e, ArrayList<Post> listPost);
     }
 
-    void writeNewPost(String content, Uri filePath, PostListener postListener);
+    interface DeletePostCallback {
+        void listPost(Exception e);
+    }
 
-    void loadPersonalPost(ListPost listPost);
+    void writeNewPost(String content, Uri filePath, PostCallback callback);
 
-    void loadAllPost(ListPost listPost);
+    void loadPersonalPost(ListPostCallback callback);
+
+    void loadAllPost(ListPostCallback callback);
+
+    void deletePost(Post post, DeletePostCallback callback);
 
 }

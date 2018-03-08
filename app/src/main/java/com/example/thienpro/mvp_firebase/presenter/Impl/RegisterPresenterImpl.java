@@ -22,7 +22,7 @@ public class RegisterPresenterImpl implements RegistrerPresenter {
 
     @Override
     public void register(String email, String password, String name, String address, boolean sex) {
-        userInteractor.register(email, password, name, address, sex, new UserInteractor.RegisterCheck() {
+        userInteractor.register(email, password, name, address, sex, new UserInteractor.RegisterCheckCallback() {
             @Override
             public void checker(Exception checker) {
                 if (checker == null) {

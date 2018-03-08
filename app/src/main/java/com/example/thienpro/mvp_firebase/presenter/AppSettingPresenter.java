@@ -8,4 +8,8 @@ public interface AppSettingPresenter {
     void stopPushLocation();
 
     void getListLocation();
+
+    void checkShareLocation();
+
+    void saveShareLocation(boolean isShared);
 }

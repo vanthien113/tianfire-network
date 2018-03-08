@@ -65,7 +65,7 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        setTheme(R.style.NightTheme);
+//        setTheme(R.style.DarkTheme);
 
         viewDataBinding = DataBindingUtil.setContentView(this, getLayoutId());
         init();

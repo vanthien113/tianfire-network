@@ -1,5 +1,7 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
+import android.content.Context;
+
 import com.example.thienpro.mvp_firebase.model.Impl.LocationInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.LocationInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.UserLocation;
@@ -16,9 +18,9 @@ public class UserLocationPresenterImpl implements UserLocationPresenter {
     private UserLocationView view;
     private static ScheduledExecutorService scheduledExecutorService;
 
-    public UserLocationPresenterImpl(UserLocationView view) {
+    public UserLocationPresenterImpl(UserLocationView view, Context context) {
         this.view = view;
-        this.interactor = new LocationInteractorImpl();
+        this.interactor = new LocationInteractorImpl(context);
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
     }
 
@@ -27,7 +29,7 @@ public class UserLocationPresenterImpl implements UserLocationPresenter {
         scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {
-                interactor.getLocation(userId, new LocationInteractor.GetLocationListener() {
+                interactor.getLocation(userId, new LocationInteractor.GetLocationCallback() {
                     @Override
                     public void getLocation(DatabaseError e, UserLocation location) {
                         if (e != null) {

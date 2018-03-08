@@ -24,7 +24,7 @@ public class EditInfoPresenterImpl implements EditInfoPresenter {
 
     @Override
     public void loadUser() {
-        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserListener() {
+        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserCallback() {
             @Override
             public void currentLocalUser(User user) {
 
@@ -39,10 +39,10 @@ public class EditInfoPresenterImpl implements EditInfoPresenter {
     public void updateUser(final String email, final String name, final String address, final boolean sex, final String avatar, final String cover) {
         view.showDialog();
 
-        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserListener() {
+        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserCallback() {
             @Override
             public void currentLocalUser(User user) {
-                userInteractor.updateUser(email, name, address, sex, avatar, cover, new UserInteractor.UpdateUserListener() {
+                userInteractor.updateUser(email, name, address, sex, avatar, cover, new UserInteractor.UpdateUserCallback() {
                     @Override
                     public void updateUser(Exception e) {
                         view.hideDialog();

@@ -11,9 +11,11 @@ import android.widget.Toast;
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.FragmentHomeBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
+import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.HomePresenter;
 import com.example.thienpro.mvp_firebase.presenter.Impl.HomePresenterImpl;
 import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
+import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.example.thienpro.mvp_firebase.view.HomeView;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
 import com.example.thienpro.mvp_firebase.view.bases.BaseFragment;
@@ -26,12 +28,13 @@ import java.util.Collections;
  * Created by ThienPro on 11/22/2017.
  */
 
-public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements HomeView {
+public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements HomeView, HomeAdapter.ListPostMenuListener {
     private HomeAdapter homeAdapter;
     private LinearLayoutManager linearLayoutManager;
     private HomePresenter presenter;
     private ArrayList<Post> listPost;
     private LoadingDialog loadingDialog;
+    private User user;
 
     public static HomeFragment newInstance() {
         Bundle args = new Bundle();
@@ -48,9 +51,10 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
     @Override
     protected void init(@Nullable View view) {
         loadingDialog = new LoadingDialog(getContext());
-        presenter = new HomePresenterImpl(this);
+        presenter = new HomePresenterImpl(this, getContext());
         linearLayoutManager = new LinearLayoutManager(viewDataBinding.getRoot().getContext(), OrientationHelper.VERTICAL, false);
 
+        presenter.currentUser();
         presenter.loadAllListPost();
 
         viewDataBinding.rvHome.setLayoutManager(linearLayoutManager);
@@ -89,7 +93,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
         Collections.reverse(list);
         listPost = list;
 
-        homeAdapter = new HomeAdapter(listPost, getContext());
+        homeAdapter = new HomeAdapter(listPost, getContext(), this, user);
         viewDataBinding.rvHome.setAdapter(homeAdapter);
         viewDataBinding.rvHome.setLayoutFrozen(false);
     }
@@ -110,6 +114,21 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
     }
 
     @Override
+    public void currentUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public void showError(Exception e) {
+        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showMessenger(String messenger) {
+
+    }
+
+    @Override
     protected void screenResume() {
 
     }
@@ -124,4 +143,13 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
 
     }
 
+    @Override
+    public void onEditPost(Post post) {
+        LogUltil.log(HomeFragment.class, post.getId());
+    }
+
+    @Override
+    public void onDeletePost(Post post) {
+        presenter.deletePost(post);
+    }
 }

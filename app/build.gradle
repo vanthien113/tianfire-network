@@ -9,6 +9,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -42,5 +43,8 @@ dependencies {
 //    compile 'com.github.esafirm.android-image-picker:imagepicker:1.5.1@aar'
     implementation 'com.github.esafirm.android-image-picker:rximagepicker:1.5.1'
     implementation "com.google.android.gms:play-services:11.6.0"
+//    implementation "com.google.android.gms:play-services-location:11.6.0"
+//    compile 'com.android.support:multidex:1.0.1'
+
 }
 apply plugin: 'com.google.gms.google-services'

@@ -39,7 +39,7 @@ public class ListLocationActivity extends BaseActivity<ActivityListLocationBindi
     protected void init() {
         loadingDialog = new LoadingDialog(this);
 
-        presenter = new ListLocationPresenterImpl(this);
+        presenter = new ListLocationPresenterImpl(this, this);
 
         layoutManager = new LinearLayoutManager(viewDataBinding.getRoot().getContext(), OrientationHelper.VERTICAL, false);
         viewDataBinding.rvListLocation.setLayoutManager(layoutManager);

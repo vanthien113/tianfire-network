@@ -10,65 +10,65 @@ import com.google.firebase.database.DatabaseError;
  */
 
 public interface UserInteractor {
-    interface LoggedInCheck {
+    interface LoggedInCheckCallback {
         void checker(int checker);
     }
 
-    interface LoginCheck {
+    interface LoginCheckCallback {
         void checker(boolean checker, Exception e);
     }
 
-    interface RegisterCheck {
+    interface RegisterCheckCallback {
         void checker(Exception checker);
     }
 
-    interface VerifiEmailCheck {
+    interface VerifiEmailCheckCallback {
         void checker(Exception checker, String email);
     }
 
-    interface LogoutCheck {
+    interface LogoutCheckCallback {
         void checker(boolean checker);
     }
 
-    interface GetUserListener {
+    interface GetUserCallback {
         void getUser(DatabaseError error, User user);
     }
 
-    interface AddAvatarListener {
+    interface AddAvatarCallback {
         void addAvatar(Exception e, String uri);
     }
 
-    interface AddCoverListener {
+    interface AddCoverCallback {
         void addCover(Exception e, String uri);
     }
 
-    interface UpdateUserListener {
+    interface UpdateUserCallback {
         void updateUser(Exception e);
     }
 
-    interface LoadCurrentLocalUserListener {
+    interface LoadCurrentLocalUserCallback {
         void currentLocalUser(User user);
     }
 
-    void sigIn(String email, String password, LoginCheck loginCheck);
+    void sigIn(String email, String password, LoginCheckCallback loginCheckCallback);
 
-    void signedInCheck(LoggedInCheck loginCheck);
+    void signedInCheck(LoggedInCheckCallback callback);
 
-    void logOut(LogoutCheck logoutCheck);
+    void logOut(LogoutCheckCallback callback);
 
-    void getUser(GetUserListener listener, boolean loadUser);
+    void getUser(GetUserCallback callback, boolean loadUser);
 
-    void addAvatar(String email, final String name, String address, Boolean sex, Uri uri, String coverUri, AddAvatarListener addAvatarListener);
+    void addAvatar(String email, final String name, String address, Boolean sex, Uri uri, String coverUri, AddAvatarCallback callback);
 
-    void addCover(final String email, final String name, final String address, final Boolean sex, final String avatar, final Uri coverUri, AddCoverListener addCoverListener);
+    void addCover(final String email, final String name, final String address, final Boolean sex, final String avatar, final Uri coverUri, AddCoverCallback callback);
 
-    void updateUser(String email, String name, String address, Boolean sex, String avatar, String cover, UpdateUserListener updateUserListener);
+    void updateUser(String email, String name, String address, Boolean sex, String avatar, String cover, UpdateUserCallback callback);
 
-    void verifiEmail(VerifiEmailCheck verifiEmailCheck);
+    void verifiEmail(VerifiEmailCheckCallback callback);
 
-    void register(final String email, String password, final String name, final String address, final boolean sex, RegisterCheck registerCheck);
+    void register(final String email, String password, final String name, final String address, final boolean sex, RegisterCheckCallback callback);
 
-    void loadCurrentLocalUser(LoadCurrentLocalUserListener loadCurrentLocalUserListener);
+    void loadCurrentLocalUser(LoadCurrentLocalUserCallback callback);
 
     void saveCurrentLocalUser(User user);
 }

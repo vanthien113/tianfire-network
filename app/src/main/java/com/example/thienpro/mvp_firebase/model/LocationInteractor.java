@@ -6,21 +6,29 @@ import com.google.firebase.database.DatabaseError;
 import java.util.ArrayList;
 
 public interface LocationInteractor {
-    interface GetLocationListener {
+    interface GetLocationCallback {
         void getLocation(DatabaseError e, UserLocation location);
     }
 
-    interface PushLocationListener {
+    interface PushLocationCallback {
         void pushLocation(Exception e);
     }
 
-    interface GetListLocationListener {
+    interface GetListLocationCallback {
         void listLocation(ArrayList<UserLocation> locations, DatabaseError e);
     }
 
-    void pushLocation(UserLocation location, PushLocationListener listener);
+    interface GetShareLocationCallback {
+        void getShareLocation(boolean isShare);
+    }
 
-    void getLocation(String userId, GetLocationListener listener);
+    void pushLocation(UserLocation location, PushLocationCallback callback);
 
-    void getListLocation(GetListLocationListener listener);
+    void getLocation(String userId, GetLocationCallback callback);
+
+    void getListLocation(GetListLocationCallback callback);
+
+    void saveShareLocation(boolean isShare);
+
+    void getShareLocation(GetShareLocationCallback callback);
 }

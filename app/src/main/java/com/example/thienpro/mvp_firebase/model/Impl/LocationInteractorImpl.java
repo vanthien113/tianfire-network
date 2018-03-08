@@ -1,9 +1,11 @@
 package com.example.thienpro.mvp_firebase.model.Impl;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.example.thienpro.mvp_firebase.model.LocationInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.UserLocation;
+import com.example.thienpro.mvp_firebase.ultils.SharedPreferencesUtil;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,16 +25,18 @@ public class LocationInteractorImpl implements LocationInteractor {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private ArrayList<UserLocation> listLocation;
+    private SharedPreferencesUtil locationSharedPreferences;
 
-    public LocationInteractorImpl() {
+    public LocationInteractorImpl(Context context) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
         listLocation = new ArrayList<>();
+        locationSharedPreferences = new SharedPreferencesUtil(context);
     }
 
-    public void pushLocation(UserLocation location, final PushLocationListener listener) {
+    public void pushLocation(UserLocation location, final PushLocationCallback callback) {
         String userId = user.getUid();
 
         location.setUserName(location.getUserName());
@@ -45,19 +49,19 @@ public class LocationInteractorImpl implements LocationInteractor {
         mDatabase.updateChildren(childUpdates).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                listener.pushLocation(e);
+                callback.pushLocation(e);
             }
         }).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                listener.pushLocation(null);
+                callback.pushLocation(null);
             }
         });
 
     }
 
     @Override
-    public void getLocation(String userId, final GetLocationListener listener) {
+    public void getLocation(String userId, final GetLocationCallback callback) {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -72,12 +76,12 @@ public class LocationInteractorImpl implements LocationInteractor {
 
                 UserLocation location = new UserLocation(userName, userId, lng, lat, status);
 
-                listener.getLocation(null, location);
+                callback.getLocation(null, location);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                listener.getLocation(databaseError, null);
+                callback.getLocation(databaseError, null);
             }
         };
 
@@ -85,7 +89,7 @@ public class LocationInteractorImpl implements LocationInteractor {
     }
 
     @Override
-    public void getListLocation(final GetListLocationListener listener) {
+    public void getListLocation(final GetListLocationCallback callback) {
         mDatabase.child("locations").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -103,13 +107,23 @@ public class LocationInteractorImpl implements LocationInteractor {
                     }
                 }
 
-                listener.listLocation(listLocation, null);
+                callback.listLocation(listLocation, null);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                listener.listLocation(null, databaseError);
+                callback.listLocation(null, databaseError);
             }
         });
+    }
+
+    @Override
+    public void saveShareLocation(boolean isShare) {
+        locationSharedPreferences.setShareLocation(isShare);
+    }
+
+    @Override
+    public void getShareLocation(GetShareLocationCallback shareLocation) {
+        shareLocation.getShareLocation(locationSharedPreferences.getShareLocation());
     }
 }

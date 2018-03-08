@@ -24,7 +24,7 @@ public class PostPresenterImpl implements PostPresenter {
     public void newPost(String content, Uri filePath) {
         view.showLoading();
 
-        postInteractor.writeNewPost(content, filePath, new PostInteractor.PostListener() {
+        postInteractor.writeNewPost(content, filePath, new PostInteractor.PostCallback() {
             @Override
             public void postListener(Exception e) {
                 view.hideLoading();

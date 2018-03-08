@@ -1,8 +1,7 @@
 package com.example.thienpro.mvp_firebase.view;
 
-import android.widget.Toast;
-
 import com.example.thienpro.mvp_firebase.model.entity.Post;
+import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
@@ -19,4 +18,10 @@ public interface HomeView {
     void showLoading();
 
     void hideLoading();
+
+    void currentUser(User user);
+
+    void showError(Exception e);
+
+    void showMessenger(String messenger);
 }

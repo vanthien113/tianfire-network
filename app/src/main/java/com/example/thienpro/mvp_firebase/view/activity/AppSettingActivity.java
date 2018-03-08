@@ -26,13 +26,17 @@ public class AppSettingActivity extends BaseActivity<ActivityAppSettingBinding> 
     protected void init() {
         presenter = new AppSettingPresenterImpl(this, this);
         viewDataBinding.setEvent(this);
+
+        presenter.checkShareLocation();
     }
 
     @Override
     public void onCheckLocationClick() {
         if (viewDataBinding.cbLocation.isChecked()) {
+            presenter.saveShareLocation(true);
             presenter.pushLocation(true);
         } else {
+            presenter.saveShareLocation(false);
             presenter.pushLocation(false);
         }
     }
@@ -47,6 +51,14 @@ public class AppSettingActivity extends BaseActivity<ActivityAppSettingBinding> 
         ListLocationActivity.startActivity(this);
     }
 
+    @Override
+    public void shareLocation(boolean isShared) {
+        viewDataBinding.cbLocation.setChecked(isShared);
+
+        if (isShared) {
+            presenter.pushLocation(isShared);
+        }
+    }
 
     @Override
     protected void startScreen() {

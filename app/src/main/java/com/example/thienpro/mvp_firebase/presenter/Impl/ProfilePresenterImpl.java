@@ -40,7 +40,7 @@ public class ProfilePresenterImpl implements ProfilePresenter {
     public void loadPost() {
         view.showLoading();
 
-        postInteractor.loadPersonalPost(new PostInteractor.ListPost() {
+        postInteractor.loadPersonalPost(new PostInteractor.ListPostCallback() {
             @Override
             public void listPost(DatabaseError e, ArrayList<Post> listPost) {
                 view.hideLoading();
@@ -58,7 +58,7 @@ public class ProfilePresenterImpl implements ProfilePresenter {
 //    public void getCurrentUser() {
 //        view.showLoading();
 //
-//        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserListener() {
+//        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserCallback() {
 //            @Override
 //            public void currentLocalUser(User user) {
 //                view.showUser(user);
@@ -70,7 +70,7 @@ public class ProfilePresenterImpl implements ProfilePresenter {
     @Override
     public void getUser() {
         view.showLoading();
-        userInteractor.getUser(new UserInteractor.GetUserListener() {
+        userInteractor.getUser(new UserInteractor.GetUserCallback() {
             @Override
             public void getUser(DatabaseError error, User user) {
                 view.hideLoading();
@@ -85,13 +85,31 @@ public class ProfilePresenterImpl implements ProfilePresenter {
     }
 
     @Override
+    public void deletePost(Post post) {
+        view.showLoading();
+
+        postInteractor.deletePost(post, new PostInteractor.DeletePostCallback() {
+            @Override
+            public void listPost(Exception e) {
+                view.hideLoading();
+
+                if (e != null) {
+                    view.showError(e);
+                } else {
+                    view.showMessenger("Đã xóa");
+                }
+            }
+        });
+    }
+
+    @Override
     public void changeAvatar(final Uri uri) {
         view.showLoading();
 
-        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserListener() {
+        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserCallback() {
             @Override
             public void currentLocalUser(final User user) {
-                userInteractor.addAvatar(user.getEmail(), user.getName(), user.getAddress(), user.getSex(), uri, user.getCover(), new UserInteractor.AddAvatarListener() {
+                userInteractor.addAvatar(user.getEmail(), user.getName(), user.getAddress(), user.getSex(), uri, user.getCover(), new UserInteractor.AddAvatarCallback() {
                     @Override
                     public void addAvatar(Exception e, String uri) {
                         view.hideLoading();
@@ -115,10 +133,10 @@ public class ProfilePresenterImpl implements ProfilePresenter {
     public void changeCover(final Uri uri) {
         view.showLoading();
 
-        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserListener() {
+        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserCallback() {
             @Override
             public void currentLocalUser(final User user) {
-                userInteractor.addCover(user.getEmail(), user.getName(), user.getAddress(), user.getSex(), user.getAvatar(), uri, new UserInteractor.AddCoverListener() {
+                userInteractor.addCover(user.getEmail(), user.getName(), user.getAddress(), user.getSex(), user.getAvatar(), uri, new UserInteractor.AddCoverCallback() {
                     @Override
                     public void addCover(Exception e, String uri) {
                         view.hideLoading();

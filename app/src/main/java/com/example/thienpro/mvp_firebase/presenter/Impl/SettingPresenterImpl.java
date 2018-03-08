@@ -22,7 +22,7 @@ public class SettingPresenterImpl implements SettingPresenter {
 
     @Override
     public void logOut() {
-        userInteractor.logOut(new UserInteractor.LogoutCheck() {
+        userInteractor.logOut(new UserInteractor.LogoutCheckCallback() {
             @Override
             public void checker(boolean checker) {
                 if (checker) {

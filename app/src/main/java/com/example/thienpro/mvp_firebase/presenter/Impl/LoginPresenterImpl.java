@@ -23,7 +23,7 @@ public class LoginPresenterImpl implements LoginPresenter {
     public void signedInCheck() {
         view.showLoading();
 
-        userInteractor.signedInCheck(new UserInteractor.LoggedInCheck() {
+        userInteractor.signedInCheck(new UserInteractor.LoggedInCheckCallback() {
             @Override
             public void checker(int checker) {
                 view.hideLoading();
@@ -42,7 +42,7 @@ public class LoginPresenterImpl implements LoginPresenter {
     public void onSignIn(String email, String password) {
         view.showLoading();
 
-        userInteractor.sigIn(email, password, new UserInteractor.LoginCheck() {
+        userInteractor.sigIn(email, password, new UserInteractor.LoginCheckCallback() {
             @Override
             public void checker(boolean checker, Exception e) {
                 if (checker) {

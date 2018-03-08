@@ -6,4 +6,6 @@ public interface AppSettingView {
     void showError(Exception e);
 
     void onShowListLocationClick();
+
+    void shareLocation(boolean isShared);
 }

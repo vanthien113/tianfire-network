@@ -36,6 +36,9 @@ import java.util.UUID;
  */
 
 public class UserInteractorImpl implements UserInteractor {
+    private static final String USER = "users";
+    private static final String POST = "posts";
+
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser users;
@@ -45,6 +48,8 @@ public class UserInteractorImpl implements UserInteractor {
     private SharedPreferencesUtil currentUser;
 
     public UserInteractorImpl(Context context) {
+//        FirebaseApp.initializeApp(context);
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         users = mAuth.getCurrentUser();
@@ -54,23 +59,23 @@ public class UserInteractorImpl implements UserInteractor {
     }
 
     @Override
-    public void verifiEmail(final VerifiEmailCheck verifiEmailCheck) {
+    public void verifiEmail(final VerifiEmailCheckCallback callback) {
         if (users != null) {
             users.reload();
             if (users.isEmailVerified()) {
-                verifiEmailCheck.checker(null, null);
+                callback.checker(null, null);
             } else if (!users.isEmailVerified()) {
                 users.sendEmailVerification()
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                verifiEmailCheck.checker(null, users.getEmail());
+                                callback.checker(null, users.getEmail());
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                verifiEmailCheck.checker(e, users.getEmail());
+                                callback.checker(e, users.getEmail());
                             }
                         });
             }
@@ -78,7 +83,7 @@ public class UserInteractorImpl implements UserInteractor {
     }
 
     //Should Hard Avatar
-    public void register(final String email, String password, final String name, final String address, final boolean sex, final RegisterCheck registerCheck) {
+    public void register(final String email, String password, final String name, final String address, final boolean sex, final RegisterCheckCallback callback) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -86,17 +91,17 @@ public class UserInteractorImpl implements UserInteractor {
                         if (task.isSuccessful()) {
                             users = mAuth.getCurrentUser();
                             User user = new User(email, name, address, sex, null, null);
-                            mDatabase.child("users").child(users.getUid()).setValue(user)
+                            mDatabase.child(USER).child(users.getUid()).setValue(user)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                            registerCheck.checker(null);
+                                            callback.checker(null);
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            registerCheck.checker(e);
+                                            callback.checker(e);
                                         }
                                     });
                         }
@@ -105,14 +110,14 @@ public class UserInteractorImpl implements UserInteractor {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        registerCheck.checker(e);
+                        callback.checker(e);
                     }
                 });
     }
 
     @Override
-    public void loadCurrentLocalUser(LoadCurrentLocalUserListener loadCurrentLocalUserListeners) {
-        loadCurrentLocalUserListeners.currentLocalUser(currentUser.getUser());
+    public void loadCurrentLocalUser(LoadCurrentLocalUserCallback callback) {
+        callback.currentLocalUser(currentUser.getUser());
     }
 
     @Override
@@ -120,58 +125,7 @@ public class UserInteractorImpl implements UserInteractor {
         currentUser.setUser(user);
     }
 
-//    private void uploadImage(final String email, final String password, final String name, final String address, final boolean sex, Uri filePath) {
-//        if (filePath != null) {
-//            ref = storageReference.child("avatars/" + UUID.randomUUID().toString());
-//            ref.putFile(filePath)
-//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                            getUrlImage(email, password, name, address, sex);
-//                        }
-//                    })
-//                    .addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//
-//                        }
-//                    });
-//        } else {
-//            createUser(email, password, name, address, sex, "null");
-//        }
-//    }
-//
-//    private void createUser(final String email, String password, final String name, final String address, final boolean sex, final String avatar) {
-//        mAuth.createUserWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            users = mAuth.getCurrentUser();
-//                            User user = new User(email, name, address, sex, avatar);
-//                            mDatabase.child("users").child(users.getUid()).setValue(user); //setValue để thêm node
-//                            userListener.navigationToVerifiEmail();
-//                        } else userListener.onRegisterFail();
-//                    }
-//                });
-//    }
-
-//    private void getUrlImage(final String email, final String password, final String name, final String address, final boolean sex) {
-//        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//            @Override
-//            public void onSuccess(Uri uri) {
-//                createUser(email, password, name, address, sex, uri.toString());
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception exception) {
-//                // Handle any errors
-//                Log.e("THIEN", "GET NOT OKE");
-//            }
-//        });
-//    }
-
-    public void updateUser(String email, final String name, String address, Boolean sex, String avatar, String cover, final UpdateUserListener updateUserListener) {
+    public void updateUser(String email, final String name, String address, Boolean sex, String avatar, String cover, final UpdateUserCallback callback) {
         String userId = users.getUid();
         User user = new User(email, name, address, sex, avatar, cover);
         Map<String, Object> postValues = user.toMap();
@@ -181,12 +135,12 @@ public class UserInteractorImpl implements UserInteractor {
         mDatabase.updateChildren(childUpdates).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                updateUserListener.updateUser(e);
+                callback.updateUser(e);
             }
         });
 
         //Edit name in post
-        mDatabase.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(POST).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
@@ -214,13 +168,13 @@ public class UserInteractorImpl implements UserInteractor {
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        updateUserListener.updateUser(e);
+                                        callback.updateUser(e);
                                     }
                                 })
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        updateUserListener.updateUser(null);
+                                        callback.updateUser(null);
                                     }
                                 });
                     }
@@ -235,7 +189,7 @@ public class UserInteractorImpl implements UserInteractor {
         });
     }
 
-    public void addAvatar(final String email, final String name, final String address, final Boolean sex, final Uri uri, final String coverUri, final AddAvatarListener addAvatarListener) {
+    public void addAvatar(final String email, final String name, final String address, final Boolean sex, final Uri uri, final String coverUri, final AddAvatarCallback callback) {
         //Up im
 
         if (uri != null) {
@@ -287,7 +241,7 @@ public class UserInteractorImpl implements UserInteractor {
                                                                             mDatabase.updateChildren(childUpdates1);
                                                                         }
                                                                     }
-                                                                    addAvatarListener.addAvatar(null, uri.toString());
+                                                                    callback.addAvatar(null, uri.toString());
 
                                                                 }
 
@@ -301,7 +255,7 @@ public class UserInteractorImpl implements UserInteractor {
                                                     .addOnFailureListener(new OnFailureListener() {
                                                         @Override
                                                         public void onFailure(@NonNull Exception e) {
-                                                            addAvatarListener.addAvatar(e, null);
+                                                            callback.addAvatar(e, null);
                                                         }
                                                     });
                                         }
@@ -309,7 +263,7 @@ public class UserInteractorImpl implements UserInteractor {
                                     .addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            addAvatarListener.addAvatar(e, null);
+                                            callback.addAvatar(e, null);
                                         }
                                     });
                         }
@@ -317,14 +271,14 @@ public class UserInteractorImpl implements UserInteractor {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            addAvatarListener.addAvatar(e, null);
+                            callback.addAvatar(e, null);
                         }
                     });
         }
     }
 
     @Override
-    public void addCover(final String email, final String name, final String address, final Boolean sex, final String avatar, final Uri coverUri, final AddCoverListener addCoverListener) {
+    public void addCover(final String email, final String name, final String address, final Boolean sex, final String avatar, final Uri coverUri, final AddCoverCallback callback) {
         //Up im
 
         if (coverUri != null) {
@@ -349,13 +303,13 @@ public class UserInteractorImpl implements UserInteractor {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
 
-                                                            addCoverListener.addCover(null, uri.toString());
+                                                            callback.addCover(null, uri.toString());
                                                         }
                                                     })
                                                     .addOnFailureListener(new OnFailureListener() {
                                                         @Override
                                                         public void onFailure(@NonNull Exception e) {
-                                                            addCoverListener.addCover(e, null);
+                                                            callback.addCover(e, null);
                                                         }
                                                     });
                                         }
@@ -363,7 +317,7 @@ public class UserInteractorImpl implements UserInteractor {
                                     .addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            addCoverListener.addCover(e, null);
+                                            callback.addCover(e, null);
                                         }
                                     });
                         }
@@ -371,14 +325,14 @@ public class UserInteractorImpl implements UserInteractor {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            addCoverListener.addCover(e, null);
+                            callback.addCover(e, null);
                         }
                     });
         }
     }
 
     @Override
-    public void signedInCheck(LoggedInCheck loginCheck) {
+    public void signedInCheck(LoggedInCheckCallback loginCheck) {
         if (users != null) {
             users.reload();
             if (users.isEmailVerified()) {
@@ -391,7 +345,7 @@ public class UserInteractorImpl implements UserInteractor {
     }
 
     @Override
-    public void getUser(final GetUserListener listener, boolean loadUser) {
+    public void getUser(final GetUserCallback callback, boolean loadUser) {
         users = mAuth.getCurrentUser();
 
         ValueEventListener valueEventListener = new ValueEventListener() {
@@ -411,20 +365,19 @@ public class UserInteractorImpl implements UserInteractor {
 
                 currentUser.setUser(user);
 
-                listener.getUser(null, user);
+                callback.getUser(null, user);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                listener.getUser(databaseError, null);
+                callback.getUser(databaseError, null);
             }
         };
 
-        mDatabase.child("users").child(users.getUid()).addValueEventListener(valueEventListener);
+        mDatabase.child(USER).child(users.getUid()).addValueEventListener(valueEventListener);
     }
 
-    ///Fixed///
-    public void sigIn(String email, String password, final LoginCheck loginCheck) {
+    public void sigIn(String email, String password, final LoginCheckCallback callback) {
         mAuth = FirebaseAuth.getInstance();
 
         mAuth.signInWithEmailAndPassword(email, password)
@@ -432,21 +385,21 @@ public class UserInteractorImpl implements UserInteractor {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            loginCheck.checker(true, null);
+                            callback.checker(true, null);
                         }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        loginCheck.checker(false, e);
+                        callback.checker(false, e);
                     }
                 });
     }
 
     @Override
-    public void logOut(LogoutCheck logoutCheck) {
+    public void logOut(LogoutCheckCallback callback) {
         FirebaseAuth.getInstance().signOut();
-        logoutCheck.checker(true);
+        callback.checker(true);
     }
 }
