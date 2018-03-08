@@ -24,6 +24,10 @@ public interface PostInteractor {
         void listPost(Exception e);
     }
 
+    interface EditPostCallback{
+        void editPost(Exception e);
+    }
+
     void writeNewPost(String content, Uri filePath, PostCallback callback);
 
     void loadPersonalPost(ListPostCallback callback);
@@ -32,4 +36,5 @@ public interface PostInteractor {
 
     void deletePost(Post post, DeletePostCallback callback);
 
+    void editPost(Post post, EditPostCallback callback);
 }

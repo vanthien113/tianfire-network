@@ -2,15 +2,20 @@ package com.example.thienpro.mvp_firebase.model.entity;
 
 import android.annotation.SuppressLint;
 
+import com.google.firebase.database.Exclude;
+
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by ThienPro on 11/11/2017.
  */
 
-public class Post {
+public class Post implements Serializable{
     private String id;
     private String name;
     private String timePost;
@@ -73,5 +78,17 @@ public class Post {
         this.image = image;
         this.avatar = avatar;
         this.timePost = timePost;
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("id", id);
+        result.put("name", name);
+        result.put("post", post);
+        result.put("image", image);
+        result.put("avatar", avatar);
+        result.put("timePost", timePost);
+        return result;
     }
 }

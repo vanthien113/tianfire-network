@@ -25,6 +25,7 @@ import com.google.firebase.storage.UploadTask;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -242,5 +243,26 @@ public class PostInteractorImpl implements PostInteractor {
                 callback.listPost(e);
             }
         });
+    }
+
+    @Override
+    public void editPost(Post post, final EditPostCallback callback) {
+        Map<String, Object> postValues = post.toMap();
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/posts/" + post.getTimePost(), postValues);
+
+        mDatabase.updateChildren(childUpdates)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        callback.editPost(null);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.editPost(e);
+                    }
+                });
     }
 }

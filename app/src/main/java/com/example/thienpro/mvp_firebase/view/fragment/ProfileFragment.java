@@ -29,6 +29,7 @@ import com.example.thienpro.mvp_firebase.presenter.ProfilePresenter;
 import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
 import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
+import com.example.thienpro.mvp_firebase.view.activity.EditPostActivity;
 import com.example.thienpro.mvp_firebase.view.activity.PostActivity;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
 import com.example.thienpro.mvp_firebase.view.bases.BaseFragment;
@@ -243,6 +244,8 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
     @Override
     public void onEditPost(Post post) {
         LogUltil.log(ProfileFragment.class, post.getId());
+
+        EditPostActivity.start(getContext(), post);
     }
 
     @Override
