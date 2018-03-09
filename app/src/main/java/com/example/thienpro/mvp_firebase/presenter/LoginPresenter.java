@@ -9,5 +9,8 @@ import com.example.thienpro.mvp_firebase.view.bases.BasePresenter;
 
 public interface LoginPresenter extends BasePresenter<LoginView> {
     void signedInCheck();
+
     void onSignIn(String email, String password);
+
+    void onForgotPasswordClick(String email);
 }

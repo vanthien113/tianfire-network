@@ -2,11 +2,13 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityAppSettingBinding;
 import com.example.thienpro.mvp_firebase.presenter.AppSettingPresenter;
 import com.example.thienpro.mvp_firebase.presenter.Impl.AppSettingPresenterImpl;
+import com.example.thienpro.mvp_firebase.ultils.SHLocationManager;
 import com.example.thienpro.mvp_firebase.view.AppSettingView;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 
@@ -27,9 +29,18 @@ public class AppSettingActivity extends BaseActivity<ActivityAppSettingBinding> 
         presenter = new AppSettingPresenterImpl(this);
         presenter.attachView(this);
 
+        SHLocationManager.getLastKnowLocation(this, this);
+
         viewDataBinding.setEvent(this);
 
         presenter.checkShareLocation();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        SHLocationManager.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     @Override

@@ -16,4 +16,8 @@ public interface LoginView extends BaseView{
     void navigationToLogin();
 
     void navigationToVerifiEmail();
+
+    void onShowPasswordClick();
+
+    void onForgotPasswordClick();
 }

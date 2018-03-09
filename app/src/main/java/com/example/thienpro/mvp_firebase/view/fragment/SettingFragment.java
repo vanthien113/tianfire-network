@@ -11,6 +11,7 @@ import com.example.thienpro.mvp_firebase.presenter.Impl.SettingPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.SettingPresenter;
 import com.example.thienpro.mvp_firebase.view.SettingView;
 import com.example.thienpro.mvp_firebase.view.activity.AppSettingActivity;
+import com.example.thienpro.mvp_firebase.view.activity.ChangePasswordActivity;
 import com.example.thienpro.mvp_firebase.view.activity.EditInfoActivity;
 import com.example.thienpro.mvp_firebase.view.activity.LoginActivity;
 import com.example.thienpro.mvp_firebase.view.bases.BaseFragment;
@@ -61,6 +62,11 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> implem
     @Override
     public void onAppSettingClick() {
         AppSettingActivity.startActivity(getContext());
+    }
+
+    @Override
+    public void onChangePasswordClick() {
+        ChangePasswordActivity.startActivity(getContext());
     }
 
     @Override

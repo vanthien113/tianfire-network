@@ -1,5 +1,6 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
+import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 
@@ -26,7 +27,7 @@ public class AppSettingPresenterImpl extends BasePresentermpl<AppSettingView> im
 
     public AppSettingPresenterImpl(Context context) {
         this.locationInteractor = new LocationInteractorImpl(context);
-        this.location = SHLocationManager.getLastKnowLocation(context);
+        this.location = SHLocationManager.getLastKnowLocation(context, (Activity) context);
         this.userInteractor = new UserInteractorImpl(context);
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
     }

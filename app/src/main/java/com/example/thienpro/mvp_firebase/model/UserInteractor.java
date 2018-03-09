@@ -50,6 +50,10 @@ public interface UserInteractor {
         void currentLocalUser(User user);
     }
 
+    interface ChangePasswordCallback {
+        void changePasswordCallback(Exception e);
+    }
+
     void sigIn(String email, String password, LoginCheckCallback loginCheckCallback);
 
     void signedInCheck(LoggedInCheckCallback callback);
@@ -71,4 +75,8 @@ public interface UserInteractor {
     void loadCurrentLocalUser(LoadCurrentLocalUserCallback callback);
 
     void saveCurrentLocalUser(User user);
+
+    void changePassword(String password, ChangePasswordCallback callback);
+
+    void forgotPassword(String email, ChangePasswordCallback callback);
 }

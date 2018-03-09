@@ -14,4 +14,6 @@ public interface SettingView extends BaseView{
     void navigationToLogin();
 
     void onAppSettingClick();
+
+    void onChangePasswordClick();
 }

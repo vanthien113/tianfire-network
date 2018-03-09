@@ -2,13 +2,14 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
+import android.text.method.PasswordTransformationMethod;
 import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityLoginBinding;
 import com.example.thienpro.mvp_firebase.presenter.Impl.LoginPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.LoginPresenter;
-import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
 import com.example.thienpro.mvp_firebase.view.LoginView;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 
@@ -69,6 +70,25 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
     public void navigationToVerifiEmail() {
         VerifiEmailActivity.startActivity(this);
         finish();
+    }
+
+    @Override
+    public void onShowPasswordClick() {
+        if (viewDataBinding.cbShowPassword.isChecked()) {
+            viewDataBinding.etPassword.setTransformationMethod(null);
+        } else {
+            viewDataBinding.etPassword.setTransformationMethod(new PasswordTransformationMethod());
+        }
+    }
+
+    @Override
+    public void onForgotPasswordClick() {
+        String email = viewDataBinding.etEmail.getText().toString();
+        if (TextUtils.isEmpty(email)) {
+            showToastMessage("Hãy nhập email và nhấn vào nút Quên mật khẩu");
+        } else {
+            presenter.onForgotPasswordClick(viewDataBinding.etEmail.getText().toString());
+        }
     }
 
     @Override

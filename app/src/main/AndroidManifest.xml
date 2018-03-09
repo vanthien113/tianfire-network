@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity android:name=".view.activity.ChangePasswordActivity"/>
         <activity android:name=".view.activity.EditPostActivity"/>
         <activity android:name=".view.activity.UserLocationActivity"
             android:theme="@style/DarkTheme" />

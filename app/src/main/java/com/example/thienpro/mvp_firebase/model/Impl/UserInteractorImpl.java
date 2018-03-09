@@ -131,6 +131,36 @@ public class UserInteractorImpl implements UserInteractor {
         currentUser.setUser(user);
     }
 
+    @Override
+    public void changePassword(String password, final ChangePasswordCallback callback) {
+        users.updatePassword(password).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                callback.changePasswordCallback(null);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callback.changePasswordCallback(e);
+            }
+        });
+    }
+
+    @Override
+    public void forgotPassword(String email, final ChangePasswordCallback callback) {
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                callback.changePasswordCallback(null);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callback.changePasswordCallback(e);
+            }
+        });
+    }
+
     public void updateUser(final String name, String address, Boolean sex, final UpdateUserCallback callback) {
         String userId = users.getUid();
 
@@ -198,7 +228,7 @@ public class UserInteractorImpl implements UserInteractor {
                                     .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                         @Override
                                         public void onSuccess(final Uri uri) {
-                                            //add in usr
+                                            //add in user
                                             String userId = users.getUid();
 
                                             HashMap<String, Object> result = new HashMap<>();
