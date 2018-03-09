@@ -3,8 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://D:\Android\Demo\Demo_Processing\mvpfirebase\firebase-mvp.iml" filepath="D:\Android\Demo\Demo_Processing\mvpfirebase\firebase-mvp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mvpfirebase.iml" filepath="$PROJECT_DIR$/mvpfirebase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/firebase-mvp.iml" filepath="$PROJECT_DIR$/firebase-mvp.iml" />
     </modules>
   </component>
 </project>

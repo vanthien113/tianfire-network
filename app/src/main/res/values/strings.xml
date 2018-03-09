@@ -1,6 +1,8 @@
 <resources>
-    <string name="app_name">FireBase Demo</string>
+    <string name="app_name">TianFire Network</string>
     <string name="title_activity_menu">Menu</string>
+
+    <string name="google_maps_key"> AIzaSyB3PvvqjM0iVOWQ9Cao0QAhnpHuFDUU3ic</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -27,6 +29,14 @@
     <string name="dang_xuat">Đăng xuất</string>
     <string name="dang_bai_viet">Đăng bài viết</string>
     <string name="hay_nhap_cam_nhan_cua_ban">Hãy nhập cảm nhận của bạn</string>
+    <string name="dang">Đăng</string>
+    <string name="chon_anh">Chọn ảnh</string>
+    <string name="cap_nhat_thanh_cong">Cập nhật thành công</string>
+    <string name="khong_duoc_de_trong_ten">Không được để trống tên!</string>
+    <string name="ten_co_do_dai_duoi_30_ki_tu">Tên có độ dài dưới 30 ký tự!</string>
+    <string name="hay_nhap_email_va_password">Hãy nhập email và password!</string>
+    <string name="nhap_thong_tin_cho_cac_truong">Nhập thông tin cho các trường!</string>
+    <string name="hay_chon_anh_dai_dien">Hãy chọn ảnh đại diện</string>
 
 
     <string-array name="province_arrays">

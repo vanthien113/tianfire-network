@@ -1,69 +1,55 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
-import com.example.thienpro.mvp_firebase.model.UserInteractor;
+import android.content.Context;
+
 import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
+import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.EditInfoPresenter;
 import com.example.thienpro.mvp_firebase.view.EditInfoView;
+import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
 
 /**
  * Created by ThienPro on 11/21/2017.
  */
 
-public class EditInfoPresenterImpl implements UserInteractor.userListener, EditInfoPresenter{
-    private EditInfoView editInfoView;
+public class EditInfoPresenterImpl extends BasePresentermpl<EditInfoView> implements EditInfoPresenter {
     private UserInteractor userInteractor;
 
-    public EditInfoPresenterImpl(EditInfoView editInfoView) {
-        this.editInfoView = editInfoView;
-        userInteractor = new UserInteractorImpl(this);
+    public EditInfoPresenterImpl(Context context) {
+        userInteractor = new UserInteractorImpl(context);
     }
 
+    @Override
     public void loadUser() {
-        userInteractor.getUser();
-    }
-
-    public void updateUser(String email, String name, String address, boolean sex) {
-        userInteractor.updateUser(email, name, address, sex);
-    }
-
-    @Override
-    public void sendVerifiEmailComplete(String email) {
-
+        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserCallback() {
+            @Override
+            public void currentLocalUser(User user) {
+                getView().getUser(user);
+            }
+        });
     }
 
     @Override
-    public void sendVerifiEmailFail(String email) {
+    public void updateUser(final String name, final String address, final boolean sex) {
+        getView().showLoadingDialog();
 
-    }
-
-    @Override
-    public void getUser(User user) {
-        editInfoView.getUser(user);
-    }
-
-    @Override
-    public void navigationToHome() {
-
-    }
-
-    @Override
-    public void navigationToLogin() {
-
-    }
-
-    @Override
-    public void onRegisterFail() {
-
-    }
-
-    @Override
-    public void onLoginFail() {
-
-    }
-
-    @Override
-    public void navigationToVerifiEmail() {
-
+        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserCallback() {
+            @Override
+            public void currentLocalUser(User user) {
+                userInteractor.updateUser(name, address, sex, new UserInteractor.UpdateUserCallback() {
+                    @Override
+                    public void updateUser(Exception e) {
+                        getView().hideLoadingDialog();
+                        if (e != null) {
+                            getView().showExceptionError(e);
+                        } else {
+                            getView().showMessenger("Cập nhật thành công!");
+                            userInteractor.saveCurrentLocalUser(new User(null, name, address, sex, null, null));
+                        }
+                    }
+                });
+            }
+        });
     }
 }

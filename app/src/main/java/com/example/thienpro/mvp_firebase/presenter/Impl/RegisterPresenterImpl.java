@@ -1,68 +1,35 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
-import android.net.Uri;
+import android.content.Context;
 
 import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
-import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.RegistrerPresenter;
-import com.example.thienpro.mvp_firebase.view.RegisterAvatarView;
 import com.example.thienpro.mvp_firebase.view.RegisterView;
+import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
 
 /**
  * Created by ThienPro on 11/10/2017.
  */
 
-public class RegisterPresenterImpl implements UserInteractor.userListener, RegistrerPresenter {
-    private RegisterView registerView;
+public class RegisterPresenterImpl extends BasePresentermpl<RegisterView> implements RegistrerPresenter {
     private UserInteractor userInteractor;
 
-    public RegisterPresenterImpl(RegisterView registerView) {
-        this.registerView = registerView;
-        this.userInteractor = new UserInteractorImpl(this);
+    public RegisterPresenterImpl(Context context) {
+        this.userInteractor = new UserInteractorImpl(context);
     }
-
-    @Override
-    public void sendVerifiEmailComplete(String email) {
-
-    }
-
-    @Override
-    public void sendVerifiEmailFail(String email) {
-
-    }
-
-    @Override
-    public void getUser(User user) {
-    }
-
-    @Override
-    public void navigationToHome() {
-    }
-
-    @Override
-    public void navigationToLogin() {
-
-    }
-
-    @Override
-    public void onRegisterFail() {
-        registerView.onRegisterEmailFail();
-    }
-
-    @Override
-    public void onLoginFail() {
-
-    }
-
-    @Override
-    public void navigationToVerifiEmail() {
-        registerView.navigationToVerifiEmail();
-    }
-
 
     @Override
     public void register(String email, String password, String name, String address, boolean sex) {
-        userInteractor.register(email, password, name, address, sex);
+        userInteractor.register(email, password, name, address, sex, new UserInteractor.RegisterCheckCallback() {
+            @Override
+            public void checker(Exception checker) {
+                if (checker == null) {
+                    getView().navigationToVerifiEmail();
+                } else {
+                    getView().showExceptionError(checker);
+                }
+            }
+        });
     }
 }

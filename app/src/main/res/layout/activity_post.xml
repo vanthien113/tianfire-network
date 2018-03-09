@@ -33,16 +33,16 @@
 
 
                 <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="@dimen/witdh_small"
-                    android:layout_height="@dimen/height_small"
-                    android:onClick="@{()->event.onBackClick()}"
-                    android:src="@drawable/ic_back"
-                    android:tint="@color/colorBlueLight"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
+                android:id="@+id/imageView2"
+                android:layout_width="@dimen/witdh_small"
+                android:layout_height="@dimen/height_small"
+                android:onClick="@{()->event.onInsertImageClick()}"
+                android:src="@drawable/ic_camera"
+                android:tint="@color/colorBlueLight"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
                     android:id="@+id/textView3"
@@ -53,12 +53,12 @@
                     android:textSize="@dimen/text_size_xxlarge"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView4"
-                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageView4"
+                    android:id="@+id/iv_post"
                     android:layout_width="@dimen/witdh_small"
                     android:layout_height="@dimen/height_small"
                     android:layout_marginRight="@dimen/space_normal"
@@ -70,40 +70,31 @@
             </android.support.constraint.ConstraintLayout>
         </Toolbar>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginTop="84dp"
-            android:onClick="@{()->event.onChoosePictureClick()}"
-            android:text="Chọn ảnh"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <EditText
             android:id="@+id/et_post"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="300dp"
             android:layout_margin="@dimen/space_large"
             android:background="@color/colorWhite"
             android:gravity="top"
             android:hint="@string/hay_nhap_cam_nhan_cua_ban"
+            android:inputType="textMultiLine"
             android:scrollbars="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/iv_uploaded"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar2" />
 
         <ImageView
             android:id="@+id/iv_uploaded"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_post" />
     </android.support.constraint.ConstraintLayout>
 </layout>

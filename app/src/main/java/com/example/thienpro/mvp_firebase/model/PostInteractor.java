@@ -3,6 +3,7 @@ package com.example.thienpro.mvp_firebase.model;
 import android.net.Uri;
 
 import com.example.thienpro.mvp_firebase.model.entity.Post;
+import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
 
@@ -11,15 +12,41 @@ import java.util.ArrayList;
  */
 
 public interface PostInteractor {
-    void writeNewPost(String content, Uri filePath);
-
-    void loadPersonalPost();
-
-    void loadAllPost();
-
-    interface loadPostListener {
-        void listPost(ArrayList<Post> list);
-
-        void onPostFail(Exception e);
+    interface PostCallback {
+        void postListener(Exception e);
     }
+
+    interface ListPostCallback {
+        void listPost(DatabaseError e, ArrayList<Post> listPost);
+    }
+
+    interface DeletePostCallback {
+        void listPost(Exception e);
+    }
+
+    interface EditPostCallback {
+        void editPost(Exception e);
+    }
+
+    interface GetPictureCallback {
+        void getPicture(DatabaseError e, ArrayList<String> listPicture);
+    }
+
+    interface FriendPostCallback {
+        void friendPost(DatabaseError e, ArrayList<Post> post);
+    }
+
+    void writeNewPost(String content, Uri filePath, PostCallback callback);
+
+    void loadPersonalPost(ListPostCallback callback);
+
+    void loadAllPost(ListPostCallback callback);
+
+    void deletePost(Post post, DeletePostCallback callback);
+
+    void editPost(Post post, EditPostCallback callback);
+
+    void getPicture(String userId, GetPictureCallback callback);
+
+    void getFriendPost(String userId, FriendPostCallback callback);
 }

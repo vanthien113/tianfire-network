@@ -15,9 +15,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorWhite">
-
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/textView4"
@@ -55,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="15dp"
-            android:background="@color/colorWhite"
+            android:background="@android:color/transparent"
             android:imeOptions="actionNext"
             android:inputType="text"
             android:maxLines="1"
@@ -85,7 +83,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
-            android:background="@color/colorWhite"
+            android:background="@android:color/transparent"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLength="30"
@@ -111,9 +109,10 @@
 
         <Spinner
             android:id="@+id/sp_province"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/textView11"
+            app:layout_constraintEnd_toEndOf="@+id/et_name"
             app:layout_constraintStart_toStartOf="@+id/et_name"
             app:layout_constraintTop_toTopOf="@+id/textView11">
 
@@ -173,19 +172,6 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
-
-        <ProgressBar
-            android:id="@+id/pb_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:indeterminateTint="@color/colorBlueLight"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bt_save"
-            app:layout_constraintVertical_bias="0.453" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

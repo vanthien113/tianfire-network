@@ -1,11 +1,7 @@
 package com.example.thienpro.mvp_firebase.view.activity;
 
-import android.databinding.DataBindingUtil;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.view.View;
+import android.content.Context;
+import android.content.Intent;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -15,53 +11,80 @@ import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.EditInfoPresenter;
 import com.example.thienpro.mvp_firebase.presenter.Impl.EditInfoPresenterImpl;
 import com.example.thienpro.mvp_firebase.view.EditInfoView;
+import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 
 /**
  * Created by ThienPro on 11/10/2017.
  */
 
-public class EditInfoActivity extends AppCompatActivity implements EditInfoView {
-    private ActivityEditinfoBinding binding;
-    private EditInfoPresenter editInfoPresenter;
+public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> implements EditInfoView {
+    private EditInfoPresenter presenter;
+    private User user;
+
+    public static void startActivity(Context context) {
+        context.startActivity(new Intent(context, EditInfoActivity.class));
+    }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_editinfo);
-        editInfoPresenter = new EditInfoPresenterImpl(this);
-        binding.setEvent(this);
-        binding.spProvince.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.province_arrays)));
-        editInfoPresenter.loadUser();
+    protected int getLayoutId() {
+        return R.layout.activity_editinfo;
+    }
+
+    @Override
+    protected void init() {
+        presenter = new EditInfoPresenterImpl(this);
+        presenter.attachView(this);
+
+        viewDataBinding.setEvent(this);
+        viewDataBinding.spProvince.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.province_arrays)));
+
+        presenter.loadUser();
     }
 
     @Override
     public void onSaveClick() {
-        String email = binding.etEmail.getText().toString();
-        String name = binding.etName.getText().toString();
+        String name = viewDataBinding.etName.getText().toString();
 
-        if (email.isEmpty() || name.isEmpty())
-            Toast.makeText(this, "Nhập thông tin cho các trường!", Toast.LENGTH_SHORT).show();
-        else if(binding.etName.getText().toString().length()>= 30)
-            Toast.makeText(this, "Tên có độ dài dưới 30 ký tự!", Toast.LENGTH_SHORT).show();
+        if (viewDataBinding.etName.getText().toString().length() >= 30)
+            Toast.makeText(this, R.string.ten_co_do_dai_duoi_30_ki_tu, Toast.LENGTH_SHORT).show();
         else {
-            editInfoPresenter.updateUser(email, name, binding.spProvince.getSelectedItem().toString(), binding.rbNam.isChecked());
-            Toast.makeText(this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+            presenter.updateUser(name, viewDataBinding.spProvince.getSelectedItem().toString(), viewDataBinding.rbNam.isChecked());
         }
     }
 
     @Override
     public void getUser(User user) {
-        binding.pbLoading.setVisibility(View.GONE);
-        binding.setData(user);
-        int i =0;
+        this.user = user;
+        viewDataBinding.setData(user);
+        int i = 0;
         for (String string : getResources().getStringArray(R.array.province_arrays)) {
-            if(string.equals(user.getAddress())){
-                binding.spProvince.setSelection(i);
+            if (string.equals(user.getAddress())) {
+                viewDataBinding.spProvince.setSelection(i);
             }
             i++;
         }
         if (user.getSex())
-            binding.rbNam.setChecked(true);
-        else binding.rbNu.setChecked(true);
+            viewDataBinding.rbNam.setChecked(true);
+        else viewDataBinding.rbNu.setChecked(true);
+    }
+
+    @Override
+    protected void startScreen() {
+
+    }
+
+    @Override
+    protected void resumeScreen() {
+
+    }
+
+    @Override
+    protected void pauseScreen() {
+
+    }
+
+    @Override
+    protected void destroyScreen() {
+
     }
 }

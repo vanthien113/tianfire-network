@@ -2,10 +2,6 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
@@ -13,14 +9,14 @@ import com.example.thienpro.mvp_firebase.databinding.ActivityRegisterBinding;
 import com.example.thienpro.mvp_firebase.presenter.Impl.RegisterPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.RegistrerPresenter;
 import com.example.thienpro.mvp_firebase.view.RegisterView;
+import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 
 /**
  * Created by ThienPro on 11/9/2017.
  */
 
-public class RegisterActivity extends AppCompatActivity implements RegisterView {
-    private ActivityRegisterBinding binding;
-    private RegistrerPresenter registrerPresenter;
+public class RegisterActivity extends BaseActivity<ActivityRegisterBinding> implements RegisterView {
+    private RegistrerPresenter presenter;
 
     private static final String NAME = "name";
     private static final String ADDRESS = "address";
@@ -39,11 +35,15 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
-        binding.setEvent(this);
-        registrerPresenter = new RegisterPresenterImpl(this);
+    protected int getLayoutId() {
+        return R.layout.activity_register;
+    }
+
+    @Override
+    protected void init() {
+        viewDataBinding.setEvent(this);
+        presenter = new RegisterPresenterImpl(this);
+        presenter.attachView(this);
 
         name = getIntent().getStringExtra(NAME);
         address = getIntent().getStringExtra(ADDRESS);
@@ -52,22 +52,21 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
 
     @Override
     public void navigationToVerifiEmail() {
-        Intent intent = new Intent(this, VerifiEmailActivity.class);
-        this.startActivity(intent);
+        VerifiEmailActivity.startActivity(this);
     }
 
     @Override
     public void onNextClick() {
-        String email = binding.etEmail.getText().toString();
-        String password = binding.etPassword.getText().toString();
-        String repassword = binding.etRepassword.getText().toString();
+        String email = viewDataBinding.etEmail.getText().toString();
+        String password = viewDataBinding.etPassword.getText().toString();
+        String repassword = viewDataBinding.etRepassword.getText().toString();
 
         if (email.isEmpty() || password.isEmpty() || repassword.isEmpty())
             Toast.makeText(this, "Không được để trống các trường!", Toast.LENGTH_SHORT).show();
         else {
             if (password.length() >= 6) {
                 if (password.equals(repassword)) {
-                    registrerPresenter.register(email, password, name, address, sex);
+                    presenter.register(email, password, name, address, sex);
                 } else
                     Toast.makeText(this, "Mật khẩu không trùng khớp!", Toast.LENGTH_SHORT).show();
             } else
@@ -75,19 +74,30 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
         }
     }
 
-    public void onRegisterEmailFail() {
-        Toast.makeText(this, "Địa chỉ email không dúng!", Toast.LENGTH_SHORT).show();
+    @Override
+    public void onBackClick() {
+        LoginActivity.startActivity(this);
+        finish();
     }
 
     @Override
-    public void onBackClick() {
-        navigationToLogin();
+    protected void startScreen() {
+
     }
 
+    @Override
+    protected void resumeScreen() {
 
-    void navigationToLogin() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
     }
+
+    @Override
+    protected void pauseScreen() {
+
+    }
+
+    @Override
+    protected void destroyScreen() {
+
+    }
+
 }

@@ -1,71 +1,74 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
-import com.example.thienpro.mvp_firebase.model.UserInteractor;
+import android.content.Context;
+
 import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
-import com.example.thienpro.mvp_firebase.model.entity.User;
+import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.presenter.LoginPresenter;
 import com.example.thienpro.mvp_firebase.view.LoginView;
+import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
 
 /**
  * Created by ThienPro on 11/21/2017.
  */
 
-public class LoginPresenterImpl implements UserInteractor.userListener, LoginPresenter {
+public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements LoginPresenter {
     private UserInteractor userInteractor;
-    private LoginView loginView;
 
-    public LoginPresenterImpl(LoginView loginView) {
-        this.userInteractor = new UserInteractorImpl(this);
-        this.loginView = loginView;
+    public LoginPresenterImpl(Context context) {
+        this.userInteractor = new UserInteractorImpl(context);
     }
 
-    public void signedInCheck(){
-        if(userInteractor.signedInCheck()==1)
-            loginView.navigationToHome();
-        else if(userInteractor.signedInCheck()==2)
-            loginView.navigationToVerifiEmail();
+    public void signedInCheck() {
+        getView().showLoadingDialog();
+
+        userInteractor.signedInCheck(new UserInteractor.LoggedInCheckCallback() {
+            @Override
+            public void checker(int checker) {
+                getView().hideLoadingDialog();
+                switch (checker) {
+                    case 1:
+                        getView().navigationToHome();
+                        break;
+                    case 2:
+                        getView().navigationToVerifiEmail();
+                        break;
+                }
+            }
+        });
     }
 
-    public void onSignIn(String email, String password){
-        userInteractor.sigIn(email, password);
-    }
+    public void onSignIn(String email, String password) {
+        getView().showLoadingDialog();
 
-    @Override
-    public void sendVerifiEmailComplete(String email) {
-
-    }
-
-    @Override
-    public void sendVerifiEmailFail(String email) {
-
-    }
-
-    @Override
-    public void getUser(User user) {
-
-    }
-
-    @Override
-    public void navigationToHome() {
-        loginView.navigationToHome();
-    }
-
-    @Override
-    public void navigationToLogin() {
-        loginView.navigationToLogin();
+        userInteractor.sigIn(email, password, new UserInteractor.LoginCheckCallback() {
+            @Override
+            public void checker(boolean checker, Exception e) {
+                getView().hideLoadingDialog();
+                if (checker) {
+                    getView().navigationToVerifiEmail();
+                } else {
+                    getView().showExceptionError(e);
+                }
+            }
+        });
     }
 
     @Override
-    public void onRegisterFail() {
+    public void forgotPassword(final String email) {
+        getView().showLoadingDialog();
+
+        userInteractor.forgotPassword(email, new UserInteractor.ChangePasswordCallback() {
+            @Override
+            public void changePasswordCallback(Exception e) {
+                getView().hideLoadingDialog();
+                if (e != null) {
+                    getView().showExceptionError(e);
+                } else {
+                    getView().showMessenger("Email chứa link thay đổi mật khẩu đã được gửi về email " + email);
+                }
+            }
+        });
     }
 
-    @Override
-    public void onLoginFail() {
-        loginView.onLoginFail();
-    }
-
-    @Override
-    public void navigationToVerifiEmail() {
-        loginView.navigationToVerifiEmail();
-    }
 }
