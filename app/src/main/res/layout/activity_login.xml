@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_xxxxxxx_large"
-            android:text="@string/firebase_demo"
+            android:text="TianFire Network"
             android:textSize="@dimen/text_size_xxlarge"
             android:textStyle="bold"
             app:layout_constraintHorizontal_bias="0.502"
