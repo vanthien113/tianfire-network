@@ -6,8 +6,4 @@
     <item
         android:id="@+id/mn_choose_picture"
         android:title="@string/chon_anh" />
-    <item
-        android:id="@+id/mn_camera"
-        android:title="Chụp từ Camera" />
-
 </menu>

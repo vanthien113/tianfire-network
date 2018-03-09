@@ -21,6 +21,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LocationInteractorImpl implements LocationInteractor {
+    private static final String LOCATION = "locations";
+
+    private static final String LNG = "lng";
+    private static final String LAT = "lat";
+    private static final String STATUS = "status";
+    private static final String NAME = "name";
+    private static final String ID = "id";
+
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
@@ -68,11 +76,11 @@ public class LocationInteractorImpl implements LocationInteractor {
                 // Get Post object and use the values to update the UI
                 @SuppressWarnings("unchecked")
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                double lng = (double) map.get("lng");
-                double lat = (double) map.get("lat");
-                boolean status = (boolean) map.get("status");
-                String userName = (String) map.get("name");
-                String userId = (String) map.get("id");
+                double lng = (double) map.get(LNG);
+                double lat = (double) map.get(LAT);
+                boolean status = (boolean) map.get(STATUS);
+                String userName = (String) map.get(NAME);
+                String userId = (String) map.get(ID);
 
                 UserLocation location = new UserLocation(userName, userId, lng, lat, status);
 
@@ -85,21 +93,21 @@ public class LocationInteractorImpl implements LocationInteractor {
             }
         };
 
-        mDatabase.child("locations").child(userId).addValueEventListener(valueEventListener);
+        mDatabase.child(LOCATION).child(userId).addValueEventListener(valueEventListener);
     }
 
     @Override
     public void getListLocation(final GetListLocationCallback callback) {
-        mDatabase.child("locations").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(LOCATION).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     Map<String, Object> map = (Map<String, Object>) dsp.getValue();
-                    double lng = (double) map.get("lng");
-                    double lat = (double) map.get("lat");
-                    boolean status = (boolean) map.get("status");
-                    String userName = (String) map.get("name");
-                    String userId = (String) map.get("id");
+                    double lng = (double) map.get(LNG);
+                    double lat = (double) map.get(LAT);
+                    boolean status = (boolean) map.get(STATUS);
+                    String userName = (String) map.get(NAME);
+                    String userId = (String) map.get(ID);
 
                     if (status) {
                         UserLocation location = new UserLocation(userName, userId, lng, lat, status);

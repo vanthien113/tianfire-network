@@ -17,7 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <TextView
             android:id="@+id/textView4"
             android:layout_width="0dp"
@@ -110,9 +109,10 @@
 
         <Spinner
             android:id="@+id/sp_province"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/textView11"
+            app:layout_constraintEnd_toEndOf="@+id/et_name"
             app:layout_constraintStart_toStartOf="@+id/et_name"
             app:layout_constraintTop_toTopOf="@+id/textView11">
 

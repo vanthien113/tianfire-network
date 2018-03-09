@@ -9,5 +9,5 @@ import com.example.thienpro.mvp_firebase.view.bases.BasePresenter;
 
 public interface EditInfoPresenter extends BasePresenter<EditInfoView>{
     void loadUser();
-    void updateUser(String email, String name, String address, boolean sex, final String avatar, String cover);
+    void updateUser(final String name, final String address, final boolean sex);
 }

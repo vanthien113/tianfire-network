@@ -20,4 +20,10 @@ public interface ProfileView extends BaseView {
     void onChangeAvatar();
 
     void onChangeCover();
+
+    void reloadPost();
+
+    void showAvatarChanged(String avatarUrl);
+
+    void showCoverChanged(String coverUrl);
 }

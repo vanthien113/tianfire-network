@@ -15,16 +15,14 @@ import com.example.thienpro.mvp_firebase.presenter.ListLocationPresenter;
 import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
 import com.example.thienpro.mvp_firebase.view.ListLocationView;
 import com.example.thienpro.mvp_firebase.view.adapters.ListLocationAdapter;
-import com.example.thienpro.mvp_firebase.view.adapters.viewholder.ListLocationListener;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 
 import java.util.ArrayList;
 
-public class ListLocationActivity extends BaseActivity<ActivityListLocationBinding> implements ListLocationView, ListLocationListener {
+public class ListLocationActivity extends BaseActivity<ActivityListLocationBinding> implements ListLocationView, ListLocationAdapter.ListLocationListener {
     private LinearLayoutManager layoutManager;
     private ListLocationAdapter adapter;
     private ListLocationPresenter presenter;
-    private LoadingDialog loadingDialog;
 
     public static void startActivity(Context context) {
         context.startActivity(new Intent(context, ListLocationActivity.class));
@@ -37,8 +35,6 @@ public class ListLocationActivity extends BaseActivity<ActivityListLocationBindi
 
     @Override
     protected void init() {
-        loadingDialog = new LoadingDialog(this);
-
         presenter = new ListLocationPresenterImpl(this);
         presenter.attachView(this);
 
@@ -59,16 +55,6 @@ public class ListLocationActivity extends BaseActivity<ActivityListLocationBindi
         } else {
             viewDataBinding.tvMessenger.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public void showLoadingDialog() {
-        loadingDialog.show();
-    }
-
-    @Override
-    public void hideLoadingDialog() {
-        loadingDialog.dismiss();
     }
 
     @Override

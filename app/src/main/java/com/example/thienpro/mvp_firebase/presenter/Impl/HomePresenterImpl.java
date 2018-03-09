@@ -65,6 +65,7 @@ public class HomePresenterImpl extends BasePresentermpl<HomeView> implements Hom
                 if (e != null) {
                     getView().showExceptionError(e);
                 } else {
+                    getView().reloadPost();
                     getView().showMessenger("Đã xóa");
                 }
             }

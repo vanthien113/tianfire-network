@@ -25,8 +25,6 @@ import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.Impl.ProfilePresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.ProfilePresenter;
-import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
-import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
 import com.example.thienpro.mvp_firebase.view.activity.EditPostActivity;
 import com.example.thienpro.mvp_firebase.view.activity.PostActivity;
@@ -125,34 +123,12 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
 
     @Override
     public void showUser(User user) {
-        Glide.with(viewDataBinding.getRoot().getContext())
-                .load(user.getAvatar())
-                .asBitmap().centerCrop()
-                .into(new BitmapImageViewTarget(viewDataBinding.ivAvatar) {
-                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(viewDataBinding.getRoot().getResources(), resource);
-                        roundedBitmapDrawable.setCircular(true);
-                        viewDataBinding.ivAvatar.setImageDrawable(roundedBitmapDrawable);
-                    }
-                });
-
-        Glide.with(viewDataBinding.getRoot().getContext())
-                .load(user.getCover())
-                .asBitmap().centerCrop()
-                .into(new BitmapImageViewTarget(viewDataBinding.ivCover) {
-                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), resource);
-
-                        viewDataBinding.llCover.setBackground(bitmapDrawable);
-                    }
-                });
+        showAvatarChanged(user.getAvatar());
+        showCoverChanged(user.getCover());
 
         viewDataBinding.tvName.setText(user.getName());
     }
+
 
     @Override
     public void onChangeAvatar() {
@@ -177,6 +153,43 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
     }
 
     @Override
+    public void reloadPost() {
+        loadData();
+    }
+
+    @Override
+    public void showAvatarChanged(String avatarUrl) {
+        Glide.with(viewDataBinding.getRoot().getContext())
+                .load(avatarUrl)
+                .asBitmap().centerCrop()
+                .into(new BitmapImageViewTarget(viewDataBinding.ivAvatar) {
+                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(viewDataBinding.getRoot().getResources(), resource);
+                        roundedBitmapDrawable.setCircular(true);
+                        viewDataBinding.ivAvatar.setImageDrawable(roundedBitmapDrawable);
+                    }
+                });
+    }
+
+    @Override
+    public void showCoverChanged(String coverUrl) {
+        Glide.with(viewDataBinding.getRoot().getContext())
+                .load(coverUrl)
+                .asBitmap().centerCrop()
+                .into(new BitmapImageViewTarget(viewDataBinding.ivCover) {
+                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), resource);
+
+                        viewDataBinding.llCover.setBackground(bitmapDrawable);
+                    }
+                });
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CHANGE_AVATAR && resultCode == RESULT_OK && data != null) {
             List<Image> images = data.getParcelableArrayListExtra("selectedImages");
@@ -197,6 +210,16 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
     }
 
     @Override
+    public void onEditPost(Post post) {
+        EditPostActivity.start(getContext(), post);
+    }
+
+    @Override
+    public void onDeletePost(Post post) {
+        presenter.deletePost(post);
+    }
+
+    @Override
     protected void screenResume() {
 
     }
@@ -209,19 +232,5 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
     @Override
     protected void screenStart(@Nullable Bundle saveInstanceState) {
 
-    }
-
-    @Override
-    public void onEditPost(Post post) {
-        LogUltil.log(ProfileFragment.class, post.getId());
-
-        EditPostActivity.start(getContext(), post);
-    }
-
-    @Override
-    public void onDeletePost(Post post) {
-        presenter.deletePost(post);
-
-        LogUltil.log(ProfileFragment.class, post.getTimePost());
     }
 }

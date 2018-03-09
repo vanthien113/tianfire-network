@@ -15,7 +15,6 @@ import com.example.thienpro.mvp_firebase.view.adapters.HomeFragmentPagerAdapter;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 
 public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
-
     public static void startActiviry(Context context){
         context.startActivity(new Intent(context, HomeActivity.class));
     }

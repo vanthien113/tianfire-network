@@ -36,8 +36,16 @@ import java.util.UUID;
  */
 
 public class UserInteractorImpl implements UserInteractor {
-    private static final String USER = "users";
-    private static final String POST = "posts";
+    private static final String USERS = "users";
+    private static final String POSTS = "posts";
+    private static final String AVATARS = "avatars";
+
+    private static final String EMAIL = "email";
+    private static final String NAME = "name";
+    private static final String ADDRESS = "address";
+    private static final String SEX = "sex";
+    private static final String AVATAR = "avatar";
+    private static final String COVER = "cover";
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
@@ -48,8 +56,6 @@ public class UserInteractorImpl implements UserInteractor {
     private SharedPreferencesUtil currentUser;
 
     public UserInteractorImpl(Context context) {
-//        FirebaseApp.initializeApp(context);
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         users = mAuth.getCurrentUser();
@@ -91,7 +97,7 @@ public class UserInteractorImpl implements UserInteractor {
                         if (task.isSuccessful()) {
                             users = mAuth.getCurrentUser();
                             User user = new User(email, name, address, sex, null, null);
-                            mDatabase.child(USER).child(users.getUid()).setValue(user)
+                            mDatabase.child(USERS).child(users.getUid()).setValue(user)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
@@ -125,14 +131,15 @@ public class UserInteractorImpl implements UserInteractor {
         currentUser.setUser(user);
     }
 
-    public void updateUser(String email, final String name, String address, Boolean sex, String avatar, String cover, final UpdateUserCallback callback) {
+    public void updateUser(final String name, String address, Boolean sex, final UpdateUserCallback callback) {
         String userId = users.getUid();
-        User user = new User(email, name, address, sex, avatar, cover);
-        Map<String, Object> postValues = user.toMap();
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/users/" + userId, postValues);
 
-        mDatabase.updateChildren(childUpdates).addOnFailureListener(new OnFailureListener() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put(NAME, name);
+        result.put(ADDRESS, address);
+        result.put(SEX, sex);
+
+        mDatabase.child(USERS).child(userId).updateChildren(result).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 callback.updateUser(e);
@@ -140,7 +147,7 @@ public class UserInteractorImpl implements UserInteractor {
         });
 
         //Edit name in post
-        mDatabase.child(POST).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(POSTS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
@@ -148,23 +155,12 @@ public class UserInteractorImpl implements UserInteractor {
                     Map<String, Object> map = (Map<String, Object>) dsp.getValue();
                     String id = (String) map.get("id");
                     String timePost = (String) map.get("timePost");
-                    String post = (String) map.get("post");
-                    String image = (String) map.get("image");
-                    String avatar = (String) map.get("avatar");
 
                     if (id.equals(users.getUid())) {
-                        Map<String, Object> childUpdates1 = new HashMap<>();
-
                         HashMap<String, Object> result = new HashMap<>();
-                        result.put("id", id);
-                        result.put("name", name);
-                        result.put("timePost", timePost);
-                        result.put("post", post);
-                        result.put("image", image);
-                        result.put("avatar", avatar);
+                        result.put(NAME, name);
 
-                        childUpdates1.put("/posts/" + timePost, result);
-                        mDatabase.updateChildren(childUpdates1)
+                        mDatabase.child(POSTS).child(timePost).updateChildren(result)
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
@@ -189,7 +185,7 @@ public class UserInteractorImpl implements UserInteractor {
         });
     }
 
-    public void addAvatar(final String email, final String name, final String address, final Boolean sex, final Uri uri, final String coverUri, final AddAvatarCallback callback) {
+    public void addAvatar(final Uri uri, final AddAvatarCallback callback) {
         //Up im
 
         if (uri != null) {
@@ -204,18 +200,17 @@ public class UserInteractorImpl implements UserInteractor {
                                         public void onSuccess(final Uri uri) {
                                             //add in usr
                                             String userId = users.getUid();
-                                            User user = new User(email, name, address, sex, uri.toString(), coverUri);
-                                            Map<String, Object> postValues = user.toMap();
-                                            Map<String, Object> childUpdates = new HashMap<>();
-                                            childUpdates.put("/users/" + userId, postValues);
 
-                                            mDatabase.updateChildren(childUpdates)
+                                            HashMap<String, Object> result = new HashMap<>();
+                                            result.put(AVATAR, uri.toString());
+
+                                            mDatabase.child(USERS).child(userId).updateChildren(result)
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
 
                                                             //Edit avatar in post
-                                                            mDatabase.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                            mDatabase.child(POSTS).addListenerForSingleValueEvent(new ValueEventListener() {
                                                                 @Override
                                                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                                                     for (DataSnapshot dsp : dataSnapshot.getChildren()) {
@@ -223,22 +218,12 @@ public class UserInteractorImpl implements UserInteractor {
                                                                         Map<String, Object> map = (Map<String, Object>) dsp.getValue();
                                                                         String id = (String) map.get("id");
                                                                         String timePost = (String) map.get("timePost");
-                                                                        String post = (String) map.get("post");
-                                                                        String image = (String) map.get("image");
 
                                                                         if (id.equals(users.getUid().toString())) {
-                                                                            Map<String, Object> childUpdates1 = new HashMap<>();
-
                                                                             HashMap<String, Object> result = new HashMap<>();
-                                                                            result.put("id", id);
-                                                                            result.put("name", name);
-                                                                            result.put("timePost", timePost);
-                                                                            result.put("post", post);
-                                                                            result.put("image", image);
-                                                                            result.put("avatar", uri.toString());
+                                                                            result.put(AVATAR, uri.toString());
 
-                                                                            childUpdates1.put("/posts/" + timePost, result);
-                                                                            mDatabase.updateChildren(childUpdates1);
+                                                                            mDatabase.child(POSTS).child(timePost).updateChildren(result);
                                                                         }
                                                                     }
                                                                     callback.addAvatar(null, uri.toString());
@@ -278,7 +263,7 @@ public class UserInteractorImpl implements UserInteractor {
     }
 
     @Override
-    public void addCover(final String email, final String name, final String address, final Boolean sex, final String avatar, final Uri coverUri, final AddCoverCallback callback) {
+    public void addCover(final Uri coverUri, final AddCoverCallback callback) {
         //Up im
 
         if (coverUri != null) {
@@ -293,16 +278,14 @@ public class UserInteractorImpl implements UserInteractor {
                                         public void onSuccess(final Uri uri) {
                                             //add in usr
                                             String userId = users.getUid();
-                                            User user = new User(email, name, address, sex, avatar, uri.toString());
-                                            Map<String, Object> postValues = user.toMap();
-                                            Map<String, Object> childUpdates = new HashMap<>();
-                                            childUpdates.put("/users/" + userId, postValues);
 
-                                            mDatabase.updateChildren(childUpdates)
+                                            HashMap<String, Object> result = new HashMap<>();
+                                            result.put(COVER, uri.toString());
+
+                                            mDatabase.child(USERS).child(userId).updateChildren(result)
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
-
                                                             callback.addCover(null, uri.toString());
                                                         }
                                                     })
@@ -354,12 +337,12 @@ public class UserInteractorImpl implements UserInteractor {
                 // Get Post object and use the values to update the UI
                 @SuppressWarnings("unchecked")
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                String address = (String) map.get("address");
-                String email = (String) map.get("email");
-                String name = (String) map.get("name");
-                Boolean sex = (Boolean) map.get("sex");
-                String avatar = (String) map.get("avatar");
-                String cover = (String) map.get("cover");
+                String address = (String) map.get(ADDRESS);
+                String email = (String) map.get(EMAIL);
+                String name = (String) map.get(NAME);
+                Boolean sex = (Boolean) map.get(SEX);
+                String avatar = (String) map.get(AVATAR);
+                String cover = (String) map.get(COVER);
 
                 User user = new User(email, name, address, sex, avatar, cover);
 
@@ -374,7 +357,7 @@ public class UserInteractorImpl implements UserInteractor {
             }
         };
 
-        mDatabase.child(USER).child(users.getUid()).addValueEventListener(valueEventListener);
+        mDatabase.child(USERS).child(users.getUid()).addValueEventListener(valueEventListener);
     }
 
     public void sigIn(String email, String password, final LoginCheckCallback callback) {

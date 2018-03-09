@@ -31,21 +31,21 @@ public class EditInfoPresenterImpl extends BasePresentermpl<EditInfoView> implem
     }
 
     @Override
-    public void updateUser(final String email, final String name, final String address, final boolean sex, final String avatar, final String cover) {
+    public void updateUser(final String name, final String address, final boolean sex) {
         getView().showLoadingDialog();
 
         userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserCallback() {
             @Override
             public void currentLocalUser(User user) {
-                userInteractor.updateUser(email, name, address, sex, avatar, cover, new UserInteractor.UpdateUserCallback() {
+                userInteractor.updateUser(name, address, sex, new UserInteractor.UpdateUserCallback() {
                     @Override
                     public void updateUser(Exception e) {
                         getView().hideLoadingDialog();
                         if (e != null) {
                             getView().showExceptionError(e);
                         } else {
-                            getView().updateSuccess();
-                            userInteractor.saveCurrentLocalUser(new User(email, name, address, sex, avatar, cover));
+                            getView().showMessenger("Cập nhật thành công!");
+                            userInteractor.saveCurrentLocalUser(new User(null, name, address, sex, null, null));
                         }
                     }
                 });

@@ -17,10 +17,4 @@ public interface EditInfoView extends BaseView{
     void onSaveClick();
 
     void getUser(User user);
-
-    void showDialog();
-
-    void hideDialog();
-
-    void updateSuccess();
 }

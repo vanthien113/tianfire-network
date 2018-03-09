@@ -59,8 +59,8 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
             @Override
             public void getUser(DatabaseError error, User user) {
                 getView().hideLoadingDialog();
-
                 if (error != null) {
+                    getView().showDatabaseError(error);
                 } else {
                     userInteractor.saveCurrentLocalUser(user);
                     getView().showUser(user);
@@ -77,10 +77,10 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
             @Override
             public void listPost(Exception e) {
                 getView().hideLoadingDialog();
-
                 if (e != null) {
                     getView().showExceptionError(e);
                 } else {
+                    getView().reloadPost();
                     getView().showMessenger("Đã xóa");
                 }
             }
@@ -91,25 +91,20 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
     public void changeAvatar(final Uri uri) {
         getView().showLoadingDialog();
 
-        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserCallback() {
+        userInteractor.addAvatar(uri, new UserInteractor.AddAvatarCallback() {
             @Override
-            public void currentLocalUser(final User user) {
-                userInteractor.addAvatar(user.getEmail(), user.getName(), user.getAddress(), user.getSex(), uri, user.getCover(), new UserInteractor.AddAvatarCallback() {
-                    @Override
-                    public void addAvatar(Exception e, String uri) {
-                        getView().hideLoadingDialog();
-                        if (e != null) {
-                            getView().showExceptionError(e);
-                        } else {
-                            getView().showMessenger("Thay đổi avatar thành công!");
+            public void addAvatar(Exception e, String uri) {
+                getView().hideLoadingDialog();
+                if (e != null) {
+                    getView().showExceptionError(e);
+                } else {
+                    getView().showMessenger("Thay đổi avatar thành công!");
 
-                            user.setAvatar(uri);
-                            userInteractor.saveCurrentLocalUser(user);
+                    userInteractor.saveCurrentLocalUser(new User(null, null, null, null, uri, null));
 
-                            getView().showUser(user);
-                        }
-                    }
-                });
+                    getView().showAvatarChanged(uri);
+                    getView().reloadPost();
+                }
             }
         });
     }
@@ -118,25 +113,19 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
     public void changeCover(final Uri uri) {
         getView().showLoadingDialog();
 
-        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserCallback() {
+        userInteractor.addCover(uri, new UserInteractor.AddCoverCallback() {
             @Override
-            public void currentLocalUser(final User user) {
-                userInteractor.addCover(user.getEmail(), user.getName(), user.getAddress(), user.getSex(), user.getAvatar(), uri, new UserInteractor.AddCoverCallback() {
-                    @Override
-                    public void addCover(Exception e, String uri) {
-                        getView().hideLoadingDialog();
-                        if (e != null) {
-                            getView().showExceptionError(e);
-                        } else {
-                            getView().showMessenger("Thay đổi ảnh bìa thành công!");
+            public void addCover(Exception e, String uri) {
+                getView().hideLoadingDialog();
+                if (e != null) {
+                    getView().showExceptionError(e);
+                } else {
+                    getView().showMessenger("Thay đổi ảnh bìa thành công!");
 
-                            user.setCover(uri);
-                            userInteractor.saveCurrentLocalUser(user);
+                    userInteractor.saveCurrentLocalUser(new User(null, null, null, null, null, uri));
 
-                            getView().showUser(user);
-                        }
-                    }
-                });
+                    getView().showCoverChanged(uri);
+                }
             }
         });
     }

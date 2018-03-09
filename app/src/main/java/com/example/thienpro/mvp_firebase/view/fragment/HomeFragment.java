@@ -72,10 +72,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
         super.onResume();
     }
 
-    @Override
-    protected void attach(Context context) {
-
-    }
 
     public void loadData() {
         if (listPost != null) {
@@ -101,8 +97,18 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
     }
 
     @Override
-    public void showMessenger(String messenger) {
+    public void reloadPost() {
+        loadData();
+    }
 
+    @Override
+    public void onEditPost(Post post) {
+        EditPostActivity.start(getContext(), post);
+    }
+
+    @Override
+    public void onDeletePost(Post post) {
+        presenter.deletePost(post);
     }
 
     @Override
@@ -121,12 +127,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
     }
 
     @Override
-    public void onEditPost(Post post) {
-        EditPostActivity.start(getContext(), post);
+    protected void attach(Context context) {
+
     }
 
-    @Override
-    public void onDeletePost(Post post) {
-        presenter.deletePost(post);
-    }
 }

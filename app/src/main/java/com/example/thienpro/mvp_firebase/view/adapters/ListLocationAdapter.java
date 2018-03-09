@@ -6,16 +6,15 @@ import android.view.ViewGroup;
 
 import com.example.thienpro.mvp_firebase.databinding.ItemListLocationBinding;
 import com.example.thienpro.mvp_firebase.model.entity.UserLocation;
-import com.example.thienpro.mvp_firebase.view.adapters.viewholder.ListLocationListener;
 import com.example.thienpro.mvp_firebase.view.adapters.viewholder.ListLocationVH;
 
 import java.util.ArrayList;
 
 public class ListLocationAdapter extends RecyclerView.Adapter<ListLocationVH> {
     private ArrayList<UserLocation> listLocation;
-    private ListLocationListener listener;
+    private ListLocationAdapter.ListLocationListener listener;
 
-    public ListLocationAdapter(ArrayList<UserLocation> listLocation, ListLocationListener listener) {
+    public ListLocationAdapter(ArrayList<UserLocation> listLocation, ListLocationAdapter.ListLocationListener listener) {
         this.listener = listener;
         this.listLocation = listLocation;
     }
@@ -36,5 +35,9 @@ public class ListLocationAdapter extends RecyclerView.Adapter<ListLocationVH> {
     @Override
     public int getItemCount() {
         return listLocation == null ? 0 : listLocation.size();
+    }
+
+    public interface ListLocationListener {
+        void showListLocation(UserLocation location);
     }
 }

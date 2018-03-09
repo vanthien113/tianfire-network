@@ -3,6 +3,7 @@ package com.example.thienpro.mvp_firebase.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -11,15 +12,18 @@ import android.view.MenuItem;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.esafirm.imagepicker.features.ImagePicker;
+import com.esafirm.imagepicker.model.Image;
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityPostBinding;
 import com.example.thienpro.mvp_firebase.presenter.Impl.PostPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.PostPresenter;
-import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
 import com.example.thienpro.mvp_firebase.view.PostView;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by ThienPro on 11/28/2017.
@@ -28,11 +32,9 @@ import java.io.IOException;
 public class PostActivity extends BaseActivity<ActivityPostBinding> implements PostView {
     private PostPresenter presenter;
     private Uri filePath;
-    private LoadingDialog loadingDialog;
     private PopupMenu popupMenu;
 
     private static final int REQUEST_CODE_IMAGE = 1;
-    private static int CODE_FROM_GALLERY_CAMERA = 2;
 
     public static void startActivity(Context context) {
         context.startActivity(new Intent(context, PostActivity.class));
@@ -48,7 +50,6 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
         presenter = new PostPresenterImpl();
         presenter.attachView(this);
 
-        loadingDialog = new LoadingDialog(this);
         popupMenu = new PopupMenu(this, viewDataBinding.ivPost);
 
         popupMenu.getMenuInflater().inflate(R.menu.menu_post, popupMenu.getMenu());
@@ -74,9 +75,6 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
                     case R.id.mn_choose_picture:
                         onChoosePicture();
                         break;
-                    case R.id.mn_camera:
-                        onCamera();
-                        break;
                 }
                 return false;
             }
@@ -91,18 +89,14 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
         }
     }
 
-    private void onCamera() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(this.getPackageManager()) != null) {
-            this.startActivityForResult(takePictureIntent, CODE_FROM_GALLERY_CAMERA);
-        }
-    }
-
     private void onChoosePicture() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CODE_IMAGE);
+        ImagePicker.create(this)
+                .returnAfterFirst(true)
+                .imageTitle("Tap to select")
+                .showCamera(true)
+                .single()
+                .imageDirectory("Camera")
+                .start(REQUEST_CODE_IMAGE);
     }
 
     @Override
@@ -118,20 +112,16 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            filePath = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                viewDataBinding.ivUploaded.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        if (requestCode == CODE_FROM_GALLERY_CAMERA && resultCode == RESULT_OK && data != null) {
-            Bundle extras = data.getExtras();
-            Bitmap bitmap = (Bitmap) extras.get("data");
+        if (requestCode == REQUEST_CODE_IMAGE && resultCode == RESULT_OK && data != null) {
+            List<Image> images = data.getParcelableArrayListExtra("selectedImages");
+            if (images != null && images.size() > 0) {
+                Image image = images.get(0);
 
-            viewDataBinding.ivUploaded.setImageBitmap(bitmap);
+                filePath = Uri.fromFile(new File(image.getPath()));
+                Bitmap bitmap = BitmapFactory.decodeFile(image.getPath());
+
+                viewDataBinding.ivUploaded.setImageBitmap(bitmap);
+            }
         }
     }
 

@@ -62,17 +62,8 @@ public class AppSettingPresenterImpl extends BasePresentermpl<AppSettingView> im
     }
 
     @Override
-    public void getLocation() {
-    }
-
-    @Override
     public void stopPushLocation() {
         scheduledExecutorService.shutdownNow();
-    }
-
-    @Override
-    public void getListLocation() {
-
     }
 
     @Override

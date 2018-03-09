@@ -14,4 +14,6 @@ public interface HomeView extends BaseView {
     void showAllPost(ArrayList<Post> list);
 
     void currentUser(User user);
+
+    void reloadPost();
 }

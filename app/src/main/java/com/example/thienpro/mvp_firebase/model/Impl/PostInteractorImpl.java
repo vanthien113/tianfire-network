@@ -34,8 +34,15 @@ import java.util.UUID;
  */
 
 public class PostInteractorImpl implements PostInteractor {
-    private static final String POST = "posts";
-    private static final String USER = "users";
+    private static final String POSTS = "posts";
+    private static final String USERS = "users";
+
+    private static final String ID = "id";
+    private static final String NAME = "name";
+    private static final String POST = "post";
+    private static final String IMAGE = "image";
+    private static final String AVATAR = "avatar";
+    private static final String TIMEPOST = "timePost";
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
@@ -78,15 +85,15 @@ public class PostInteractorImpl implements PostInteractor {
                                         public void onSuccess(final Uri uri) {
                                             //Up Post with Image
 
-                                            mDatabase.child(USER).child(user.getUid()).addValueEventListener(new ValueEventListener() {
+                                            mDatabase.child(USERS).child(user.getUid()).addValueEventListener(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                                     Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                                                    String name = (String) map.get("name");
-                                                    String avatar = (String) map.get("avatar");
+                                                    String name = (String) map.get(NAME);
+                                                    String avatar = (String) map.get(AVATAR);
 
                                                     Post post = new Post(user.getUid(), name, day, content, uri.toString(), avatar);
-                                                    mDatabase.child(POST).child(day).setValue(post)
+                                                    mDatabase.child(POSTS).child(day).setValue(post)
                                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<Void> task) {
@@ -126,15 +133,15 @@ public class PostInteractorImpl implements PostInteractor {
                         }
                     });
         } else {
-            mDatabase.child(USER).child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            mDatabase.child(USERS).child(user.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                    String name = (String) map.get("name");
-                    String avatar = (String) map.get("avatar");
+                    String name = (String) map.get(NAME);
+                    String avatar = (String) map.get(AVATAR);
 
                     Post post = new Post(user.getUid(), name, day, content, null, avatar);
-                    mDatabase.child(POST).child(day).setValue(post)
+                    mDatabase.child(POSTS).child(day).setValue(post)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -159,17 +166,17 @@ public class PostInteractorImpl implements PostInteractor {
 
     @Override
     public void loadPersonalPost(final ListPostCallback callback) {
-        mDatabase.child(POST).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(POSTS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     Map<String, Object> map = (Map<String, Object>) dsp.getValue();
-                    String id = (String) map.get("id");
-                    String name = (String) map.get("name");
-                    String timePost = (String) map.get("timePost");
-                    String postBody = (String) map.get("post");
-                    String image = (String) map.get("image");
-                    String avatar = (String) map.get("avatar");
+                    String id = (String) map.get(ID);
+                    String name = (String) map.get(NAME);
+                    String timePost = (String) map.get(TIMEPOST);
+                    String postBody = (String) map.get(POST);
+                    String image = (String) map.get(IMAGE);
+                    String avatar = (String) map.get(AVATAR);
 
                     if (id.equals(user.getUid())) {
                         Post post = new Post(id, name, timePost, postBody, image, avatar);
@@ -188,17 +195,17 @@ public class PostInteractorImpl implements PostInteractor {
 
     @Override
     public void loadAllPost(final ListPostCallback callback) {
-        mDatabase.child(POST).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(POSTS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     Map<String, Object> map = (Map<String, Object>) dsp.getValue();
-                    String id = (String) map.get("id");
-                    String name = (String) map.get("name");
-                    String timePost = (String) map.get("timePost");
-                    String postBody = (String) map.get("post");
-                    String image = (String) map.get("image");
-                    String avatar = (String) map.get("avatar");
+                    String id = (String) map.get(ID);
+                    String name = (String) map.get(NAME);
+                    String timePost = (String) map.get(TIMEPOST);
+                    String postBody = (String) map.get(POST);
+                    String image = (String) map.get(IMAGE);
+                    String avatar = (String) map.get(AVATAR);
 
                     Post post = new Post(id, name, timePost, postBody, image, avatar);
                     postList.add(post);
@@ -216,7 +223,7 @@ public class PostInteractorImpl implements PostInteractor {
 
     @Override
     public void deletePost(final Post post, final DeletePostCallback callback) {
-        mDatabase.child(POST).child(post.getTimePost()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+        mDatabase.child(POSTS).child(post.getTimePost()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 //Delete Image in storage

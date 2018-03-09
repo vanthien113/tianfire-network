@@ -58,11 +58,11 @@ public interface UserInteractor {
 
     void getUser(GetUserCallback callback, boolean loadUser);
 
-    void addAvatar(String email, final String name, String address, Boolean sex, Uri uri, String coverUri, AddAvatarCallback callback);
+    void addAvatar(final Uri uri, final AddAvatarCallback callback);
 
-    void addCover(final String email, final String name, final String address, final Boolean sex, final String avatar, final Uri coverUri, AddCoverCallback callback);
+    void addCover(final Uri coverUri, AddCoverCallback callback);
 
-    void updateUser(String email, String name, String address, Boolean sex, String avatar, String cover, UpdateUserCallback callback);
+    void updateUser(final String name, String address, Boolean sex, final UpdateUserCallback callback);
 
     void verifiEmail(VerifiEmailCheckCallback callback);
 

@@ -22,16 +22,6 @@ import com.example.thienpro.mvp_firebase.view.bases.BaseFragment;
 public class SettingFragment extends BaseFragment<FragmentSettingBinding> implements SettingView {
     private SettingPresenter presenter;
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void attach(Context context) {
-
-    }
-
     public static SettingFragment newInstance() {
         Bundle args = new Bundle();
         SettingFragment fragment = new SettingFragment();
@@ -47,22 +37,9 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> implem
     @Override
     protected void init(@Nullable View view) {
         viewDataBinding.setEvent(this);
+
         presenter = new SettingPresenterImpl(getContext());
-    }
-
-    @Override
-    protected void screenResume() {
-
-    }
-
-    @Override
-    protected void screenPause() {
-
-    }
-
-    @Override
-    protected void screenStart(@Nullable Bundle saveInstanceState) {
-
+        presenter.attachView(this);
     }
 
     @Override
@@ -84,5 +61,30 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> implem
     @Override
     public void onAppSettingClick() {
         AppSettingActivity.startActivity(getContext());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void attach(Context context) {
+
+    }
+
+    @Override
+    protected void screenResume() {
+
+    }
+
+    @Override
+    protected void screenPause() {
+
+    }
+
+    @Override
+    protected void screenStart(@Nullable Bundle saveInstanceState) {
+
     }
 }
