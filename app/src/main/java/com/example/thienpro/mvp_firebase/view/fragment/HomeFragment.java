@@ -16,6 +16,7 @@ import com.example.thienpro.mvp_firebase.presenter.Impl.HomePresenterImpl;
 import com.example.thienpro.mvp_firebase.ultils.DownloadUltil;
 import com.example.thienpro.mvp_firebase.view.HomeView;
 import com.example.thienpro.mvp_firebase.view.activity.EditPostActivity;
+import com.example.thienpro.mvp_firebase.view.activity.FriendProfileActivity;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
 import com.example.thienpro.mvp_firebase.view.bases.BaseFragment;
 
@@ -26,7 +27,7 @@ import java.util.Collections;
  * Created by ThienPro on 11/22/2017.
  */
 
-public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements HomeView, HomeAdapter.ListPostMenuListener, HomeAdapter.DownloadImageListener {
+public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements HomeView, HomeAdapter.ListPostMenuListener, HomeAdapter.DownloadImageListener, HomeAdapter.FriendProfileListener {
     private HomeAdapter homeAdapter;
     private LinearLayoutManager linearLayoutManager;
     private HomePresenter presenter;
@@ -87,7 +88,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
         Collections.reverse(list);
         listPost = list;
 
-        homeAdapter = new HomeAdapter(listPost, getContext(), this, user, this);
+        homeAdapter = new HomeAdapter(listPost, getContext(), this, user, this, this);
         viewDataBinding.rvHome.setAdapter(homeAdapter);
         viewDataBinding.rvHome.setLayoutFrozen(false);
     }
@@ -135,5 +136,10 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
     @Override
     public void onDownload(String imageUrl) {
         DownloadUltil.startDownload(getContext(), imageUrl);
+    }
+
+    @Override
+    public void onFriendProfile(String userId) {
+        FriendProfileActivity.startActivity(getContext(), userId);
     }
 }

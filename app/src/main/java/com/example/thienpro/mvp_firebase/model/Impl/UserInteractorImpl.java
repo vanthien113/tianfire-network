@@ -161,6 +161,38 @@ public class UserInteractorImpl implements UserInteractor {
         });
     }
 
+    @Override
+    public void getFriendInfomation(String userId, final FriendInfomationCallback callback) {
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                @SuppressWarnings("unchecked")
+                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                String address = (String) map.get(ADDRESS);
+                String email = (String) map.get(EMAIL);
+                String name = (String) map.get(NAME);
+                Boolean sex = (Boolean) map.get(SEX);
+                String avatar = (String) map.get(AVATAR);
+                String cover = (String) map.get(COVER);
+
+                User user = new User(email, name, address, sex, avatar, cover);
+
+                currentUser.setUser(user);
+
+                callback.friendInfomation(null, user);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.friendInfomation(databaseError, null);
+            }
+        };
+
+        mDatabase.child(USERS).child(userId).addValueEventListener(valueEventListener);
+    }
+
     public void updateUser(final String name, String address, Boolean sex, final UpdateUserCallback callback) {
         String userId = users.getUid();
 

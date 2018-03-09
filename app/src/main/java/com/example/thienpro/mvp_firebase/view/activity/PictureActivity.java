@@ -19,8 +19,13 @@ import java.util.ArrayList;
 public class PictureActivity extends BaseActivity<ActivityPictureBinding> implements PictureView {
     private PicturePresenter presenter;
     private PictureAdapter adapter;
+    private String userId;
 
-    public static void startActivity(Context context) {
+    public static void startActivity(Context context, String userId) {
+        Intent intent = new Intent(context, PictureActivity.class);
+
+        intent.putExtra("userId", userId);
+
         context.startActivity(new Intent(context, PictureActivity.class));
     }
 
@@ -33,6 +38,8 @@ public class PictureActivity extends BaseActivity<ActivityPictureBinding> implem
     protected void init() {
         presenter = new PicturePresenterImpl();
         presenter.attachView(this);
+
+        userId = getIntent().getStringExtra("userId");
 
         viewDataBinding.setEvent(this);
 
@@ -73,6 +80,6 @@ public class PictureActivity extends BaseActivity<ActivityPictureBinding> implem
             viewDataBinding.rvPicture.setLayoutManager(new GridLayoutManager(this, 2));
         }
 
-        presenter.getPicture();
+        presenter.getPicture(userId);
     }
 }

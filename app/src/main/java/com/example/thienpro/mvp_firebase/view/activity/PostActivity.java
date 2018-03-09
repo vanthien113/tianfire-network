@@ -32,7 +32,6 @@ import java.util.List;
 public class PostActivity extends BaseActivity<ActivityPostBinding> implements PostView {
     private PostPresenter presenter;
     private Uri filePath;
-    private PopupMenu popupMenu;
 
     private static final int REQUEST_CODE_IMAGE = 1;
 
@@ -50,9 +49,6 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
         presenter = new PostPresenterImpl();
         presenter.attachView(this);
 
-        popupMenu = new PopupMenu(this, viewDataBinding.ivPost);
-
-        popupMenu.getMenuInflater().inflate(R.menu.menu_post, popupMenu.getMenu());
         viewDataBinding.setEvent(this);
     }
 
@@ -63,25 +59,6 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
 
     @Override
     public void onPostClick() {
-        popupMenu.show();
-
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.mn_post:
-                        post();
-                        break;
-                    case R.id.mn_choose_picture:
-                        onChoosePicture();
-                        break;
-                }
-                return false;
-            }
-        });
-    }
-
-    private void post() {
         if (TextUtils.isEmpty(viewDataBinding.etPost.getText()))
             Toast.makeText(this, R.string.hay_nhap_cam_nhan_cua_ban, Toast.LENGTH_SHORT).show();
         else {
@@ -89,7 +66,13 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
         }
     }
 
-    private void onChoosePicture() {
+    @Override
+    public void navigationToHome() {
+        HomeActivity.startActiviry(this);
+    }
+
+    @Override
+    public void onInsertImageClick() {
         ImagePicker.create(this)
                 .returnAfterFirst(true)
                 .imageTitle("Tap to select")
@@ -97,16 +80,6 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
                 .single()
                 .imageDirectory("Camera")
                 .start(REQUEST_CODE_IMAGE);
-    }
-
-    @Override
-    public void onPostFail(Exception e) {
-        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void navigationToHome() {
-        HomeActivity.startActiviry(this);
     }
 
     @Override

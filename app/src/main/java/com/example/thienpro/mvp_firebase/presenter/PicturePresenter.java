@@ -4,5 +4,5 @@ import com.example.thienpro.mvp_firebase.view.PictureView;
 import com.example.thienpro.mvp_firebase.view.bases.BasePresenter;
 
 public interface PicturePresenter extends BasePresenter<PictureView> {
-    void getPicture();
+    void getPicture(String userId);
 }

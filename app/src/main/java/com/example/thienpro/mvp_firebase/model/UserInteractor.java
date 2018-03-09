@@ -2,6 +2,7 @@ package com.example.thienpro.mvp_firebase.model;
 
 import android.net.Uri;
 
+import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.google.firebase.database.DatabaseError;
 
@@ -54,6 +55,10 @@ public interface UserInteractor {
         void changePasswordCallback(Exception e);
     }
 
+    interface FriendInfomationCallback {
+        void friendInfomation(DatabaseError e, User user);
+    }
+
     void sigIn(String email, String password, LoginCheckCallback loginCheckCallback);
 
     void signedInCheck(LoggedInCheckCallback callback);
@@ -79,4 +84,7 @@ public interface UserInteractor {
     void changePassword(String password, ChangePasswordCallback callback);
 
     void forgotPassword(String email, ChangePasswordCallback callback);
+
+    void getFriendInfomation(String userId, FriendInfomationCallback callback);
+
 }

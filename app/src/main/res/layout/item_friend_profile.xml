@@ -8,7 +8,7 @@
 
         <variable
             name="event"
-            type="com.example.thienpro.mvp_firebase.view.ItemListPostView" />
+            type="com.example.thienpro.mvp_firebase.view.ItemFriendProfileView" />
 
         <variable
             name="data"
@@ -27,7 +27,6 @@
             android:background="@color/colorWhite">
 
             <ImageView
-                android:onClick="@{()->event.onFriendProfileClick(data)}"
                 android:id="@+id/iv_avatar"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -37,7 +36,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:onClick="@{()->event.onFriendProfileClick(data)}"
                 android:id="@+id/tv_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -59,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:text="@{SHDateTimeFormat.changeDateFormat(data.timePost)}"
+                android:text="@{data.timePost}"
                 android:textColor="@color/colorPinkLight"
                 android:textSize="@dimen/text_size_standard"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
@@ -73,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
@@ -81,7 +79,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_time">
+                app:layout_constraintTop_toBottomOf="@+id/iv_avatar">
 
                 <TextView
                     android:id="@+id/tv_post"
@@ -90,7 +88,7 @@
                     android:layout_marginLeft="@dimen/space_large"
                     android:layout_marginTop="@dimen/space_large"
                     android:text="@{data.post}"
-                    android:textSize="@dimen/text_size_standard"/>
+                    android:textSize="@dimen/text_size_standard" />
 
                 <ImageView
                     android:id="@+id/iv_image"
@@ -100,20 +98,8 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:onClick="@{()->event.onImageClick(data)}"/>
+                    android:onClick="@{()->event.onImageClick(data)}" />
             </LinearLayout>
-
-            <ImageButton
-                android:id="@+id/ib_menu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/ic_more_vert"
-                android:onClick="@{()->event.onMenuClick(data)}"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/iv_avatar" />
         </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 </layout>

@@ -2,10 +2,6 @@ package com.example.thienpro.mvp_firebase.view;
 
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 
-public interface ItemListPostView {
-    void onMenuClick(Post post);
-
+public interface ItemFriendProfileView {
     void onImageClick(Post post);
-
-    void onFriendProfileClick(Post post);
 }

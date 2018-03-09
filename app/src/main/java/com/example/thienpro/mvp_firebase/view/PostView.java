@@ -11,7 +11,7 @@ public interface PostView extends BaseView{
 
     void onPostClick();
 
-    void onPostFail(Exception e);
-
     void navigationToHome();
+
+    void onInsertImageClick();
 }

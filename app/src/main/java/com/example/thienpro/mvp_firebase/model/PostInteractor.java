@@ -32,6 +32,10 @@ public interface PostInteractor {
         void getPicture(DatabaseError e, ArrayList<String> listPicture);
     }
 
+    interface FriendPostCallback {
+        void friendPost(DatabaseError e, ArrayList<Post> post);
+    }
+
     void writeNewPost(String content, Uri filePath, PostCallback callback);
 
     void loadPersonalPost(ListPostCallback callback);
@@ -42,5 +46,7 @@ public interface PostInteractor {
 
     void editPost(Post post, EditPostCallback callback);
 
-    void getPicture(GetPictureCallback callback);
+    void getPicture(String userId, GetPictureCallback callback);
+
+    void getFriendPost(String userId, FriendPostCallback callback);
 }

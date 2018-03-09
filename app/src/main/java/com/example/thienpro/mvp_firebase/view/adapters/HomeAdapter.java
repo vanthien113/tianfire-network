@@ -24,13 +24,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeVH> {
     private ListPostMenuListener listener;
     private User user;
     private DownloadImageListener downloadImageListener;
+    private FriendProfileListener friendProfileListener;
 
-    public HomeAdapter(ArrayList<Post> mLisPost, Context context, ListPostMenuListener listener, User user, DownloadImageListener downloadImageListener) {
+    public HomeAdapter(ArrayList<Post> mLisPost, Context context, ListPostMenuListener listener, User user, DownloadImageListener downloadImageListener, FriendProfileListener friendProfileListener) {
         this.mLisPost = mLisPost;
         this.context = context;
         this.listener = listener;
         this.user = user;
         this.downloadImageListener = downloadImageListener;
+        this.friendProfileListener = friendProfileListener;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeVH> {
         RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         ItemActivityHomeBinding binding = ItemActivityHomeBinding.inflate(LayoutInflater.from(parent.getContext()));
         binding.getRoot().setLayoutParams(layoutParams);
-        return new HomeVH(binding, listener, user, downloadImageListener);
+        return new HomeVH(binding, listener, user, downloadImageListener, friendProfileListener);
     }
 
     @Override
@@ -63,5 +65,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeVH> {
 
     public interface DownloadImageListener {
         void onDownload(String imageUrl);
+    }
+
+    public interface FriendProfileListener {
+        void onFriendProfile(String userId);
     }
 }

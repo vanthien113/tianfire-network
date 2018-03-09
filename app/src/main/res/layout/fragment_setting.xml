@@ -30,13 +30,14 @@
                 android:id="@+id/tv_editinfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/space_normal"
+                android:layout_marginLeft="@dimen/space_large"
                 android:layout_gravity="center"
                 android:text="@string/chinh_sua_thong_tin"
                 android:textSize="@dimen/text_size_large" />
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="@{()->event.onChangePasswordClick()}">
@@ -50,13 +51,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/space_normal"
+                android:layout_marginLeft="@dimen/space_large"
                 android:layout_gravity="center"
                 android:text="Thay đổi mật khẩu"
                 android:textSize="@dimen/text_size_large" />
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="@{()->event.onAppSettingClick()}">
@@ -72,14 +74,14 @@
                 android:id="@+id/tv_logout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/space_normal"
+                android:layout_marginLeft="@dimen/space_large"
                 android:layout_gravity="center"
                 android:text="Cài đặt ứng dụng"
                 android:textSize="@dimen/text_size_large" />
-
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="@{()->event.onEditInfoClick()}">
@@ -95,7 +97,7 @@
                 android:id="@+id/tv_changeAvatar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/space_normal"
+                android:layout_marginLeft="@dimen/space_large"
                 android:layout_gravity="center"
                 android:text="@string/dang_xuat"
                 android:textSize="@dimen/text_size_large" />

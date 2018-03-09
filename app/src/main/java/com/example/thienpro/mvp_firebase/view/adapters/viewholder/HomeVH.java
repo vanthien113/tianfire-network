@@ -30,14 +30,16 @@ public class HomeVH extends RecyclerView.ViewHolder implements ItemListPostView 
     private User user;
     private HomeAdapter.DownloadImageListener downloadImageListener;
     private AlertDialog.Builder alertDialog;
+    private HomeAdapter.FriendProfileListener friendProfileListener;
 
-    public HomeVH(ItemActivityHomeBinding binding, HomeAdapter.ListPostMenuListener listener, User user, final HomeAdapter.DownloadImageListener downloadImageListener) {
+    public HomeVH(ItemActivityHomeBinding binding, HomeAdapter.ListPostMenuListener listener, User user, final HomeAdapter.DownloadImageListener downloadImageListener, HomeAdapter.FriendProfileListener friendProfileListener) {
         super(binding.getRoot());
 
         this.user = user;
         this.binding = binding;
         this.listener = listener;
         this.downloadImageListener = downloadImageListener;
+        this.friendProfileListener = friendProfileListener;
 
         binding.setEvent(this);
 
@@ -113,11 +115,16 @@ public class HomeVH extends RecyclerView.ViewHolder implements ItemListPostView 
         binding.ivImage.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                    alertDialog.show();
+                alertDialog.show();
                 return false;
             }
         });
 
+    }
+
+    @Override
+    public void onFriendProfileClick(Post post) {
+        friendProfileListener.onFriendProfile(post.getId());
     }
 
     private void deletePost(Post post) {
