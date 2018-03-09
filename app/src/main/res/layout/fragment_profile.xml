@@ -101,8 +101,8 @@
                     android:layout_marginTop="5dp"
                     android:background="@color/colorWhite"
                     android:orientation="horizontal"
-                    android:paddingBottom="5dp"
-                    android:paddingTop="5dp">
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp">
 
                     <TextView
                         android:layout_width="0dp"
@@ -112,10 +112,10 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:onClick="@{()->event.onShowListPictureClick()}"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:onClick="@{()->event.onShowListPictureClick()}"
                         android:text="Ảnh"
                         android:textAlignment="center" />
                 </LinearLayout>
@@ -139,8 +139,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/space_large"
-                    android:background="@color/colorWhite"
-                    android:focusable="false" />
+                    android:background="@color/colorWhite" />
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
 

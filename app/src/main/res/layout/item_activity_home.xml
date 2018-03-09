@@ -17,7 +17,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/colorGray">
 
         <android.support.constraint.ConstraintLayout
@@ -39,6 +39,7 @@
                 android:id="@+id/tv_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_large"
                 android:layout_marginLeft="@dimen/space_large"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
@@ -48,8 +49,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/ib_menu"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_avatar"
-                app:layout_constraintTop_toTopOf="@+id/iv_avatar"
-                android:layout_marginStart="@dimen/space_large" />
+                app:layout_constraintTop_toTopOf="@+id/iv_avatar" />
 
             <TextView
                 android:id="@+id/tv_time"
@@ -66,31 +66,40 @@
                 app:layout_constraintStart_toStartOf="@+id/tv_name"
                 app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
-            <TextView
-                android:id="@+id/tv_post"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/space_large"
-                android:layout_marginTop="@dimen/space_large"
-                android:text="@{data.post}"
-                android:textSize="@dimen/text_size_standard"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_time" />
-
-            <ImageView
-                android:id="@+id/iv_image"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_post" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_time">
+
+                <TextView
+                    android:id="@+id/tv_post"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_large"
+                    android:layout_marginTop="@dimen/space_large"
+                    android:text="@{data.post}"
+                    android:textSize="@dimen/text_size_standard"/>
+
+                <ImageView
+                    android:id="@+id/iv_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:onClick="@{()->event.onImageClick(data)}"/>
+            </LinearLayout>
 
             <ImageButton
                 android:id="@+id/ib_menu"

@@ -10,7 +10,6 @@ import android.view.animation.AnimationUtils;
 import com.example.thienpro.mvp_firebase.databinding.ItemActivityHomeBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
-import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.example.thienpro.mvp_firebase.view.adapters.viewholder.HomeVH;
 
 import java.util.ArrayList;
@@ -24,12 +23,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeVH> {
     private Context context;
     private ListPostMenuListener listener;
     private User user;
+    private DownloadImageListener downloadImageListener;
 
-    public HomeAdapter(ArrayList<Post> mLisPost, Context context, ListPostMenuListener listener, User user) {
+    public HomeAdapter(ArrayList<Post> mLisPost, Context context, ListPostMenuListener listener, User user, DownloadImageListener downloadImageListener) {
         this.mLisPost = mLisPost;
         this.context = context;
         this.listener = listener;
         this.user = user;
+        this.downloadImageListener = downloadImageListener;
     }
 
     @Override
@@ -37,7 +38,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeVH> {
         RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         ItemActivityHomeBinding binding = ItemActivityHomeBinding.inflate(LayoutInflater.from(parent.getContext()));
         binding.getRoot().setLayoutParams(layoutParams);
-        return new HomeVH(binding, listener, user);
+        return new HomeVH(binding, listener, user, downloadImageListener);
     }
 
     @Override
@@ -58,5 +59,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeVH> {
         void onEditPost(Post post);
 
         void onDeletePost(Post post);
+    }
+
+    public interface DownloadImageListener {
+        void onDownload(String imageUrl);
     }
 }

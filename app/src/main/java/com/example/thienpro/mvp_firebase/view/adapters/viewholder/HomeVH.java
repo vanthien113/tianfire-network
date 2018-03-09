@@ -1,5 +1,7 @@
 package com.example.thienpro.mvp_firebase.view.adapters.viewholder;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -26,17 +28,23 @@ public class HomeVH extends RecyclerView.ViewHolder implements ItemListPostView 
     private PopupMenu popupMenu;
     private HomeAdapter.ListPostMenuListener listener;
     private User user;
+    private HomeAdapter.DownloadImageListener downloadImageListener;
+    private AlertDialog.Builder alertDialog;
 
-    public HomeVH(ItemActivityHomeBinding binding, HomeAdapter.ListPostMenuListener listener, User user) {
+    public HomeVH(ItemActivityHomeBinding binding, HomeAdapter.ListPostMenuListener listener, User user, final HomeAdapter.DownloadImageListener downloadImageListener) {
         super(binding.getRoot());
 
         this.user = user;
         this.binding = binding;
         this.listener = listener;
+        this.downloadImageListener = downloadImageListener;
+
         binding.setEvent(this);
 
         popupMenu = new PopupMenu(binding.getRoot().getContext(), binding.ibMenu);
         popupMenu.getMenuInflater().inflate(R.menu.menu_list_post, popupMenu.getMenu());
+
+        alertDialog = new AlertDialog.Builder(binding.getRoot().getContext());
     }
 
     public void bind(Post post) {
@@ -87,6 +95,29 @@ public class HomeVH extends RecyclerView.ViewHolder implements ItemListPostView 
 
 
         });
+    }
+
+    @Override
+    public void onImageClick(final Post post) {
+        alertDialog.setTitle("Tải xuống")
+                .setCancelable(false)
+                .setPositiveButton("Tải", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        downloadImageListener.onDownload(post.getImage());
+                    }
+                })
+                .setNegativeButton("Hủy", null)
+                .setMessage("Tải ảnh xuống máy của bạn");
+
+        binding.ivImage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                    alertDialog.show();
+                return false;
+            }
+        });
+
     }
 
     private void deletePost(Post post) {

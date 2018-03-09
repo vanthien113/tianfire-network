@@ -10,7 +10,6 @@ import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityPictureBinding;
 import com.example.thienpro.mvp_firebase.presenter.Impl.PicturePresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.PicturePresenter;
-import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.example.thienpro.mvp_firebase.view.PictureView;
 import com.example.thienpro.mvp_firebase.view.adapters.PictureAdapter;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
@@ -70,11 +69,8 @@ public class PictureActivity extends BaseActivity<ActivityPictureBinding> implem
     public void onChangeViewTypeClick() {
         if (viewDataBinding.rbOne.isChecked()) {
             viewDataBinding.rvPicture.setLayoutManager(new LinearLayoutManager(this, OrientationHelper.VERTICAL, false));
-            LogUltil.log(getClass(), "1");
         } else {
             viewDataBinding.rvPicture.setLayoutManager(new GridLayoutManager(this, 2));
-            LogUltil.log(getClass(), "2");
-
         }
 
         presenter.getPicture();

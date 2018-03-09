@@ -25,6 +25,7 @@ import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.Impl.ProfilePresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.ProfilePresenter;
+import com.example.thienpro.mvp_firebase.ultils.DownloadUltil;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
 import com.example.thienpro.mvp_firebase.view.activity.EditPostActivity;
 import com.example.thienpro.mvp_firebase.view.activity.PictureActivity;
@@ -43,7 +44,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by ThienPro on 11/22/2017.
  */
 
-public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implements ProfileView, HomeAdapter.ListPostMenuListener {
+public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implements ProfileView, HomeAdapter.ListPostMenuListener, HomeAdapter.DownloadImageListener {
     private static final int REQUEST_CHANGE_AVATAR = 1;
     private static final int REQUEST_CHANGE_COVER = 2;
 
@@ -117,7 +118,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
     public void showList(ArrayList<Post> list) {
         Collections.reverse(list);
         listPost = list;
-        homeAdapter = new HomeAdapter(listPost, getContext(), this, null);
+        homeAdapter = new HomeAdapter(listPost, getContext(), this, null, this);
         viewDataBinding.rvProfile.setAdapter(homeAdapter);
         viewDataBinding.rvProfile.setLayoutFrozen(false);
     }
@@ -237,5 +238,10 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
     @Override
     protected void screenStart(@Nullable Bundle saveInstanceState) {
 
+    }
+
+    @Override
+    public void onDownload(String imageUrl) {
+        DownloadUltil.startDownload(getContext(), imageUrl);
     }
 }
