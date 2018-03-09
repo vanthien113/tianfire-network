@@ -55,7 +55,7 @@ public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements L
     }
 
     @Override
-    public void onForgotPasswordClick(final String email) {
+    public void forgotPassword(final String email) {
         getView().showLoadingDialog();
 
         userInteractor.forgotPassword(email, new UserInteractor.ChangePasswordCallback() {
@@ -65,7 +65,7 @@ public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements L
                 if (e != null) {
                     getView().showExceptionError(e);
                 } else {
-                    getView().showMessenger("Email chứa link thay đổi mật khẩu đã được gửi về địa chỉ email " + email);
+                    getView().showMessenger("Email chứa link thay đổi mật khẩu đã được gửi về email " + email);
                 }
             }
         });

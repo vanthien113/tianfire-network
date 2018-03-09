@@ -26,4 +26,6 @@ public interface ProfileView extends BaseView {
     void showAvatarChanged(String avatarUrl);
 
     void showCoverChanged(String coverUrl);
+
+    void onShowListPictureClick();
 }

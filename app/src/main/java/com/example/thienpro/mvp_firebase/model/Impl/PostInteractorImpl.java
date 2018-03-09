@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
+import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -271,5 +272,30 @@ public class PostInteractorImpl implements PostInteractor {
                         callback.editPost(e);
                     }
                 });
+    }
+
+    @Override
+    public void getPicture(final GetPictureCallback callback) {
+        final ArrayList<String> listPicture = new ArrayList<>();
+        mDatabase.child(POSTS).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                    Map<String, Object> map = (Map<String, Object>) dsp.getValue();
+                    String id = (String) map.get(ID);
+                    String image = (String) map.get(IMAGE);
+
+                    if (id.equals(user.getUid()) && !TextUtils.isEmpty(image)) {
+                        listPicture.add(image);
+                    }
+                }
+                callback.getPicture(null, listPicture);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.getPicture(databaseError, null);
+            }
+        });
     }
 }

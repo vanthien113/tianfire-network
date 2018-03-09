@@ -24,8 +24,12 @@ public interface PostInteractor {
         void listPost(Exception e);
     }
 
-    interface EditPostCallback{
+    interface EditPostCallback {
         void editPost(Exception e);
+    }
+
+    interface GetPictureCallback {
+        void getPicture(DatabaseError e, ArrayList<String> listPicture);
     }
 
     void writeNewPost(String content, Uri filePath, PostCallback callback);
@@ -37,4 +41,6 @@ public interface PostInteractor {
     void deletePost(Post post, DeletePostCallback callback);
 
     void editPost(Post post, EditPostCallback callback);
+
+    void getPicture(GetPictureCallback callback);
 }

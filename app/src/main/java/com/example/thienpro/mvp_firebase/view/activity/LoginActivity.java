@@ -87,7 +87,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
         if (TextUtils.isEmpty(email)) {
             showToastMessage("Hãy nhập email và nhấn vào nút Quên mật khẩu");
         } else {
-            presenter.onForgotPasswordClick(viewDataBinding.etEmail.getText().toString());
+            presenter.forgotPassword(viewDataBinding.etEmail.getText().toString());
         }
     }
 

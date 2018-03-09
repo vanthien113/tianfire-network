@@ -27,6 +27,7 @@ import com.example.thienpro.mvp_firebase.presenter.Impl.ProfilePresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.ProfilePresenter;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
 import com.example.thienpro.mvp_firebase.view.activity.EditPostActivity;
+import com.example.thienpro.mvp_firebase.view.activity.PictureActivity;
 import com.example.thienpro.mvp_firebase.view.activity.PostActivity;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
 import com.example.thienpro.mvp_firebase.view.bases.BaseFragment;
@@ -129,7 +130,6 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
         viewDataBinding.tvName.setText(user.getName());
     }
 
-
     @Override
     public void onChangeAvatar() {
         ImagePicker.create(this)
@@ -187,6 +187,11 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
                         viewDataBinding.llCover.setBackground(bitmapDrawable);
                     }
                 });
+    }
+
+    @Override
+    public void onShowListPictureClick() {
+        PictureActivity.startActivity(getContext());
     }
 
     @Override
