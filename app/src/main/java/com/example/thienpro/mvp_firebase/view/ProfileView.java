@@ -28,4 +28,8 @@ public interface ProfileView extends BaseView {
     void showCoverChanged(String coverUrl);
 
     void onShowListPictureClick();
+
+    void showLoading();
+
+    void hideLoading();
 }

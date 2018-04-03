@@ -1,6 +1,5 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
-import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 
@@ -21,13 +20,13 @@ import java.util.concurrent.TimeUnit;
 
 public class AppSettingPresenterImpl extends BasePresentermpl<AppSettingView> implements AppSettingPresenter {
     private LocationInteractor locationInteractor;
-    private Location location;
     private static ScheduledExecutorService scheduledExecutorService;
     private UserInteractor userInteractor;
+    private Context context;
 
     public AppSettingPresenterImpl(Context context) {
+        this.context = context;
         this.locationInteractor = new LocationInteractorImpl(context);
-        this.location = SHLocationManager.getLastKnowLocation(context, (Activity) context);
         this.userInteractor = new UserInteractorImpl(context);
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
     }
@@ -43,21 +42,31 @@ public class AppSettingPresenterImpl extends BasePresentermpl<AppSettingView> im
                 scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
                     @Override
                     public void run() {
-                        final UserLocation currentLocation = new UserLocation(user.getName(), null, location.getLongitude(), location.getLatitude(), status);
-                        locationInteractor.pushLocation(currentLocation, new LocationInteractor.PushLocationCallback() {
-                            @Override
-                            public void pushLocation(Exception e) {
-                                if (e != null) {
-                                    getView().showExceptionError(e);
-                                } else {
-                                    if (!status) {
-                                        stopPushLocation();
-                                    }
-                                }
-                            }
-                        });
+                        getLocation(user, status);
                     }
                 }, 0, 5, TimeUnit.SECONDS);
+            }
+        });
+    }
+
+    private void getLocation(final User user, final boolean status) {
+        SHLocationManager.getCurrentLocation(context, new SHLocationManager.OnCurrentLocationCallback() {
+            @Override
+            public void callback(Location location) {
+                final UserLocation currentLocation = new UserLocation(user.getName(), null, location.getLongitude(), location.getLatitude(), status);
+
+                locationInteractor.pushLocation(currentLocation, new LocationInteractor.PushLocationCallback() {
+                    @Override
+                    public void pushLocation(Exception e) {
+                        if (e != null) {
+                            getView().showExceptionError(e);
+                        } else {
+                            if (!status) {
+                                stopPushLocation();
+                            }
+                        }
+                    }
+                });
             }
         });
     }

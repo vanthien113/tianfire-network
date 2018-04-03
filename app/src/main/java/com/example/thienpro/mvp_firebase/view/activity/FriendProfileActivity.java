@@ -16,6 +16,7 @@ import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.FriendProfilePresenter;
 import com.example.thienpro.mvp_firebase.presenter.Impl.FriendProfilePresenterImpl;
+import com.example.thienpro.mvp_firebase.ultils.SHBitmapHelper;
 import com.example.thienpro.mvp_firebase.view.FriendProfileView;
 import com.example.thienpro.mvp_firebase.view.adapters.FriendProfileAdapter;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
@@ -50,7 +51,7 @@ public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBin
         presenter.getFriendPost(userId);
         presenter.getFriendInfomation(userId);
 
-        viewDataBinding.setEvent(this);
+        getBinding().setEvent(this);
 
     }
 
@@ -84,29 +85,16 @@ public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBin
     public void showListPost(ArrayList<Post> listPost) {
         adapter = new FriendProfileAdapter(listPost);
 
-        viewDataBinding.rvProfile.setLayoutManager(new LinearLayoutManager(viewDataBinding.getRoot().getContext(), OrientationHelper.VERTICAL, false));
-        viewDataBinding.rvProfile.setAdapter(adapter);
+        getBinding().rvProfile.setLayoutManager(new LinearLayoutManager(viewDataBinding.getRoot().getContext(), OrientationHelper.VERTICAL, false));
+        getBinding().rvProfile.setAdapter(adapter);
     }
 
     @Override
     public void showUserInfomation(User user) {
         viewDataBinding.setData(user);
 
-        Glide.with(this)
-                .load(user.getCover())
-                .asBitmap().centerCrop()
-                .into(viewDataBinding.ivCover);
+        SHBitmapHelper.bindImage(getBinding().ivCover, user.getCover());
 
-        Glide.with(this)
-                .load(user.getAvatar())
-                .asBitmap().centerCrop()
-                .into(new BitmapImageViewTarget(viewDataBinding.ivAvatar) {
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), resource);
-                        roundedBitmapDrawable.setCircular(true);
-                        viewDataBinding.ivAvatar.setImageDrawable(roundedBitmapDrawable);
-                    }
-                });
+        SHBitmapHelper.bindCircularImage(getBinding().ivAvatar, user.getAvatar());
     }
 }

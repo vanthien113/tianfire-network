@@ -41,7 +41,7 @@ public class PictureActivity extends BaseActivity<ActivityPictureBinding> implem
 
         userId = getIntent().getStringExtra("userId");
 
-        viewDataBinding.setEvent(this);
+        getBinding().setEvent(this);
 
         onChangeViewTypeClick();
     }
@@ -69,15 +69,15 @@ public class PictureActivity extends BaseActivity<ActivityPictureBinding> implem
     @Override
     public void showPicture(ArrayList<String> listPicture) {
         adapter = new PictureAdapter(listPicture);
-        viewDataBinding.rvPicture.setAdapter(adapter);
+        getBinding().rvPicture.setAdapter(adapter);
     }
 
     @Override
     public void onChangeViewTypeClick() {
-        if (viewDataBinding.rbOne.isChecked()) {
-            viewDataBinding.rvPicture.setLayoutManager(new LinearLayoutManager(this, OrientationHelper.VERTICAL, false));
+        if (getBinding().rbOne.isChecked()) {
+            getBinding().rvPicture.setLayoutManager(new LinearLayoutManager(this, OrientationHelper.VERTICAL, false));
         } else {
-            viewDataBinding.rvPicture.setLayoutManager(new GridLayoutManager(this, 2));
+            getBinding().rvPicture.setLayoutManager(new GridLayoutManager(this, 2));
         }
 
         presenter.getPicture(userId);

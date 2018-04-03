@@ -41,7 +41,7 @@ public class RegisterActivity extends BaseActivity<ActivityRegisterBinding> impl
 
     @Override
     protected void init() {
-        viewDataBinding.setEvent(this);
+        getBinding().setEvent(this);
         presenter = new RegisterPresenterImpl(this);
         presenter.attachView(this);
 
@@ -57,9 +57,9 @@ public class RegisterActivity extends BaseActivity<ActivityRegisterBinding> impl
 
     @Override
     public void onNextClick() {
-        String email = viewDataBinding.etEmail.getText().toString();
-        String password = viewDataBinding.etPassword.getText().toString();
-        String repassword = viewDataBinding.etRepassword.getText().toString();
+        String email = getBinding().etEmail.getText().toString();
+        String password = getBinding().etPassword.getText().toString();
+        String repassword = getBinding().etRepassword.getText().toString();
 
         if (email.isEmpty() || password.isEmpty() || repassword.isEmpty())
             Toast.makeText(this, "Không được để trống các trường!", Toast.LENGTH_SHORT).show();

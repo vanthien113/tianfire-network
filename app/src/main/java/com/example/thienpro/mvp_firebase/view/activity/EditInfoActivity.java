@@ -35,37 +35,37 @@ public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> impl
         presenter = new EditInfoPresenterImpl(this);
         presenter.attachView(this);
 
-        viewDataBinding.setEvent(this);
-        viewDataBinding.spProvince.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.province_arrays)));
+        getBinding().setEvent(this);
+        getBinding().spProvince.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.province_arrays)));
 
         presenter.loadUser();
     }
 
     @Override
     public void onSaveClick() {
-        String name = viewDataBinding.etName.getText().toString();
+        String name = getBinding().etName.getText().toString();
 
-        if (viewDataBinding.etName.getText().toString().length() >= 30)
+        if (getBinding().etName.getText().toString().length() >= 30)
             Toast.makeText(this, R.string.ten_co_do_dai_duoi_30_ki_tu, Toast.LENGTH_SHORT).show();
         else {
-            presenter.updateUser(name, viewDataBinding.spProvince.getSelectedItem().toString(), viewDataBinding.rbNam.isChecked());
+            presenter.updateUser(name, getBinding().spProvince.getSelectedItem().toString(), getBinding().rbNam.isChecked());
         }
     }
 
     @Override
     public void getUser(User user) {
         this.user = user;
-        viewDataBinding.setData(user);
+        getBinding().setData(user);
         int i = 0;
         for (String string : getResources().getStringArray(R.array.province_arrays)) {
             if (string.equals(user.getAddress())) {
-                viewDataBinding.spProvince.setSelection(i);
+                getBinding().spProvince.setSelection(i);
             }
             i++;
         }
         if (user.getSex())
-            viewDataBinding.rbNam.setChecked(true);
-        else viewDataBinding.rbNu.setChecked(true);
+            getBinding().rbNam.setChecked(true);
+        else getBinding().rbNu.setChecked(true);
     }
 
     @Override

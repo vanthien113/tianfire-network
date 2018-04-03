@@ -3,6 +3,7 @@ package com.example.thienpro.mvp_firebase.view.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.view.View;
@@ -58,6 +59,14 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
 
         viewDataBinding.rvHome.setLayoutManager(linearLayoutManager);
         viewDataBinding.setEvent(this);
+
+        viewDataBinding.srlHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadData();
+                viewDataBinding.srlHome.setRefreshing(false);
+            }
+        });
     }
 
     @Override

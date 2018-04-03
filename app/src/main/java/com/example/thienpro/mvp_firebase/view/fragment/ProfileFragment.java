@@ -2,21 +2,14 @@ package com.example.thienpro.mvp_firebase.view.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.view.View;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.model.Image;
 import com.example.thienpro.mvp_firebase.R;
@@ -26,6 +19,8 @@ import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.Impl.ProfilePresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.ProfilePresenter;
 import com.example.thienpro.mvp_firebase.ultils.DownloadUltil;
+import com.example.thienpro.mvp_firebase.ultils.widget.LoadingDialog;
+import com.example.thienpro.mvp_firebase.ultils.SHBitmapHelper;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
 import com.example.thienpro.mvp_firebase.view.activity.EditPostActivity;
 import com.example.thienpro.mvp_firebase.view.activity.FriendProfileActivity;
@@ -54,6 +49,8 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
     private ProfilePresenter presenter;
     private ArrayList<Post> listPost;
 
+    private LoadingDialog dialog;
+
     public static ProfileFragment newInstance() {
         Bundle args = new Bundle();
         ProfileFragment fragment = new ProfileFragment();
@@ -71,6 +68,8 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
         presenter = new ProfilePresenterImpl(getContext());
         presenter.attachView(this);
 
+        dialog = new LoadingDialog(getContext());
+
         mLinearLayoutManager = new LinearLayoutManager(getContext(), OrientationHelper.VERTICAL, false);
 
         viewDataBinding.rvProfile.setLayoutManager(mLinearLayoutManager);
@@ -80,6 +79,14 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
         presenter.getUser();
 
         viewDataBinding.setEvent(this);
+
+        viewDataBinding.srlProfile.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadData();
+                viewDataBinding.srlProfile.setRefreshing(false);
+            }
+        });
     }
 
     @Override
@@ -161,39 +168,27 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
 
     @Override
     public void showAvatarChanged(String avatarUrl) {
-        Glide.with(viewDataBinding.getRoot().getContext())
-                .load(avatarUrl)
-                .asBitmap().centerCrop()
-                .into(new BitmapImageViewTarget(viewDataBinding.ivAvatar) {
-                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(viewDataBinding.getRoot().getResources(), resource);
-                        roundedBitmapDrawable.setCircular(true);
-                        viewDataBinding.ivAvatar.setImageDrawable(roundedBitmapDrawable);
-                    }
-                });
+        SHBitmapHelper.bindCircularImage(viewDataBinding.ivAvatar, avatarUrl);
     }
 
     @Override
     public void showCoverChanged(String coverUrl) {
-        Glide.with(viewDataBinding.getRoot().getContext())
-                .load(coverUrl)
-                .asBitmap().centerCrop()
-                .into(new BitmapImageViewTarget(viewDataBinding.ivCover) {
-                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), resource);
-
-                        viewDataBinding.llCover.setBackground(bitmapDrawable);
-                    }
-                });
+        SHBitmapHelper.bindImage(viewDataBinding.ivCover, coverUrl);
     }
 
     @Override
     public void onShowListPictureClick() {
         PictureActivity.startActivity(getContext(), null);
+    }
+
+    @Override
+    public void showLoading() {
+        dialog.show();
+    }
+
+    @Override
+    public void hideLoading() {
+        dialog.dismiss();
     }
 
     @Override
@@ -205,6 +200,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
 
                 presenter.changeAvatar(Uri.fromFile(new File(image.getPath())));
             }
+            return;
         }
         if (requestCode == REQUEST_CHANGE_COVER && resultCode == RESULT_OK && data != null) {
             List<Image> images = data.getParcelableArrayListExtra("selectedImages");

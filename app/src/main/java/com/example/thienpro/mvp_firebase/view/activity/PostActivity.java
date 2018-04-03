@@ -49,7 +49,7 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
         presenter = new PostPresenterImpl();
         presenter.attachView(this);
 
-        viewDataBinding.setEvent(this);
+        getBinding().setEvent(this);
     }
 
     @Override
@@ -59,10 +59,10 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
 
     @Override
     public void onPostClick() {
-        if (TextUtils.isEmpty(viewDataBinding.etPost.getText()))
+        if (TextUtils.isEmpty(getBinding().etPost.getText()))
             Toast.makeText(this, R.string.hay_nhap_cam_nhan_cua_ban, Toast.LENGTH_SHORT).show();
         else {
-            presenter.newPost(viewDataBinding.etPost.getText().toString(), filePath);
+            presenter.newPost(getBinding().etPost.getText().toString(), filePath);
         }
     }
 
@@ -93,7 +93,7 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
                 filePath = Uri.fromFile(new File(image.getPath()));
                 Bitmap bitmap = BitmapFactory.decodeFile(image.getPath());
 
-                viewDataBinding.ivUploaded.setImageBitmap(bitmap);
+                getBinding().ivUploaded.setImageBitmap(bitmap);
             }
         }
     }

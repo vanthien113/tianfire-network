@@ -14,7 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
+import com.example.thienpro.mvp_firebase.ultils.widget.LoadingDialog;
 import com.google.firebase.database.DatabaseError;
 
 public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity implements BaseView {

@@ -26,13 +26,13 @@ public class RegisterDetailActivity extends BaseActivity<ActivityRegisterAddDeta
 
     @Override
     protected void init() {
-        viewDataBinding.setEvent(this);
-        viewDataBinding.sp.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.province_arrays)));
+        getBinding().setEvent(this);
+        getBinding().sp.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.province_arrays)));
     }
 
     @Override
     public void onNextClick() {
-        String name = viewDataBinding.etName.getText().toString();
+        String name = getBinding().etName.getText().toString();
 
         if (name.isEmpty())
             Toast.makeText(this, R.string.khong_duoc_de_trong_ten, Toast.LENGTH_SHORT).show();
@@ -40,7 +40,7 @@ public class RegisterDetailActivity extends BaseActivity<ActivityRegisterAddDeta
             if (name.length() >= 30)
                 Toast.makeText(this, R.string.ten_co_do_dai_duoi_30_ki_tu, Toast.LENGTH_SHORT).show();
             else {
-                naviagationToRegister(name, viewDataBinding.sp.getSelectedItem().toString(), viewDataBinding.rbNam.isChecked());
+                naviagationToRegister(name, getBinding().sp.getSelectedItem().toString(), getBinding().rbNam.isChecked());
             }
         }
     }

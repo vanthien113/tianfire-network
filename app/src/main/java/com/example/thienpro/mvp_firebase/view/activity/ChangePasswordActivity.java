@@ -27,8 +27,27 @@ public class ChangePasswordActivity extends BaseActivity<ActivityChangePasswordB
     protected void init() {
         presenter = new ChangePasswordImpl(this);
         presenter.attachView(this);
+        getBinding().setEvent(this);
+    }
 
-        viewDataBinding.setEvent(this);
+    @Override
+    public void onChangePasswordClick() {
+        String password = getBinding().etPassword.getText().toString();
+        String rePassword = getBinding().etRePassword.getText().toString();
+
+        if (TextUtils.isEmpty(password) || TextUtils.isEmpty(rePassword)) {
+            showToastMessage("Nhập mật khẩu!!!");
+        } else {
+            if (TextUtils.equals(password, rePassword)) {
+                if (password.length() >= 6) {
+                    presenter.changePassword(password);
+                } else {
+                    showToastMessage("Mật khẩu có độ dài lớn hơn 6 kí tự");
+                }
+            } else {
+                showToastMessage("Mật khẩu không trùng khớp");
+            }
+        }
     }
 
     @Override
@@ -49,25 +68,5 @@ public class ChangePasswordActivity extends BaseActivity<ActivityChangePasswordB
     @Override
     protected void destroyScreen() {
 
-    }
-
-    @Override
-    public void onChangePasswordClick() {
-        String password = viewDataBinding.etPassword.getText().toString();
-        String rePassword = viewDataBinding.etRePassword.getText().toString();
-
-        if (TextUtils.isEmpty(password) || TextUtils.isEmpty(rePassword)) {
-            showToastMessage("Nhập mật khẩu!!!");
-        } else {
-            if (TextUtils.equals(password, rePassword)) {
-                if (password.length() >= 6) {
-                    presenter.changePassword(password);
-                } else {
-                    showToastMessage("Mật khẩu có độ dài lớn hơn 6 kí tự");
-                }
-            } else {
-                showToastMessage("Mật khẩu không trùng khớp");
-            }
-        }
     }
 }

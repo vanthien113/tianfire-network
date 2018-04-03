@@ -16,6 +16,7 @@ import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ItemActivityHomeBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
+import com.example.thienpro.mvp_firebase.ultils.SHBitmapHelper;
 import com.example.thienpro.mvp_firebase.view.ItemListPostView;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
 
@@ -60,21 +61,9 @@ public class HomeVH extends RecyclerView.ViewHolder implements ItemListPostView 
             }
         }
 
-        Glide.with(binding.getRoot().getContext())
-                .load(post.getImage())
-                .into(binding.ivImage);
+        SHBitmapHelper.bindImage(binding.ivImage, post.getImage());
 
-        Glide.with(binding.getRoot().getContext())
-                .load(post.getAvatar())
-                .asBitmap().centerCrop()
-                .into(new BitmapImageViewTarget(binding.ivAvatar) {
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(binding.getRoot().getResources(), resource);
-                        roundedBitmapDrawable.setCircular(true);
-                        binding.ivAvatar.setImageDrawable(roundedBitmapDrawable);
-                    }
-                });
+        SHBitmapHelper.bindCircularImage(binding.ivAvatar, post.getAvatar());
     }
 
     @Override

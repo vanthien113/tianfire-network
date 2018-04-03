@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
+import com.example.thienpro.mvp_firebase.ultils.widget.LoadingDialog;
 import com.google.firebase.database.DatabaseError;
 
 
@@ -48,9 +48,9 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment i
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        loadingDialog = new LoadingDialog(getContext());
         viewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
         isAttach = false;
+        loadingDialog = new LoadingDialog(getContext());
         viewDataBinding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

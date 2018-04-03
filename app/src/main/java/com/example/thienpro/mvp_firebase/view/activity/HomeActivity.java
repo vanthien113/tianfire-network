@@ -26,13 +26,13 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
 
     @Override
     protected void init() {
-        viewDataBinding.tlHome.setupWithViewPager(viewDataBinding.vpHome);
-        viewDataBinding.vpHome.setAdapter(new HomeFragmentPagerAdapter(getSupportFragmentManager()));
-        viewDataBinding.tlHome.getTabAt(0).setIcon(R.drawable.ic_home);
-        viewDataBinding.tlHome.getTabAt(1).setIcon(R.drawable.ic_profile);
-        viewDataBinding.tlHome.getTabAt(2).setIcon(R.drawable.ic_menu);
-        viewDataBinding.vpHome.setCurrentItem(1);
-        viewDataBinding.vpHome.setOffscreenPageLimit(3);
+        getBinding().tlHome.setupWithViewPager(viewDataBinding.vpHome);
+        getBinding().vpHome.setAdapter(new HomeFragmentPagerAdapter(getSupportFragmentManager()));
+        getBinding().tlHome.getTabAt(0).setIcon(R.drawable.ic_home);
+        getBinding().tlHome.getTabAt(1).setIcon(R.drawable.ic_profile);
+        getBinding().tlHome.getTabAt(2).setIcon(R.drawable.ic_menu);
+        getBinding().vpHome.setCurrentItem(1);
+        getBinding().vpHome.setOffscreenPageLimit(3);
     }
 
     @Override

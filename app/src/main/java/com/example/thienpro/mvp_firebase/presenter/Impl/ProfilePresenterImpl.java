@@ -2,6 +2,7 @@ package com.example.thienpro.mvp_firebase.presenter.Impl;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import com.example.thienpro.mvp_firebase.model.Impl.PostInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
  */
 
 public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implements ProfilePresenter {
+    public static final String TAG = "ProfilePresenterImpl";
     private PostInteractor postInteractor;
     private UserInteractor userInteractor;
 
@@ -71,7 +73,10 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
 
     @Override
     public void deletePost(Post post) {
-        getView().showLoadingDialog();
+
+        if (getView() != null) {
+            getView().showLoadingDialog();
+        }
 
         postInteractor.deletePost(post, new PostInteractor.DeletePostCallback() {
             @Override
@@ -89,12 +94,13 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
 
     @Override
     public void changeAvatar(final Uri uri) {
-        getView().showLoadingDialog();
-
+        if (getView() != null) {
+            getView().showLoading();
+        }
         userInteractor.addAvatar(uri, new UserInteractor.AddAvatarCallback() {
             @Override
             public void addAvatar(Exception e, String uri) {
-                getView().hideLoadingDialog();
+                getView().hideLoading();
                 if (e != null) {
                     getView().showExceptionError(e);
                 } else {
@@ -111,12 +117,12 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
 
     @Override
     public void changeCover(final Uri uri) {
-        getView().showLoadingDialog();
+        getView().showLoading();
 
         userInteractor.addCover(uri, new UserInteractor.AddCoverCallback() {
             @Override
             public void addCover(Exception e, String uri) {
-                getView().hideLoadingDialog();
+                getView().hideLoading();
                 if (e != null) {
                     getView().showExceptionError(e);
                 } else {
