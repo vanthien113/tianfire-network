@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.example.thienpro.mvp_firebase.databinding.ItemPictureBinding;
+import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
 import com.example.thienpro.mvp_firebase.view.adapters.viewholder.PictureVH;
 
 import java.util.ArrayList;
@@ -18,9 +19,8 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureVH> {
 
     @Override
     public PictureVH onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         ItemPictureBinding binding = ItemPictureBinding.inflate(LayoutInflater.from(parent.getContext()));
-        binding.getRoot().setLayoutParams(layoutParams);
+        binding.getRoot().setLayoutParams(LayoutUltils.getRecyclerViewLayoutParams());
         return new PictureVH(binding);
     }
 

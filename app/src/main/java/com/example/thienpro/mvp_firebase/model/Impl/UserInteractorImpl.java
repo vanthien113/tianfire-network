@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
+import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.example.thienpro.mvp_firebase.ultils.SharedPreferencesUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -23,6 +24,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -96,7 +98,7 @@ public class UserInteractorImpl implements UserInteractor {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             users = mAuth.getCurrentUser();
-                            User user = new User(email, name, address, sex, null, null);
+                            User user = new User(users.getUid(), email, name, address, sex, null, null);
                             mDatabase.child(USERS).child(users.getUid()).setValue(user)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
@@ -163,24 +165,11 @@ public class UserInteractorImpl implements UserInteractor {
 
     @Override
     public void getFriendInfomation(String userId, final FriendInfomationCallback callback) {
-
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                @SuppressWarnings("unchecked")
-                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                String address = (String) map.get(ADDRESS);
-                String email = (String) map.get(EMAIL);
-                String name = (String) map.get(NAME);
-                Boolean sex = (Boolean) map.get(SEX);
-                String avatar = (String) map.get(AVATAR);
-                String cover = (String) map.get(COVER);
-
-                User user = new User(email, name, address, sex, avatar, cover);
-
+                User user = dataSnapshot.getValue(User.class);
                 currentUser.setUser(user);
-
                 callback.friendInfomation(null, user);
             }
 
@@ -191,6 +180,29 @@ public class UserInteractorImpl implements UserInteractor {
         };
 
         mDatabase.child(USERS).child(userId).addValueEventListener(valueEventListener);
+    }
+
+    @Override
+    public void searchUser(final String userName, final SearchUserCallBack callBack) {
+        final ArrayList<User> list = new ArrayList<>();
+
+        mDatabase.child(USERS).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                    User user = dsp.getValue(User.class);
+                    if (user.getName().contains(userName)) {
+                        list.add(user);
+                    }
+                }
+                callBack.onFinish(null, list);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callBack.onFinish(databaseError, null);
+            }
+        });
     }
 
     public void updateUser(final String name, String address, Boolean sex, final UpdateUserCallback callback) {
@@ -396,20 +408,8 @@ public class UserInteractorImpl implements UserInteractor {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                @SuppressWarnings("unchecked")
-                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                String address = (String) map.get(ADDRESS);
-                String email = (String) map.get(EMAIL);
-                String name = (String) map.get(NAME);
-                Boolean sex = (Boolean) map.get(SEX);
-                String avatar = (String) map.get(AVATAR);
-                String cover = (String) map.get(COVER);
-
-                User user = new User(email, name, address, sex, avatar, cover);
-
+                User user = dataSnapshot.getValue(User.class);
                 currentUser.setUser(user);
-
                 callback.getUser(null, user);
             }
 

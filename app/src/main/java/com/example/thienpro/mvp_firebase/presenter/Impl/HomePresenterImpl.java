@@ -9,6 +9,7 @@ import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.HomePresenter;
+import com.example.thienpro.mvp_firebase.ultils.DownloadUltil;
 import com.example.thienpro.mvp_firebase.view.HomeView;
 import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
 import com.google.firebase.database.DatabaseError;
@@ -22,8 +23,10 @@ import java.util.ArrayList;
 public class HomePresenterImpl extends BasePresentermpl<HomeView> implements HomePresenter {
     private PostInteractor postInteractor;
     private UserInteractor userInteractor;
+    private Context context;
 
     public HomePresenterImpl(Context context) {
+        this.context = context;
         postInteractor = new PostInteractorImpl();
         userInteractor = new UserInteractorImpl(context);
     }
@@ -70,5 +73,10 @@ public class HomePresenterImpl extends BasePresentermpl<HomeView> implements Hom
                 }
             }
         });
+    }
+
+    @Override
+    public void downloadImage(String imageUrl) {
+        DownloadUltil.startDownload(context, imageUrl);
     }
 }

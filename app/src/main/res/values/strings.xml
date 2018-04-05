@@ -32,11 +32,22 @@
     <string name="dang">Đăng</string>
     <string name="chon_anh">Chọn ảnh</string>
     <string name="cap_nhat_thanh_cong">Cập nhật thành công</string>
-    <string name="khong_duoc_de_trong_ten">Không được để trống tên!</string>
+    <string name="vui_long_nhap_ten">Vui lòng nhập tên!</string>
     <string name="ten_co_do_dai_duoi_30_ki_tu">Tên có độ dài dưới 30 ký tự!</string>
     <string name="hay_nhap_email_va_password">Hãy nhập email và password!</string>
     <string name="nhap_thong_tin_cho_cac_truong">Nhập thông tin cho các trường!</string>
     <string name="hay_chon_anh_dai_dien">Hãy chọn ảnh đại diện</string>
+    <string name="hay_nhap_email_va_nhan_nut_quen_mat_khau">Hãy nhập email và nhấn vào nút Quên mật khẩu</string>
+    <string name="da_xoa">Đã xóa</string>
+    <string name="vui_long_nhap_email">Vui lòng nhập Email</string>
+    <string name="vui_long_nhap_repassword">Vui lòng nhập lại Mật khẩu</string>
+    <string name="vui_long_nhap_password">Vui lòng nhập Mật khẩu</string>
+    <string name="mat_khau_phai_dai_hon_6_ki_tu">Mật khẩu phải lớn hơn 6 ký tự!</string>
+    <string name="mat_khau_khong_trung_khop">Mật khẩu không trùng khớp!</string>
+    <string name="tai_xuong">Tải xuống</string>
+    <string name="tai">Tải</string>
+    <string name="huy">Hủy</string>
+    <string name="tai_anh_xuong_may_cua_ban">Tải ảnh xuống máy của bạn</string>
 
 
     <string-array name="province_arrays">

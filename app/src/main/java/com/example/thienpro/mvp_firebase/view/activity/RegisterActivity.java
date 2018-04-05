@@ -2,7 +2,7 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
+import android.text.TextUtils;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityRegisterBinding;
@@ -61,17 +61,29 @@ public class RegisterActivity extends BaseActivity<ActivityRegisterBinding> impl
         String password = getBinding().etPassword.getText().toString();
         String repassword = getBinding().etRepassword.getText().toString();
 
-        if (email.isEmpty() || password.isEmpty() || repassword.isEmpty())
-            Toast.makeText(this, "Không được để trống các trường!", Toast.LENGTH_SHORT).show();
-        else {
-            if (password.length() >= 6) {
-                if (password.equals(repassword)) {
-                    presenter.register(email, password, name, address, sex);
-                } else
-                    Toast.makeText(this, "Mật khẩu không trùng khớp!", Toast.LENGTH_SHORT).show();
-            } else
-                Toast.makeText(this, "Mật khẩu phải lớn hơn 6 ký tự!", Toast.LENGTH_SHORT).show();
+        if (validate(email, password, repassword)) {
+            presenter.register(email, password, name, address, sex);
         }
+    }
+
+    private boolean validate(String email, String password, String rePassword) {
+        if (TextUtils.isEmpty(email)) {
+            showToastMessage(R.string.vui_long_nhap_email);
+            return false;
+        } else if (TextUtils.isEmpty(password)) {
+            showToastMessage(R.string.vui_long_nhap_password);
+            return false;
+        } else if (TextUtils.isEmpty(rePassword)) {
+            showToastMessage(R.string.vui_long_nhap_repassword);
+            return false;
+        } else if (password.length() < 6) {
+            showToastMessage(R.string.mat_khau_phai_dai_hon_6_ki_tu);
+            return false;
+        } else if (!TextUtils.equals(password, rePassword)) {
+            showToastMessage(R.string.mat_khau_khong_trung_khop);
+            return false;
+        }
+        return true;
     }
 
     @Override

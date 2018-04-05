@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityUserLocationBinding;
@@ -46,16 +45,19 @@ public class UserLocationActivity extends BaseActivity<ActivityUserLocationBindi
         presenter.attachView(this);
 
         getBinding().setEvent(this);
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        initMap();
 
         if (getIntent() != null) {
             location = (UserLocation) getIntent().getSerializableExtra("location");
 
             presenter.getUserLocation(location.getUserId());
         }
+    }
+
+    private void initMap() {
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
     @SuppressLint("MissingPermission")
@@ -69,9 +71,7 @@ public class UserLocationActivity extends BaseActivity<ActivityUserLocationBindi
     public void showUserLocation(UserLocation location) {
         if (map != null) {
             map.clear();
-
             friendtLatLng = new LatLng(location.getLat(), location.getLng());
-
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(friendtLatLng, 15.0f));
             map.addMarker(new MarkerOptions().position(friendtLatLng).title(location.getUserName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location)));
         }
@@ -79,25 +79,15 @@ public class UserLocationActivity extends BaseActivity<ActivityUserLocationBindi
 
     @Override
     public void onSendToMapClick() {
-
         SHLocationManager.getCurrentLocation(this, new SHLocationManager.OnCurrentLocationCallback() {
             @Override
             public void callback(Location location) {
-
                 LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(SHLocationManager.mapUrl(currentLatLng, friendtLatLng)));
                 startActivity(intent);
             }
         });
     }
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//
-//        SHLocationManager.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-//    }
 
     @Override
     protected void onDestroy() {

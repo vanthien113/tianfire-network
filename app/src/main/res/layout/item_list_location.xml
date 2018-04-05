@@ -5,7 +5,7 @@
 
         <variable
             name="event"
-            type="com.example.thienpro.mvp_firebase.view.adapters.viewholder.UserLocationEH" />
+            type="com.example.thienpro.mvp_firebase.view.ItemListLocationView" />
 
         <variable
             name="data"

@@ -17,15 +17,15 @@ import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 import java.util.ArrayList;
 
 public class PictureActivity extends BaseActivity<ActivityPictureBinding> implements PictureView {
+    private static String USER_ID = "userId";
+
     private PicturePresenter presenter;
     private PictureAdapter adapter;
     private String userId;
 
     public static void startActivity(Context context, String userId) {
         Intent intent = new Intent(context, PictureActivity.class);
-
-        intent.putExtra("userId", userId);
-
+        intent.putExtra(USER_ID, userId);
         context.startActivity(new Intent(context, PictureActivity.class));
     }
 
@@ -39,8 +39,7 @@ public class PictureActivity extends BaseActivity<ActivityPictureBinding> implem
         presenter = new PicturePresenterImpl();
         presenter.attachView(this);
 
-        userId = getIntent().getStringExtra("userId");
-
+        userId = getIntent().getStringExtra(USER_ID);
         getBinding().setEvent(this);
 
         onChangeViewTypeClick();

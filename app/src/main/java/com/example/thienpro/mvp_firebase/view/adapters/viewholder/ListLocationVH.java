@@ -4,9 +4,10 @@ import android.support.v7.widget.RecyclerView.ViewHolder;
 
 import com.example.thienpro.mvp_firebase.databinding.ItemListLocationBinding;
 import com.example.thienpro.mvp_firebase.model.entity.UserLocation;
+import com.example.thienpro.mvp_firebase.view.ItemListLocationView;
 import com.example.thienpro.mvp_firebase.view.adapters.ListLocationAdapter;
 
-public class ListLocationVH extends ViewHolder implements UserLocationEH {
+public class ListLocationVH extends ViewHolder implements ItemListLocationView {
     private ItemListLocationBinding binding;
     private ListLocationAdapter.ListLocationListener listener;
 

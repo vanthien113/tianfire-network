@@ -28,10 +28,9 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
     @Override
     protected void init() {
         viewDataBinding.setEvent(this);
-
         presenter = new LoginPresenterImpl(this);
-        presenter.attachView(this);
 
+        presenter.attachView(this);
         presenter.signedInCheck();
 
         getBinding().etEmail.setText("vanthien113@gmail.com");
@@ -49,10 +48,17 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
         String email = getBinding().etEmail.getText().toString();
         String password = getBinding().etPassword.getText().toString();
 
+        if (validateLogin(email, password)) {
+            presenter.onSignIn(email, password);
+        }
+    }
+
+    private boolean validateLogin(String email, String password) {
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, R.string.hay_nhap_email_va_password, Toast.LENGTH_SHORT).show();
-        } else
-            presenter.onSignIn(email, password);
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -84,11 +90,18 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
     @Override
     public void onForgotPasswordClick() {
         String email = viewDataBinding.etEmail.getText().toString();
-        if (TextUtils.isEmpty(email)) {
-            showToastMessage("Hãy nhập email và nhấn vào nút Quên mật khẩu");
-        } else {
-            presenter.forgotPassword(getBinding().etEmail.getText().toString());
+
+        if (validateForgotPassword(email)) {
+            presenter.forgotPassword(email);
         }
+    }
+
+    private boolean validateForgotPassword(String email) {
+        if (TextUtils.isEmpty(email)) {
+            showToastMessage(R.string.hay_nhap_email_va_nhan_nut_quen_mat_khau);
+            return false;
+        }
+        return true;
     }
 
     @Override

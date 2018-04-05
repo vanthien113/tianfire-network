@@ -20,7 +20,7 @@
             android:elevation="@dimen/elevation_normal"
             android:gravity="center"
             android:padding="@dimen/space_normal"
-            android:text="Chỉnh sửa thông tin"
+            android:text="Ảnh"
             android:textAlignment="center"
             android:textSize="@dimen/text_size_xlarge"
             android:textStyle="bold"

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 
 import com.example.thienpro.mvp_firebase.R;
 
@@ -13,15 +12,12 @@ import com.example.thienpro.mvp_firebase.R;
  */
 
 public class SplashActivity extends Activity {
-    private Handler handler;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 LoginActivity.startActivity(SplashActivity.this);

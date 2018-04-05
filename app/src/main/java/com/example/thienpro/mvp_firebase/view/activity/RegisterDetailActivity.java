@@ -2,8 +2,8 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityRegisterAddDetailBinding;
@@ -34,15 +34,20 @@ public class RegisterDetailActivity extends BaseActivity<ActivityRegisterAddDeta
     public void onNextClick() {
         String name = getBinding().etName.getText().toString();
 
-        if (name.isEmpty())
-            Toast.makeText(this, R.string.khong_duoc_de_trong_ten, Toast.LENGTH_SHORT).show();
-        else {
-            if (name.length() >= 30)
-                Toast.makeText(this, R.string.ten_co_do_dai_duoi_30_ki_tu, Toast.LENGTH_SHORT).show();
-            else {
-                naviagationToRegister(name, getBinding().sp.getSelectedItem().toString(), getBinding().rbNam.isChecked());
-            }
+        if (validate(name)) {
+            naviagationToRegister(name, getBinding().sp.getSelectedItem().toString(), getBinding().rbNam.isChecked());
         }
+    }
+
+    private boolean validate(String name) {
+        if (TextUtils.isEmpty(name)) {
+            showToastMessage(R.string.vui_long_nhap_ten);
+            return false;
+        } else if (name.length() >= 30) {
+            showToastMessage(R.string.ten_co_do_dai_duoi_30_ki_tu);
+            return false;
+        }
+        return true;
     }
 
     public void naviagationToRegister(String name, String address, boolean sex) {

@@ -2,20 +2,16 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityHomeBinding;
+import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeFragmentPagerAdapter;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
+import com.example.thienpro.mvp_firebase.view.listener.HomeNavigationListener;
 
-public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
-    public static void startActiviry(Context context){
+public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements HomeNavigationListener {
+    public static void startActiviry(Context context) {
         context.startActivity(new Intent(context, HomeActivity.class));
     }
 
@@ -58,5 +54,46 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
     @Override
     protected void destroyScreen() {
 
+    }
+
+    @Override
+    public void navigationToEditPostActivity(Post post) {
+        EditPostActivity.start(this, post);
+    }
+
+    @Override
+    public void navigationToFriendProfileActivity(String userId) {
+        FriendProfileActivity.startActivity(this, userId);
+    }
+
+    @Override
+    public void navigationToPictureActivity(String userId) {
+        PictureActivity.startActivity(this, userId);
+    }
+
+    @Override
+    public void navigationToPostActivity() {
+        PostActivity.startActivity(this);
+    }
+
+    @Override
+    public void navigationToChangePasswordActivity() {
+        ChangePasswordActivity.startActivity(this);
+    }
+
+    @Override
+    public void navigationToAppSettingActivity() {
+        AppSettingActivity.startActivity(this);
+    }
+
+    @Override
+    public void navigationToLoginActivity() {
+        LoginActivity.startActivity(this);
+        finish();
+    }
+
+    @Override
+    public void navigationToEditInfoActivity() {
+        EditInfoActivity.startActivity(this);
     }
 }

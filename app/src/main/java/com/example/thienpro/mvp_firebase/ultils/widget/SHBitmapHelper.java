@@ -1,5 +1,6 @@
-package com.example.thienpro.mvp_firebase.ultils;
+package com.example.thienpro.mvp_firebase.ultils.widget;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -17,12 +18,14 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.esafirm.imagepicker.features.ImagePicker;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -34,6 +37,26 @@ public class SHBitmapHelper {
      */
     protected SHBitmapHelper() {
 
+    }
+
+    public static void takePhoto(Fragment fragment, int requestCode) {
+        ImagePicker.create(fragment)
+                .returnAfterFirst(true)
+                .imageTitle("Tap to select")
+                .showCamera(true)
+                .single()
+                .imageDirectory("Camera")
+                .start(requestCode);
+    }
+
+    public static void takePhoto(Activity activity, int requestCode) {
+        ImagePicker.create(activity)
+                .returnAfterFirst(true)
+                .imageTitle("Tap to select")
+                .showCamera(true)
+                .single()
+                .imageDirectory("Camera")
+                .start(requestCode);
     }
 
     public static void bindCircularImage(ImageView view, String imageUrl) {
@@ -54,10 +77,9 @@ public class SHBitmapHelper {
     public static void bindImage(ImageView view, String imageUrl) {
         Glide.with(view.getContext())
                 .load(imageUrl)
-                .asBitmap().centerCrop()
+                .asBitmap()
                 .into(view);
     }
-
 
     public static Bitmap roundBitmap(Bitmap bitmap, int radius) {
         if (bitmap == null) {
