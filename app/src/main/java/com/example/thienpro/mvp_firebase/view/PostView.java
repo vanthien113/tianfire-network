@@ -1,5 +1,7 @@
 package com.example.thienpro.mvp_firebase.view;
 
+import android.graphics.Bitmap;
+
 import com.example.thienpro.mvp_firebase.view.bases.BaseView;
 
 /**
@@ -14,4 +16,10 @@ public interface PostView extends BaseView{
     void navigationToHome();
 
     void onInsertImageClick();
+
+    void onDeleteImageClick();
+
+    void showImageBitmap(Bitmap bitmap);
+
+    void showDeleteImage();
 }

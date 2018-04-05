@@ -12,13 +12,15 @@ import com.example.thienpro.mvp_firebase.view.EditPostView;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 
 public class EditPostActivity extends BaseActivity<ActivityEditPostBinding> implements EditPostView {
+    private static String POST = "post";
+
     private Post post;
     private EditPostPresenter presenter;
 
     public static void start(Context context, Post post) {
         Intent intent = new Intent(context, EditPostActivity.class);
 
-        intent.putExtra("post", post);
+        intent.putExtra(POST, post);
 
         context.startActivity(intent);
     }
@@ -33,10 +35,10 @@ public class EditPostActivity extends BaseActivity<ActivityEditPostBinding> impl
         presenter = new EditPostPresenterImpl(this);
         presenter.attachView(this);
 
-        post = (Post) getIntent().getSerializableExtra("post");
+        post = (Post) getIntent().getSerializableExtra(POST);
 
-        viewDataBinding.setPost(post);
-        viewDataBinding.setEvent(this);
+        getBinding().setPost(post);
+        getBinding().setEvent(this);
     }
 
     @Override
@@ -61,7 +63,7 @@ public class EditPostActivity extends BaseActivity<ActivityEditPostBinding> impl
 
     @Override
     public void onPostClick() {
-        presenter.editPost(viewDataBinding.getPost());
+        presenter.editPost(getBinding().getPost());
     }
 
     @Override

@@ -58,6 +58,7 @@
                         android:id="@+id/iv_cover"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
+                        android:scaleType="centerCrop"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
@@ -65,35 +66,41 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="1.0" />
 
-                    <ImageView
+                    <com.example.thienpro.mvp_firebase.ultils.widget.CricleImage
                         android:id="@+id/iv_avatar"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="100dp"
                         android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="100dp"
                         android:src="@color/cardview_dark_background"
+                        app:borderColor="@color/colorWhite"
+                        app:borderWidth="1dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
+                    <com.example.thienpro.mvp_firebase.ultils.widget.BoderTextView
                         android:id="@+id/tv_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
                         android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="8dp"
                         android:text="@{data.name}"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/iv_avatar"
-                        app:layout_constraintTop_toTopOf="@+id/iv_avatar" />
+                        app:layout_constraintTop_toTopOf="@+id/iv_avatar"
+                        app:outerShadowRadius="1dp"
+                        app:strokeColor="@color/colorWhite"
+                        app:strokeJoinStyle="round"
+                        app:strokeWidth="1dp" />
 
                 </android.support.constraint.ConstraintLayout>
 

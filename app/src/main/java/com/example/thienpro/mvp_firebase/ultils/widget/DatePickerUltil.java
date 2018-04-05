@@ -1,4 +1,4 @@
-package com.example.thienpro.mvp_firebase.ultils;
+package com.example.thienpro.mvp_firebase.ultils.widget;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;

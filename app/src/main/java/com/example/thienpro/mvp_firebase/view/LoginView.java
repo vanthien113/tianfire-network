@@ -6,7 +6,7 @@ import com.example.thienpro.mvp_firebase.view.bases.BaseView;
  * Created by ThienPro on 11/9/2017.
  */
 
-public interface LoginView extends BaseView{
+public interface LoginView extends BaseView {
     void navigationToHome();
 
     void onLoginClick();

@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import com.example.thienpro.mvp_firebase.databinding.ItemFriendProfileBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
+import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
 import com.example.thienpro.mvp_firebase.view.adapters.viewholder.FriendProfileVH;
 
 import java.util.ArrayList;
@@ -19,9 +20,8 @@ public class FriendProfileAdapter extends RecyclerView.Adapter<FriendProfileVH> 
 
     @Override
     public FriendProfileVH onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         ItemFriendProfileBinding binding = ItemFriendProfileBinding.inflate(LayoutInflater.from(parent.getContext()));
-        binding.getRoot().setLayoutParams(layoutParams);
+        binding.getRoot().setLayoutParams(LayoutUltils.getRecyclerViewLayoutParams());
         return new FriendProfileVH(binding);
     }
 

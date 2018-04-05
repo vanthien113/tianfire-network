@@ -27,8 +27,34 @@ public class ChangePasswordActivity extends BaseActivity<ActivityChangePasswordB
     protected void init() {
         presenter = new ChangePasswordImpl(this);
         presenter.attachView(this);
+        getBinding().setEvent(this);
+    }
 
-        viewDataBinding.setEvent(this);
+    @Override
+    public void onChangePasswordClick() {
+        String password = getBinding().etPassword.getText().toString();
+        String rePassword = getBinding().etRePassword.getText().toString();
+
+        if (validate(password, rePassword)) {
+            presenter.changePassword(password);
+        }
+    }
+
+    private boolean validate(String password, String rePassword) {
+        if (TextUtils.isEmpty(password)) {
+            showToastMessage(R.string.vui_long_nhap_password);
+            return false;
+        } else if (TextUtils.isEmpty(rePassword)) {
+            showToastMessage(R.string.vui_long_nhap_repassword);
+            return false;
+        } else if (!TextUtils.equals(password, rePassword)) {
+            showToastMessage(R.string.mat_khau_khong_trung_khop);
+            return false;
+        } else if (password.length() < 6) {
+            showToastMessage(R.string.mat_khau_phai_dai_hon_6_ki_tu);
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -49,25 +75,5 @@ public class ChangePasswordActivity extends BaseActivity<ActivityChangePasswordB
     @Override
     protected void destroyScreen() {
 
-    }
-
-    @Override
-    public void onChangePasswordClick() {
-        String password = viewDataBinding.etPassword.getText().toString();
-        String rePassword = viewDataBinding.etRePassword.getText().toString();
-
-        if (TextUtils.isEmpty(password) || TextUtils.isEmpty(rePassword)) {
-            showToastMessage("Nhập mật khẩu!!!");
-        } else {
-            if (TextUtils.equals(password, rePassword)) {
-                if (password.length() >= 6) {
-                    presenter.changePassword(password);
-                } else {
-                    showToastMessage("Mật khẩu có độ dài lớn hơn 6 kí tự");
-                }
-            } else {
-                showToastMessage("Mật khẩu không trùng khớp");
-            }
-        }
     }
 }

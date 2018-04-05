@@ -46,18 +46,18 @@
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <EditText
-            android:enabled="false"
-            android:text="@{data.email}"
             android:id="@+id/et_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="15dp"
             android:background="@android:color/transparent"
+            android:enabled="false"
             android:imeOptions="actionNext"
             android:inputType="text"
             android:maxLines="1"
             android:scrollbars="horizontal"
+            android:text="@{data.email}"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/textView7"
             app:layout_constraintEnd_toEndOf="parent"
@@ -67,9 +67,9 @@
 
         <TextView
             android:id="@+id/textView10"
-            android:layout_marginLeft="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
             android:layout_marginTop="20dp"
             android:text="Họ tên"
             android:textSize="16sp"
@@ -78,7 +78,6 @@
             app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
         <EditText
-            android:text="@{data.name}"
             android:id="@+id/et_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -89,6 +88,7 @@
             android:maxLength="30"
             android:maxLines="1"
             android:scrollbars="horizontal"
+            android:text="@{data.name}"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/textView10"
             app:layout_constraintEnd_toEndOf="parent"
@@ -107,16 +107,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
-        <Spinner
+        <TextView
             android:id="@+id/sp_province"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:maxLength="30"
+            android:onClick="@{()->event.onAddressClick()}"
+            android:text="@{data.address}"
+            android:textColor="@color/colorBlack"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/textView11"
             app:layout_constraintEnd_toEndOf="@+id/et_name"
             app:layout_constraintStart_toStartOf="@+id/et_name"
             app:layout_constraintTop_toTopOf="@+id/textView11">
 
-        </Spinner>
+        </TextView>
 
         <TextView
             android:id="@+id/textView2"

@@ -1,7 +1,7 @@
-package com.example.thienpro.mvp_firebase.view.adapters.viewholder;
+package com.example.thienpro.mvp_firebase.view;
 
 import com.example.thienpro.mvp_firebase.model.entity.UserLocation;
 
-public interface UserLocationEH {
+public interface ItemListLocationView {
     void onShowUserLocationClick(UserLocation location);
 }

@@ -16,6 +16,15 @@ public class User {
     private Boolean sex;
     private String avatar;
     private String cover;
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getCover() {
         return cover;
@@ -68,18 +77,20 @@ public class User {
     public User() {
     }
 
-    public User(String email, String name, String address, Boolean sex, String avatar, String cover) {
+    public User(String id, String email, String name, String address, Boolean sex, String avatar, String cover) {
         this.email = email;
         this.name = name;
         this.address = address;
         this.sex = sex;
         this.avatar = avatar;
         this.cover = cover;
+        this.id = id;
     }
 
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
+        result.put("id", id);
         result.put("email", email);
         result.put("name", name);
         result.put("address", address);

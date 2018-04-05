@@ -28,24 +28,19 @@ public class AppSettingActivity extends BaseActivity<ActivityAppSettingBinding> 
     protected void init() {
         presenter = new AppSettingPresenterImpl(this);
         presenter.attachView(this);
-
-        SHLocationManager.getLastKnowLocation(this, this);
-
-        viewDataBinding.setEvent(this);
-
+        getBinding().setEvent(this);
         presenter.checkShareLocation();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         SHLocationManager.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     @Override
     public void onCheckLocationClick() {
-        if (viewDataBinding.cbLocation.isChecked()) {
+        if (getBinding().cbLocation.isChecked()) {
             presenter.saveShareLocation(true);
             presenter.pushLocation(true);
         } else {
@@ -61,7 +56,7 @@ public class AppSettingActivity extends BaseActivity<ActivityAppSettingBinding> 
 
     @Override
     public void shareLocation(boolean isShared) {
-        viewDataBinding.cbLocation.setChecked(isShared);
+        getBinding().cbLocation.setChecked(isShared);
 
         if (isShared) {
             presenter.pushLocation(isShared);

@@ -12,7 +12,6 @@ import com.example.thienpro.mvp_firebase.databinding.ActivityListLocationBinding
 import com.example.thienpro.mvp_firebase.model.entity.UserLocation;
 import com.example.thienpro.mvp_firebase.presenter.Impl.ListLocationPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.ListLocationPresenter;
-import com.example.thienpro.mvp_firebase.ultils.LoadingDialog;
 import com.example.thienpro.mvp_firebase.view.ListLocationView;
 import com.example.thienpro.mvp_firebase.view.adapters.ListLocationAdapter;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
@@ -39,8 +38,8 @@ public class ListLocationActivity extends BaseActivity<ActivityListLocationBindi
         presenter.attachView(this);
 
         layoutManager = new LinearLayoutManager(viewDataBinding.getRoot().getContext(), OrientationHelper.VERTICAL, false);
-        viewDataBinding.rvListLocation.setLayoutManager(layoutManager);
-        viewDataBinding.rvListLocation.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        getBinding().rvListLocation.setLayoutManager(layoutManager);
+        getBinding().rvListLocation.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         presenter.getListLocation();
     }
@@ -48,12 +47,12 @@ public class ListLocationActivity extends BaseActivity<ActivityListLocationBindi
     @Override
     public void showListLocation(ArrayList<UserLocation> listLocation) {
         adapter = new ListLocationAdapter(listLocation, this);
-        viewDataBinding.rvListLocation.setAdapter(adapter);
+        getBinding().rvListLocation.setAdapter(adapter);
 
         if (listLocation.size() == 0) {
-            viewDataBinding.tvMessenger.setVisibility(View.VISIBLE);
+            getBinding().tvMessenger.setVisibility(View.VISIBLE);
         } else {
-            viewDataBinding.tvMessenger.setVisibility(View.GONE);
+            getBinding().tvMessenger.setVisibility(View.GONE);
         }
     }
 

@@ -2,7 +2,6 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
@@ -12,14 +11,20 @@ import com.example.thienpro.mvp_firebase.presenter.EditInfoPresenter;
 import com.example.thienpro.mvp_firebase.presenter.Impl.EditInfoPresenterImpl;
 import com.example.thienpro.mvp_firebase.view.EditInfoView;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 /**
  * Created by ThienPro on 11/10/2017.
  */
 
 public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> implements EditInfoView {
+    public static int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+
     private EditInfoPresenter presenter;
     private User user;
+    private String address;
 
     public static void startActivity(Context context) {
         context.startActivity(new Intent(context, EditInfoActivity.class));
@@ -35,37 +40,56 @@ public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> impl
         presenter = new EditInfoPresenterImpl(this);
         presenter.attachView(this);
 
-        viewDataBinding.setEvent(this);
-        viewDataBinding.spProvince.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.province_arrays)));
-
+        getBinding().setEvent(this);
         presenter.loadUser();
     }
 
     @Override
-    public void onSaveClick() {
-        String name = viewDataBinding.etName.getText().toString();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        presenter.onActivityResult(requestCode, resultCode, data);
+    }
 
-        if (viewDataBinding.etName.getText().toString().length() >= 30)
-            Toast.makeText(this, R.string.ten_co_do_dai_duoi_30_ki_tu, Toast.LENGTH_SHORT).show();
-        else {
-            presenter.updateUser(name, viewDataBinding.spProvince.getSelectedItem().toString(), viewDataBinding.rbNam.isChecked());
+    @Override
+    public void onSaveClick() {
+        String name = getBinding().etName.getText().toString();
+        if (validate(name)) {
+            presenter.updateUser(name, address, getBinding().rbNam.isChecked());
         }
+    }
+
+    private boolean validate(String name) {
+        if (getBinding().etName.getText().toString().length() >= 30) {
+            Toast.makeText(this, R.string.ten_co_do_dai_duoi_30_ki_tu, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     @Override
     public void getUser(User user) {
         this.user = user;
-        viewDataBinding.setData(user);
-        int i = 0;
-        for (String string : getResources().getStringArray(R.array.province_arrays)) {
-            if (string.equals(user.getAddress())) {
-                viewDataBinding.spProvince.setSelection(i);
-            }
-            i++;
-        }
+
+        getBinding().setData(user);
+
         if (user.getSex())
-            viewDataBinding.rbNam.setChecked(true);
-        else viewDataBinding.rbNu.setChecked(true);
+            getBinding().rbNam.setChecked(true);
+        else getBinding().rbNu.setChecked(true);
+    }
+
+    @Override
+    public void onAddressClick() {
+        try {
+            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).build(EditInfoActivity.this);
+            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        } catch (GooglePlayServicesRepairableException e) {
+        } catch (GooglePlayServicesNotAvailableException e) {
+        }
+    }
+
+    @Override
+    public void showAddress(String address) {
+        this.address = address;
+        getBinding().spProvince.setText(address);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.bros.eatup;
+package com.example.thienpro.mvp_firebase.ultils.widget;
 
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -24,10 +24,10 @@ import java.util.List;
  * Created by TranHuuPhuc on 3/10/18.
  */
 
-public class Polyline {
+public class PolylineUltil {
     private PolylineListener listener;
 
-    public Polyline(PolylineListener listener) {
+    public PolylineUltil(PolylineListener listener) {
         this.listener = listener;
     }
 

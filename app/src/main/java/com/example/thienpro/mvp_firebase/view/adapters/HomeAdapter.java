@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils;
 import com.example.thienpro.mvp_firebase.databinding.ItemActivityHomeBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
+import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
 import com.example.thienpro.mvp_firebase.view.adapters.viewholder.HomeVH;
 
 import java.util.ArrayList;
@@ -26,7 +27,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeVH> {
     private DownloadImageListener downloadImageListener;
     private FriendProfileListener friendProfileListener;
 
-    public HomeAdapter(ArrayList<Post> mLisPost, Context context, ListPostMenuListener listener, User user, DownloadImageListener downloadImageListener, FriendProfileListener friendProfileListener) {
+    public HomeAdapter(ArrayList<Post> mLisPost, Context context, ListPostMenuListener listener, User user
+            , DownloadImageListener downloadImageListener, FriendProfileListener friendProfileListener) {
         this.mLisPost = mLisPost;
         this.context = context;
         this.listener = listener;
@@ -37,9 +39,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeVH> {
 
     @Override
     public HomeVH onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         ItemActivityHomeBinding binding = ItemActivityHomeBinding.inflate(LayoutInflater.from(parent.getContext()));
-        binding.getRoot().setLayoutParams(layoutParams);
+        binding.getRoot().setLayoutParams(LayoutUltils.getRecyclerViewLayoutParams());
         return new HomeVH(binding, listener, user, downloadImageListener, friendProfileListener);
     }
 

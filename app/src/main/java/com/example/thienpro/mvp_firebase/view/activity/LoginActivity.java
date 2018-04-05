@@ -28,14 +28,13 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
     @Override
     protected void init() {
         viewDataBinding.setEvent(this);
-
         presenter = new LoginPresenterImpl(this);
-        presenter.attachView(this);
 
+        presenter.attachView(this);
         presenter.signedInCheck();
 
-        viewDataBinding.etEmail.setText("vanthien113@gmail.com");
-        viewDataBinding.etPassword.setText("123456");
+        getBinding().etEmail.setText("vanthien113@gmail.com");
+        getBinding().etPassword.setText("123456");
     }
 
     @Override
@@ -46,13 +45,20 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
 
     @Override
     public void onLoginClick() {
-        String email = viewDataBinding.etEmail.getText().toString();
-        String password = viewDataBinding.etPassword.getText().toString();
+        String email = getBinding().etEmail.getText().toString();
+        String password = getBinding().etPassword.getText().toString();
 
+        if (validateLogin(email, password)) {
+            presenter.onSignIn(email, password);
+        }
+    }
+
+    private boolean validateLogin(String email, String password) {
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, R.string.hay_nhap_email_va_password, Toast.LENGTH_SHORT).show();
-        } else
-            presenter.onSignIn(email, password);
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -74,21 +80,28 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
 
     @Override
     public void onShowPasswordClick() {
-        if (viewDataBinding.cbShowPassword.isChecked()) {
-            viewDataBinding.etPassword.setTransformationMethod(null);
+        if (getBinding().cbShowPassword.isChecked()) {
+            getBinding().etPassword.setTransformationMethod(null);
         } else {
-            viewDataBinding.etPassword.setTransformationMethod(new PasswordTransformationMethod());
+            getBinding().etPassword.setTransformationMethod(new PasswordTransformationMethod());
         }
     }
 
     @Override
     public void onForgotPasswordClick() {
         String email = viewDataBinding.etEmail.getText().toString();
-        if (TextUtils.isEmpty(email)) {
-            showToastMessage("Hãy nhập email và nhấn vào nút Quên mật khẩu");
-        } else {
-            presenter.forgotPassword(viewDataBinding.etEmail.getText().toString());
+
+        if (validateForgotPassword(email)) {
+            presenter.forgotPassword(email);
         }
+    }
+
+    private boolean validateForgotPassword(String email) {
+        if (TextUtils.isEmpty(email)) {
+            showToastMessage(R.string.hay_nhap_email_va_nhan_nut_quen_mat_khau);
+            return false;
+        }
+        return true;
     }
 
     @Override

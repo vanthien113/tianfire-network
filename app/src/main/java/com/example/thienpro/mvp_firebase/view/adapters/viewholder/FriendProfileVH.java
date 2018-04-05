@@ -1,41 +1,59 @@
 package com.example.thienpro.mvp_firebase.view.adapters.viewholder;
 
-import android.graphics.Bitmap;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ItemFriendProfileBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
+import com.example.thienpro.mvp_firebase.ultils.DownloadUltil;
+import com.example.thienpro.mvp_firebase.ultils.SHStringHelper;
+import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
 
 public class FriendProfileVH extends RecyclerView.ViewHolder {
     private ItemFriendProfileBinding binding;
+    private String picture;
 
     public FriendProfileVH(ItemFriendProfileBinding binding) {
         super(binding.getRoot());
 
         this.binding = binding;
+
+        downloadImageEvent();
     }
 
     public void bind(Post post) {
+        picture = post.getImage();
+
         binding.setData(post);
+        SHStringHelper.hashTag(post.getPost(), ContextCompat.getColor(binding.getRoot().getContext(), R.color.colorGreen), binding.tvPost);
 
-        Glide.with(binding.getRoot().getContext())
-                .load(post.getImage())
-                .into(binding.ivImage);
+        SHBitmapHelper.bindImage(binding.ivImage, post.getImage());
+        SHBitmapHelper.bindCircularImage(binding.ivAvatar, post.getAvatar());
+    }
 
-        Glide.with(binding.getRoot().getContext())
-                .load(post.getAvatar())
-                .asBitmap().centerCrop()
-                .into(new BitmapImageViewTarget(binding.ivAvatar) {
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(binding.getRoot().getResources(), resource);
-                        roundedBitmapDrawable.setCircular(true);
-                        binding.ivAvatar.setImageDrawable(roundedBitmapDrawable);
-                    }
-                });
+    private void downloadImageEvent(){
+        binding.ivImage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                new AlertDialog.Builder(binding.getRoot().getContext())
+                        .setTitle(R.string.tai_xuong)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.tai, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                DownloadUltil.startDownload(binding.getRoot().getContext(), picture);
+                            }
+                        })
+                        .setNegativeButton(R.string.huy, null)
+                        .setMessage(R.string.tai_anh_xuong_may_cua_ban)
+                        .create()
+                        .show();
+                return false;
+            }
+        });
     }
 }

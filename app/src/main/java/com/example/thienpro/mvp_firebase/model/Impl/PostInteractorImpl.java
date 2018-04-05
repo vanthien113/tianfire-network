@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
+import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -171,16 +172,8 @@ public class PostInteractorImpl implements PostInteractor {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    Map<String, Object> map = (Map<String, Object>) dsp.getValue();
-                    String id = (String) map.get(ID);
-                    String name = (String) map.get(NAME);
-                    String timePost = (String) map.get(TIMEPOST);
-                    String postBody = (String) map.get(POST);
-                    String image = (String) map.get(IMAGE);
-                    String avatar = (String) map.get(AVATAR);
-
-                    if (id.equals(user.getUid())) {
-                        Post post = new Post(id, name, timePost, postBody, image, avatar);
+                    Post post = dsp.getValue(Post.class);
+                    if (post.getId().equals(user.getUid())) {
                         postList.add(post);
                     }
                 }
@@ -200,15 +193,7 @@ public class PostInteractorImpl implements PostInteractor {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    Map<String, Object> map = (Map<String, Object>) dsp.getValue();
-                    String id = (String) map.get(ID);
-                    String name = (String) map.get(NAME);
-                    String timePost = (String) map.get(TIMEPOST);
-                    String postBody = (String) map.get(POST);
-                    String image = (String) map.get(IMAGE);
-                    String avatar = (String) map.get(AVATAR);
-
-                    Post post = new Post(id, name, timePost, postBody, image, avatar);
+                    Post post = dsp.getValue(Post.class);
                     postList.add(post);
                 }
 
@@ -314,16 +299,8 @@ public class PostInteractorImpl implements PostInteractor {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    Map<String, Object> map = (Map<String, Object>) dsp.getValue();
-                    String id = (String) map.get(ID);
-                    String name = (String) map.get(NAME);
-                    String timePost = (String) map.get(TIMEPOST);
-                    String postBody = (String) map.get(POST);
-                    String image = (String) map.get(IMAGE);
-                    String avatar = (String) map.get(AVATAR);
-
-                    if (TextUtils.equals(id, userId)) {
-                        Post post = new Post(id, name, timePost, postBody, image, avatar);
+                    Post post = dsp.getValue(Post.class);
+                    if (TextUtils.equals(post.getId(), userId)) {
                         listPost.add(post);
                     }
                 }

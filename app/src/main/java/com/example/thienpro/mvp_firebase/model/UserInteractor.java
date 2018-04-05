@@ -6,6 +6,8 @@ import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.google.firebase.database.DatabaseError;
 
+import java.util.ArrayList;
+
 /**
  * Created by ThienPro on 11/28/2017.
  */
@@ -59,6 +61,10 @@ public interface UserInteractor {
         void friendInfomation(DatabaseError e, User user);
     }
 
+    interface SearchUserCallBack{
+        void onFinish(DatabaseError e, ArrayList<User> list);
+    }
+
     void sigIn(String email, String password, LoginCheckCallback loginCheckCallback);
 
     void signedInCheck(LoggedInCheckCallback callback);
@@ -87,4 +93,5 @@ public interface UserInteractor {
 
     void getFriendInfomation(String userId, FriendInfomationCallback callback);
 
+    void searchUser(String userName, SearchUserCallBack callBack);
 }

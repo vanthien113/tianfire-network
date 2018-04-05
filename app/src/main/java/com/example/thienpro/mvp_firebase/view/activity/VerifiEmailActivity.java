@@ -59,14 +59,14 @@ public class VerifiEmailActivity extends BaseActivity<ActivityVerifiemailBinding
 
     @Override
     public void sendverifiEmailComplete(String email) {
-        viewDataBinding.tvEmail.setText(email);
-        viewDataBinding.tvEmail.setTextColor(Color.BLUE);
+        getBinding().tvEmail.setText(email);
+        getBinding().tvEmail.setTextColor(Color.BLUE);
     }
 
     @Override
     public void sendverifiEmailFail(String email) {
-        viewDataBinding.tvEmail.setText(email);
-        viewDataBinding.tvEmail.setTextColor(Color.RED);
+        getBinding().tvEmail.setText(email);
+        getBinding().tvEmail.setTextColor(Color.RED);
     }
 
     @Override

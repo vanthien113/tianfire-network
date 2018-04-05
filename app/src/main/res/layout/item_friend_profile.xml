@@ -26,12 +26,14 @@
             android:layout_marginBottom="15dp"
             android:background="@color/colorWhite">
 
-            <ImageView
+            <com.example.thienpro.mvp_firebase.ultils.widget.CricleImage
                 android:id="@+id/iv_avatar"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="8dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="8dp"
+                app:borderColor="@color/colorWhite"
+                app:borderWidth="1dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,10 +41,10 @@
                 android:id="@+id/tv_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space_large"
-                android:layout_marginLeft="@dimen/space_large"
                 android:layout_marginEnd="8dp"
+                android:layout_marginLeft="@dimen/space_large"
                 android:layout_marginRight="8dp"
+                android:layout_marginStart="@dimen/space_large"
                 android:text="@{data.name}"
                 android:textSize="@dimen/text_size_standard"
                 android:textStyle="bold"
@@ -69,12 +71,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="15dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -87,18 +89,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/space_large"
                     android:layout_marginTop="@dimen/space_large"
-                    android:text="@{data.post}"
                     android:textSize="@dimen/text_size_standard" />
 
                 <ImageView
                     android:id="@+id/iv_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:onClick="@{()->event.onImageClick(data)}" />
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp" />
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
     </LinearLayout>

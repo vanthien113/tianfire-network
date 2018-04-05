@@ -15,6 +15,8 @@ public interface ProfileView extends BaseView {
 
     void showList(ArrayList<Post> list);
 
+    void showSearchUser(ArrayList<User> list);
+
     void showUser(User user);
 
     void onChangeAvatar();
@@ -28,4 +30,14 @@ public interface ProfileView extends BaseView {
     void showCoverChanged(String coverUrl);
 
     void onShowListPictureClick();
+
+    void showLoading();
+
+    void hideLoading();
+
+    void onClearTextClick();
+
+    void showChangeComplete();
+
+    void showDeleteComplete();
 }

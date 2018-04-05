@@ -10,11 +10,8 @@ import com.example.thienpro.mvp_firebase.databinding.FragmentSettingBinding;
 import com.example.thienpro.mvp_firebase.presenter.Impl.SettingPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.SettingPresenter;
 import com.example.thienpro.mvp_firebase.view.SettingView;
-import com.example.thienpro.mvp_firebase.view.activity.AppSettingActivity;
-import com.example.thienpro.mvp_firebase.view.activity.ChangePasswordActivity;
-import com.example.thienpro.mvp_firebase.view.activity.EditInfoActivity;
-import com.example.thienpro.mvp_firebase.view.activity.LoginActivity;
 import com.example.thienpro.mvp_firebase.view.bases.BaseFragment;
+import com.example.thienpro.mvp_firebase.view.listener.HomeNavigationListener;
 
 /**
  * Created by ThienPro on 11/22/2017.
@@ -22,6 +19,7 @@ import com.example.thienpro.mvp_firebase.view.bases.BaseFragment;
 
 public class SettingFragment extends BaseFragment<FragmentSettingBinding> implements SettingView {
     private SettingPresenter presenter;
+    private HomeNavigationListener navigationListener;
 
     public static SettingFragment newInstance() {
         Bundle args = new Bundle();
@@ -37,7 +35,7 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> implem
 
     @Override
     protected void init(@Nullable View view) {
-        viewDataBinding.setEvent(this);
+        getBinding().setEvent(this);
 
         presenter = new SettingPresenterImpl(getContext());
         presenter.attachView(this);
@@ -45,7 +43,7 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> implem
 
     @Override
     public void onEditInfoClick() {
-        EditInfoActivity.startActivity(getContext());
+        navigationListener.navigationToEditInfoActivity();
     }
 
     @Override
@@ -55,18 +53,17 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> implem
 
     @Override
     public void navigationToLogin() {
-        LoginActivity.startActivity(getContext());
-        getActivity().finish();
+        navigationListener.navigationToLoginActivity();
     }
 
     @Override
     public void onAppSettingClick() {
-        AppSettingActivity.startActivity(getContext());
+        navigationListener.navigationToAppSettingActivity();
     }
 
     @Override
     public void onChangePasswordClick() {
-        ChangePasswordActivity.startActivity(getContext());
+        navigationListener.navigationToChangePasswordActivity();
     }
 
     @Override
@@ -76,7 +73,9 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> implem
 
     @Override
     protected void attach(Context context) {
-
+        if (context instanceof HomeNavigationListener) {
+            navigationListener = (HomeNavigationListener) context;
+        }
     }
 
     @Override

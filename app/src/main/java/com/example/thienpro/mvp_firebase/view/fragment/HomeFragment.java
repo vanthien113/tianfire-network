@@ -3,6 +3,7 @@ package com.example.thienpro.mvp_firebase.view.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.example.thienpro.mvp_firebase.view.activity.EditPostActivity;
 import com.example.thienpro.mvp_firebase.view.activity.FriendProfileActivity;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
 import com.example.thienpro.mvp_firebase.view.bases.BaseFragment;
+import com.example.thienpro.mvp_firebase.view.listener.HomeNavigationListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +35,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
     private HomePresenter presenter;
     private ArrayList<Post> listPost;
     private User user;
+    private HomeNavigationListener navigationListener;
 
     public static HomeFragment newInstance() {
         Bundle args = new Bundle();
@@ -51,13 +54,21 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
         presenter = new HomePresenterImpl(getContext());
         presenter.attachView(this);
 
-        linearLayoutManager = new LinearLayoutManager(viewDataBinding.getRoot().getContext(), OrientationHelper.VERTICAL, false);
+        linearLayoutManager = new LinearLayoutManager(getBinding().getRoot().getContext(), OrientationHelper.VERTICAL, false);
 
         presenter.currentUser();
         presenter.loadAllListPost();
 
-        viewDataBinding.rvHome.setLayoutManager(linearLayoutManager);
-        viewDataBinding.setEvent(this);
+        getBinding().rvHome.setLayoutManager(linearLayoutManager);
+        getBinding().setEvent(this);
+
+        getBinding().srlHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadData();
+                getBinding().srlHome.setRefreshing(false);
+            }
+        });
     }
 
     @Override
@@ -77,7 +88,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
 
     public void loadData() {
         if (listPost != null) {
-            viewDataBinding.rvHome.setLayoutFrozen(true);
+            getBinding().rvHome.setLayoutFrozen(true);
             listPost.clear();
             presenter.loadAllListPost();
         }
@@ -89,8 +100,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
         listPost = list;
 
         homeAdapter = new HomeAdapter(listPost, getContext(), this, user, this, this);
-        viewDataBinding.rvHome.setAdapter(homeAdapter);
-        viewDataBinding.rvHome.setLayoutFrozen(false);
+        getBinding().rvHome.setAdapter(homeAdapter);
+        getBinding().rvHome.setLayoutFrozen(false);
     }
 
     @Override
@@ -130,16 +141,18 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
 
     @Override
     protected void attach(Context context) {
-
+        if (context instanceof HomeNavigationListener) {
+            navigationListener = (HomeNavigationListener) context;
+        }
     }
 
     @Override
     public void onDownload(String imageUrl) {
-        DownloadUltil.startDownload(getContext(), imageUrl);
+        presenter.downloadImage(imageUrl);
     }
 
     @Override
     public void onFriendProfile(String userId) {
-        FriendProfileActivity.startActivity(getContext(), userId);
+        navigationListener.navigationToFriendProfileActivity(userId);
     }
 }
