@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityChangePasswordBinding;
 import com.example.thienpro.mvp_firebase.presenter.ChangePasswordPresenter;
-import com.example.thienpro.mvp_firebase.presenter.Impl.ChangePasswordImpl;
+import com.example.thienpro.mvp_firebase.presenter.Impl.ChangePasswordPresenterImpl;
 import com.example.thienpro.mvp_firebase.view.ChangePasswordView;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 
@@ -25,7 +25,7 @@ public class ChangePasswordActivity extends BaseActivity<ActivityChangePasswordB
 
     @Override
     protected void init() {
-        presenter = new ChangePasswordImpl(this);
+        presenter = getAppComponent().getCommonComponent().getChangePasswordPresenter();
         presenter.attachView(this);
         getBinding().setEvent(this);
     }

@@ -36,7 +36,7 @@ public class PictureActivity extends BaseActivity<ActivityPictureBinding> implem
 
     @Override
     protected void init() {
-        presenter = new PicturePresenterImpl();
+        presenter = getAppComponent().getCommonComponent().getPicturePresenter();
         presenter.attachView(this);
 
         userId = getIntent().getStringExtra(USER_ID);

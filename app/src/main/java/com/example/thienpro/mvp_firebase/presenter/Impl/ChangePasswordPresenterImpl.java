@@ -1,18 +1,15 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
-import android.content.Context;
-
-import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.presenter.ChangePasswordPresenter;
 import com.example.thienpro.mvp_firebase.view.ChangePasswordView;
 import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
 
-public class ChangePasswordImpl extends BasePresentermpl<ChangePasswordView> implements ChangePasswordPresenter {
+public class ChangePasswordPresenterImpl extends BasePresentermpl<ChangePasswordView> implements ChangePasswordPresenter {
     private UserInteractor userInteractor;
 
-    public ChangePasswordImpl(Context context) {
-        this.userInteractor = new UserInteractorImpl(context);
+    public ChangePasswordPresenterImpl(UserInteractor userInteractor) {
+        this.userInteractor = userInteractor;
     }
 
     @Override

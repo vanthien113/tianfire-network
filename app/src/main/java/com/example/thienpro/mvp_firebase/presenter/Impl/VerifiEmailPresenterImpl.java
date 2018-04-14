@@ -1,8 +1,5 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
-import android.content.Context;
-
-import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.presenter.VerifiEmailPresenter;
 import com.example.thienpro.mvp_firebase.view.VerifiEmailView;
@@ -15,8 +12,8 @@ import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
 public class VerifiEmailPresenterImpl extends BasePresentermpl<VerifiEmailView> implements VerifiEmailPresenter {
     private UserInteractor userInteractor;
 
-    public VerifiEmailPresenterImpl(Context context) {
-        this.userInteractor = new UserInteractorImpl(context);
+    public VerifiEmailPresenterImpl(UserInteractor userInteractor) {
+        this.userInteractor = userInteractor;
     }
 
     @Override

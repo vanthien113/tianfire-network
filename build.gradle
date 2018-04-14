@@ -26,3 +26,20 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    //Version
+    supportLibrary = '25.3.1'
+    dagger2Version = '2.11'
+    jsr250Version = '1.0'
+    //Support Libraries dependencies
+    supportDependencies = [
+            appCompat                : "com.android.support:appcompat-v7:${supportLibrary}",
+            design                   : "com.android.support:design:${supportLibrary}",
+            dagger2                  : "com.google.dagger:dagger:${dagger2Version}",
+            dagger2Android           : "com.google.dagger:dagger-android:${dagger2Version}",
+            dagger2Compiler          : "com.google.dagger:dagger-compiler:${dagger2Version}",
+            dagger2AnnotainoProcessor: "com.google.dagger:dagger-android-processor:${dagger2Version}",
+            jsr250                   : "javax.annotation:jsr250-api:${jsr250Version}",
+    ]
+}

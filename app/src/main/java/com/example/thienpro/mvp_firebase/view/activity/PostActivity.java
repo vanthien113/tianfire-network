@@ -35,7 +35,7 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
 
     @Override
     protected void init() {
-        presenter = new PostPresenterImpl();
+        presenter = getAppComponent().getCommonComponent().getPostPresenter();
         presenter.attachView(this);
         getBinding().setEvent(this);
     }

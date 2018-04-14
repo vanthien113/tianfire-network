@@ -8,7 +8,6 @@ import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityEditinfoBinding;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.EditInfoPresenter;
-import com.example.thienpro.mvp_firebase.presenter.Impl.EditInfoPresenterImpl;
 import com.example.thienpro.mvp_firebase.view.EditInfoView;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -37,11 +36,10 @@ public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> impl
 
     @Override
     protected void init() {
-        presenter = new EditInfoPresenterImpl(this);
+        presenter = getAppComponent().getCommonComponent().getEditInfoPresenter();
         presenter.attachView(this);
 
         getBinding().setEvent(this);
-        presenter.loadUser();
     }
 
     @Override

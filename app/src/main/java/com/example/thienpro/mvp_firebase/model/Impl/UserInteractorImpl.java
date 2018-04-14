@@ -55,15 +55,13 @@ public class UserInteractorImpl implements UserInteractor {
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private StorageReference ref;
-    private SharedPreferencesUtil currentUser;
 
-    public UserInteractorImpl(Context context) {
+    public UserInteractorImpl() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         users = mAuth.getCurrentUser();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-        currentUser = new SharedPreferencesUtil(context);
     }
 
     @Override
@@ -124,16 +122,6 @@ public class UserInteractorImpl implements UserInteractor {
     }
 
     @Override
-    public void loadCurrentLocalUser(LoadCurrentLocalUserCallback callback) {
-        callback.currentLocalUser(currentUser.getUser());
-    }
-
-    @Override
-    public void saveCurrentLocalUser(User user) {
-        currentUser.setUser(user);
-    }
-
-    @Override
     public void changePassword(String password, final ChangePasswordCallback callback) {
         users.updatePassword(password).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -169,7 +157,6 @@ public class UserInteractorImpl implements UserInteractor {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                currentUser.setUser(user);
                 callback.friendInfomation(null, user);
             }
 
@@ -409,7 +396,7 @@ public class UserInteractorImpl implements UserInteractor {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                currentUser.setUser(user);
+//                currentUser.setUser(user);
                 callback.getUser(null, user);
             }
 

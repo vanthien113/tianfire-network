@@ -8,7 +8,6 @@ import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityLoginBinding;
-import com.example.thienpro.mvp_firebase.presenter.Impl.LoginPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.LoginPresenter;
 import com.example.thienpro.mvp_firebase.view.LoginView;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
@@ -28,7 +27,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
     @Override
     protected void init() {
         viewDataBinding.setEvent(this);
-        presenter = new LoginPresenterImpl(this);
+        presenter = getAppComponent().getCommonComponent().getLoginPresenter();
 
         presenter.attachView(this);
         presenter.signedInCheck();

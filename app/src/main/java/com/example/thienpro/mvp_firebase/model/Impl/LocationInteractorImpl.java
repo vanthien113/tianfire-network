@@ -1,6 +1,5 @@
 package com.example.thienpro.mvp_firebase.model.Impl;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.example.thienpro.mvp_firebase.model.LocationInteractor;
@@ -35,13 +34,13 @@ public class LocationInteractorImpl implements LocationInteractor {
     private ArrayList<UserLocation> listLocation;
     private SharedPreferencesUtil locationSharedPreferences;
 
-    public LocationInteractorImpl(Context context) {
+    public LocationInteractorImpl() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
         listLocation = new ArrayList<>();
-        locationSharedPreferences = new SharedPreferencesUtil(context);
+//        locationSharedPreferences = new SharedPreferencesUtil(context);
     }
 
     public void pushLocation(UserLocation location, final PushLocationCallback callback) {

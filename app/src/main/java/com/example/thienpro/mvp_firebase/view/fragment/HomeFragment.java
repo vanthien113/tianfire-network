@@ -4,20 +4,16 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.OrientationHelper;
 import android.view.View;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.FragmentHomeBinding;
+import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
-import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.HomePresenter;
-import com.example.thienpro.mvp_firebase.presenter.Impl.HomePresenterImpl;
-import com.example.thienpro.mvp_firebase.ultils.DownloadUltil;
+import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
 import com.example.thienpro.mvp_firebase.view.HomeView;
 import com.example.thienpro.mvp_firebase.view.activity.EditPostActivity;
-import com.example.thienpro.mvp_firebase.view.activity.FriendProfileActivity;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
 import com.example.thienpro.mvp_firebase.view.bases.BaseFragment;
 import com.example.thienpro.mvp_firebase.view.listener.HomeNavigationListener;
@@ -31,11 +27,10 @@ import java.util.Collections;
 
 public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements HomeView, HomeAdapter.ListPostMenuListener, HomeAdapter.DownloadImageListener, HomeAdapter.FriendProfileListener {
     private HomeAdapter homeAdapter;
-    private LinearLayoutManager linearLayoutManager;
     private HomePresenter presenter;
     private ArrayList<Post> listPost;
-    private User user;
     private HomeNavigationListener navigationListener;
+    private UserManager userManager;
 
     public static HomeFragment newInstance() {
         Bundle args = new Bundle();
@@ -51,15 +46,14 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
 
     @Override
     protected void init(@Nullable View view) {
-        presenter = new HomePresenterImpl(getContext());
+        presenter = getAppComponent().getCommonComponent().getHomePresenter();
         presenter.attachView(this);
 
-        linearLayoutManager = new LinearLayoutManager(getBinding().getRoot().getContext(), OrientationHelper.VERTICAL, false);
+        userManager = getAppComponent().getUserManager();
 
-        presenter.currentUser();
         presenter.loadAllListPost();
 
-        getBinding().rvHome.setLayoutManager(linearLayoutManager);
+        getBinding().rvHome.setLayoutManager(LayoutUltils.getLinearLayoutManager(getContext()));
         getBinding().setEvent(this);
 
         getBinding().srlHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -85,7 +79,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
         super.onResume();
     }
 
-
     public void loadData() {
         if (listPost != null) {
             getBinding().rvHome.setLayoutFrozen(true);
@@ -99,14 +92,9 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
         Collections.reverse(list);
         listPost = list;
 
-        homeAdapter = new HomeAdapter(listPost, getContext(), this, user, this, this);
+        homeAdapter = new HomeAdapter(listPost, getContext(), this, userManager.getUser(), this, this);
         getBinding().rvHome.setAdapter(homeAdapter);
         getBinding().rvHome.setLayoutFrozen(false);
-    }
-
-    @Override
-    public void currentUser(User user) {
-        this.user = user;
     }
 
     @Override

@@ -42,7 +42,7 @@ public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBin
     protected void init() {
         userId = getIntent().getStringExtra(USER_ID);
 
-        presenter = new FriendProfilePresenterImpl(this);
+        presenter = getAppComponent().getCommonComponent().getFriendProfilePresenter();
         presenter.attachView(this);
 
         presenter.getFriendPost(userId);

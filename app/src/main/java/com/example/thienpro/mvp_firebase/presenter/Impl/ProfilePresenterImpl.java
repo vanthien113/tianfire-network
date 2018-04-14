@@ -1,18 +1,15 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
 import com.esafirm.imagepicker.model.Image;
-import com.example.thienpro.mvp_firebase.model.Impl.PostInteractorImpl;
-import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
+import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.ProfilePresenter;
-import com.example.thienpro.mvp_firebase.ultils.DownloadUltil;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
 import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
 import com.example.thienpro.mvp_firebase.view.fragment.ProfileFragment;
@@ -38,12 +35,18 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
     public static final String TAG = "ProfilePresenterImpl";
     private PostInteractor postInteractor;
     private UserInteractor userInteractor;
-    private Context context;
+    private UserManager userManager;
+    private UserManager.OnUserChangeListener onUserChangeListener = new UserManager.OnUserChangeListener() {
+        @Override
+        public void onChange(User newUser) {
+//            getView().showUser(newUser);
+        }
+    };
 
-    public ProfilePresenterImpl(Context context) {
-        this.context = context;
-        postInteractor = new PostInteractorImpl();
-        userInteractor = new UserInteractorImpl(context);
+    public ProfilePresenterImpl(UserManager userManager, PostInteractor postInteractor, UserInteractor userInteractor) {
+        this.postInteractor = postInteractor;
+        this.userInteractor = userInteractor;
+        this.userManager = userManager;
     }
 
     public void loadPost() {
@@ -72,8 +75,7 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
                 if (error != null) {
                     getView().showDatabaseError(error);
                 } else {
-                    userInteractor.saveCurrentLocalUser(user);
-                    getView().showUser(user);
+                    userManager.setUser(user);
                 }
             }
         }, true);
@@ -112,7 +114,7 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
 
     @Override
     public void downloadImage(String imageUrl) {
-        DownloadUltil.startDownload(context, imageUrl);
+//        DownloadUltil.startDownload(context, imageUrl);
     }
 
     @Override
@@ -145,7 +147,7 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
                 if (e != null) {
                     getView().showExceptionError(e);
                 } else {
-                    userInteractor.saveCurrentLocalUser(new User(null, null, null, null, null, uri, null));
+//                    userInteractor.saveCurrentLocalUser(new User(null, null, null, null, null, uri, null));
                     getView().showChangeComplete();
                     getView().showAvatarChanged(uri);
                     getView().reloadPost();
@@ -163,11 +165,23 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
                 if (e != null) {
                     getView().showExceptionError(e);
                 } else {
-                    userInteractor.saveCurrentLocalUser(new User(null, null, null, null, null, null, uri));
+//                    userInteractor.saveCurrentLocalUser(new User(null, null, null, null, null, null, uri));
                     getView().showCoverChanged(uri);
                     getView().showChangeComplete();
                 }
             }
         });
+    }
+
+    @Override
+    public void attachView(ProfileView view) {
+        super.attachView(view);
+        userManager.addOnUserChangeListener(onUserChangeListener);
+    }
+
+    @Override
+    public void detach() {
+        super.detach();
+        userManager.removeUserChangeListener(onUserChangeListener);
     }
 }

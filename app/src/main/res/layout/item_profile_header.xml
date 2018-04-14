@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.example.thienpro.mvp_firebase.model.entity.User" />
+
+        <variable
+            name="event"
+            type="com.example.thienpro.mvp_firebase.view.ProfileView" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorGray"
+        android:orientation="vertical">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/ll_cover"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_cover"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.example.thienpro.mvp_firebase.ultils.widget.CricleImage
+                android:id="@+id/iv_avatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="100dp"
+                android:src="@color/cardview_dark_background"
+                app:borderColor="@color/colorWhite"
+                app:borderWidth="1dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.example.thienpro.mvp_firebase.ultils.widget.BoderTextView
+                android:id="@+id/tv_name"
+                android:layout_width="0dp"
+                android:layout_height="21dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:text="@{data.name}"
+                android:textColor="@color/colorBlack"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_avatar"
+                app:layout_constraintTop_toTopOf="@+id/iv_avatar"
+                app:outerShadowRadius="1dp"
+                app:strokeColor="@color/colorWhite"
+                app:strokeJoinStyle="round"
+                app:strokeWidth="1dp" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:onClick="@{()->event.onChangeAvatar()}"
+                android:src="@drawable/ic_camera"
+                android:tint="@color/colorWhite"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
+                app:layout_constraintEnd_toEndOf="@+id/iv_avatar"
+                app:layout_constraintStart_toStartOf="@+id/iv_avatar" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:onClick="@{()->event.onChangeCover()}"
+                android:src="@drawable/ic_camera"
+                android:tint="@color/colorWhite"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="20dp"
+                android:hint="Tìm kiếm"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorGray"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:onClick="@{()->event.onClearTextClick()}"
+                android:text="X"
+                android:textColor="@color/colorWhite"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/et_search"
+                app:layout_constraintEnd_toEndOf="@+id/et_search"
+                app:layout_constraintTop_toTopOf="@+id/et_search" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_search"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/colorWhite"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/et_search"
+                app:layout_constraintStart_toStartOf="@+id/et_search"
+                app:layout_constraintTop_toBottomOf="@+id/et_search" />
+        </android.support.constraint.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@color/colorWhite"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Thông tin"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="@{()->event.onShowListPictureClick()}"
+                android:text="Ảnh"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_post"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorWhite"
+            android:hint="Hôm nay bạn cảm thấy thế nào?"
+            android:onClick="@{()->event.onPost()}"
+            android:paddingBottom="@dimen/space_large"
+            android:paddingLeft="@dimen/space_large"
+            android:paddingTop="@dimen/space_normal"
+            android:textSize="@dimen/text_size_standard"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</layout>

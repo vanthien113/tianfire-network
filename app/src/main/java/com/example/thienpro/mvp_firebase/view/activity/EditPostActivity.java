@@ -32,7 +32,7 @@ public class EditPostActivity extends BaseActivity<ActivityEditPostBinding> impl
 
     @Override
     protected void init() {
-        presenter = new EditPostPresenterImpl(this);
+        presenter = getAppComponent().getCommonComponent().getEditPostPresenter();
         presenter.attachView(this);
 
         post = (Post) getIntent().getSerializableExtra(POST);

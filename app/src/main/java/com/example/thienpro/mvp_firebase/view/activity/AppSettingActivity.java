@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityAppSettingBinding;
 import com.example.thienpro.mvp_firebase.presenter.AppSettingPresenter;
-import com.example.thienpro.mvp_firebase.presenter.Impl.AppSettingPresenterImpl;
 import com.example.thienpro.mvp_firebase.ultils.SHLocationManager;
 import com.example.thienpro.mvp_firebase.view.AppSettingView;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
@@ -26,7 +25,7 @@ public class AppSettingActivity extends BaseActivity<ActivityAppSettingBinding> 
 
     @Override
     protected void init() {
-        presenter = new AppSettingPresenterImpl(this);
+        presenter = getAppComponent().getCommonComponent().getAppSettingPresenter();
         presenter.attachView(this);
         getBinding().setEvent(this);
         presenter.checkShareLocation();

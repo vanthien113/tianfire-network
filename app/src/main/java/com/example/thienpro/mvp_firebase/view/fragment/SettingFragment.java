@@ -37,7 +37,7 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> implem
     protected void init(@Nullable View view) {
         getBinding().setEvent(this);
 
-        presenter = new SettingPresenterImpl(getContext());
+        presenter = getAppComponent().getCommonComponent().getSettingPresenter();
         presenter.attachView(this);
     }
 

@@ -34,7 +34,7 @@ public class ListLocationActivity extends BaseActivity<ActivityListLocationBindi
 
     @Override
     protected void init() {
-        presenter = new ListLocationPresenterImpl(this);
+        presenter = getAppComponent().getCommonComponent().getListLocationPresenter();
         presenter.attachView(this);
 
         layoutManager = new LinearLayoutManager(viewDataBinding.getRoot().getContext(), OrientationHelper.VERTICAL, false);

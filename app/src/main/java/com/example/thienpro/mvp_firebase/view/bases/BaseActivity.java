@@ -14,6 +14,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.thienpro.mvp_firebase.ProjectApplication;
+import com.example.thienpro.mvp_firebase.di.component.AppComponent;
 import com.example.thienpro.mvp_firebase.ultils.widget.LoadingDialog;
 import com.google.firebase.database.DatabaseError;
 
@@ -62,6 +64,9 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
         return viewDataBinding;
     }
 
+    public AppComponent getAppComponent() {
+        return ((ProjectApplication) getApplication()).getAppComponent();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

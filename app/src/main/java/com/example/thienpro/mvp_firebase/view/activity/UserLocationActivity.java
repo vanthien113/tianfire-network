@@ -41,7 +41,7 @@ public class UserLocationActivity extends BaseActivity<ActivityUserLocationBindi
 
     @Override
     protected void init() {
-        presenter = new UserLocationPresenterImpl(this);
+        presenter = getAppComponent().getCommonComponent().getUserLocationPresenter();
         presenter.attachView(this);
 
         getBinding().setEvent(this);
