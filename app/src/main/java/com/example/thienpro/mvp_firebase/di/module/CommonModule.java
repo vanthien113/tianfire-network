@@ -36,13 +36,16 @@ import com.example.thienpro.mvp_firebase.presenter.SettingPresenter;
 import com.example.thienpro.mvp_firebase.presenter.UserLocationPresenter;
 import com.example.thienpro.mvp_firebase.presenter.VerifiEmailPresenter;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
 @Module
+@Singleton
 public class CommonModule {
     @Provides
-    public ProfilePresenter provideProfilePresenter(UserManager userManager, PostInteractor postInteractor, UserInteractor userInteractor) {
+    public ProfilePresenter providesProfilePresenter(UserManager userManager, PostInteractor postInteractor, UserInteractor userInteractor) {
         return new ProfilePresenterImpl(userManager, postInteractor, userInteractor);
     }
 
@@ -52,27 +55,27 @@ public class CommonModule {
     }
 
     @Provides
-    public HomePresenter provideHomePresenter(UserInteractor userInteractor, PostInteractor postInteractor) {
+    public HomePresenter providesHomePresenter(UserInteractor userInteractor, PostInteractor postInteractor) {
         return new HomePresenterImpl(userInteractor, postInteractor);
     }
 
     @Provides
-    public AppSettingPresenter provideAppSettingPresenter(LocationInteractor locationInteractor, UserInteractor userInteractor) {
+    public AppSettingPresenter providesAppSettingPresenter(LocationInteractor locationInteractor, UserInteractor userInteractor) {
         return new AppSettingPresenterImpl(locationInteractor, userInteractor);
     }
 
     @Provides
-    public ChangePasswordPresenter provideChangePasswordPresenter(UserInteractorImpl userInteractor) {
+    public ChangePasswordPresenter providesChangePasswordPresenter(UserInteractor userInteractor) {
         return new ChangePasswordPresenterImpl(userInteractor);
     }
 
     @Provides
-    public EditInfoPresenter provideEditInfoPresenter(UserInteractor userInteractor, UserManager userManager) {
+    public EditInfoPresenter providesEditInfoPresenter(UserInteractor userInteractor, UserManager userManager) {
         return new EditInfoPresenterImpl(userInteractor, userManager);
     }
 
     @Provides
-    public EditPostPresenter provideEditPostPresenter(PostInteractor postInteractor) {
+    public EditPostPresenter providesEditPostPresenter(PostInteractor postInteractor) {
         return new EditPostPresenterImpl(postInteractor);
     }
 

@@ -32,10 +32,11 @@ public interface CommonComponent {
 
     AppSettingPresenter getAppSettingPresenter();
 
+    //todo err
     ChangePasswordPresenter getChangePasswordPresenter();
-
+//
     EditInfoPresenter getEditInfoPresenter();
-
+//
     EditPostPresenter getEditPostPresenter();
 
     FriendProfilePresenter getFriendProfilePresenter();

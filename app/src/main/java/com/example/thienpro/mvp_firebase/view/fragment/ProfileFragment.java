@@ -119,7 +119,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
     public void setUserVisibleHint(boolean isVisibleToUser) { // Hàm sẽ được chạy sau khi ấn sang tab Home
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            loadData();
+//            loadData();
         }
     }
 

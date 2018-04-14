@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.FragmentSettingBinding;
-import com.example.thienpro.mvp_firebase.presenter.Impl.SettingPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.SettingPresenter;
 import com.example.thienpro.mvp_firebase.view.SettingView;
 import com.example.thienpro.mvp_firebase.view.bases.BaseFragment;
