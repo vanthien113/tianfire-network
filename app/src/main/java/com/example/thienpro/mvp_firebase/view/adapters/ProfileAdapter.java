@@ -1,68 +1,56 @@
 package com.example.thienpro.mvp_firebase.view.adapters;
 
-import android.databinding.ViewDataBinding;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 
-import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ItemActivityHomeBinding;
 import com.example.thienpro.mvp_firebase.databinding.ItemProfileHeaderBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
-import com.example.thienpro.mvp_firebase.ultils.SHStringHelper;
-import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
-import com.example.thienpro.mvp_firebase.view.bases.AbsBindingAdapter;
+import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
+import com.example.thienpro.mvp_firebase.view.adapters.viewholder.HomeVH;
+import com.example.thienpro.mvp_firebase.view.adapters.viewholder.ItemProfileHeaderVH;
 
 import java.util.ArrayList;
 
-public class ProfileAdapter extends AbsBindingAdapter<ViewDataBinding> {
+public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int HEADER = 0;
     private final int POST = 1;
-
+    private HomeAdapter.ListPostMenuListener postMenuListeneristener;
     private User user;
-    private ArrayList<Post> mLisPost;
+    private ArrayList<Post> lisPost;
+    private ItemProfileClickListener listener;
 
-    public ProfileAdapter(ArrayList<Post> mLisPost, User user) {
-        super(null);
-        this.mLisPost = mLisPost;
+    public ProfileAdapter(ArrayList<Post> mLisPost, User user, ItemProfileClickListener listener, HomeAdapter.ListPostMenuListener postMenuListeneristener) {
+        this.lisPost = mLisPost;
         this.user = user;
+        this.listener = listener;
+        this.postMenuListeneristener = postMenuListeneristener;
     }
 
     @Override
-    protected int getLayoutResourceId(int viewType) {
-        switch (viewType) {
-            case HEADER:
-                return R.layout.item_profile_header;
-            default:
-                return R.layout.item_activity_home;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == HEADER) {
+            ItemProfileHeaderBinding binding = ItemProfileHeaderBinding.inflate(LayoutInflater.from(parent.getContext()));
+            binding.getRoot().setLayoutParams(LayoutUltils.getRecyclerViewLayoutParams());
+            return new ItemProfileHeaderVH(binding, listener);
+        } else if (viewType == POST) {
+            ItemActivityHomeBinding binding = ItemActivityHomeBinding.inflate(LayoutInflater.from(parent.getContext()));
+            binding.getRoot().setLayoutParams(LayoutUltils.getRecyclerViewLayoutParams());
+            return new HomeVH(binding, postMenuListeneristener, null);
         }
+
+        return null;
     }
 
     @Override
-    public void updateBinding(ViewDataBinding binding, int position) {
-        if (binding instanceof ItemProfileHeaderBinding) {
-            setItemHeaderData((ItemProfileHeaderBinding) binding);
-        } else if (binding instanceof ItemActivityHomeBinding) {
-            setItemHomeData((ItemActivityHomeBinding) binding, position);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof ItemProfileHeaderVH) {
+            ((ItemProfileHeaderVH) holder).bind(user);
+        } else if (holder instanceof HomeVH) {
+            ((HomeVH) holder).bind(lisPost.get(position - 1));
         }
-    }
-
-    private void setItemHeaderData(ItemProfileHeaderBinding binding) {
-        binding.setData(user);
-        SHBitmapHelper.bindImage(binding.ivAvatar, user.getAvatar());
-        SHBitmapHelper.bindImage(binding.ivCover, user.getCover());
-    }
-
-    private void setItemHomeData(ItemActivityHomeBinding binding, int position) {
-        binding.setData(mLisPost.get(position));
-
-        SHBitmapHelper.bindImage(binding.ivAvatar, mLisPost.get(position).getAvatar());
-        SHBitmapHelper.bindImage(binding.ivImage, mLisPost.get(position).getImage());
-        SHStringHelper.hashTag(mLisPost.get(position).getPost(), ContextCompat.getColor(binding.getRoot().getContext(), R.color.colorGreen), binding.tvPost);
-    }
-
-    @Override
-    public int getItemCount() {
-        return mLisPost == null ? 1 : mLisPost.size() + 1;
     }
 
     @Override
@@ -73,5 +61,24 @@ public class ProfileAdapter extends AbsBindingAdapter<ViewDataBinding> {
             default:
                 return POST;
         }
+    }
+
+    @Override
+    public int getItemCount() {
+        return lisPost == null ? 1 : lisPost.size() + 1;
+    }
+
+    public interface ItemProfileClickListener {
+        void onChangeAvatar();
+
+        void onChangeCover();
+
+        void onShowListPictureClick();
+
+        void onPost();
+
+        void onDeletePost(Post post);
+
+        void onEditPost(Post post);
     }
 }

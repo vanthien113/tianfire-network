@@ -7,7 +7,6 @@ import android.text.TextUtils;
 
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
-import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -167,37 +166,41 @@ public class PostInteractorImpl implements PostInteractor {
     }
 
     @Override
-    public void loadPersonalPost(final ListPostCallback callback) {
+    public void loadPersonalPost(final LoadPersonalPostCallback callback) {
+        final ArrayList<Post> posts = new ArrayList<>();
+
         mDatabase.child(POSTS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     Post post = dsp.getValue(Post.class);
                     if (post.getId().equals(user.getUid())) {
-                        postList.add(post);
+                        posts.add(post);
                     }
                 }
-                callback.listPost(null, postList);
+                callback.post(null, posts);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                callback.listPost(databaseError, null);
+                callback.post(databaseError, null);
             }
         });
     }
 
     @Override
     public void loadAllPost(final ListPostCallback callback) {
+        final ArrayList<Post> posts = new ArrayList<>();
+
         mDatabase.child(POSTS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     Post post = dsp.getValue(Post.class);
-                    postList.add(post);
+                    posts.add(post);
                 }
 
-                callback.listPost(null, postList);
+                callback.listPost(null, posts);
             }
 
             @Override

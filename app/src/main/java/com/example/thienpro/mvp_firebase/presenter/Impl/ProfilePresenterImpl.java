@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.esafirm.imagepicker.model.Image;
+import com.example.thienpro.mvp_firebase.manager.PostManager;
 import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
@@ -32,32 +33,40 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implements ProfilePresenter {
-    public static final String TAG = "ProfilePresenterImpl";
     private PostInteractor postInteractor;
     private UserInteractor userInteractor;
     private UserManager userManager;
+    private PostManager postManager;
     private UserManager.OnUserChangeListener onUserChangeListener = new UserManager.OnUserChangeListener() {
         @Override
         public void onChange(User newUser) {
-//            getView().showUser(newUser);
+            getView().onUserUpdated();
+        }
+    };
+    private PostManager.OnPostChangeListener onPostChangeListener = new PostManager.OnPostChangeListener() {
+        @Override
+        public void onChange() {
+            getView().onUserUpdated();
         }
     };
 
-    public ProfilePresenterImpl(UserManager userManager, PostInteractor postInteractor, UserInteractor userInteractor) {
+    public ProfilePresenterImpl(UserManager userManager, PostInteractor postInteractor, UserInteractor userInteractor, PostManager postManager) {
         this.postInteractor = postInteractor;
         this.userInteractor = userInteractor;
         this.userManager = userManager;
+        this.postManager = postManager;
     }
 
+    @Override
     public void loadPost() {
-        getView().showLoadingDialog();
-        postInteractor.loadPersonalPost(new PostInteractor.ListPostCallback() {
+        getView().showLoading();
+        postInteractor.loadPersonalPost(new PostInteractor.LoadPersonalPostCallback() {
             @Override
-            public void listPost(DatabaseError e, ArrayList<Post> listPost) {
-                getView().hideLoadingDialog();
+            public void post(DatabaseError e, ArrayList<Post> listPost) {
+                getView().hideLoading();
 
                 if (e == null) {
-                    getView().showList(listPost);
+                    getView().showListPost(listPost);
                 } else {
                     getView().showDatabaseError(e);
                 }
@@ -75,7 +84,8 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
                 if (error != null) {
                     getView().showDatabaseError(error);
                 } else {
-                    userManager.setUser(user);
+                    userManager.updateCurrentUser(user);
+                    postManager.postChange();
                 }
             }
         }, true);
@@ -91,30 +101,11 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
                 if (e != null) {
                     getView().showExceptionError(e);
                 } else {
-                    getView().reloadPost();
                     getView().showDeleteComplete();
+                    postManager.postChange();
                 }
             }
         });
-    }
-
-    @Override
-    public void searchUser(String userName) {
-        userInteractor.searchUser(userName, new UserInteractor.SearchUserCallBack() {
-            @Override
-            public void onFinish(DatabaseError e, ArrayList<User> list) {
-                if (e != null) {
-                    getView().showDatabaseError(e);
-                } else {
-                    getView().showSearchUser(list);
-                }
-            }
-        });
-    }
-
-    @Override
-    public void downloadImage(String imageUrl) {
-//        DownloadUltil.startDownload(context, imageUrl);
     }
 
     @Override
@@ -147,10 +138,7 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
                 if (e != null) {
                     getView().showExceptionError(e);
                 } else {
-//                    userInteractor.saveCurrentLocalUser(new User(null, null, null, null, null, uri, null));
                     getView().showChangeComplete();
-                    getView().showAvatarChanged(uri);
-                    getView().reloadPost();
                 }
             }
         });
@@ -165,8 +153,6 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
                 if (e != null) {
                     getView().showExceptionError(e);
                 } else {
-//                    userInteractor.saveCurrentLocalUser(new User(null, null, null, null, null, null, uri));
-                    getView().showCoverChanged(uri);
                     getView().showChangeComplete();
                 }
             }
@@ -177,11 +163,13 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
     public void attachView(ProfileView view) {
         super.attachView(view);
         userManager.addOnUserChangeListener(onUserChangeListener);
+        postManager.addOnPostChangeListener(onPostChangeListener);
     }
 
     @Override
     public void detach() {
         super.detach();
         userManager.removeUserChangeListener(onUserChangeListener);
+        postManager.removePostChangeListener(onPostChangeListener);
     }
 }

@@ -12,4 +12,6 @@ public interface FriendProfileView extends BaseView {
     void showListPost(ArrayList<Post> listPost);
 
     void showUserInfomation(User user);
+
+    void getFriendPost();
 }

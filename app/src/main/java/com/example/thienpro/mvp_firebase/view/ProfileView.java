@@ -11,33 +11,15 @@ import java.util.ArrayList;
  */
 
 public interface ProfileView extends BaseView {
-    void onPost();
-
-    void showList(ArrayList<Post> list);
-
-    void showSearchUser(ArrayList<User> list);
-
-    void showUser(User user);
-
-    void onChangeAvatar();
-
-    void onChangeCover();
-
-    void reloadPost();
-
-    void showAvatarChanged(String avatarUrl);
-
-    void showCoverChanged(String coverUrl);
-
-    void onShowListPictureClick();
+    void showListPost(ArrayList<Post> listPost);
 
     void showLoading();
 
     void hideLoading();
 
-    void onClearTextClick();
-
     void showChangeComplete();
 
     void showDeleteComplete();
+
+    void onUserUpdated();
 }

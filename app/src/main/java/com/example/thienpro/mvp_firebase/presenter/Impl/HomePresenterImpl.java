@@ -1,5 +1,6 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
+import com.example.thienpro.mvp_firebase.manager.PostManager;
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
@@ -17,19 +18,27 @@ import java.util.ArrayList;
 public class HomePresenterImpl extends BasePresentermpl<HomeView> implements HomePresenter {
     private UserInteractor userInteractor;
     private PostInteractor postInteractor;
+    private PostManager postManager;
+    private PostManager.OnPostChangeListener listener = new PostManager.OnPostChangeListener() {
+        @Override
+        public void onChange() {
+            getView().reloadPost();
+        }
+    };
 
-    public HomePresenterImpl(UserInteractor userInteractor, PostInteractor postInteractor) {
+    public HomePresenterImpl(UserInteractor userInteractor, PostInteractor postInteractor, PostManager postManager) {
         this.postInteractor = postInteractor;
         this.userInteractor = userInteractor;
+        this.postManager = postManager;
     }
 
     public void loadAllListPost() {
-        getView().showLoadingDialog();
+        getView().showLoadingPb();
 
         postInteractor.loadAllPost(new PostInteractor.ListPostCallback() {
             @Override
             public void listPost(DatabaseError e, ArrayList<Post> listPost) {
-                getView().hideLoadingDialog();
+                getView().hideLoadingPb();
                 if (e == null) {
                     getView().showAllPost(listPost);
                 } else {
@@ -50,7 +59,7 @@ public class HomePresenterImpl extends BasePresentermpl<HomeView> implements Hom
                 if (e != null) {
                     getView().showExceptionError(e);
                 } else {
-                    getView().reloadPost();
+                    postManager.postChange();
                     getView().showMessenger("Đã xóa");
                 }
             }
@@ -58,7 +67,14 @@ public class HomePresenterImpl extends BasePresentermpl<HomeView> implements Hom
     }
 
     @Override
-    public void downloadImage(String imageUrl) {
-//        DownloadUltil.startDownload(context, imageUrl);
+    public void attachView(HomeView view) {
+        super.attachView(view);
+        postManager.addOnPostChangeListener(listener);
+    }
+
+    @Override
+    public void detach() {
+        super.detach();
+        postManager.removePostChangeListener(listener);
     }
 }

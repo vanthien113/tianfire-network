@@ -39,11 +39,6 @@ public class LocalUserManager implements UserManager {
         }
     }
 
-    @Override
-    public void setUser(User user) {
-        sharedPreferences.edit().putString("user", gson.toJson(user)).apply();
-    }
-
     public User getUser() {
         return gson.fromJson(sharedPreferences.getString("user", ""), User.class);
     }

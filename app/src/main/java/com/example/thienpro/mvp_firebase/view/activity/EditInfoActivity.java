@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityEditinfoBinding;
-import com.example.thienpro.mvp_firebase.model.entity.User;
+import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.presenter.EditInfoPresenter;
 import com.example.thienpro.mvp_firebase.view.EditInfoView;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
@@ -22,8 +22,8 @@ public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> impl
     public static int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
     private EditInfoPresenter presenter;
-    private User user;
     private String address;
+    private UserManager userManager;
 
     public static void startActivity(Context context) {
         context.startActivity(new Intent(context, EditInfoActivity.class));
@@ -39,12 +39,20 @@ public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> impl
         presenter = getAppComponent().getCommonComponent().getEditInfoPresenter();
         presenter.attachView(this);
 
+        userManager = getAppComponent().getUserManager();
+
         getBinding().setEvent(this);
+
+        getBinding().setData(userManager.getCurrentUser());
+
+        if (userManager.getUser().getSex())
+            getBinding().rbNam.setChecked(true);
+        else getBinding().rbNu.setChecked(true);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        presenter.onActivityResult(requestCode, resultCode, data);
+        presenter.onActivityResult(this, requestCode, resultCode, data);
     }
 
     @Override
@@ -61,17 +69,6 @@ public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> impl
             return false;
         }
         return true;
-    }
-
-    @Override
-    public void getUser(User user) {
-        this.user = user;
-
-        getBinding().setData(user);
-
-        if (user.getSex())
-            getBinding().rbNam.setChecked(true);
-        else getBinding().rbNu.setChecked(true);
     }
 
     @Override

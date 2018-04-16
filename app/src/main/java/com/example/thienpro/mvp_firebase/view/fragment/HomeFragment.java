@@ -11,6 +11,7 @@ import com.example.thienpro.mvp_firebase.databinding.FragmentHomeBinding;
 import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.presenter.HomePresenter;
+import com.example.thienpro.mvp_firebase.ultils.DownloadUltil;
 import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
 import com.example.thienpro.mvp_firebase.view.HomeView;
 import com.example.thienpro.mvp_firebase.view.activity.EditPostActivity;
@@ -25,7 +26,7 @@ import java.util.Collections;
  * Created by ThienPro on 11/22/2017.
  */
 
-public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements HomeView, HomeAdapter.ListPostMenuListener, HomeAdapter.DownloadImageListener, HomeAdapter.FriendProfileListener {
+public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements HomeView, HomeAdapter.ListPostMenuListener {
     private HomeAdapter homeAdapter;
     private HomePresenter presenter;
     private ArrayList<Post> listPost;
@@ -65,23 +66,22 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
         });
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) { // Hàm sẽ được chạy sau khi ấn sang tab Home
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            loadData();
-        }
-    }
-
-    @Override
-    public void onResume() {
-        loadData();
-        super.onResume();
-    }
+//    @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) { // Hàm sẽ được chạy sau khi ấn sang tab Home
+//        super.setUserVisibleHint(isVisibleToUser);
+//        if (isVisibleToUser) {
+//            loadData();
+//        }
+//    }
+//
+//    @Override
+//    public void onResume() {
+//        loadData();
+//        super.onResume();
+//    }
 
     public void loadData() {
         if (listPost != null) {
-            getBinding().rvHome.setLayoutFrozen(true);
             listPost.clear();
             presenter.loadAllListPost();
         }
@@ -92,14 +92,25 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
         Collections.reverse(list);
         listPost = list;
 
-        homeAdapter = new HomeAdapter(listPost, getContext(), this, userManager.getUser(), this, this);
+        homeAdapter = new HomeAdapter(listPost, getContext(), this, userManager.getUser());
         getBinding().rvHome.setAdapter(homeAdapter);
-        getBinding().rvHome.setLayoutFrozen(false);
     }
 
     @Override
     public void reloadPost() {
         loadData();
+    }
+
+    @Override
+    public void showLoadingPb() {
+        getBinding().srlHome.setRefreshing(true);
+
+    }
+
+    @Override
+    public void hideLoadingPb() {
+        getBinding().srlHome.setRefreshing(false);
+
     }
 
     @Override
@@ -136,7 +147,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
 
     @Override
     public void onDownload(String imageUrl) {
-        presenter.downloadImage(imageUrl);
+        DownloadUltil.startDownload(getContext(), imageUrl);
     }
 
     @Override

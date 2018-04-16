@@ -1,5 +1,7 @@
 package com.example.thienpro.mvp_firebase.di.module;
 
+import com.example.thienpro.mvp_firebase.manager.LocationManager;
+import com.example.thienpro.mvp_firebase.manager.PostManager;
 import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.LocationInteractor;
@@ -45,8 +47,8 @@ import dagger.Provides;
 @Singleton
 public class CommonModule {
     @Provides
-    public ProfilePresenter providesProfilePresenter(UserManager userManager, PostInteractor postInteractor, UserInteractor userInteractor) {
-        return new ProfilePresenterImpl(userManager, postInteractor, userInteractor);
+    public ProfilePresenter providesProfilePresenter(UserManager userManager, PostInteractor postInteractor, UserInteractor userInteractor, PostManager postManager) {
+        return new ProfilePresenterImpl(userManager, postInteractor, userInteractor, postManager);
     }
 
     @Provides
@@ -55,13 +57,13 @@ public class CommonModule {
     }
 
     @Provides
-    public HomePresenter providesHomePresenter(UserInteractor userInteractor, PostInteractor postInteractor) {
-        return new HomePresenterImpl(userInteractor, postInteractor);
+    public HomePresenter providesHomePresenter(UserInteractor userInteractor, PostInteractor postInteractor, PostManager postManager) {
+        return new HomePresenterImpl(userInteractor, postInteractor, postManager);
     }
 
     @Provides
-    public AppSettingPresenter providesAppSettingPresenter(LocationInteractor locationInteractor, UserInteractor userInteractor) {
-        return new AppSettingPresenterImpl(locationInteractor, userInteractor);
+    public AppSettingPresenter providesAppSettingPresenter(LocationInteractor locationInteractor, LocationManager locationManager, UserManager userManager) {
+        return new AppSettingPresenterImpl(locationInteractor, locationManager, userManager);
     }
 
     @Provides

@@ -32,7 +32,6 @@ public class LocationInteractorImpl implements LocationInteractor {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private ArrayList<UserLocation> listLocation;
-    private SharedPreferencesUtil locationSharedPreferences;
 
     public LocationInteractorImpl() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -40,7 +39,6 @@ public class LocationInteractorImpl implements LocationInteractor {
         user = mAuth.getCurrentUser();
 
         listLocation = new ArrayList<>();
-//        locationSharedPreferences = new SharedPreferencesUtil(context);
     }
 
     public void pushLocation(UserLocation location, final PushLocationCallback callback) {
@@ -122,15 +120,5 @@ public class LocationInteractorImpl implements LocationInteractor {
                 callback.listLocation(null, databaseError);
             }
         });
-    }
-
-    @Override
-    public void saveShareLocation(boolean isShare) {
-        locationSharedPreferences.setShareLocation(isShare);
-    }
-
-    @Override
-    public void getShareLocation(GetShareLocationCallback shareLocation) {
-        shareLocation.getShareLocation(locationSharedPreferences.getShareLocation());
     }
 }

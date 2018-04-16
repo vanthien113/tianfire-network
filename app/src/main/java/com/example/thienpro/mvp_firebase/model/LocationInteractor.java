@@ -18,17 +18,9 @@ public interface LocationInteractor {
         void listLocation(ArrayList<UserLocation> locations, DatabaseError e);
     }
 
-    interface GetShareLocationCallback {
-        void getShareLocation(boolean isShare);
-    }
-
     void pushLocation(UserLocation location, PushLocationCallback callback);
 
     void getLocation(String userId, GetLocationCallback callback);
 
     void getListLocation(GetListLocationCallback callback);
-
-    void saveShareLocation(boolean isShare);
-
-    void getShareLocation(GetShareLocationCallback callback);
 }

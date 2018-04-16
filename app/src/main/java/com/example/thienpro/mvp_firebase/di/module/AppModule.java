@@ -3,7 +3,11 @@ package com.example.thienpro.mvp_firebase.di.module;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.thienpro.mvp_firebase.manager.LocationManager;
+import com.example.thienpro.mvp_firebase.manager.PostManager;
 import com.example.thienpro.mvp_firebase.manager.UserManager;
+import com.example.thienpro.mvp_firebase.manager.impl.LocalLocationManager;
+import com.example.thienpro.mvp_firebase.manager.impl.LocalPostManager;
 import com.example.thienpro.mvp_firebase.manager.impl.LocalUserManager;
 import com.example.thienpro.mvp_firebase.model.Impl.LocationInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.Impl.PostInteractorImpl;
@@ -57,5 +61,17 @@ public class AppModule {
     @Singleton
     public LocationInteractor providesLocationInteractor() {
         return new LocationInteractorImpl();
+    }
+
+    @Provides
+    @Singleton
+    public PostManager providesPostManager() {
+        return new LocalPostManager();
+    }
+
+    @Provides
+    @Singleton
+    public LocationManager providesLocationManager(SharedPreferences sharedPreferences) {
+        return new LocalLocationManager(sharedPreferences);
     }
 }

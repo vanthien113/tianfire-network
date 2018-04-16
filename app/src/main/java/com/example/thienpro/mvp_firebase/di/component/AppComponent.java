@@ -5,6 +5,8 @@ import android.content.Context;
 import com.example.thienpro.mvp_firebase.ProjectApplication;
 import com.example.thienpro.mvp_firebase.di.module.AppModule;
 import com.example.thienpro.mvp_firebase.di.module.CommonModule;
+import com.example.thienpro.mvp_firebase.manager.LocationManager;
+import com.example.thienpro.mvp_firebase.manager.PostManager;
 import com.example.thienpro.mvp_firebase.manager.UserManager;
 
 import javax.inject.Singleton;
@@ -29,4 +31,8 @@ public interface AppComponent {
     UserManager getUserManager();
 
     CommonComponent getCommonComponent();
+
+    PostManager getPostManager();
+
+    LocationManager getLocationManager();
 }

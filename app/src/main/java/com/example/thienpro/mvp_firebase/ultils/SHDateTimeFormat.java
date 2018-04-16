@@ -2,6 +2,7 @@ package com.example.thienpro.mvp_firebase.ultils;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -67,6 +68,9 @@ public class SHDateTimeFormat {
     }
 
     public static String changeDateFormat(String date) {
+        if(TextUtils.isEmpty(date)){
+            return "";
+        }
         Date time;
         String timePost;
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");

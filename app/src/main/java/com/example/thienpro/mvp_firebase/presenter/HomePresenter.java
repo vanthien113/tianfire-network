@@ -12,6 +12,4 @@ public interface HomePresenter extends BasePresenter<HomeView> {
     void loadAllListPost();
 
     void deletePost(Post post);
-
-    void downloadImage(String imageUrl);
 }

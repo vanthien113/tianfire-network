@@ -2,27 +2,28 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.OrientationHelper;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityFriendProfileBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.FriendProfilePresenter;
-import com.example.thienpro.mvp_firebase.presenter.Impl.FriendProfilePresenterImpl;
-import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
+import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
 import com.example.thienpro.mvp_firebase.view.FriendProfileView;
 import com.example.thienpro.mvp_firebase.view.adapters.FriendProfileAdapter;
+import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
+import com.example.thienpro.mvp_firebase.view.adapters.ProfileAdapter;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 
 import java.util.ArrayList;
 
-public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBinding> implements FriendProfileView {
+public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBinding> implements FriendProfileView, HomeAdapter.ListPostMenuListener, ProfileAdapter.ItemProfileClickListener {
     private static String USER_ID = "userId";
 
     private String userId;
     private FriendProfilePresenter presenter;
+    //    private FriendProfileAdapter_ adapter;
+    private User user;
     private FriendProfileAdapter adapter;
 
     public static void startActivity(Context context, String userId) {
@@ -45,7 +46,6 @@ public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBin
         presenter = getAppComponent().getCommonComponent().getFriendProfilePresenter();
         presenter.attachView(this);
 
-        presenter.getFriendPost(userId);
         presenter.getFriendInfomation(userId);
 
         getBinding().setEvent(this);
@@ -74,23 +74,61 @@ public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBin
 
 
     @Override
+    public void onChangeAvatar() {
+
+    }
+
+    @Override
+    public void onChangeCover() {
+
+    }
+
+    @Override
     public void onShowListPictureClick() {
         PictureActivity.startActivity(this, userId);
     }
 
     @Override
-    public void showListPost(ArrayList<Post> listPost) {
-        adapter = new FriendProfileAdapter(listPost);
+    public void onPost() {
 
-        getBinding().rvProfile.setLayoutManager(new LinearLayoutManager(getBinding().getRoot().getContext(), OrientationHelper.VERTICAL, false));
+    }
+
+    @Override
+    public void onDeletePost(Post post) {
+
+    }
+
+    @Override
+    public void onDownload(String imageUrl) {
+
+    }
+
+    @Override
+    public void onFriendProfile(String userId) {
+
+    }
+
+    @Override
+    public void onEditPost(Post post) {
+
+    }
+
+    @Override
+    public void showListPost(ArrayList<Post> listPost) {
+        adapter = new FriendProfileAdapter(listPost, user, this, this);
+
+        getBinding().rvProfile.setLayoutManager(LayoutUltils.getLinearLayoutManager(this));
         getBinding().rvProfile.setAdapter(adapter);
     }
 
     @Override
     public void showUserInfomation(User user) {
+        this.user = user;
         viewDataBinding.setData(user);
+    }
 
-        SHBitmapHelper.bindImage(getBinding().ivCover, user.getCover());
-        SHBitmapHelper.bindCircularImage(getBinding().ivAvatar, user.getAvatar());
+    @Override
+    public void getFriendPost() {
+        presenter.getFriendPost(userId);
     }
 }

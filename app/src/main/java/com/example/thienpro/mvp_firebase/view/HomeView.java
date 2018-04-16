@@ -14,4 +14,8 @@ public interface HomeView extends BaseView {
     void showAllPost(ArrayList<Post> list);
 
     void reloadPost();
+
+    void showLoadingPb();
+
+    void hideLoadingPb();
 }

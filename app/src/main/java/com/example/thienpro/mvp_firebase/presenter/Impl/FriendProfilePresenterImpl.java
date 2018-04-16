@@ -32,6 +32,7 @@ public class FriendProfilePresenterImpl extends BasePresentermpl<FriendProfileVi
                     getView().showDatabaseError(e);
                 } else {
                     getView().showUserInfomation(user);
+                    getView().getFriendPost();
                 }
             }
         });

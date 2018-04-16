@@ -17,19 +17,14 @@ public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements L
     }
 
     public void signedInCheck() {
-        getView().showLoadingDialog();
-
         userInteractor.signedInCheck(new UserInteractor.LoggedInCheckCallback() {
             @Override
-            public void checker(int checker) {
+            public void checker(boolean checker) {
                 getView().hideLoadingDialog();
-                switch (checker) {
-                    case 1:
-                        getView().navigationToHome();
-                        break;
-                    case 2:
-                        getView().navigationToVerifiEmail();
-                        break;
+                if (checker) {
+                    getView().navigationToHome();
+                } else {
+                    getView().navigationToVerifiEmail();
                 }
             }
         });
@@ -43,7 +38,7 @@ public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements L
             public void checker(boolean checker, Exception e) {
                 getView().hideLoadingDialog();
                 if (checker) {
-                    getView().navigationToVerifiEmail();
+                    getView().navigationToHome();
                 } else {
                     getView().showExceptionError(e);
                 }

@@ -20,7 +20,7 @@ public class SearchUserVH extends RecyclerView.ViewHolder implements ItemSearchU
     }
 
     public void bind(User user) {
-        SHBitmapHelper.bindCircularImage(binding.ivAvatar, user.getAvatar());
+        SHBitmapHelper.bindImage(binding.ivAvatar, user.getAvatar());
         binding.setData(user);
     }
 

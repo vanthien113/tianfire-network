@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public interface UserInteractor {
     interface LoggedInCheckCallback {
-        void checker(int checker);
+        void checker(boolean checker);
     }
 
     interface LoginCheckCallback {

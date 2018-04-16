@@ -1,13 +1,10 @@
 package com.example.thienpro.mvp_firebase.model.Impl;
 
-import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
-import com.example.thienpro.mvp_firebase.ultils.LogUltil;
-import com.example.thienpro.mvp_firebase.ultils.SharedPreferencesUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -259,51 +256,55 @@ public class UserInteractorImpl implements UserInteractor {
                                     .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                         @Override
                                         public void onSuccess(final Uri uri) {
-                                            //add in user
-                                            String userId = users.getUid();
 
-                                            HashMap<String, Object> result = new HashMap<>();
-                                            result.put(AVATAR, uri.toString());
+                                            //Edit avatar in post
+                                            mDatabase.child(POSTS).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                                                        @SuppressWarnings("unchecked")
+                                                        Map<String, Object> map = (Map<String, Object>) dsp.getValue();
+                                                        String id = (String) map.get("id");
+                                                        String timePost = (String) map.get("timePost");
 
-                                            mDatabase.child(USERS).child(userId).updateChildren(result)
-                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                        if (id.equals(users.getUid().toString())) {
+                                                            HashMap<String, Object> result = new HashMap<>();
+                                                            result.put(AVATAR, uri.toString());
 
-                                                            //Edit avatar in post
-                                                            mDatabase.child(POSTS).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                            mDatabase.child(POSTS).child(timePost).updateChildren(result).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                 @Override
-                                                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                    for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                                                                        @SuppressWarnings("unchecked")
-                                                                        Map<String, Object> map = (Map<String, Object>) dsp.getValue();
-                                                                        String id = (String) map.get("id");
-                                                                        String timePost = (String) map.get("timePost");
+                                                                public void onSuccess(Void aVoid) {
+                                                                    //add in user
+                                                                    String userId = users.getUid();
 
-                                                                        if (id.equals(users.getUid().toString())) {
-                                                                            HashMap<String, Object> result = new HashMap<>();
-                                                                            result.put(AVATAR, uri.toString());
+                                                                    HashMap<String, Object> result = new HashMap<>();
+                                                                    result.put(AVATAR, uri.toString());
 
-                                                                            mDatabase.child(POSTS).child(timePost).updateChildren(result);
-                                                                        }
-                                                                    }
-                                                                    callback.addAvatar(null, uri.toString());
+                                                                    mDatabase.child(USERS).child(userId).updateChildren(result)
+                                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                @Override
+                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                    callback.addAvatar(null, uri.toString());
 
+                                                                                }
+                                                                            })
+                                                                            .addOnFailureListener(new OnFailureListener() {
+                                                                                @Override
+                                                                                public void onFailure(@NonNull Exception e) {
+                                                                                    callback.addAvatar(e, null);
+                                                                                }
+                                                                            });
                                                                 }
-
-                                                                @Override
-                                                                public void onCancelled(DatabaseError databaseError) {
-                                                                }
-
                                                             });
                                                         }
-                                                    })
-                                                    .addOnFailureListener(new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception e) {
-                                                            callback.addAvatar(e, null);
-                                                        }
-                                                    });
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+                                                }
+
+                                            });
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -380,12 +381,11 @@ public class UserInteractorImpl implements UserInteractor {
         if (users != null) {
             users.reload();
             if (users.isEmailVerified()) {
-                loginCheck.checker(1);
+                loginCheck.checker(true);
             } else if (!users.isEmailVerified()) {
-                loginCheck.checker(2);
+                loginCheck.checker(false);
             }
         }
-        loginCheck.checker(0);
     }
 
     @Override

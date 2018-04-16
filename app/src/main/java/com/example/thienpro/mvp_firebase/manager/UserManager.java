@@ -17,7 +17,5 @@ public interface UserManager {
 
     void updateCurrentUser(User user);
 
-    void setUser(User user);
-
     User getUser();
 }

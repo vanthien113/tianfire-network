@@ -26,14 +26,15 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
 
     @Override
     protected void init() {
-        viewDataBinding.setEvent(this);
         presenter = getAppComponent().getCommonComponent().getLoginPresenter();
-
         presenter.attachView(this);
+
         presenter.signedInCheck();
 
         getBinding().etEmail.setText("vanthien113@gmail.com");
-        getBinding().etPassword.setText("123456");
+        getBinding().etPassword.setText("thienvip");
+
+        viewDataBinding.setEvent(this);
     }
 
     @Override

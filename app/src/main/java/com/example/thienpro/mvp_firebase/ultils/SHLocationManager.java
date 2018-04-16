@@ -10,7 +10,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -104,41 +103,17 @@ public class SHLocationManager {
             currentLocation.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {
-                    callback.callback(location);
-
-                    Toast.makeText(context, location.getLatitude() + " " + location.getLongitude(), Toast.LENGTH_SHORT).show();
+                    if (location == null) {
+                        Location location1 = new Location(LocationManager.PASSIVE_PROVIDER);
+                        location1.setLatitude(10.7993946);
+                        location1.setLongitude(106.613679);
+                        callback.callback(location1);
+                    } else
+                        callback.callback(location);
                 }
             });
         }
     }
-
-
-//    public static Location getLastKnowLocation(Context context, Activity activity) {
-//        if (checkPermission(context)) {
-//            LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-//
-//            Location getLastLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-//
-//            if (getLastLocation != null) {
-//                return getLastLocation;
-//            }
-//            getLastLocation = locationManager.getLastKnownLocation
-//                    (LocationManager.GPS_PROVIDER);
-//            if (getLastLocation != null) {
-//                return getLastLocation;
-//            }
-//            getLastLocation = locationManager.getLastKnownLocation
-//                    (LocationManager.NETWORK_PROVIDER);
-//            if (getLastLocation != null) {
-//                return getLastLocation;
-//            }
-//            Location location = new Location(LocationManager.PASSIVE_PROVIDER);
-//            location.setLatitude(10.7993946);
-//            location.setLongitude(106.613679);
-//            return location;
-//        }
-//        return null;
-//    }
 
     public static String mapUrl(LatLng current, LatLng friend) {
         return "http://maps.google.com/maps?f=d&hl=en&saddr=" + current.latitude + "," + current.longitude + "&daddr=" + friend.latitude + "," + friend.longitude;

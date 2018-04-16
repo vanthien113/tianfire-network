@@ -3,13 +3,11 @@ package com.example.thienpro.mvp_firebase.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.OrientationHelper;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityPictureBinding;
-import com.example.thienpro.mvp_firebase.presenter.Impl.PicturePresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.PicturePresenter;
+import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
 import com.example.thienpro.mvp_firebase.view.PictureView;
 import com.example.thienpro.mvp_firebase.view.adapters.PictureAdapter;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
@@ -74,7 +72,7 @@ public class PictureActivity extends BaseActivity<ActivityPictureBinding> implem
     @Override
     public void onChangeViewTypeClick() {
         if (getBinding().rbOne.isChecked()) {
-            getBinding().rvPicture.setLayoutManager(new LinearLayoutManager(this, OrientationHelper.VERTICAL, false));
+            getBinding().rvPicture.setLayoutManager(LayoutUltils.getLinearLayoutManager(this));
         } else {
             getBinding().rvPicture.setLayoutManager(new GridLayoutManager(this, 2));
         }

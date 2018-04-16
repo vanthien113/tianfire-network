@@ -41,10 +41,10 @@ public class AppSettingActivity extends BaseActivity<ActivityAppSettingBinding> 
     public void onCheckLocationClick() {
         if (getBinding().cbLocation.isChecked()) {
             presenter.saveShareLocation(true);
-            presenter.pushLocation(true);
+            presenter.pushLocation(this, true);
         } else {
             presenter.saveShareLocation(false);
-            presenter.pushLocation(false);
+            presenter.pushLocation(this, false);
         }
     }
 
@@ -58,7 +58,7 @@ public class AppSettingActivity extends BaseActivity<ActivityAppSettingBinding> 
         getBinding().cbLocation.setChecked(isShared);
 
         if (isShared) {
-            presenter.pushLocation(isShared);
+            presenter.pushLocation(this, isShared);
         }
     }
 
