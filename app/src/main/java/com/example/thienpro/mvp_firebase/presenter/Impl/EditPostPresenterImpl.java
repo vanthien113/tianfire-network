@@ -15,11 +15,15 @@ public class EditPostPresenterImpl extends BasePresentermpl<EditPostView> implem
 
     @Override
     public void editPost(Post post) {
+        if (getView() == null)
+            return;
         getView().showLoadingDialog();
 
         postInteractor.editPost(post, new PostInteractor.EditPostCallback() {
             @Override
             public void editPost(Exception e) {
+                if (getView() == null)
+                    return;
                 getView().hideLoadingDialog();
                 if (e != null) {
                 } else {

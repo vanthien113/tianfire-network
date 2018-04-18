@@ -33,11 +33,15 @@ public class HomePresenterImpl extends BasePresentermpl<HomeView> implements Hom
     }
 
     public void loadAllListPost() {
+        if (getView() == null)
+            return;
         getView().showLoadingPb();
 
         postInteractor.loadAllPost(new PostInteractor.ListPostCallback() {
             @Override
             public void listPost(DatabaseError e, ArrayList<Post> listPost) {
+                if (getView() == null)
+                    return;
                 getView().hideLoadingPb();
                 if (e == null) {
                     getView().showAllPost(listPost);
@@ -49,11 +53,15 @@ public class HomePresenterImpl extends BasePresentermpl<HomeView> implements Hom
     }
 
     public void deletePost(Post post) {
+        if (getView() == null)
+            return;
         getView().showLoadingDialog();
 
         postInteractor.deletePost(post, new PostInteractor.DeletePostCallback() {
             @Override
             public void listPost(Exception e) {
+                if (getView() == null)
+                    return;
                 getView().hideLoadingDialog();
 
                 if (e != null) {

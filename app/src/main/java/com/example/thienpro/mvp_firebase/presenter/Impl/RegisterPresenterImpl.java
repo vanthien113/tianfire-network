@@ -21,6 +21,8 @@ public class RegisterPresenterImpl extends BasePresentermpl<RegisterView> implem
         userInteractor.register(email, password, name, address, sex, new UserInteractor.RegisterCheckCallback() {
             @Override
             public void checker(Exception checker) {
+                if (getView() == null)
+                    return;
                 if (checker == null) {
                     getView().navigationToVerifiEmail();
                 } else {

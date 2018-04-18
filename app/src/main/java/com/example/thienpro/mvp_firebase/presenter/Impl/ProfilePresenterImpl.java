@@ -76,10 +76,14 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
 
     @Override
     public void getUser() {
+        if (getView() == null)
+            return;
         getView().showLoadingDialog();
         userInteractor.getUser(new UserInteractor.GetUserCallback() {
             @Override
             public void getUser(DatabaseError error, User user) {
+                if (getView() == null)
+                    return;
                 getView().hideLoadingDialog();
                 if (error != null) {
                     getView().showDatabaseError(error);
@@ -93,10 +97,14 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
 
     @Override
     public void deletePost(Post post) {
+        if (getView() == null)
+            return;
         getView().showLoadingDialog();
         postInteractor.deletePost(post, new PostInteractor.DeletePostCallback() {
             @Override
             public void listPost(Exception e) {
+                if (getView() == null)
+                    return;
                 getView().hideLoadingDialog();
                 if (e != null) {
                     getView().showExceptionError(e);
@@ -130,10 +138,14 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
     }
 
     private void changeAvatar(final Uri uri) {
+        if (getView() == null)
+            return;
         getView().showLoading();
         userInteractor.addAvatar(uri, new UserInteractor.AddAvatarCallback() {
             @Override
             public void addAvatar(Exception e, String uri) {
+                if (getView() == null)
+                    return;
                 getView().hideLoading();
                 if (e != null) {
                     getView().showExceptionError(e);
@@ -145,10 +157,14 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
     }
 
     private void changeCover(final Uri uri) {
+        if (getView() == null)
+            return;
         getView().showLoading();
         userInteractor.addCover(uri, new UserInteractor.AddCoverCallback() {
             @Override
             public void addCover(Exception e, String uri) {
+                if (getView() == null)
+                    return;
                 getView().hideLoading();
                 if (e != null) {
                     getView().showExceptionError(e);

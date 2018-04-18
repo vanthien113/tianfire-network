@@ -17,11 +17,15 @@ public class PicturePresenterImpl extends BasePresentermpl<PictureView> implemen
 
     @Override
     public void getPicture(String userId) {
+        if (getView() == null)
+            return;
         getView().showLoadingDialog();
 
         postInteractor.getPicture(userId, new PostInteractor.GetPictureCallback() {
             @Override
             public void getPicture(DatabaseError e, ArrayList<String> listPicture) {
+                if (getView() == null)
+                    return;
                 getView().hideLoadingDialog();
                 if (e != null) {
                     getView().showDatabaseError(e);

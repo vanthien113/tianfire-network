@@ -32,11 +32,15 @@ public class PostPresenterImpl extends BasePresentermpl<PostView> implements Pos
 
     @Override
     public void newPost(String content) {
+        if (getView() == null)
+            return;
         getView().showLoadingDialog();
 
         postInteractor.writeNewPost(content, filePath, new PostInteractor.PostCallback() {
             @Override
             public void postListener(Exception e) {
+                if (getView() == null)
+                    return;
                 getView().hideLoadingDialog();
                 if (e != null) {
                     getView().showExceptionError(e);

@@ -22,11 +22,15 @@ public class FriendProfilePresenterImpl extends BasePresentermpl<FriendProfileVi
 
     @Override
     public void getFriendInfomation(String userId) {
+        if (getView() == null)
+            return;
         getView().showLoadingDialog();
 
         userInteractor.getFriendInfomation(userId, new UserInteractor.FriendInfomationCallback() {
             @Override
             public void friendInfomation(DatabaseError e, User user) {
+                if (getView() == null)
+                    return;
                 getView().hideLoadingDialog();
                 if (e != null) {
                     getView().showDatabaseError(e);
@@ -40,10 +44,14 @@ public class FriendProfilePresenterImpl extends BasePresentermpl<FriendProfileVi
 
     @Override
     public void getFriendPost(String userId) {
+        if (getView() == null)
+            return;
         getView().showLoadingDialog();
         postInteractor.getFriendPost(userId, new PostInteractor.FriendPostCallback() {
             @Override
             public void friendPost(DatabaseError e, ArrayList<Post> post) {
+                if (getView() == null)
+                    return;
                 getView().hideLoadingDialog();
                 if (e != null) {
                     getView().showDatabaseError(e);

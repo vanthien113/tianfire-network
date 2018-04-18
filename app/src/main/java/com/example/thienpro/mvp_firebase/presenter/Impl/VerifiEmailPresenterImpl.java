@@ -21,6 +21,8 @@ public class VerifiEmailPresenterImpl extends BasePresentermpl<VerifiEmailView> 
         userInteractor.verifiEmail(new UserInteractor.VerifiEmailCheckCallback() {
             @Override
             public void checker(Exception checker, String email) {
+                if (getView() == null)
+                    return;
                 if (checker == null && email == null) {
                     getView().navigationToHome();
                 } else if (checker == null && email != null) {

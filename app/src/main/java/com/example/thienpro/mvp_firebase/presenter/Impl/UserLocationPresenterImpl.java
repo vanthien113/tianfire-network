@@ -28,8 +28,10 @@ public class UserLocationPresenterImpl extends BasePresentermpl<UserLocationView
                 interactor.getLocation(userId, new LocationInteractor.GetLocationCallback() {
                     @Override
                     public void getLocation(DatabaseError e, UserLocation location) {
+                        if (getView() == null)
+                            return;
                         if (e != null) {
-
+                            getView().showDatabaseError(e);
                         } else {
                             getView().showUserLocation(location);
                         }

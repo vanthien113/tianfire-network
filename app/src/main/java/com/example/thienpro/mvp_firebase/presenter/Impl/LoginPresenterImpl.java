@@ -20,6 +20,8 @@ public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements L
         userInteractor.signedInCheck(new UserInteractor.LoggedInCheckCallback() {
             @Override
             public void checker(boolean checker) {
+                if (getView() == null)
+                    return;
                 getView().hideLoadingDialog();
                 if (checker) {
                     getView().navigationToHome();
@@ -31,11 +33,15 @@ public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements L
     }
 
     public void onSignIn(String email, String password) {
+        if (getView() == null)
+            return;
         getView().showLoadingDialog();
 
         userInteractor.sigIn(email, password, new UserInteractor.LoginCheckCallback() {
             @Override
             public void checker(boolean checker, Exception e) {
+                if (getView() == null)
+                    return;
                 getView().hideLoadingDialog();
                 if (checker) {
                     getView().navigationToHome();
@@ -48,11 +54,15 @@ public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements L
 
     @Override
     public void forgotPassword(final String email) {
+        if (getView() == null)
+            return;
         getView().showLoadingDialog();
 
         userInteractor.forgotPassword(email, new UserInteractor.ChangePasswordCallback() {
             @Override
             public void changePasswordCallback(Exception e) {
+                if (getView() == null)
+                    return;
                 getView().hideLoadingDialog();
                 if (e != null) {
                     getView().showExceptionError(e);

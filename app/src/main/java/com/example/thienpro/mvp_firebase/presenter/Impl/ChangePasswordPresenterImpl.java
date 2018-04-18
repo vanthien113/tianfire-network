@@ -14,10 +14,13 @@ public class ChangePasswordPresenterImpl extends BasePresentermpl<ChangePassword
 
     @Override
     public void changePassword(String password) {
-        getView().showLoadingDialog();
+        if (getView() != null)
+            getView().showLoadingDialog();
         userInteractor.changePassword(password, new UserInteractor.ChangePasswordCallback() {
             @Override
             public void changePasswordCallback(Exception e) {
+                if (getView() == null)
+                    return;
                 getView().hideLoadingDialog();
                 if (e != null) {
                     getView().showExceptionError(e);

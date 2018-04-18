@@ -29,11 +29,15 @@ public class EditInfoPresenterImpl extends BasePresentermpl<EditInfoView> implem
 
     @Override
     public void updateUser(final String name, final String address, final boolean sex) {
+        if (getView() == null)
+            return;
         getView().showLoadingDialog();
 
         userInteractor.updateUser(name, address, sex, new UserInteractor.UpdateUserCallback() {
             @Override
             public void updateUser(Exception e) {
+                if (getView() == null)
+                    return;
                 getView().hideLoadingDialog();
                 if (e != null) {
                     getView().showExceptionError(e);

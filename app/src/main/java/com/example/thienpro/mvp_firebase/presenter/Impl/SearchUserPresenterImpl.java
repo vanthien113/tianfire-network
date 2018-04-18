@@ -20,6 +20,8 @@ public class SearchUserPresenterImpl extends BasePresentermpl<SearchUserView> im
 
     @Override
     public void search(String useName) {
+        if (getView() == null)
+            return;
         if (TextUtils.isEmpty(useName)) {
             getView().showUserSearched(null);
             return;

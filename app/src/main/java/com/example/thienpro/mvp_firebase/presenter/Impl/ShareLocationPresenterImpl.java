@@ -60,11 +60,12 @@ public class ShareLocationPresenterImpl extends BasePresentermpl<ShareLocationVi
                 locationInteractor.pushLocation(currentLocation, new LocationInteractor.PushLocationCallback() {
                     @Override
                     public void pushLocation(Exception e) {
+                        if (getView() == null)
+                            return;
                         if (e != null) {
                             getView().showExceptionError(e);
                         } else {
                             getView().showSharingMessage();
-//                            getView().showMessenger("Đang chia sẻ vị trí");
                         }
                     }
                 });
@@ -80,10 +81,14 @@ public class ShareLocationPresenterImpl extends BasePresentermpl<ShareLocationVi
 
     @Override
     public void getListLocation() {
+        if (getView() == null)
+            return;
         getView().showLoadingDialog();
         locationInteractor.getListLocation(new LocationInteractor.GetListLocationCallback() {
             @Override
             public void listLocation(ArrayList<UserLocation> locations, DatabaseError e) {
+                if (getView() == null)
+                    return;
                 getView().hideLoadingDialog();
                 if (e != null) {
                     getView().showDatabaseError(e);
