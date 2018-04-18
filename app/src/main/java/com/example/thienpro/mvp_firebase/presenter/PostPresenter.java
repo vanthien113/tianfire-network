@@ -1,5 +1,6 @@
 package com.example.thienpro.mvp_firebase.presenter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
@@ -13,7 +14,7 @@ import com.example.thienpro.mvp_firebase.view.bases.BasePresenter;
 public interface PostPresenter extends BasePresenter<PostView>{
     void newPost(String content);
 
-    void onActivityResult(int requestCode, int resultCode, Intent data);
+    void onActivityResult(Context context, int requestCode, int resultCode, Intent data);
 
     void deleteImage();
 }

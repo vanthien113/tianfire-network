@@ -90,7 +90,7 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        presenter.onActivityResult(requestCode, resultCode, data);
+        presenter.onActivityResult(this, requestCode, resultCode, data);
     }
 
     @Override

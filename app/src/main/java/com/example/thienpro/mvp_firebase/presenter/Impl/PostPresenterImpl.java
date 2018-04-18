@@ -1,5 +1,6 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +10,7 @@ import com.esafirm.imagepicker.model.Image;
 import com.example.thienpro.mvp_firebase.model.Impl.PostInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.presenter.PostPresenter;
+import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
 import com.example.thienpro.mvp_firebase.view.PostView;
 import com.example.thienpro.mvp_firebase.view.activity.PostActivity;
 import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
@@ -52,13 +54,13 @@ public class PostPresenterImpl extends BasePresentermpl<PostView> implements Pos
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(Context context, int requestCode, int resultCode, Intent data) {
         if (requestCode == PostActivity.REQUEST_CODE_IMAGE && resultCode == RESULT_OK && data != null) {
             List<Image> images = data.getParcelableArrayListExtra("selectedImages");
             if (images != null && images.size() > 0) {
                 Image image = images.get(0);
 
-                filePath = Uri.fromFile(new File(image.getPath()));
+                filePath = SHBitmapHelper.getUriAndCompressBitmap(context, image.getPath());
                 Bitmap bitmap = BitmapFactory.decodeFile(image.getPath());
 
                 getView().showImageBitmap(bitmap);

@@ -1,5 +1,6 @@
 package com.example.thienpro.mvp_firebase.presenter;
 
+import android.content.Context;
 import android.content.Intent;
 
 import com.example.thienpro.mvp_firebase.model.entity.Post;
@@ -17,5 +18,5 @@ public interface ProfilePresenter extends BasePresenter<ProfileView> {
 
     void deletePost(Post post);
 
-    void onActivityResult(int requestCode, int resultCode, Intent data);
+    void onActivityResult(Context context, int requestCode, int resultCode, Intent data);
 }

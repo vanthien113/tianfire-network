@@ -1,5 +1,6 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
@@ -11,12 +12,12 @@ import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.ProfilePresenter;
+import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
 import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
 import com.example.thienpro.mvp_firebase.view.fragment.ProfileFragment;
 import com.google.firebase.database.DatabaseError;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,13 +118,13 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(Context context, int requestCode, int resultCode, Intent data) {
         if (requestCode == ProfileFragment.REQUEST_CHANGE_AVATAR && resultCode == RESULT_OK && data != null) {
             List<Image> images = data.getParcelableArrayListExtra("selectedImages");
             if (images != null && images.size() > 0) {
                 Image image = images.get(0);
 
-                changeAvatar(Uri.fromFile(new File(image.getPath())));
+                changeAvatar(SHBitmapHelper.getUriAndCompressBitmap(context, image.getPath()));
             }
             return;
         }
@@ -132,7 +133,7 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
             if (images != null && images.size() > 0) {
                 Image image = images.get(0);
 
-                changeCover(Uri.fromFile(new File(image.getPath())));
+                changeCover(SHBitmapHelper.getUriAndCompressBitmap(context, image.getPath()));
             }
         }
     }

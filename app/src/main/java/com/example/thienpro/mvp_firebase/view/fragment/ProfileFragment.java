@@ -160,7 +160,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        presenter.onActivityResult(requestCode, resultCode, data);
+        presenter.onActivityResult(getContext(), requestCode, resultCode, data);
     }
 
     @Override
