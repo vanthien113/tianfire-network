@@ -27,11 +27,11 @@ android {
 }
 
 dependencies {
-    compile supportDependencies.dagger2
-    provided supportDependencies.jsr250
+    implementation supportDependencies.dagger2
+    compileOnly supportDependencies.jsr250
     annotationProcessor supportDependencies.dagger2Compiler
 
-    compile 'com.google.code.gson:gson:2.8.1'
+    implementation 'com.google.code.gson:gson:2.8.1'
 
     implementation 'com.android.support:design:26.1.0'
     implementation 'com.google.firebase:firebase-database:11.6.0'
@@ -50,7 +50,8 @@ dependencies {
     implementation "com.google.android.gms:play-services:11.6.0"
 //    implementation "com.google.android.gms:play-services-location:11.6.0"
 //    compile 'com.android.support:multidex:1.0.1'
-    compile 'com.android.support:multidex:1.0.0'
+    implementation 'com.android.support:multidex:1.0.0'
+    implementation 'com.karumi:dexter:4.2.0'
 
 
 }

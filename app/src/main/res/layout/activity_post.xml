@@ -37,8 +37,7 @@
                     android:layout_width="@dimen/witdh_small"
                     android:layout_height="@dimen/height_small"
                     android:onClick="@{()->event.onInsertImageClick()}"
-                    android:src="@drawable/ic_camera"
-                    android:tint="@color/colorBlueLight"
+                    android:src="@drawable/ic_take_picture"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -63,7 +62,7 @@
                     android:layout_height="@dimen/height_small"
                     android:layout_marginRight="@dimen/space_normal"
                     android:onClick="@{()->event.onPostClick()}"
-                    android:src="@drawable/ic_up"
+                    android:src="@drawable/ic_complete"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

@@ -5,7 +5,6 @@ import android.content.Context;
 import com.example.thienpro.mvp_firebase.ProjectApplication;
 import com.example.thienpro.mvp_firebase.di.module.AppModule;
 import com.example.thienpro.mvp_firebase.di.module.CommonModule;
-import com.example.thienpro.mvp_firebase.manager.LocationManager;
 import com.example.thienpro.mvp_firebase.manager.PostManager;
 import com.example.thienpro.mvp_firebase.manager.UserManager;
 
@@ -33,6 +32,4 @@ public interface AppComponent {
     CommonComponent getCommonComponent();
 
     PostManager getPostManager();
-
-    LocationManager getLocationManager();
 }

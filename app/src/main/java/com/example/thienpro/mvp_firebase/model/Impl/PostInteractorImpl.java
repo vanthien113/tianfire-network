@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
+import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -273,14 +274,8 @@ public class PostInteractorImpl implements PostInteractor {
                     String id = (String) map.get(ID);
                     String image = (String) map.get(IMAGE);
 
-                    if (userId != null) {
-                        if (userId.equals(id)) {
-                            listPicture.add(image);
-                        }
-                    } else {
-                        if (id.equals(user.getUid()) && !TextUtils.isEmpty(image)) {
-                            listPicture.add(image);
-                        }
+                    if (userId.equals(id) && !TextUtils.isEmpty(image)) {
+                        listPicture.add(image);
                     }
                 }
 

@@ -3,11 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
-        <variable
-            name="data"
-            type="com.example.thienpro.mvp_firebase.model.entity.User" />
-
         <variable
             name="event"
             type="com.example.thienpro.mvp_firebase.view.FriendProfileView" />
@@ -18,22 +13,14 @@
         android:layout_height="match_parent"
         android:background="@color/colorGray">
 
-        <TextView
-            android:id="@+id/textView4"
+        <com.example.thienpro.mvp_firebase.ultils.widget.Topbar
+            android:id="@+id/tb_profile"
             android:layout_width="0dp"
-            android:layout_height="@dimen/height_normal"
+            android:layout_height="wrap_content"
             android:background="@color/colorGray"
-            android:elevation="@dimen/elevation_normal"
-            android:gravity="center"
-            android:padding="@dimen/space_normal"
-            android:text="@{data.name}"
-            android:textAlignment="center"
-            android:textSize="@dimen/text_size_xlarge"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_profile"
@@ -43,6 +30,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintTop_toBottomOf="@+id/tb_profile" />
     </android.support.constraint.ConstraintLayout>
 </layout>

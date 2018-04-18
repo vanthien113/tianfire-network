@@ -8,6 +8,7 @@ import android.view.View;
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ItemPictureBinding;
 import com.example.thienpro.mvp_firebase.ultils.DownloadUltil;
+import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
 import com.example.thienpro.mvp_firebase.view.ItemPictureView;
 

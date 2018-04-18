@@ -45,8 +45,7 @@ public class LocalUserManager implements UserManager {
 
     @Override
     public void logout() {
-//        sharedPreferences.edit().putString("token", null).apply();
-
+        sharedPreferences.edit().putString("user", "").apply();
     }
 
     @Override

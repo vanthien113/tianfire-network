@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
+import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -378,6 +379,7 @@ public class UserInteractorImpl implements UserInteractor {
 
     @Override
     public void signedInCheck(LoggedInCheckCallback loginCheck) {
+        users = FirebaseAuth.getInstance().getCurrentUser();
         if (users != null) {
             users.reload();
             if (users.isEmailVerified()) {
@@ -390,13 +392,12 @@ public class UserInteractorImpl implements UserInteractor {
 
     @Override
     public void getUser(final GetUserCallback callback, boolean loadUser) {
-        users = mAuth.getCurrentUser();
+        users = FirebaseAuth.getInstance().getCurrentUser();
 
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-//                currentUser.setUser(user);
                 callback.getUser(null, user);
             }
 
@@ -430,8 +431,7 @@ public class UserInteractorImpl implements UserInteractor {
     }
 
     @Override
-    public void logOut(LogoutCheckCallback callback) {
+    public void logOut() {
         FirebaseAuth.getInstance().signOut();
-        callback.checker(true);
     }
 }

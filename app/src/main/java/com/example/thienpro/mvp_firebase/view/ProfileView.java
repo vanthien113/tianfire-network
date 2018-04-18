@@ -22,4 +22,6 @@ public interface ProfileView extends BaseView {
     void showDeleteComplete();
 
     void onUserUpdated();
+
+    void onSearchClick();
 }

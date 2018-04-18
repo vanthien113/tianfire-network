@@ -27,10 +27,6 @@ public interface UserInteractor {
         void checker(Exception checker, String email);
     }
 
-    interface LogoutCheckCallback {
-        void checker(boolean checker);
-    }
-
     interface GetUserCallback {
         void getUser(DatabaseError error, User user);
     }
@@ -63,7 +59,7 @@ public interface UserInteractor {
 
     void signedInCheck(LoggedInCheckCallback callback);
 
-    void logOut(LogoutCheckCallback callback);
+    void logOut();
 
     void getUser(GetUserCallback callback, boolean loadUser);
 

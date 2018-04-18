@@ -7,26 +7,37 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserLocation implements Serializable {
-    private String userName;
-    private String userId;
+    private String name;
+    private String id;
     private double lng;
     private double lat;
-    private boolean status;
+    private String time;
 
-    public String getUserName() {
-        return userName;
+    public UserLocation() {
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public UserLocation(String name, String id, double lng, double lat, String time) {
+        this.name = name;
+        this.id = id;
+        this.lng = lng;
+        this.lat = lat;
+        this.time = time;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getName() {
+        return name;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public double getLng() {
@@ -45,20 +56,12 @@ public class UserLocation implements Serializable {
         this.lat = lat;
     }
 
-    public boolean isStatus() {
-        return status;
+    public String getTime() {
+        return time;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public UserLocation(String userName, String userId, double lng, double lat, boolean status) {
-        this.userName = userName;
-        this.userId = userId;
-        this.lng = lng;
-        this.lat = lat;
-        this.status = status;
+    public void setTime(String time) {
+        this.time = time;
     }
 
     @Exclude
@@ -66,9 +69,9 @@ public class UserLocation implements Serializable {
         HashMap<String, Object> result = new HashMap<>();
         result.put("lng", lng);
         result.put("lat", lat);
-        result.put("status", status);
-        result.put("name", userName);
-        result.put("id", userId);
+        result.put("time", time);
+        result.put("name", name);
+        result.put("id", id);
         return result;
     }
 }

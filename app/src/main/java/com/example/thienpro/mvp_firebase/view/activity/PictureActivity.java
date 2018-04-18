@@ -3,6 +3,7 @@ package com.example.thienpro.mvp_firebase.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
+import android.view.View;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityPictureBinding;
@@ -24,7 +25,7 @@ public class PictureActivity extends BaseActivity<ActivityPictureBinding> implem
     public static void startActivity(Context context, String userId) {
         Intent intent = new Intent(context, PictureActivity.class);
         intent.putExtra(USER_ID, userId);
-        context.startActivity(new Intent(context, PictureActivity.class));
+        context.startActivity(intent);
     }
 
     @Override
@@ -41,6 +42,13 @@ public class PictureActivity extends BaseActivity<ActivityPictureBinding> implem
         getBinding().setEvent(this);
 
         onChangeViewTypeClick();
+
+        getBinding().tbPicture.getImageBack().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.example.thienpro.mvp_firebase.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityRegisterBinding;
@@ -47,6 +48,13 @@ public class RegisterActivity extends BaseActivity<ActivityRegisterBinding> impl
         name = getIntent().getStringExtra(NAME);
         address = getIntent().getStringExtra(ADDRESS);
         sex = getIntent().getBooleanExtra(SEX, false);
+
+        getBinding().tbRegister.getImageBack().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override

@@ -13,25 +13,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/tl_home"
+        <com.example.thienpro.mvp_firebase.ultils.widget.Topbar
+            android:id="@+id/tb_location"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/height_normal"
-            android:background="@color/colorGray"
-            android:elevation="@dimen/elevation_normal"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="Chia sẻ vị trí"
-                android:textAlignment="center"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            app:setTitle="Chia sẻ vị trí" />
 
         <fragment
             android:id="@+id/map"
@@ -41,16 +29,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tl_home" />
+            app:layout_constraintTop_toBottomOf="@+id/tb_location" />
 
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:layout_marginBottom="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
             android:onClick="@{()->event.onSendToMapClick()}"
-            android:src="@drawable/ic_rada"
+            android:src="@drawable/ic_direction"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

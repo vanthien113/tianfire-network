@@ -30,37 +30,37 @@
                 android:id="@+id/tv_editinfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/space_large"
                 android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/space_large"
                 android:text="@string/chinh_sua_thong_tin"
                 android:textSize="@dimen/text_size_large" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:onClick="@{()->event.onChangePasswordClick()}">
 
             <ImageView
                 android:layout_width="@dimen/witdh_small"
                 android:layout_height="@dimen/height_small"
                 android:layout_marginLeft="@dimen/space_large"
-                android:src="@drawable/ic_key" />
+                android:src="@drawable/ic_lock" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/space_large"
                 android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/space_large"
                 android:text="Thay đổi mật khẩu"
                 android:textSize="@dimen/text_size_large" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:onClick="@{()->event.onAppSettingClick()}">
 
             <ImageView
@@ -68,22 +68,22 @@
                 android:layout_width="@dimen/witdh_small"
                 android:layout_height="@dimen/height_small"
                 android:layout_marginLeft="@dimen/space_large"
-                android:src="@drawable/ic_setting" />
+                android:src="@drawable/ic_share" />
 
             <TextView
                 android:id="@+id/tv_logout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/space_large"
                 android:layout_gravity="center"
-                android:text="Cài đặt ứng dụng"
+                android:layout_marginLeft="@dimen/space_large"
+                android:text="Chia sẻ vị trí"
                 android:textSize="@dimen/text_size_large" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:onClick="@{()->event.onLogout()}">
 
             <ImageView
@@ -91,14 +91,14 @@
                 android:layout_width="@dimen/witdh_small"
                 android:layout_height="@dimen/height_small"
                 android:layout_marginLeft="@dimen/space_large"
-                android:src="@drawable/ic_logout_1" />
+                android:src="@drawable/ic_logout" />
 
             <TextView
                 android:id="@+id/tv_changeAvatar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/space_large"
                 android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/space_large"
                 android:text="@string/dang_xuat"
                 android:textSize="@dimen/text_size_large" />
 

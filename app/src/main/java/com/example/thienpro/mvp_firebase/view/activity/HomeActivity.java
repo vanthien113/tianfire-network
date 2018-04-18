@@ -1,5 +1,6 @@
 package com.example.thienpro.mvp_firebase.view.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 
@@ -9,6 +10,13 @@ import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeFragmentPagerAdapter;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 import com.example.thienpro.mvp_firebase.view.listener.HomeNavigationListener;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+
+import java.util.List;
 
 public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements HomeNavigationListener {
     public static void startActiviry(Context context) {
@@ -26,9 +34,40 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements H
         getBinding().vpHome.setAdapter(new HomeFragmentPagerAdapter(getSupportFragmentManager()));
         getBinding().tlHome.getTabAt(0).setIcon(R.drawable.ic_home);
         getBinding().tlHome.getTabAt(1).setIcon(R.drawable.ic_profile);
-        getBinding().tlHome.getTabAt(2).setIcon(R.drawable.ic_menu);
+        getBinding().tlHome.getTabAt(2).setIcon(R.drawable.ic_setting);
         getBinding().vpHome.setCurrentItem(1);
         getBinding().vpHome.setOffscreenPageLimit(3);
+
+        requestPermission();
+    }
+
+    private void requestPermission() {
+        Dexter.withActivity(this)
+                .withPermissions(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        if (report.areAllPermissionsGranted()) {
+                            // do you work now
+
+                        }
+
+                        // check for permanent denial of any permission
+                        if (report.isAnyPermissionPermanentlyDenied()) {
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                })
+                .onSameThread()
+                .check();
     }
 
     @Override
@@ -83,7 +122,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements H
 
     @Override
     public void navigationToAppSettingActivity() {
-        AppSettingActivity.startActivity(this);
+        ShareLocationActivity.startActivity(this);
     }
 
     @Override
@@ -95,5 +134,10 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements H
     @Override
     public void navigationToEditInfoActivity() {
         EditInfoActivity.startActivity(this);
+    }
+
+    @Override
+    public void navigationToSearchActivity() {
+        SearchUserActivity.startActivity(this);
     }
 }

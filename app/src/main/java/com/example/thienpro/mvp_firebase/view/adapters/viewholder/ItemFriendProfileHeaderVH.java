@@ -21,6 +21,5 @@ public class ItemFriendProfileHeaderVH extends ItemProfileHeaderVH {
         binding.ivChangeAvatar.setVisibility(View.GONE);
         binding.ivChangeCover.setVisibility(View.GONE);
         binding.tvPost.setVisibility(View.GONE);
-        binding.etSearch.setVisibility(View.GONE);
     }
 }

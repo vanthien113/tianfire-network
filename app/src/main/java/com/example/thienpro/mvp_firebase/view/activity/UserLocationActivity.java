@@ -5,11 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
+import android.view.View;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityUserLocationBinding;
 import com.example.thienpro.mvp_firebase.model.entity.UserLocation;
-import com.example.thienpro.mvp_firebase.presenter.Impl.UserLocationPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.UserLocationPresenter;
 import com.example.thienpro.mvp_firebase.ultils.SHLocationManager;
 import com.example.thienpro.mvp_firebase.view.UserLocationView;
@@ -50,8 +50,15 @@ public class UserLocationActivity extends BaseActivity<ActivityUserLocationBindi
         if (getIntent() != null) {
             location = (UserLocation) getIntent().getSerializableExtra("location");
 
-            presenter.getUserLocation(location.getUserId());
+            presenter.getUserLocation(location.getId());
         }
+
+        getBinding().tbLocation.getImageBack().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     private void initMap() {
@@ -73,7 +80,7 @@ public class UserLocationActivity extends BaseActivity<ActivityUserLocationBindi
             map.clear();
             friendtLatLng = new LatLng(location.getLat(), location.getLng());
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(friendtLatLng, 15.0f));
-            map.addMarker(new MarkerOptions().position(friendtLatLng).title(location.getUserName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location)));
+            map.addMarker(new MarkerOptions().position(friendtLatLng).title(location.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location)));
         }
     }
 

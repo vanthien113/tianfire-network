@@ -62,7 +62,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:text="@{SHDateTimeFormat.changeDateFormat(data.timePost)}"
-                android:textColor="@color/colorPinkLight"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="@dimen/text_size_standard"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
                 app:layout_constraintEnd_toStartOf="@+id/ib_menu"

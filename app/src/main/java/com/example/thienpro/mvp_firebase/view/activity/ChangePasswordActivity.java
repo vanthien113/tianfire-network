@@ -3,11 +3,11 @@ package com.example.thienpro.mvp_firebase.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityChangePasswordBinding;
 import com.example.thienpro.mvp_firebase.presenter.ChangePasswordPresenter;
-import com.example.thienpro.mvp_firebase.presenter.Impl.ChangePasswordPresenterImpl;
 import com.example.thienpro.mvp_firebase.view.ChangePasswordView;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 
@@ -28,6 +28,13 @@ public class ChangePasswordActivity extends BaseActivity<ActivityChangePasswordB
         presenter = getAppComponent().getCommonComponent().getChangePasswordPresenter();
         presenter.attachView(this);
         getBinding().setEvent(this);
+
+        getBinding().tbChangePass.getImageBack().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override

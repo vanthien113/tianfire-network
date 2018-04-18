@@ -2,6 +2,7 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
@@ -48,6 +49,13 @@ public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> impl
         if (userManager.getUser().getSex())
             getBinding().rbNam.setChecked(true);
         else getBinding().rbNu.setChecked(true);
+
+        getBinding().tbEditInfo.getImageBack().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override

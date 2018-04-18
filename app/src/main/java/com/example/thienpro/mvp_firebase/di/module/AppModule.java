@@ -69,9 +69,4 @@ public class AppModule {
         return new LocalPostManager();
     }
 
-    @Provides
-    @Singleton
-    public LocationManager providesLocationManager(SharedPreferences sharedPreferences) {
-        return new LocalLocationManager(sharedPreferences);
-    }
 }

@@ -34,13 +34,8 @@ public class VerifiEmailPresenterImpl extends BasePresentermpl<VerifiEmailView> 
 
     @Override
     public void logOut() {
-        userInteractor.logOut(new UserInteractor.LogoutCheckCallback() {
-            @Override
-            public void checker(boolean checker) {
-                if (checker) {
-                    getView().navigationToLogin();
-                }
-            }
-        });
+        userInteractor.logOut();
+        getView().navigationToLogin();
+
     }
 }

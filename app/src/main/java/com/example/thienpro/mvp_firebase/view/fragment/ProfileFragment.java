@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.example.thienpro.mvp_firebase.R;
@@ -67,6 +68,31 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
                 presenter.loadPost();
             }
         });
+
+        getBinding().setEvent(this);
+
+        getBinding().rvProfile.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+//                broadCastScroll();
+                RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(0);
+                if (holder != null && holder.itemView != null) {
+                    float fy = holder.itemView.getY();
+                    getBinding().etSearch.setTranslationY(fy/3);
+
+                }
+            }
+        });
+
+        getBinding().etSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean focused) {
+                if (focused) {
+                    view.setTranslationY(0f);
+                }
+            }
+        });
     }
 
     @Override
@@ -100,7 +126,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
 
     @Override
     public void onShowListPictureClick() {
-        navigationListener.navigationToPictureActivity(null);
+        navigationListener.navigationToPictureActivity(userManager.getCurrentUser().getId());
     }
 
     @Override
@@ -127,6 +153,11 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
     @Override
     public void onUserUpdated() {
         presenter.loadPost();
+    }
+
+    @Override
+    public void onSearchClick() {
+        navigationListener.navigationToSearchActivity();
     }
 
     @Override

@@ -1,19 +1,19 @@
 package com.example.thienpro.mvp_firebase.di.component;
 
 import com.example.thienpro.mvp_firebase.di.module.CommonModule;
-import com.example.thienpro.mvp_firebase.presenter.AppSettingPresenter;
 import com.example.thienpro.mvp_firebase.presenter.ChangePasswordPresenter;
 import com.example.thienpro.mvp_firebase.presenter.EditInfoPresenter;
 import com.example.thienpro.mvp_firebase.presenter.EditPostPresenter;
 import com.example.thienpro.mvp_firebase.presenter.FriendProfilePresenter;
 import com.example.thienpro.mvp_firebase.presenter.HomePresenter;
-import com.example.thienpro.mvp_firebase.presenter.ListLocationPresenter;
 import com.example.thienpro.mvp_firebase.presenter.LoginPresenter;
 import com.example.thienpro.mvp_firebase.presenter.PicturePresenter;
 import com.example.thienpro.mvp_firebase.presenter.PostPresenter;
 import com.example.thienpro.mvp_firebase.presenter.ProfilePresenter;
 import com.example.thienpro.mvp_firebase.presenter.RegisterPresenter;
+import com.example.thienpro.mvp_firebase.presenter.SearchUserPresenter;
 import com.example.thienpro.mvp_firebase.presenter.SettingPresenter;
+import com.example.thienpro.mvp_firebase.presenter.ShareLocationPresenter;
 import com.example.thienpro.mvp_firebase.presenter.UserLocationPresenter;
 import com.example.thienpro.mvp_firebase.presenter.VerifiEmailPresenter;
 
@@ -30,7 +30,7 @@ public interface CommonComponent {
 
     HomePresenter getHomePresenter();
 
-    AppSettingPresenter getAppSettingPresenter();
+    ShareLocationPresenter getAppSettingPresenter();
 
     ChangePasswordPresenter getChangePasswordPresenter();
 
@@ -39,8 +39,6 @@ public interface CommonComponent {
     EditPostPresenter getEditPostPresenter();
 
     FriendProfilePresenter getFriendProfilePresenter();
-
-    ListLocationPresenter getListLocationPresenter();
 
     PicturePresenter getPicturePresenter();
 
@@ -53,4 +51,6 @@ public interface CommonComponent {
     UserLocationPresenter getUserLocationPresenter();
 
     VerifiEmailPresenter getVerifiEmailPresenter();
+
+    SearchUserPresenter getSearchUserPresenter();
 }

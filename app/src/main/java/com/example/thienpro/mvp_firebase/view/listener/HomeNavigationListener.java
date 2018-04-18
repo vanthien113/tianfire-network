@@ -18,4 +18,6 @@ public interface HomeNavigationListener {
     void navigationToLoginActivity();
 
     void navigationToEditInfoActivity();
+
+    void navigationToSearchActivity();
 }

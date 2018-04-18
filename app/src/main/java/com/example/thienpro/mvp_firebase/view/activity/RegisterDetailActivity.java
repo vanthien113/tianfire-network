@@ -3,18 +3,23 @@ package com.example.thienpro.mvp_firebase.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
-import android.widget.ArrayAdapter;
+import android.view.View;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityRegisterAddDetailBinding;
 import com.example.thienpro.mvp_firebase.view.RegisterDetailView;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 /**
  * Created by vanthien113 on 1/13/2018.
  */
 
 public class RegisterDetailActivity extends BaseActivity<ActivityRegisterAddDetailBinding> implements RegisterDetailView {
+    public static int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+
     public static void startActivity(Context context) {
         context.startActivity(new Intent(context, RegisterDetailActivity.class));
     }
@@ -27,7 +32,13 @@ public class RegisterDetailActivity extends BaseActivity<ActivityRegisterAddDeta
     @Override
     protected void init() {
         getBinding().setEvent(this);
-        getBinding().sp.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.province_arrays)));
+
+        getBinding().tbRegister.getImageBack().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override
@@ -35,7 +46,24 @@ public class RegisterDetailActivity extends BaseActivity<ActivityRegisterAddDeta
         String name = getBinding().etName.getText().toString();
 
         if (validate(name)) {
-            naviagationToRegister(name, getBinding().sp.getSelectedItem().toString(), getBinding().rbNam.isChecked());
+            naviagationToRegister(name, getBinding().tvAddress.getText().toString(), getBinding().rbNam.isChecked());
+        }
+    }
+
+    @Override
+    public void onAddressClick() {
+        try {
+            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).build(this);
+            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        } catch (GooglePlayServicesRepairableException e) {
+        } catch (GooglePlayServicesNotAvailableException e) {
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == EditInfoActivity.PLACE_AUTOCOMPLETE_REQUEST_CODE && resultCode == RESULT_OK) {
+            getBinding().tvAddress.setText(PlaceAutocomplete.getPlace(this, data).getName().toString());
         }
     }
 

@@ -2,6 +2,7 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityFriendProfileBinding;
@@ -22,7 +23,6 @@ public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBin
 
     private String userId;
     private FriendProfilePresenter presenter;
-    //    private FriendProfileAdapter_ adapter;
     private User user;
     private FriendProfileAdapter adapter;
 
@@ -50,6 +50,12 @@ public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBin
 
         getBinding().setEvent(this);
 
+        viewDataBinding.tbProfile.getImageBack().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override
@@ -119,12 +125,13 @@ public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBin
 
         getBinding().rvProfile.setLayoutManager(LayoutUltils.getLinearLayoutManager(this));
         getBinding().rvProfile.setAdapter(adapter);
+
     }
 
     @Override
     public void showUserInfomation(User user) {
         this.user = user;
-        viewDataBinding.setData(user);
+        getBinding().tbProfile.setTvTitle(user.getName());
     }
 
     @Override

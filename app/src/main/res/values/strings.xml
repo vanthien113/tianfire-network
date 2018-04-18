@@ -48,6 +48,7 @@
     <string name="tai">Tải</string>
     <string name="huy">Hủy</string>
     <string name="tai_anh_xuong_may_cua_ban">Tải ảnh xuống máy của bạn</string>
+    <string name="chia_se_lan_cuoi">Chia sẻ lần cuối:</string>
 
 
     <string-array name="province_arrays">

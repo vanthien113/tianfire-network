@@ -95,20 +95,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
-            <EditText
-                android:id="@+id/et_search"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="20dp"
-                android:hint="Tìm kiếm"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorGray"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
         <LinearLayout

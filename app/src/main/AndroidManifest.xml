@@ -17,13 +17,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity android:name=".view.activity.SearchUserActivity"/>
         <activity android:name=".view.activity.FriendProfileActivity" />
         <activity android:name=".view.activity.PictureActivity" />
         <activity android:name=".view.activity.ChangePasswordActivity" />
         <activity android:name=".view.activity.EditPostActivity" />
         <activity android:name=".view.activity.UserLocationActivity" />
-        <activity android:name=".view.activity.ListLocationActivity" />
-        <activity android:name=".view.activity.AppSettingActivity" />
+        <activity android:name=".view.activity.ShareLocationActivity" />
         <activity android:name=".view.activity.LoginActivity" />
         <activity
             android:name=".view.activity.HomeActivity"
