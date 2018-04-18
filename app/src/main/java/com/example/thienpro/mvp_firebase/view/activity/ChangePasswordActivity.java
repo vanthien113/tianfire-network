@@ -49,7 +49,7 @@ public class ChangePasswordActivity extends BaseActivity<ActivityChangePasswordB
 
     @Override
     public void showChangePasswordComplete() {
-        showToastMessage("Thay đổi mật khẩu thành công!");
+        showToastMessage(R.string.thay_doi_mat_khau_thanh_cong);
     }
 
     private boolean validate(String password, String rePassword) {

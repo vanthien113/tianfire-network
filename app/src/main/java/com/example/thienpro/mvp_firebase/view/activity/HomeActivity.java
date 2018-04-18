@@ -1,8 +1,11 @@
 package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityHomeBinding;
@@ -55,9 +58,21 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements H
                             // do you work now
 
                         }
-
                         // check for permanent denial of any permission
                         if (report.isAnyPermissionPermanentlyDenied()) {
+                            new AlertDialog.Builder(HomeActivity.this)
+                                    .setTitle("Cấp quyền ứng dụng")
+                                    .setMessage("Ứng dụng sẽ hoạt động không ổn định nếu không được cấp quyền đầy đủ!!!")
+                                    .setPositiveButton("Cấp quyền", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                                    Uri.fromParts("package", getPackageName(), null)));
+                                        }
+                                    })
+                                    .setCancelable(true)
+                                    .create()
+                                    .show();
                         }
                     }
 

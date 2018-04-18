@@ -2,13 +2,11 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
 import android.view.View;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityShareLocationBinding;
-import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.model.entity.UserLocation;
 import com.example.thienpro.mvp_firebase.presenter.ShareLocationPresenter;
 import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
@@ -39,6 +37,8 @@ public class ShareLocationActivity extends BaseActivity<ActivityShareLocationBin
         presenter.attachView(this);
         getBinding().setEvent(this);
 
+        SHLocationManager.checkLocationEnable(this);
+
         if (checked) {
             getBinding().cbLocation.setChecked(true);
         }
@@ -54,12 +54,6 @@ public class ShareLocationActivity extends BaseActivity<ActivityShareLocationBin
                 onBackPressed();
             }
         });
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        SHLocationManager.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     @Override
@@ -81,12 +75,12 @@ public class ShareLocationActivity extends BaseActivity<ActivityShareLocationBin
 
     @Override
     public void showSharingMessage() {
-        showToastMessage("Đang chia sẻ vị trí");
+        showToastMessage(R.string.dang_chia_se_vi_tri);
     }
 
     @Override
     public void showStopShareMessage() {
-        showToastMessage("Dừng chia sẻ vị tri");
+        showToastMessage(R.string.dung_chia_se_vi_tri);
     }
 
     @Override

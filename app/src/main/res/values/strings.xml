@@ -49,6 +49,9 @@
     <string name="huy">Hủy</string>
     <string name="tai_anh_xuong_may_cua_ban">Tải ảnh xuống máy của bạn</string>
     <string name="chia_se_lan_cuoi">Chia sẻ lần cuối:</string>
+    <string name="dang_chia_se_vi_tri">Đang chia sẻ vị trí</string>
+    <string name="dung_chia_se_vi_tri">Dừng chia sẻ vị tri</string>
+    <string name="thay_doi_mat_khau_thanh_cong">Thay đổi mật khẩu thành công!</string>
 
 
     <string-array name="province_arrays">

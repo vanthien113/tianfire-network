@@ -97,7 +97,7 @@ public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> impl
 
     @Override
     public void showChangeInfoComplete() {
-        showToastMessage("Cập nhật thành công!");
+        showToastMessage(R.string.cap_nhat_thanh_cong);
     }
 
     @Override
