@@ -9,7 +9,7 @@ import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.FragmentSettingBinding;
 import com.example.thienpro.mvp_firebase.presenter.SettingPresenter;
 import com.example.thienpro.mvp_firebase.view.SettingView;
-import com.example.thienpro.mvp_firebase.view.bases.BaseFragment;
+import com.example.thienpro.mvp_firebase.bases.BaseFragment;
 import com.example.thienpro.mvp_firebase.view.listener.HomeNavigationListener;
 
 /**

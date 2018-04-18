@@ -14,7 +14,7 @@ import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.ProfilePresenter;
 import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
-import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
+import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
 import com.example.thienpro.mvp_firebase.view.fragment.ProfileFragment;
 import com.google.firebase.database.DatabaseError;
 
@@ -61,9 +61,9 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
     @Override
     public void loadPost() {
         getView().showLoading();
-        postInteractor.loadPersonalPost(new PostInteractor.LoadPersonalPostCallback() {
+        postInteractor.loadPersonalPost(new PostInteractor.ListPostCallback() {
             @Override
-            public void post(DatabaseError e, ArrayList<Post> listPost) {
+            public void onFinish(DatabaseError e, ArrayList<Post> listPost) {
                 getView().hideLoading();
 
                 if (e == null) {
@@ -80,9 +80,9 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
         if (getView() == null)
             return;
         getView().showLoadingDialog();
-        userInteractor.getUser(new UserInteractor.GetUserCallback() {
+        userInteractor.getUser(new UserInteractor.UserCallback() {
             @Override
-            public void getUser(DatabaseError error, User user) {
+            public void onFinish(DatabaseError error, User user) {
                 if (getView() == null)
                     return;
                 getView().hideLoadingDialog();
@@ -101,9 +101,9 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
         if (getView() == null)
             return;
         getView().showLoadingDialog();
-        postInteractor.deletePost(post, new PostInteractor.DeletePostCallback() {
+        postInteractor.deletePost(post, new PostInteractor.ExceptionCallback() {
             @Override
-            public void listPost(Exception e) {
+            public void onFinish(Exception e) {
                 if (getView() == null)
                     return;
                 getView().hideLoadingDialog();
@@ -142,9 +142,9 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
         if (getView() == null)
             return;
         getView().showLoading();
-        userInteractor.addAvatar(uri, new UserInteractor.AddAvatarCallback() {
+        userInteractor.addAvatar(uri, new UserInteractor.StringCallback() {
             @Override
-            public void addAvatar(Exception e, String uri) {
+            public void onFinish(Exception e, String uri) {
                 if (getView() == null)
                     return;
                 getView().hideLoading();
@@ -161,9 +161,9 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
         if (getView() == null)
             return;
         getView().showLoading();
-        userInteractor.addCover(uri, new UserInteractor.AddCoverCallback() {
+        userInteractor.addCover(uri, new UserInteractor.StringCallback() {
             @Override
-            public void addCover(Exception e, String uri) {
+            public void onFinish(Exception e, String uri) {
                 if (getView() == null)
                     return;
                 getView().hideLoading();

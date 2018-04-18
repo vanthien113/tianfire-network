@@ -10,7 +10,7 @@ import com.example.thienpro.mvp_firebase.databinding.ActivityEditinfoBinding;
 import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.presenter.EditInfoPresenter;
 import com.example.thienpro.mvp_firebase.view.EditInfoView;
-import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
+import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;

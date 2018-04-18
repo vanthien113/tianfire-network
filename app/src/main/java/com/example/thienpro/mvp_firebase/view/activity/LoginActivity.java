@@ -10,7 +10,7 @@ import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityLoginBinding;
 import com.example.thienpro.mvp_firebase.presenter.LoginPresenter;
 import com.example.thienpro.mvp_firebase.view.LoginView;
-import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
+import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 
 public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements LoginView {
     private LoginPresenter presenter;

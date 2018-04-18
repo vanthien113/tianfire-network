@@ -10,7 +10,7 @@ import com.example.thienpro.mvp_firebase.model.entity.UserLocation;
 import com.example.thienpro.mvp_firebase.presenter.ShareLocationPresenter;
 import com.example.thienpro.mvp_firebase.ultils.SHLocationManager;
 import com.example.thienpro.mvp_firebase.view.ShareLocationView;
-import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
+import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
 import com.google.firebase.database.DatabaseError;
 
 import java.text.SimpleDateFormat;
@@ -59,7 +59,7 @@ public class ShareLocationPresenterImpl extends BasePresentermpl<ShareLocationVi
 
                 locationInteractor.pushLocation(currentLocation, new LocationInteractor.PushLocationCallback() {
                     @Override
-                    public void pushLocation(Exception e) {
+                    public void onFinish(Exception e) {
                         if (getView() == null)
                             return;
                         if (e != null) {
@@ -86,7 +86,7 @@ public class ShareLocationPresenterImpl extends BasePresentermpl<ShareLocationVi
         getView().showLoadingDialog();
         locationInteractor.getListLocation(new LocationInteractor.GetListLocationCallback() {
             @Override
-            public void listLocation(ArrayList<UserLocation> locations, DatabaseError e) {
+            public void onFinish(ArrayList<UserLocation> locations, DatabaseError e) {
                 if (getView() == null)
                     return;
                 getView().hideLoadingDialog();

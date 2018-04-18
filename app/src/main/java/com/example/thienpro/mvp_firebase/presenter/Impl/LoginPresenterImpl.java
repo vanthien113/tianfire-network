@@ -1,9 +1,9 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
+import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.presenter.LoginPresenter;
 import com.example.thienpro.mvp_firebase.view.LoginView;
-import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
 
 /**
  * Created by ThienPro on 11/21/2017.
@@ -17,9 +17,9 @@ public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements L
     }
 
     public void signedInCheck() {
-        userInteractor.signedInCheck(new UserInteractor.LoggedInCheckCallback() {
+        userInteractor.signedInCheck(new UserInteractor.BooleanCheckCallback() {
             @Override
-            public void checker(boolean checker) {
+            public void onFinish(boolean checker) {
                 if (getView() == null)
                     return;
                 getView().hideLoadingDialog();
@@ -37,13 +37,13 @@ public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements L
             return;
         getView().showLoadingDialog();
 
-        userInteractor.sigIn(email, password, new UserInteractor.LoginCheckCallback() {
+        userInteractor.sigIn(email, password, new UserInteractor.ExceptionCheckCallback() {
             @Override
-            public void checker(boolean checker, Exception e) {
+            public void onFinish(Exception e) {
                 if (getView() == null)
                     return;
                 getView().hideLoadingDialog();
-                if (checker) {
+                if (e == null) {
                     getView().navigationToHome();
                 } else {
                     getView().showExceptionError(e);
@@ -58,9 +58,9 @@ public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements L
             return;
         getView().showLoadingDialog();
 
-        userInteractor.forgotPassword(email, new UserInteractor.ChangePasswordCallback() {
+        userInteractor.forgotPassword(email, new UserInteractor.ExceptionCheckCallback() {
             @Override
-            public void changePasswordCallback(Exception e) {
+            public void onFinish(Exception e) {
                 if (getView() == null)
                     return;
                 getView().hideLoadingDialog();

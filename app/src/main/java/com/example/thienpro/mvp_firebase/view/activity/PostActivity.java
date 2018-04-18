@@ -10,11 +10,10 @@ import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityPostBinding;
-import com.example.thienpro.mvp_firebase.presenter.Impl.PostPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.PostPresenter;
 import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
 import com.example.thienpro.mvp_firebase.view.PostView;
-import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
+import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 
 /**
  * Created by ThienPro on 11/28/2017.

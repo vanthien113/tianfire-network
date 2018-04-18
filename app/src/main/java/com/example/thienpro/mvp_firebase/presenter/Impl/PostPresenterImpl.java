@@ -7,15 +7,13 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 
 import com.esafirm.imagepicker.model.Image;
-import com.example.thienpro.mvp_firebase.model.Impl.PostInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.presenter.PostPresenter;
 import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
 import com.example.thienpro.mvp_firebase.view.PostView;
 import com.example.thienpro.mvp_firebase.view.activity.PostActivity;
-import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
+import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
 
-import java.io.File;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -38,9 +36,9 @@ public class PostPresenterImpl extends BasePresentermpl<PostView> implements Pos
             return;
         getView().showLoadingDialog();
 
-        postInteractor.writeNewPost(content, filePath, new PostInteractor.PostCallback() {
+        postInteractor.writeNewPost(content, filePath, new PostInteractor.ExceptionCallback() {
             @Override
-            public void postListener(Exception e) {
+            public void onFinish(Exception e) {
                 if (getView() == null)
                     return;
                 getView().hideLoadingDialog();

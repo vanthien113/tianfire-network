@@ -4,7 +4,7 @@ import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.presenter.EditPostPresenter;
 import com.example.thienpro.mvp_firebase.view.EditPostView;
-import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
+import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
 
 public class EditPostPresenterImpl extends BasePresentermpl<EditPostView> implements EditPostPresenter {
     private PostInteractor postInteractor;
@@ -19,9 +19,9 @@ public class EditPostPresenterImpl extends BasePresentermpl<EditPostView> implem
             return;
         getView().showLoadingDialog();
 
-        postInteractor.editPost(post, new PostInteractor.EditPostCallback() {
+        postInteractor.editPost(post, new PostInteractor.ExceptionCallback() {
             @Override
-            public void editPost(Exception e) {
+            public void onFinish(Exception e) {
                 if (getView() == null)
                     return;
                 getView().hideLoadingDialog();

@@ -4,7 +4,7 @@ import com.example.thienpro.mvp_firebase.model.LocationInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.UserLocation;
 import com.example.thienpro.mvp_firebase.presenter.UserLocationPresenter;
 import com.example.thienpro.mvp_firebase.view.UserLocationView;
-import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
+import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.concurrent.Executors;
@@ -27,7 +27,7 @@ public class UserLocationPresenterImpl extends BasePresentermpl<UserLocationView
             public void run() {
                 interactor.getLocation(userId, new LocationInteractor.GetLocationCallback() {
                     @Override
-                    public void getLocation(DatabaseError e, UserLocation location) {
+                    public void onFinish(DatabaseError e, UserLocation location) {
                         if (getView() == null)
                             return;
                         if (e != null) {

@@ -6,7 +6,7 @@ import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.SearchUserPresenter;
 import com.example.thienpro.mvp_firebase.view.SearchUserView;
-import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
+import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;

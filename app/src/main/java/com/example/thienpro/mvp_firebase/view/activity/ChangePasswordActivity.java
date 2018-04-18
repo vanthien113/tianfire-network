@@ -9,7 +9,7 @@ import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityChangePasswordBinding;
 import com.example.thienpro.mvp_firebase.presenter.ChangePasswordPresenter;
 import com.example.thienpro.mvp_firebase.view.ChangePasswordView;
-import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
+import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 
 public class ChangePasswordActivity extends BaseActivity<ActivityChangePasswordBinding> implements ChangePasswordView {
     private ChangePasswordPresenter presenter;

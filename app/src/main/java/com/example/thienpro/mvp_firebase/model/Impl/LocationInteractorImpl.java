@@ -34,9 +34,6 @@ public class LocationInteractorImpl implements LocationInteractor {
     public void pushLocation(UserLocation location, final PushLocationCallback callback) {
         String userId = user.getUid();
 
-//        location.getName(location.getName());
-//        location.getId(userId);
-
         Map<String, Object> postValues = location.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/locations/" + userId, postValues);
@@ -44,12 +41,12 @@ public class LocationInteractorImpl implements LocationInteractor {
         mDatabase.updateChildren(childUpdates).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                callback.pushLocation(e);
+                callback.onFinish(e);
             }
         }).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                callback.pushLocation(null);
+                callback.onFinish(null);
             }
         });
 
@@ -57,22 +54,19 @@ public class LocationInteractorImpl implements LocationInteractor {
 
     @Override
     public void getLocation(String userId, final GetLocationCallback callback) {
-        ValueEventListener valueEventListener = new ValueEventListener() {
+        mDatabase.child(LOCATION).child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 UserLocation userLocation = dataSnapshot.getValue(UserLocation.class);
-
-                callback.getLocation(null, userLocation);
+                callback.onFinish(null, userLocation);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                callback.getLocation(databaseError, null);
-            }
-        };
+                callback.onFinish(databaseError, null);
 
-        mDatabase.child(LOCATION).child(userId).addValueEventListener(valueEventListener);
+            }
+        });
     }
 
     @Override
@@ -86,13 +80,12 @@ public class LocationInteractorImpl implements LocationInteractor {
                     UserLocation userLocation = dsp.getValue(UserLocation.class);
                     listLocation.add(userLocation);
                 }
-
-                callback.listLocation(listLocation, null);
+                callback.onFinish(listLocation, null);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                callback.listLocation(null, databaseError);
+                callback.onFinish(null, databaseError);
             }
         });
     }

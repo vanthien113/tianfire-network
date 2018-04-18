@@ -7,7 +7,6 @@ import android.text.TextUtils;
 
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
-import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -68,7 +67,7 @@ public class PostInteractorImpl implements PostInteractor {
 
     @SuppressLint("SimpleDateFormat")
     @Override
-    public void writeNewPost(final String content, final Uri filePath, final PostCallback callback) {
+    public void writeNewPost(final String content, final Uri filePath, final ExceptionCallback callback) {
         today = new Date();
         today.getDate();
         simpleDateFormat = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
@@ -86,7 +85,6 @@ public class PostInteractorImpl implements PostInteractor {
                                         @Override
                                         public void onSuccess(final Uri uri) {
                                             //Up Post with Image
-
                                             mDatabase.child(USERS).child(user.getUid()).addValueEventListener(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -99,13 +97,13 @@ public class PostInteractorImpl implements PostInteractor {
                                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<Void> task) {
-                                                                    callback.postListener(null);
+                                                                    callback.onFinish(null);
                                                                 }
                                                             }) //setValue để thêm node
                                                             .addOnFailureListener(new OnFailureListener() {
                                                                 @Override
                                                                 public void onFailure(@NonNull Exception e) {
-                                                                    callback.postListener(e);
+                                                                    callback.onFinish(e);
                                                                 }
                                                             });
                                                 }
@@ -122,7 +120,7 @@ public class PostInteractorImpl implements PostInteractor {
                                     .addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception exception) {
-                                            callback.postListener(exception);
+                                            callback.onFinish(exception);
                                         }
                                     });
                         }
@@ -130,7 +128,7 @@ public class PostInteractorImpl implements PostInteractor {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            callback.postListener(e);
+                            callback.onFinish(e);
 
                         }
                     });
@@ -147,13 +145,13 @@ public class PostInteractorImpl implements PostInteractor {
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    callback.postListener(null);
+                                    callback.onFinish(null);
                                 }
-                            }) //setValue để thêm node
+                            })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    callback.postListener(e);
+                                    callback.onFinish(e);
                                 }
                             });
                 }
@@ -167,7 +165,7 @@ public class PostInteractorImpl implements PostInteractor {
     }
 
     @Override
-    public void loadPersonalPost(final LoadPersonalPostCallback callback) {
+    public void loadPersonalPost(final ListPostCallback callback) {
         final ArrayList<Post> posts = new ArrayList<>();
 
         mDatabase.child(POSTS).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -179,12 +177,12 @@ public class PostInteractorImpl implements PostInteractor {
                         posts.add(post);
                     }
                 }
-                callback.post(null, posts);
+                callback.onFinish(null, posts);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                callback.post(databaseError, null);
+                callback.onFinish(databaseError, null);
             }
         });
     }
@@ -201,18 +199,18 @@ public class PostInteractorImpl implements PostInteractor {
                     posts.add(post);
                 }
 
-                callback.listPost(null, posts);
+                callback.onFinish(null, posts);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                callback.listPost(null, null);
+                callback.onFinish(databaseError, null);
             }
         });
     }
 
     @Override
-    public void deletePost(final Post post, final DeletePostCallback callback) {
+    public void deletePost(final Post post, final ExceptionCallback callback) {
         mDatabase.child(POSTS).child(post.getTimePost()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -222,28 +220,28 @@ public class PostInteractorImpl implements PostInteractor {
                     photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            callback.listPost(null);
+                            callback.onFinish(null);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
-                            callback.listPost(exception);
+                            callback.onFinish(exception);
                         }
                     });
                 } else {
-                    callback.listPost(null);
+                    callback.onFinish(null);
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                callback.listPost(e);
+                callback.onFinish(e);
             }
         });
     }
 
     @Override
-    public void editPost(Post post, final EditPostCallback callback) {
+    public void editPost(Post post, final ExceptionCallback callback) {
         Map<String, Object> postValues = post.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/posts/" + post.getTimePost(), postValues);
@@ -252,13 +250,13 @@ public class PostInteractorImpl implements PostInteractor {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        callback.editPost(null);
+                        callback.onFinish(null);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        callback.editPost(e);
+                        callback.onFinish(e);
                     }
                 });
     }
@@ -280,18 +278,18 @@ public class PostInteractorImpl implements PostInteractor {
                 }
 
                 Collections.reverse(listPicture);
-                callback.getPicture(null, listPicture);
+                callback.onFinish(null, listPicture);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                callback.getPicture(databaseError, null);
+                callback.onFinish(databaseError, null);
             }
         });
     }
 
     @Override
-    public void getFriendPost(final String userId, final FriendPostCallback callback) {
+    public void getFriendPost(final String userId, final ListPostCallback callback) {
         final ArrayList<Post> listPost = new ArrayList<>();
         mDatabase.child(POSTS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -304,12 +302,12 @@ public class PostInteractorImpl implements PostInteractor {
                 }
 
                 Collections.reverse(listPost);
-                callback.friendPost(null, listPost);
+                callback.onFinish(null, listPost);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                callback.friendPost(databaseError, null);
+                callback.onFinish(databaseError, null);
             }
         });
     }

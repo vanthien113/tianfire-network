@@ -19,7 +19,7 @@ import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
 import com.example.thienpro.mvp_firebase.view.adapters.ProfileAdapter;
-import com.example.thienpro.mvp_firebase.view.bases.BaseFragment;
+import com.example.thienpro.mvp_firebase.bases.BaseFragment;
 import com.example.thienpro.mvp_firebase.view.listener.HomeNavigationListener;
 
 import java.util.ArrayList;

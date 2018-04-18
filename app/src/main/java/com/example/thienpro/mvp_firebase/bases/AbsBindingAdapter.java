@@ -1,4 +1,4 @@
-package com.example.thienpro.mvp_firebase.view.bases;
+package com.example.thienpro.mvp_firebase.bases;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;

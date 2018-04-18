@@ -9,7 +9,7 @@ import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityRegisterBinding;
 import com.example.thienpro.mvp_firebase.presenter.RegisterPresenter;
 import com.example.thienpro.mvp_firebase.view.RegisterView;
-import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
+import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 
 /**
  * Created by ThienPro on 11/9/2017.

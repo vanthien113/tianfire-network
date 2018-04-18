@@ -3,10 +3,8 @@ package com.example.thienpro.mvp_firebase.di.module;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.thienpro.mvp_firebase.manager.LocationManager;
 import com.example.thienpro.mvp_firebase.manager.PostManager;
 import com.example.thienpro.mvp_firebase.manager.UserManager;
-import com.example.thienpro.mvp_firebase.manager.impl.LocalLocationManager;
 import com.example.thienpro.mvp_firebase.manager.impl.LocalPostManager;
 import com.example.thienpro.mvp_firebase.manager.impl.LocalUserManager;
 import com.example.thienpro.mvp_firebase.model.Impl.LocationInteractorImpl;

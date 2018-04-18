@@ -6,12 +6,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.provider.Settings;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityHomeBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeFragmentPagerAdapter;
-import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
+import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 import com.example.thienpro.mvp_firebase.view.listener.HomeNavigationListener;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -61,12 +62,12 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements H
                         // check for permanent denial of any permission
                         if (report.isAnyPermissionPermanentlyDenied()) {
                             new AlertDialog.Builder(HomeActivity.this)
-                                    .setTitle("Cấp quyền ứng dụng")
-                                    .setMessage("Ứng dụng sẽ hoạt động không ổn định nếu không được cấp quyền đầy đủ!!!")
-                                    .setPositiveButton("Cấp quyền", new DialogInterface.OnClickListener() {
+                                    .setTitle(R.string.cap_quyen_ung_dung)
+                                    .setMessage(R.string.cap_quyen_message)
+                                    .setPositiveButton(R.string.cap_quyen, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-                                            startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                            startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                                                     Uri.fromParts("package", getPackageName(), null)));
                                         }
                                     })

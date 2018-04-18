@@ -52,6 +52,9 @@
     <string name="dang_chia_se_vi_tri">Đang chia sẻ vị trí</string>
     <string name="dung_chia_se_vi_tri">Dừng chia sẻ vị tri</string>
     <string name="thay_doi_mat_khau_thanh_cong">Thay đổi mật khẩu thành công!</string>
+    <string name="cap_quyen_ung_dung">Cấp quyền ứng dụng</string>
+    <string name="cap_quyen_message">Ứng dụng sẽ hoạt động không ổn định nếu không được cấp quyền đầy đủ!!!</string>
+    <string name="cap_quyen">Cấp quyền</string>
 
 
     <string-array name="province_arrays">

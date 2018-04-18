@@ -12,45 +12,29 @@ import java.util.ArrayList;
  */
 
 public interface PostInteractor {
-    interface PostCallback {
-        void postListener(Exception e);
+    interface ExceptionCallback {
+        void onFinish(Exception e);
     }
 
     interface ListPostCallback {
-        void listPost(DatabaseError e, ArrayList<Post> listPost);
-    }
-
-    interface LoadPersonalPostCallback {
-        void post(DatabaseError e, ArrayList<Post> listPost);
-    }
-
-    interface DeletePostCallback {
-        void listPost(Exception e);
-    }
-
-    interface EditPostCallback {
-        void editPost(Exception e);
+        void onFinish(DatabaseError e, ArrayList<Post> listPost);
     }
 
     interface GetPictureCallback {
-        void getPicture(DatabaseError e, ArrayList<String> listPicture);
+        void onFinish(DatabaseError e, ArrayList<String> listPicture);
     }
 
-    interface FriendPostCallback {
-        void friendPost(DatabaseError e, ArrayList<Post> post);
-    }
+    void writeNewPost(String content, Uri filePath, ExceptionCallback callback);
 
-    void writeNewPost(String content, Uri filePath, PostCallback callback);
-
-    void loadPersonalPost(LoadPersonalPostCallback callback);
+    void loadPersonalPost(ListPostCallback callback);
 
     void loadAllPost(ListPostCallback callback);
 
-    void deletePost(Post post, DeletePostCallback callback);
+    void deletePost(Post post, ExceptionCallback callback);
 
-    void editPost(Post post, EditPostCallback callback);
+    void editPost(Post post, ExceptionCallback callback);
 
     void getPicture(String userId, GetPictureCallback callback);
 
-    void getFriendPost(String userId, FriendPostCallback callback);
+    void getFriendPost(String userId, ListPostCallback callback);
 }

@@ -11,7 +11,7 @@ import com.example.thienpro.mvp_firebase.presenter.PicturePresenter;
 import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
 import com.example.thienpro.mvp_firebase.view.PictureView;
 import com.example.thienpro.mvp_firebase.view.adapters.PictureAdapter;
-import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
+import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 
 import java.util.ArrayList;
 

@@ -13,7 +13,7 @@ import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
 import com.example.thienpro.mvp_firebase.ultils.SHLocationManager;
 import com.example.thienpro.mvp_firebase.view.ShareLocationView;
 import com.example.thienpro.mvp_firebase.view.adapters.ShareLocationAdapter;
-import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
+import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 
 import java.util.ArrayList;
 

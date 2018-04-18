@@ -14,7 +14,7 @@ import com.example.thienpro.mvp_firebase.view.FriendProfileView;
 import com.example.thienpro.mvp_firebase.view.adapters.FriendProfileAdapter;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
 import com.example.thienpro.mvp_firebase.view.adapters.ProfileAdapter;
-import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
+import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 
 import java.util.ArrayList;
 
