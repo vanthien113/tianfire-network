@@ -26,8 +26,8 @@ public class PostPresenterImpl extends BasePresentermpl<PostView> implements Pos
     private PostInteractor postInteractor;
     private Uri filePath;
 
-    public PostPresenterImpl() {
-        postInteractor = new PostInteractorImpl();
+    public PostPresenterImpl(PostInteractor postInteractor) {
+        this.postInteractor = postInteractor;
     }
 
     @Override

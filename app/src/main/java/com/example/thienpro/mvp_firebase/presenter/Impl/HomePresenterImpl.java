@@ -1,15 +1,10 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
-import android.content.Context;
-
-import com.example.thienpro.mvp_firebase.model.Impl.PostInteractorImpl;
-import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
+import com.example.thienpro.mvp_firebase.manager.PostManager;
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
-import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.HomePresenter;
-import com.example.thienpro.mvp_firebase.ultils.DownloadUltil;
 import com.example.thienpro.mvp_firebase.view.HomeView;
 import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
 import com.google.firebase.database.DatabaseError;
@@ -21,38 +16,34 @@ import java.util.ArrayList;
  */
 
 public class HomePresenterImpl extends BasePresentermpl<HomeView> implements HomePresenter {
-    private PostInteractor postInteractor;
     private UserInteractor userInteractor;
-    private Context context;
+    private PostInteractor postInteractor;
+    private PostManager postManager;
+    private PostManager.OnPostChangeListener listener = new PostManager.OnPostChangeListener() {
+        @Override
+        public void onChange() {
+            getView().reloadPost();
+        }
+    };
 
-    public HomePresenterImpl(Context context) {
-        this.context = context;
-        postInteractor = new PostInteractorImpl();
-        userInteractor = new UserInteractorImpl(context);
+    public HomePresenterImpl(UserInteractor userInteractor, PostInteractor postInteractor, PostManager postManager) {
+        this.postInteractor = postInteractor;
+        this.userInteractor = userInteractor;
+        this.postManager = postManager;
     }
 
     public void loadAllListPost() {
-        getView().showLoadingDialog();
+        getView().showLoadingPb();
 
         postInteractor.loadAllPost(new PostInteractor.ListPostCallback() {
             @Override
             public void listPost(DatabaseError e, ArrayList<Post> listPost) {
-                getView().hideLoadingDialog();
+                getView().hideLoadingPb();
                 if (e == null) {
                     getView().showAllPost(listPost);
                 } else {
                     getView().showDatabaseError(e);
                 }
-            }
-        });
-    }
-
-    @Override
-    public void currentUser() {
-        userInteractor.loadCurrentLocalUser(new UserInteractor.LoadCurrentLocalUserCallback() {
-            @Override
-            public void currentLocalUser(User user) {
-                getView().currentUser(user);
             }
         });
     }
@@ -68,7 +59,7 @@ public class HomePresenterImpl extends BasePresentermpl<HomeView> implements Hom
                 if (e != null) {
                     getView().showExceptionError(e);
                 } else {
-                    getView().reloadPost();
+                    postManager.postChange();
                     getView().showMessenger("Đã xóa");
                 }
             }
@@ -76,7 +67,14 @@ public class HomePresenterImpl extends BasePresentermpl<HomeView> implements Hom
     }
 
     @Override
-    public void downloadImage(String imageUrl) {
-        DownloadUltil.startDownload(context, imageUrl);
+    public void attachView(HomeView view) {
+        super.attachView(view);
+        postManager.addOnPostChangeListener(listener);
+    }
+
+    @Override
+    public void detach() {
+        super.detach();
+        postManager.removePostChangeListener(listener);
     }
 }

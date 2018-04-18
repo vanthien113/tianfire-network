@@ -5,23 +5,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.FragmentProfileBinding;
+import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
-import com.example.thienpro.mvp_firebase.model.entity.User;
-import com.example.thienpro.mvp_firebase.presenter.Impl.ProfilePresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.ProfilePresenter;
+import com.example.thienpro.mvp_firebase.ultils.DownloadUltil;
 import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
-import com.example.thienpro.mvp_firebase.ultils.widget.LoadingDialog;
 import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
-import com.example.thienpro.mvp_firebase.view.adapters.SearchUserAdapter;
+import com.example.thienpro.mvp_firebase.view.adapters.ProfileAdapter;
 import com.example.thienpro.mvp_firebase.view.bases.BaseFragment;
 import com.example.thienpro.mvp_firebase.view.listener.HomeNavigationListener;
 
@@ -32,16 +29,14 @@ import java.util.Collections;
  * Created by ThienPro on 11/22/2017.
  */
 
-public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implements ProfileView, HomeAdapter.ListPostMenuListener, HomeAdapter.DownloadImageListener, HomeAdapter.FriendProfileListener, SearchUserAdapter.SearchUserClickListener {
+public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implements ProfileView, HomeAdapter.ListPostMenuListener, ProfileAdapter.ItemProfileClickListener {
     public static final int REQUEST_CHANGE_AVATAR = 1;
     public static final int REQUEST_CHANGE_COVER = 2;
 
-    private HomeAdapter homeAdapter;
     private ProfilePresenter presenter;
-    private ArrayList<Post> listPost;
-    private SearchUserAdapter searchUserAdapter;
     private HomeNavigationListener navigationListener;
-    private LoadingDialog dialog;
+    private ProfileAdapter adapter;
+    private UserManager userManager;
 
     public static ProfileFragment newInstance() {
         Bundle args = new Bundle();
@@ -57,59 +52,47 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
 
     @Override
     protected void init(@Nullable View view) {
-        presenter = new ProfilePresenterImpl(getContext());
+        presenter = getAppComponent().getCommonComponent().getProfilePresenter();
         presenter.attachView(this);
 
-        dialog = new LoadingDialog(getContext());
-
-        presenter.loadPost();
-        presenter.getUser();
+        userManager = getAppComponent().getUserManager();
 
         getBinding().rvProfile.setLayoutManager(LayoutUltils.getLinearLayoutManager(getContext()));
-        getBinding().rvProfile.setNestedScrollingEnabled(false);
 
-        getBinding().setEvent(this);
+        presenter.getUser();
+        presenter.loadPost();
 
         getBinding().srlProfile.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadData();
-                getBinding().srlProfile.setRefreshing(false);
+                presenter.loadPost();
             }
         });
 
-        searchEvent();
-    }
+        getBinding().setEvent(this);
 
-    private void searchEvent() {
-        getBinding().etSearch.addTextChangedListener(new TextWatcher() {
+        getBinding().rvProfile.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+//                broadCastScroll();
+                RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(0);
+                if (holder != null && holder.itemView != null) {
+                    float fy = holder.itemView.getY();
+                    getBinding().etSearch.setTranslationY(fy/3);
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!TextUtils.isEmpty(getBinding().etSearch.getText())) {
-                    presenter.searchUser(charSequence.toString());
-                    getBinding().tvClear.setVisibility(View.VISIBLE);
-                } else {
-                    getBinding().tvClear.setVisibility(View.GONE);
-                    getBinding().rvSearch.setVisibility(View.GONE);
                 }
             }
+        });
 
+        getBinding().etSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void afterTextChanged(Editable editable) {
-
+            public void onFocusChange(View view, boolean focused) {
+                if (focused) {
+                    view.setTranslationY(0f);
+                }
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        loadData();
-        super.onResume();
     }
 
     @Override
@@ -119,51 +102,16 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
         }
     }
 
-    public void loadData() {
-        if (listPost != null) {
-            listPost.clear();
-            presenter.loadPost();
-        }
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) { // Hàm sẽ được chạy sau khi ấn sang tab Home
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            loadData();
-        }
-    }
-
     @Override
     public void onPost() {
         navigationListener.navigationToPostActivity();
     }
 
     @Override
-    public void showList(ArrayList<Post> list) {
-        Collections.reverse(list);
-        listPost = list;
-        homeAdapter = new HomeAdapter(listPost, getContext(), this, null, this, this);
-        getBinding().rvProfile.setAdapter(homeAdapter);
-    }
-
-    @Override
-    public void showSearchUser(ArrayList<User> list) {
-        if (list != null && list.size() != 0) {
-            getBinding().rvSearch.setVisibility(View.VISIBLE);
-            searchUserAdapter = new SearchUserAdapter(list, this);
-            getBinding().rvSearch.setLayoutManager(LayoutUltils.getLinearLayoutManager(getContext()));
-            getBinding().rvSearch.setAdapter(searchUserAdapter);
-        } else {
-            getBinding().rvSearch.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
-    public void showUser(User user) {
-        showAvatarChanged(user.getAvatar());
-        showCoverChanged(user.getCover());
-        getBinding().tvName.setText(user.getName());
+    public void showListPost(ArrayList<Post> listPost) {
+        Collections.reverse(listPost);
+        adapter = new ProfileAdapter(listPost, userManager.getUser(), this, this);
+        getBinding().rvProfile.setAdapter(adapter);
     }
 
     @Override
@@ -177,39 +125,19 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
     }
 
     @Override
-    public void reloadPost() {
-        loadData();
-    }
-
-    @Override
-    public void showAvatarChanged(String avatarUrl) {
-        SHBitmapHelper.bindCircularImage(getBinding().ivAvatar, avatarUrl);
-    }
-
-    @Override
-    public void showCoverChanged(String coverUrl) {
-        SHBitmapHelper.bindImage(getBinding().ivCover, coverUrl);
-    }
-
-    @Override
     public void onShowListPictureClick() {
-        navigationListener.navigationToPictureActivity(null);
+        navigationListener.navigationToPictureActivity(userManager.getCurrentUser().getId());
     }
 
     @Override
     public void showLoading() {
-        dialog.show();
+        getBinding().srlProfile.setRefreshing(true);
     }
+
 
     @Override
     public void hideLoading() {
-        dialog.dismiss();
-    }
-
-    @Override
-    public void onClearTextClick() {
-        getBinding().etSearch.setText(null);
-        getBinding().rvSearch.setVisibility(View.GONE);
+        getBinding().srlProfile.setRefreshing(false);
     }
 
     @Override
@@ -220,6 +148,16 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
     @Override
     public void showDeleteComplete() {
         showToastMessage(R.string.da_xoa);
+    }
+
+    @Override
+    public void onUserUpdated() {
+        presenter.loadPost();
+    }
+
+    @Override
+    public void onSearchClick() {
+        navigationListener.navigationToSearchActivity();
     }
 
     @Override
@@ -239,17 +177,12 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
 
     @Override
     public void onDownload(String imageUrl) {
-        presenter.downloadImage(imageUrl);
+        DownloadUltil.startDownload(getContext(), imageUrl);
     }
 
     @Override
     public void onFriendProfile(String userId) {
         navigationListener.navigationToFriendProfileActivity(userId);
-    }
-
-    @Override
-    public void userClick(User user) {
-        navigationListener.navigationToFriendProfileActivity(user.getId());
     }
 
     @Override

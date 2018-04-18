@@ -3,11 +3,11 @@ package com.example.thienpro.mvp_firebase.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityRegisterBinding;
-import com.example.thienpro.mvp_firebase.presenter.Impl.RegisterPresenterImpl;
-import com.example.thienpro.mvp_firebase.presenter.RegistrerPresenter;
+import com.example.thienpro.mvp_firebase.presenter.RegisterPresenter;
 import com.example.thienpro.mvp_firebase.view.RegisterView;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
 
@@ -16,7 +16,7 @@ import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
  */
 
 public class RegisterActivity extends BaseActivity<ActivityRegisterBinding> implements RegisterView {
-    private RegistrerPresenter presenter;
+    private RegisterPresenter presenter;
 
     private static final String NAME = "name";
     private static final String ADDRESS = "address";
@@ -42,12 +42,19 @@ public class RegisterActivity extends BaseActivity<ActivityRegisterBinding> impl
     @Override
     protected void init() {
         getBinding().setEvent(this);
-        presenter = new RegisterPresenterImpl(this);
+        presenter = getAppComponent().getCommonComponent().getRegistrerPresenter();
         presenter.attachView(this);
 
         name = getIntent().getStringExtra(NAME);
         address = getIntent().getStringExtra(ADDRESS);
         sex = getIntent().getBooleanExtra(SEX, false);
+
+        getBinding().tbRegister.getImageBack().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override

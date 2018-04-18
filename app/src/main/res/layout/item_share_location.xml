@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="event"
+            type="com.example.thienpro.mvp_firebase.view.ItemShareLocationView" />
+
+        <variable
+            name="data"
+            type="com.example.thienpro.mvp_firebase.model.entity.UserLocation" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{()->event.onShowUserLocationClick(data)}"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@{data.name}"
+            android:textColor="@color/colorBlack"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@{@string/chia_se_lan_cuoi + ' ' + data.time}" />
+    </LinearLayout>
+</layout>

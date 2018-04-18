@@ -32,7 +32,7 @@ public class FriendProfileVH extends RecyclerView.ViewHolder {
         SHStringHelper.hashTag(post.getPost(), ContextCompat.getColor(binding.getRoot().getContext(), R.color.colorGreen), binding.tvPost);
 
         SHBitmapHelper.bindImage(binding.ivImage, post.getImage());
-        SHBitmapHelper.bindCircularImage(binding.ivAvatar, post.getAvatar());
+        SHBitmapHelper.bindImage(binding.ivAvatar, post.getAvatar());
     }
 
     private void downloadImageEvent(){

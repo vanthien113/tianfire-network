@@ -1,6 +1,5 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
-import com.example.thienpro.mvp_firebase.model.Impl.PostInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.presenter.PicturePresenter;
 import com.example.thienpro.mvp_firebase.view.PictureView;
@@ -12,8 +11,8 @@ import java.util.ArrayList;
 public class PicturePresenterImpl extends BasePresentermpl<PictureView> implements PicturePresenter {
     private PostInteractor postInteractor;
 
-    public PicturePresenterImpl() {
-        this.postInteractor = new PostInteractorImpl();
+    public PicturePresenterImpl(PostInteractor postInteractor) {
+        this.postInteractor = postInteractor;
     }
 
     @Override

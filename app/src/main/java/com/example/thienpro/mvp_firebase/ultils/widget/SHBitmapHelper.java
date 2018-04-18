@@ -77,7 +77,6 @@ public class SHBitmapHelper {
     public static void bindImage(ImageView view, String imageUrl) {
         Glide.with(view.getContext())
                 .load(imageUrl)
-                .asBitmap()
                 .into(view);
     }
 

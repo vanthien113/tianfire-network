@@ -4,34 +4,68 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.example.thienpro.mvp_firebase.databinding.ItemFriendProfileBinding;
+import com.example.thienpro.mvp_firebase.databinding.ItemActivityHomeBinding;
+import com.example.thienpro.mvp_firebase.databinding.ItemProfileHeaderBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
+import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
-import com.example.thienpro.mvp_firebase.view.adapters.viewholder.FriendProfileVH;
+import com.example.thienpro.mvp_firebase.view.adapters.viewholder.HomeVH;
+import com.example.thienpro.mvp_firebase.view.adapters.viewholder.ItemFriendProfileHeaderVH;
+import com.example.thienpro.mvp_firebase.view.adapters.viewholder.ItemFriendProfilePostVH;
 
 import java.util.ArrayList;
 
-public class FriendProfileAdapter extends RecyclerView.Adapter<FriendProfileVH> {
-    private ArrayList<Post> listPost;
+public class FriendProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private final int HEADER = 0;
+    private final int POST = 1;
+    private ArrayList<Post> lisPost;
+    private User user;
+    private HomeAdapter.ListPostMenuListener listPostMenuListener;
+    private ProfileAdapter.ItemProfileClickListener listener;
 
-    public FriendProfileAdapter(ArrayList<Post> listPost) {
-        this.listPost = listPost;
+    public FriendProfileAdapter(ArrayList<Post> mLisPost, User user, HomeAdapter.ListPostMenuListener listPostMenuListener, ProfileAdapter.ItemProfileClickListener listener) {
+        this.user = user;
+        this.lisPost = mLisPost;
+        this.listPostMenuListener = listPostMenuListener;
+        this.listener = listener;
     }
 
     @Override
-    public FriendProfileVH onCreateViewHolder(ViewGroup parent, int viewType) {
-        ItemFriendProfileBinding binding = ItemFriendProfileBinding.inflate(LayoutInflater.from(parent.getContext()));
-        binding.getRoot().setLayoutParams(LayoutUltils.getRecyclerViewLayoutParams());
-        return new FriendProfileVH(binding);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == HEADER) {
+            ItemProfileHeaderBinding binding = ItemProfileHeaderBinding.inflate(LayoutInflater.from(parent.getContext()));
+            binding.getRoot().setLayoutParams(LayoutUltils.getRecyclerViewLayoutParams());
+            return new ItemFriendProfileHeaderVH(binding, listener);
+        } else if (viewType == POST) {
+            ItemActivityHomeBinding binding = ItemActivityHomeBinding.inflate(LayoutInflater.from(parent.getContext()));
+            binding.getRoot().setLayoutParams(LayoutUltils.getRecyclerViewLayoutParams());
+            return new ItemFriendProfilePostVH(binding, listPostMenuListener, null);
+        }
+
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(FriendProfileVH holder, int position) {
-        holder.bind(listPost.get(position));
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof ItemFriendProfileHeaderVH) {
+            ((ItemFriendProfileHeaderVH) holder).bind(user);
+        } else if (holder instanceof HomeVH) {
+            ((HomeVH) holder).bind(lisPost.get(position - 1));
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        switch (position) {
+            case HEADER:
+                return HEADER;
+            default:
+                return POST;
+        }
     }
 
     @Override
     public int getItemCount() {
-        return listPost == null ? 0 : listPost.size();
+        return lisPost == null ? 1 : lisPost.size() + 1;
     }
 }

@@ -6,4 +6,6 @@ package com.example.thienpro.mvp_firebase.view;
 
 public interface RegisterDetailView {
     void onNextClick();
+
+    void onAddressClick();
 }

@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.thienpro.mvp_firebase.ProjectApplication;
+import com.example.thienpro.mvp_firebase.di.component.AppComponent;
 import com.example.thienpro.mvp_firebase.ultils.widget.LoadingDialog;
 import com.google.firebase.database.DatabaseError;
 
@@ -44,6 +46,10 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment i
     protected abstract void screenPause();
 
     protected abstract void screenStart(@Nullable Bundle saveInstanceState);
+
+    public AppComponent getAppComponent() {
+        return ((ProjectApplication) getActivity().getApplication()).getAppComponent();
+    }
 
     @Nullable
     @Override

@@ -22,21 +22,17 @@ import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
  */
 
 public class HomeVH extends RecyclerView.ViewHolder implements ItemListPostView {
-    private ItemActivityHomeBinding binding;
+    protected ItemActivityHomeBinding binding;
     private PopupMenu popupMenu;
     private HomeAdapter.ListPostMenuListener listener;
     private User user;
-    private HomeAdapter.DownloadImageListener downloadImageListener;
-    private HomeAdapter.FriendProfileListener friendProfileListener;
     private Post post;
 
-    public HomeVH(ItemActivityHomeBinding binding, HomeAdapter.ListPostMenuListener listener, User user, final HomeAdapter.DownloadImageListener downloadImageListener, HomeAdapter.FriendProfileListener friendProfileListener) {
+    public HomeVH(ItemActivityHomeBinding binding, HomeAdapter.ListPostMenuListener listener, User user) {
         super(binding.getRoot());
         this.user = user;
         this.binding = binding;
         this.listener = listener;
-        this.downloadImageListener = downloadImageListener;
-        this.friendProfileListener = friendProfileListener;
 
         binding.setEvent(this);
 
@@ -61,7 +57,7 @@ public class HomeVH extends RecyclerView.ViewHolder implements ItemListPostView 
         }
 
         SHBitmapHelper.bindImage(binding.ivImage, post.getImage());
-        SHBitmapHelper.bindCircularImage(binding.ivAvatar, post.getAvatar());
+        SHBitmapHelper.bindImage(binding.ivAvatar, post.getAvatar());
     }
 
     private void downloadImageEvent() {
@@ -74,7 +70,7 @@ public class HomeVH extends RecyclerView.ViewHolder implements ItemListPostView 
                         .setPositiveButton(R.string.tai, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                downloadImageListener.onDownload(post.getImage());
+                                listener.onDownload(post.getImage());
                             }
                         })
                         .setNegativeButton(R.string.huy, null)
@@ -110,7 +106,7 @@ public class HomeVH extends RecyclerView.ViewHolder implements ItemListPostView 
 
     @Override
     public void onFriendProfileClick(Post post) {
-        friendProfileListener.onFriendProfile(post.getId());
+        listener.onFriendProfile(post.getId());
     }
 
     private void deletePost(Post post) {

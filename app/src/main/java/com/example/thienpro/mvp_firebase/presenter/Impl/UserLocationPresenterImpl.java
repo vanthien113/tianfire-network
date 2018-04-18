@@ -1,8 +1,5 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
-import android.content.Context;
-
-import com.example.thienpro.mvp_firebase.model.Impl.LocationInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.LocationInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.UserLocation;
 import com.example.thienpro.mvp_firebase.presenter.UserLocationPresenter;
@@ -18,8 +15,8 @@ public class UserLocationPresenterImpl extends BasePresentermpl<UserLocationView
     private LocationInteractor interactor;
     private static ScheduledExecutorService scheduledExecutorService;
 
-    public UserLocationPresenterImpl(Context context) {
-        this.interactor = new LocationInteractorImpl(context);
+    public UserLocationPresenterImpl(LocationInteractor locationInteractor) {
+        this.interactor = locationInteractor;
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
     }
 

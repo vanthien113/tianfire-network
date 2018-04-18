@@ -2,7 +2,6 @@ package com.example.thienpro.mvp_firebase.model;
 
 import android.net.Uri;
 
-import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.google.firebase.database.DatabaseError;
 
@@ -11,10 +10,9 @@ import java.util.ArrayList;
 /**
  * Created by ThienPro on 11/28/2017.
  */
-
 public interface UserInteractor {
     interface LoggedInCheckCallback {
-        void checker(int checker);
+        void checker(boolean checker);
     }
 
     interface LoginCheckCallback {
@@ -27,10 +25,6 @@ public interface UserInteractor {
 
     interface VerifiEmailCheckCallback {
         void checker(Exception checker, String email);
-    }
-
-    interface LogoutCheckCallback {
-        void checker(boolean checker);
     }
 
     interface GetUserCallback {
@@ -49,10 +43,6 @@ public interface UserInteractor {
         void updateUser(Exception e);
     }
 
-    interface LoadCurrentLocalUserCallback {
-        void currentLocalUser(User user);
-    }
-
     interface ChangePasswordCallback {
         void changePasswordCallback(Exception e);
     }
@@ -61,7 +51,7 @@ public interface UserInteractor {
         void friendInfomation(DatabaseError e, User user);
     }
 
-    interface SearchUserCallBack{
+    interface SearchUserCallBack {
         void onFinish(DatabaseError e, ArrayList<User> list);
     }
 
@@ -69,7 +59,7 @@ public interface UserInteractor {
 
     void signedInCheck(LoggedInCheckCallback callback);
 
-    void logOut(LogoutCheckCallback callback);
+    void logOut();
 
     void getUser(GetUserCallback callback, boolean loadUser);
 
@@ -82,10 +72,6 @@ public interface UserInteractor {
     void verifiEmail(VerifiEmailCheckCallback callback);
 
     void register(final String email, String password, final String name, final String address, final boolean sex, RegisterCheckCallback callback);
-
-    void loadCurrentLocalUser(LoadCurrentLocalUserCallback callback);
-
-    void saveCurrentLocalUser(User user);
 
     void changePassword(String password, ChangePasswordCallback callback);
 

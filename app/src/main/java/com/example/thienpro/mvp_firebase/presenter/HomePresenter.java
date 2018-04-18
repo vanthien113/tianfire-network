@@ -11,9 +11,5 @@ import com.example.thienpro.mvp_firebase.view.bases.BasePresenter;
 public interface HomePresenter extends BasePresenter<HomeView> {
     void loadAllListPost();
 
-    void currentUser();
-
     void deletePost(Post post);
-
-    void downloadImage(String imageUrl);
 }

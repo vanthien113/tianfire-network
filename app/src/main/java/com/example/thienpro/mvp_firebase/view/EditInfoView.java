@@ -5,17 +5,14 @@ package com.example.thienpro.mvp_firebase.view;
  */
 
 
-import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.view.bases.BaseView;
 
 /**
  * Created by ThienPro on 11/11/2017.
  */
 
-public interface EditInfoView extends BaseView{
+public interface EditInfoView extends BaseView {
     void onSaveClick();
-
-    void getUser(User user);
 
     void onAddressClick();
 

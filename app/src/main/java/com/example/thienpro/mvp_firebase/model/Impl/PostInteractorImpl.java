@@ -167,37 +167,41 @@ public class PostInteractorImpl implements PostInteractor {
     }
 
     @Override
-    public void loadPersonalPost(final ListPostCallback callback) {
+    public void loadPersonalPost(final LoadPersonalPostCallback callback) {
+        final ArrayList<Post> posts = new ArrayList<>();
+
         mDatabase.child(POSTS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     Post post = dsp.getValue(Post.class);
                     if (post.getId().equals(user.getUid())) {
-                        postList.add(post);
+                        posts.add(post);
                     }
                 }
-                callback.listPost(null, postList);
+                callback.post(null, posts);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                callback.listPost(databaseError, null);
+                callback.post(databaseError, null);
             }
         });
     }
 
     @Override
     public void loadAllPost(final ListPostCallback callback) {
+        final ArrayList<Post> posts = new ArrayList<>();
+
         mDatabase.child(POSTS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     Post post = dsp.getValue(Post.class);
-                    postList.add(post);
+                    posts.add(post);
                 }
 
-                callback.listPost(null, postList);
+                callback.listPost(null, posts);
             }
 
             @Override
@@ -270,14 +274,8 @@ public class PostInteractorImpl implements PostInteractor {
                     String id = (String) map.get(ID);
                     String image = (String) map.get(IMAGE);
 
-                    if (userId != null) {
-                        if (userId.equals(id)) {
-                            listPicture.add(image);
-                        }
-                    } else {
-                        if (id.equals(user.getUid()) && !TextUtils.isEmpty(image)) {
-                            listPicture.add(image);
-                        }
+                    if (userId.equals(id) && !TextUtils.isEmpty(image)) {
+                        listPicture.add(image);
                     }
                 }
 

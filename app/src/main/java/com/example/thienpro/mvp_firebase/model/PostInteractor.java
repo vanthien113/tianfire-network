@@ -20,6 +20,10 @@ public interface PostInteractor {
         void listPost(DatabaseError e, ArrayList<Post> listPost);
     }
 
+    interface LoadPersonalPostCallback {
+        void post(DatabaseError e, ArrayList<Post> listPost);
+    }
+
     interface DeletePostCallback {
         void listPost(Exception e);
     }
@@ -38,7 +42,7 @@ public interface PostInteractor {
 
     void writeNewPost(String content, Uri filePath, PostCallback callback);
 
-    void loadPersonalPost(ListPostCallback callback);
+    void loadPersonalPost(LoadPersonalPostCallback callback);
 
     void loadAllPost(ListPostCallback callback);
 

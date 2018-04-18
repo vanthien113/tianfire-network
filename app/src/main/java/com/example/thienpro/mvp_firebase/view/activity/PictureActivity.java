@@ -3,13 +3,12 @@ package com.example.thienpro.mvp_firebase.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.OrientationHelper;
+import android.view.View;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityPictureBinding;
-import com.example.thienpro.mvp_firebase.presenter.Impl.PicturePresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.PicturePresenter;
+import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
 import com.example.thienpro.mvp_firebase.view.PictureView;
 import com.example.thienpro.mvp_firebase.view.adapters.PictureAdapter;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
@@ -26,7 +25,7 @@ public class PictureActivity extends BaseActivity<ActivityPictureBinding> implem
     public static void startActivity(Context context, String userId) {
         Intent intent = new Intent(context, PictureActivity.class);
         intent.putExtra(USER_ID, userId);
-        context.startActivity(new Intent(context, PictureActivity.class));
+        context.startActivity(intent);
     }
 
     @Override
@@ -36,13 +35,20 @@ public class PictureActivity extends BaseActivity<ActivityPictureBinding> implem
 
     @Override
     protected void init() {
-        presenter = new PicturePresenterImpl();
+        presenter = getAppComponent().getCommonComponent().getPicturePresenter();
         presenter.attachView(this);
 
         userId = getIntent().getStringExtra(USER_ID);
         getBinding().setEvent(this);
 
         onChangeViewTypeClick();
+
+        getBinding().tbPicture.getImageBack().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override
@@ -74,7 +80,7 @@ public class PictureActivity extends BaseActivity<ActivityPictureBinding> implem
     @Override
     public void onChangeViewTypeClick() {
         if (getBinding().rbOne.isChecked()) {
-            getBinding().rvPicture.setLayoutManager(new LinearLayoutManager(this, OrientationHelper.VERTICAL, false));
+            getBinding().rvPicture.setLayoutManager(LayoutUltils.getLinearLayoutManager(this));
         } else {
             getBinding().rvPicture.setLayoutManager(new GridLayoutManager(this, 2));
         }
