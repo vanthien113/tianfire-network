@@ -11,6 +11,7 @@ import com.example.thienpro.mvp_firebase.databinding.ActivitySearchUserBinding;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.SearchUserPresenter;
 import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
+import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.example.thienpro.mvp_firebase.view.SearchUserView;
 import com.example.thienpro.mvp_firebase.view.adapters.SearchUserAdapter;
 import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;

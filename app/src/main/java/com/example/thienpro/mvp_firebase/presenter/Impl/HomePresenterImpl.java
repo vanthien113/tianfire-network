@@ -60,7 +60,7 @@ public class HomePresenterImpl extends BasePresentermpl<HomeView> implements Hom
                     getView().showExceptionError(e);
                 } else {
                     postManager.postChange();
-                    getView().showMessenger("Đã xóa");
+                    getView().showDeteleComplete();
                 }
             }
         });

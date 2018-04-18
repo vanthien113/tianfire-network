@@ -47,6 +47,11 @@ public class ChangePasswordActivity extends BaseActivity<ActivityChangePasswordB
         }
     }
 
+    @Override
+    public void showChangePasswordComplete() {
+        showToastMessage("Thay đổi mật khẩu thành công!");
+    }
+
     private boolean validate(String password, String rePassword) {
         if (TextUtils.isEmpty(password)) {
             showToastMessage(R.string.vui_long_nhap_password);
@@ -76,11 +81,11 @@ public class ChangePasswordActivity extends BaseActivity<ActivityChangePasswordB
 
     @Override
     protected void pauseScreen() {
-
     }
 
     @Override
     protected void destroyScreen() {
-
+        presenter.detach();
     }
+
 }

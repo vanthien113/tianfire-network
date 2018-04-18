@@ -57,7 +57,7 @@ public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements L
                 if (e != null) {
                     getView().showExceptionError(e);
                 } else {
-                    getView().showMessenger("Email chứa link thay đổi mật khẩu đã được gửi về email " + email);
+                    getView().showLoginMessage(email);
                 }
             }
         });

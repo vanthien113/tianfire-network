@@ -17,4 +17,6 @@ public interface EditInfoView extends BaseView {
     void onAddressClick();
 
     void showAddress(String address);
+
+    void showChangeInfoComplete();
 }

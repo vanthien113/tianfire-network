@@ -80,6 +80,16 @@ public class ShareLocationActivity extends BaseActivity<ActivityShareLocationBin
     }
 
     @Override
+    public void showSharingMessage() {
+        showToastMessage("Đang chia sẻ vị trí");
+    }
+
+    @Override
+    public void showStopShareMessage() {
+        showToastMessage("Dừng chia sẻ vị tri");
+    }
+
+    @Override
     protected void startScreen() {
 
     }

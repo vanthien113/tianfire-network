@@ -75,7 +75,6 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-//                broadCastScroll();
                 RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(0);
                 if (holder != null && holder.itemView != null) {
                     float fy = holder.itemView.getY();
@@ -134,7 +133,6 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
         getBinding().srlProfile.setRefreshing(true);
     }
 
-
     @Override
     public void hideLoading() {
         getBinding().srlProfile.setRefreshing(false);
@@ -191,6 +189,12 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
 
     @Override
     protected void screenPause() {
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.detach();
 
     }
 

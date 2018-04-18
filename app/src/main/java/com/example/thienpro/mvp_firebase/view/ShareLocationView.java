@@ -9,4 +9,8 @@ public interface ShareLocationView extends BaseView {
     void onCheckLocationClick();
 
     void showListLocation(ArrayList<UserLocation> listLocation);
+
+    void showSharingMessage();
+
+    void showStopShareMessage();
 }

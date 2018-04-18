@@ -2,10 +2,10 @@ package com.example.thienpro.mvp_firebase.model.Impl;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.widget.TextView;
 
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
-import com.example.thienpro.mvp_firebase.ultils.LogUltil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -169,11 +169,10 @@ public class UserInteractorImpl implements UserInteractor {
 
     @Override
     public void searchUser(final String userName, final SearchUserCallBack callBack) {
-        final ArrayList<User> list = new ArrayList<>();
-
         mDatabase.child(USERS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<User> list = new ArrayList<>();
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     User user = dsp.getValue(User.class);
                     if (user.getName().contains(userName)) {

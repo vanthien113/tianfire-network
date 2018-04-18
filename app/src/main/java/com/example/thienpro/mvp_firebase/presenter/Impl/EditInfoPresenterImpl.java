@@ -38,7 +38,7 @@ public class EditInfoPresenterImpl extends BasePresentermpl<EditInfoView> implem
                 if (e != null) {
                     getView().showExceptionError(e);
                 } else {
-                    getView().showMessenger("Cập nhật thành công!");
+                    getView().showChangeInfoComplete();
                 }
             }
         });

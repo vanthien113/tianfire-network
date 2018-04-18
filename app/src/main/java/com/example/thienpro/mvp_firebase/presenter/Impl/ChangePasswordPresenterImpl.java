@@ -22,7 +22,7 @@ public class ChangePasswordPresenterImpl extends BasePresentermpl<ChangePassword
                 if (e != null) {
                     getView().showExceptionError(e);
                 } else {
-                    getView().showMessenger("Thay đổi mật khẩu thành công!");
+                    getView().showChangePasswordComplete();
                 }
             }
         });

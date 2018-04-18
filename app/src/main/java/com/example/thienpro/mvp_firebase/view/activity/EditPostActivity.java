@@ -53,11 +53,11 @@ public class EditPostActivity extends BaseActivity<ActivityEditPostBinding> impl
 
     @Override
     protected void pauseScreen() {
-
     }
 
     @Override
     protected void destroyScreen() {
+        presenter.detach();
 
     }
 

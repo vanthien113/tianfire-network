@@ -20,4 +20,6 @@ public interface LoginView extends BaseView {
     void onShowPasswordClick();
 
     void onForgotPasswordClick();
+
+    void showLoginMessage(String email);
 }

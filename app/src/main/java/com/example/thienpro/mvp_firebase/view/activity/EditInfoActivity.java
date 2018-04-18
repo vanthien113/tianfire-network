@@ -67,7 +67,7 @@ public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> impl
     public void onSaveClick() {
         String name = getBinding().etName.getText().toString();
         if (validate(name)) {
-            presenter.updateUser(name, address, getBinding().rbNam.isChecked());
+            presenter.updateUser(name, getBinding().etAddress.getText().toString(), getBinding().rbNam.isChecked());
         }
     }
 
@@ -92,7 +92,12 @@ public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> impl
     @Override
     public void showAddress(String address) {
         this.address = address;
-        getBinding().spProvince.setText(address);
+        getBinding().etAddress.setText(address);
+    }
+
+    @Override
+    public void showChangeInfoComplete() {
+        showToastMessage("Cập nhật thành công!");
     }
 
     @Override
@@ -107,11 +112,11 @@ public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> impl
 
     @Override
     protected void pauseScreen() {
-
     }
 
     @Override
     protected void destroyScreen() {
+        presenter.detach();
 
     }
 }

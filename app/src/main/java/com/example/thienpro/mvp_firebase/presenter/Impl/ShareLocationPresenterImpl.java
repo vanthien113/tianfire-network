@@ -63,7 +63,8 @@ public class ShareLocationPresenterImpl extends BasePresentermpl<ShareLocationVi
                         if (e != null) {
                             getView().showExceptionError(e);
                         } else {
-                            getView().showMessenger("Đang chia sẻ vị trí");
+                            getView().showSharingMessage();
+//                            getView().showMessenger("Đang chia sẻ vị trí");
                         }
                     }
                 });
@@ -74,7 +75,7 @@ public class ShareLocationPresenterImpl extends BasePresentermpl<ShareLocationVi
     @Override
     public void stopPushLocation() {
         scheduledExecutorService.shutdown();
-        getView().showMessenger("Dừng chia sẻ vị tri");
+        getView().showStopShareMessage();
     }
 
     @Override

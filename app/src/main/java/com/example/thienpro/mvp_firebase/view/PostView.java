@@ -9,8 +9,6 @@ import com.example.thienpro.mvp_firebase.view.bases.BaseView;
  */
 
 public interface PostView extends BaseView{
-    void onBackClick();
-
     void onPostClick();
 
     void navigationToHome();

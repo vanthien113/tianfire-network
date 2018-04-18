@@ -66,20 +66,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
         });
     }
 
-//    @Override
-//    public void setUserVisibleHint(boolean isVisibleToUser) { // Hàm sẽ được chạy sau khi ấn sang tab Home
-//        super.setUserVisibleHint(isVisibleToUser);
-//        if (isVisibleToUser) {
-//            loadData();
-//        }
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        loadData();
-//        super.onResume();
-//    }
-
     public void loadData() {
         if (listPost != null) {
             listPost.clear();
@@ -114,6 +100,11 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
     }
 
     @Override
+    public void showDeteleComplete() {
+        showToastMessage("Đã xóa!");
+    }
+
+    @Override
     public void onEditPost(Post post) {
         EditPostActivity.start(getContext(), post);
     }
@@ -130,6 +121,12 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
 
     @Override
     protected void screenPause() {
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.detach();
 
     }
 

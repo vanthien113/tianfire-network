@@ -96,6 +96,11 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
         }
     }
 
+    @Override
+    public void showLoginMessage(String email) {
+        showToastMessage("Email chứa link thay đổi mật khẩu đã được gửi về email" + email);
+    }
+
     private boolean validateForgotPassword(String email) {
         if (TextUtils.isEmpty(email)) {
             showToastMessage(R.string.hay_nhap_email_va_nhan_nut_quen_mat_khau);

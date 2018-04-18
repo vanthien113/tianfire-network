@@ -3,6 +3,7 @@ package com.example.thienpro.mvp_firebase.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
@@ -41,11 +42,6 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
     }
 
     @Override
-    public void onBackClick() {
-        HomeActivity.startActiviry(this);
-    }
-
-    @Override
     public void onPostClick() {
         String post = getBinding().etPost.getText().toString();
         if (validate(post)) {
@@ -63,7 +59,9 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
 
     @Override
     public void navigationToHome() {
+        ActivityCompat.finishAffinity(this);
         HomeActivity.startActiviry(this);
+        finish();
     }
 
     @Override
