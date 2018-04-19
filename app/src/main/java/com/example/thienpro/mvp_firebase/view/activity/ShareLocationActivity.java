@@ -37,8 +37,6 @@ public class ShareLocationActivity extends BaseActivity<ActivityShareLocationBin
         presenter.attachView(this);
         getBinding().setEvent(this);
 
-        SHLocationManager.checkLocationEnable(this);
-
         if (checked) {
             getBinding().cbLocation.setChecked(true);
         }
@@ -90,6 +88,7 @@ public class ShareLocationActivity extends BaseActivity<ActivityShareLocationBin
 
     @Override
     protected void resumeScreen() {
+        SHLocationManager.checkLocationEnable(this);
 
     }
 

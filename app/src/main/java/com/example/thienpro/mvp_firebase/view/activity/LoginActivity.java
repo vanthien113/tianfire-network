@@ -98,7 +98,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
 
     @Override
     public void showLoginMessage(String email) {
-        showToastMessage("Email chứa link thay đổi mật khẩu đã được gửi về email" + email);
+        showToastMessage("Email đã được gửi về email" + email);
     }
 
     private boolean validateForgotPassword(String email) {

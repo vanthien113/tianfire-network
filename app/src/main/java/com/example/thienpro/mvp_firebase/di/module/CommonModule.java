@@ -36,6 +36,8 @@ import com.example.thienpro.mvp_firebase.presenter.ShareLocationPresenter;
 import com.example.thienpro.mvp_firebase.presenter.UserLocationPresenter;
 import com.example.thienpro.mvp_firebase.presenter.VerifiEmailPresenter;
 
+import java.util.concurrent.ScheduledExecutorService;
+
 import javax.inject.Singleton;
 
 import dagger.Module;

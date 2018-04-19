@@ -39,6 +39,7 @@ public class SHLocationManager {
             //Ask the user to enable GPS
             new AlertDialog.Builder(activity)
                     .setTitle("Vị trí")
+                    .setCancelable(false)
                     .setMessage("Mở vị trí để sử dụng tính năng này!!!")
                     .setPositiveButton("Có", new DialogInterface.OnClickListener() {
                         @Override

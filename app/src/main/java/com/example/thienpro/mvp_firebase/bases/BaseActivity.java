@@ -160,21 +160,21 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
      */
 
     public final void showToastMessage(final CharSequence msg) {
-//        if (isFinishing())
-//            return;
-//        if (mToast == null) {
-//            mToast = Toast.makeText(getApplicationContext(), "",
-//                    Toast.LENGTH_SHORT);
-//        }
-//
-//        if (mToast != null) {
-//            // Cancel last message toast
-//            if (mToast.getView().isShown()) {
-//                mToast.cancel();
-//            }
-//            mToast.setText(msg);
-//            mToast.show();
-//        }
+        if (isFinishing())
+            return;
+        if (mToast == null) {
+            mToast = Toast.makeText(getApplicationContext(), "",
+                    Toast.LENGTH_SHORT);
+        }
+
+        if (mToast != null) {
+            // Cancel last message toast
+            if (mToast.getView().isShown()) {
+                mToast.cancel();
+            }
+            mToast.setText(msg);
+            mToast.show();
+        }
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 

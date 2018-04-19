@@ -3,6 +3,7 @@ package com.example.thienpro.mvp_firebase.presenter.Impl;
 import android.content.Context;
 import android.location.Location;
 
+import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
 import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.model.LocationInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
@@ -10,7 +11,6 @@ import com.example.thienpro.mvp_firebase.model.entity.UserLocation;
 import com.example.thienpro.mvp_firebase.presenter.ShareLocationPresenter;
 import com.example.thienpro.mvp_firebase.ultils.SHLocationManager;
 import com.example.thienpro.mvp_firebase.view.ShareLocationView;
-import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
 import com.google.firebase.database.DatabaseError;
 
 import java.text.SimpleDateFormat;
@@ -29,15 +29,12 @@ public class ShareLocationPresenterImpl extends BasePresentermpl<ShareLocationVi
 
     public ShareLocationPresenterImpl(LocationInteractor locationInteractor, UserManager userManager) {
         this.locationInteractor = locationInteractor;
-        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         this.userManager = userManager;
     }
 
     @Override
     public void pushLocation(final Context context) {
-        if (scheduledExecutorService.isShutdown()) {
-            scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        }
+        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {

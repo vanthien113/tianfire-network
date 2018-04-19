@@ -16,6 +16,9 @@ import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -66,5 +69,4 @@ public class AppModule {
     public PostManager providesPostManager() {
         return new LocalPostManager();
     }
-
 }
