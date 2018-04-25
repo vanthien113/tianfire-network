@@ -1,5 +1,6 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
@@ -11,12 +12,12 @@ import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.ProfilePresenter;
+import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
-import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
+import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
 import com.example.thienpro.mvp_firebase.view.fragment.ProfileFragment;
 import com.google.firebase.database.DatabaseError;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,9 +61,9 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
     @Override
     public void loadPost() {
         getView().showLoading();
-        postInteractor.loadPersonalPost(new PostInteractor.LoadPersonalPostCallback() {
+        postInteractor.loadPersonalPost(new PostInteractor.ListPostCallback() {
             @Override
-            public void post(DatabaseError e, ArrayList<Post> listPost) {
+            public void onFinish(DatabaseError e, ArrayList<Post> listPost) {
                 getView().hideLoading();
 
                 if (e == null) {
@@ -76,10 +77,14 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
 
     @Override
     public void getUser() {
+        if (getView() == null)
+            return;
         getView().showLoadingDialog();
-        userInteractor.getUser(new UserInteractor.GetUserCallback() {
+        userInteractor.getUser(new UserInteractor.UserCallback() {
             @Override
-            public void getUser(DatabaseError error, User user) {
+            public void onFinish(DatabaseError error, User user) {
+                if (getView() == null)
+                    return;
                 getView().hideLoadingDialog();
                 if (error != null) {
                     getView().showDatabaseError(error);
@@ -93,10 +98,14 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
 
     @Override
     public void deletePost(Post post) {
+        if (getView() == null)
+            return;
         getView().showLoadingDialog();
-        postInteractor.deletePost(post, new PostInteractor.DeletePostCallback() {
+        postInteractor.deletePost(post, new PostInteractor.ExceptionCallback() {
             @Override
-            public void listPost(Exception e) {
+            public void onFinish(Exception e) {
+                if (getView() == null)
+                    return;
                 getView().hideLoadingDialog();
                 if (e != null) {
                     getView().showExceptionError(e);
@@ -109,13 +118,13 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(Context context, int requestCode, int resultCode, Intent data) {
         if (requestCode == ProfileFragment.REQUEST_CHANGE_AVATAR && resultCode == RESULT_OK && data != null) {
             List<Image> images = data.getParcelableArrayListExtra("selectedImages");
             if (images != null && images.size() > 0) {
                 Image image = images.get(0);
 
-                changeAvatar(Uri.fromFile(new File(image.getPath())));
+                changeAvatar(SHBitmapHelper.getUriAndCompressBitmap(context, image.getPath()));
             }
             return;
         }
@@ -124,16 +133,20 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
             if (images != null && images.size() > 0) {
                 Image image = images.get(0);
 
-                changeCover(Uri.fromFile(new File(image.getPath())));
+                changeCover(SHBitmapHelper.getUriAndCompressBitmap(context, image.getPath()));
             }
         }
     }
 
     private void changeAvatar(final Uri uri) {
+        if (getView() == null)
+            return;
         getView().showLoading();
-        userInteractor.addAvatar(uri, new UserInteractor.AddAvatarCallback() {
+        userInteractor.addAvatar(uri, new UserInteractor.StringCallback() {
             @Override
-            public void addAvatar(Exception e, String uri) {
+            public void onFinish(Exception e, String uri) {
+                if (getView() == null)
+                    return;
                 getView().hideLoading();
                 if (e != null) {
                     getView().showExceptionError(e);
@@ -145,10 +158,14 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
     }
 
     private void changeCover(final Uri uri) {
+        if (getView() == null)
+            return;
         getView().showLoading();
-        userInteractor.addCover(uri, new UserInteractor.AddCoverCallback() {
+        userInteractor.addCover(uri, new UserInteractor.StringCallback() {
             @Override
-            public void addCover(Exception e, String uri) {
+            public void onFinish(Exception e, String uri) {
+                if (getView() == null)
+                    return;
                 getView().hideLoading();
                 if (e != null) {
                     getView().showExceptionError(e);

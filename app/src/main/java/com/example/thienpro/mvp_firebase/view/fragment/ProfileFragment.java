@@ -19,7 +19,7 @@ import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
 import com.example.thienpro.mvp_firebase.view.adapters.ProfileAdapter;
-import com.example.thienpro.mvp_firebase.view.bases.BaseFragment;
+import com.example.thienpro.mvp_firebase.bases.BaseFragment;
 import com.example.thienpro.mvp_firebase.view.listener.HomeNavigationListener;
 
 import java.util.ArrayList;
@@ -75,7 +75,6 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-//                broadCastScroll();
                 RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(0);
                 if (holder != null && holder.itemView != null) {
                     float fy = holder.itemView.getY();
@@ -134,7 +133,6 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
         getBinding().srlProfile.setRefreshing(true);
     }
 
-
     @Override
     public void hideLoading() {
         getBinding().srlProfile.setRefreshing(false);
@@ -162,7 +160,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        presenter.onActivityResult(requestCode, resultCode, data);
+        presenter.onActivityResult(getContext(), requestCode, resultCode, data);
     }
 
     @Override
@@ -191,6 +189,12 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
 
     @Override
     protected void screenPause() {
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.detach();
 
     }
 

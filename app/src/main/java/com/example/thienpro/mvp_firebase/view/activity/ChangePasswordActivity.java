@@ -9,7 +9,7 @@ import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityChangePasswordBinding;
 import com.example.thienpro.mvp_firebase.presenter.ChangePasswordPresenter;
 import com.example.thienpro.mvp_firebase.view.ChangePasswordView;
-import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
+import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 
 public class ChangePasswordActivity extends BaseActivity<ActivityChangePasswordBinding> implements ChangePasswordView {
     private ChangePasswordPresenter presenter;
@@ -47,6 +47,11 @@ public class ChangePasswordActivity extends BaseActivity<ActivityChangePasswordB
         }
     }
 
+    @Override
+    public void showChangePasswordComplete() {
+        showToastMessage(R.string.thay_doi_mat_khau_thanh_cong);
+    }
+
     private boolean validate(String password, String rePassword) {
         if (TextUtils.isEmpty(password)) {
             showToastMessage(R.string.vui_long_nhap_password);
@@ -76,11 +81,11 @@ public class ChangePasswordActivity extends BaseActivity<ActivityChangePasswordB
 
     @Override
     protected void pauseScreen() {
-
     }
 
     @Override
     protected void destroyScreen() {
-
+        presenter.detach();
     }
+
 }

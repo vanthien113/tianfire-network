@@ -8,7 +8,7 @@ import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.presenter.EditInfoPresenter;
 import com.example.thienpro.mvp_firebase.view.EditInfoView;
 import com.example.thienpro.mvp_firebase.view.activity.EditInfoActivity;
-import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
+import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -29,16 +29,20 @@ public class EditInfoPresenterImpl extends BasePresentermpl<EditInfoView> implem
 
     @Override
     public void updateUser(final String name, final String address, final boolean sex) {
+        if (getView() == null)
+            return;
         getView().showLoadingDialog();
 
-        userInteractor.updateUser(name, address, sex, new UserInteractor.UpdateUserCallback() {
+        userInteractor.updateUser(name, address, sex, new UserInteractor.ExceptionCheckCallback() {
             @Override
-            public void updateUser(Exception e) {
+            public void onFinish(Exception e) {
+                if (getView() == null)
+                    return;
                 getView().hideLoadingDialog();
                 if (e != null) {
                     getView().showExceptionError(e);
                 } else {
-                    getView().showMessenger("Cập nhật thành công!");
+                    getView().showChangeInfoComplete();
                 }
             }
         });

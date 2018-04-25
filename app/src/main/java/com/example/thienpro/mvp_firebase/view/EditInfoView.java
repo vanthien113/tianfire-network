@@ -5,7 +5,7 @@ package com.example.thienpro.mvp_firebase.view;
  */
 
 
-import com.example.thienpro.mvp_firebase.view.bases.BaseView;
+import com.example.thienpro.mvp_firebase.bases.BaseView;
 
 /**
  * Created by ThienPro on 11/11/2017.
@@ -17,4 +17,6 @@ public interface EditInfoView extends BaseView {
     void onAddressClick();
 
     void showAddress(String address);
+
+    void showChangeInfoComplete();
 }

@@ -7,9 +7,8 @@ import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ActivityEditPostBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.presenter.EditPostPresenter;
-import com.example.thienpro.mvp_firebase.presenter.Impl.EditPostPresenterImpl;
 import com.example.thienpro.mvp_firebase.view.EditPostView;
-import com.example.thienpro.mvp_firebase.view.bases.BaseActivity;
+import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 
 public class EditPostActivity extends BaseActivity<ActivityEditPostBinding> implements EditPostView {
     private static String POST = "post";
@@ -53,11 +52,11 @@ public class EditPostActivity extends BaseActivity<ActivityEditPostBinding> impl
 
     @Override
     protected void pauseScreen() {
-
     }
 
     @Override
     protected void destroyScreen() {
+        presenter.detach();
 
     }
 

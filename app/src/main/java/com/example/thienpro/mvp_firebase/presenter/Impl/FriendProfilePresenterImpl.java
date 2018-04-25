@@ -6,7 +6,7 @@ import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.FriendProfilePresenter;
 import com.example.thienpro.mvp_firebase.view.FriendProfileView;
-import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
+import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
@@ -22,11 +22,15 @@ public class FriendProfilePresenterImpl extends BasePresentermpl<FriendProfileVi
 
     @Override
     public void getFriendInfomation(String userId) {
+        if (getView() == null)
+            return;
         getView().showLoadingDialog();
 
-        userInteractor.getFriendInfomation(userId, new UserInteractor.FriendInfomationCallback() {
+        userInteractor.getFriendInfomation(userId, new UserInteractor.UserCallback() {
             @Override
-            public void friendInfomation(DatabaseError e, User user) {
+            public void onFinish(DatabaseError e, User user) {
+                if (getView() == null)
+                    return;
                 getView().hideLoadingDialog();
                 if (e != null) {
                     getView().showDatabaseError(e);
@@ -40,10 +44,14 @@ public class FriendProfilePresenterImpl extends BasePresentermpl<FriendProfileVi
 
     @Override
     public void getFriendPost(String userId) {
+        if (getView() == null)
+            return;
         getView().showLoadingDialog();
-        postInteractor.getFriendPost(userId, new PostInteractor.FriendPostCallback() {
+        postInteractor.getFriendPost(userId, new PostInteractor.ListPostCallback() {
             @Override
-            public void friendPost(DatabaseError e, ArrayList<Post> post) {
+            public void onFinish(DatabaseError e, ArrayList<Post> post) {
+                if (getView() == null)
+                    return;
                 getView().hideLoadingDialog();
                 if (e != null) {
                     getView().showDatabaseError(e);

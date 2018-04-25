@@ -15,6 +15,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.ExifInterface;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -106,6 +107,17 @@ public class SHBitmapHelper {
         canvas.drawBitmap(bitmap, RECT, RECT, paintForRound);
 
         return output;
+    }
+
+    public static Uri getUriAndCompressBitmap(Context context, String path){
+        return getBitmapUri(context, SHBitmapHelper.decodeFile(new File(path), 500, 500));
+    }
+
+    public static Uri getBitmapUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 
     /**

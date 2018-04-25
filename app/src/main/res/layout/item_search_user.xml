@@ -22,12 +22,11 @@
             android:layout_height="match_parent"
             android:layout_marginTop="10dp">
 
-            <ImageView
+            <com.example.thienpro.mvp_firebase.ultils.widget.CricleImage
                 android:id="@+id/iv_avatar"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="10dp"
-                android:src="@color/colorBlack" />
+                android:layout_marginLeft="10dp" />
 
             <TextView
                 android:layout_width="wrap_content"

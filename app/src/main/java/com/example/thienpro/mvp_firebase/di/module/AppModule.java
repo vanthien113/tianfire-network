@@ -3,10 +3,8 @@ package com.example.thienpro.mvp_firebase.di.module;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.thienpro.mvp_firebase.manager.LocationManager;
 import com.example.thienpro.mvp_firebase.manager.PostManager;
 import com.example.thienpro.mvp_firebase.manager.UserManager;
-import com.example.thienpro.mvp_firebase.manager.impl.LocalLocationManager;
 import com.example.thienpro.mvp_firebase.manager.impl.LocalPostManager;
 import com.example.thienpro.mvp_firebase.manager.impl.LocalUserManager;
 import com.example.thienpro.mvp_firebase.model.Impl.LocationInteractorImpl;
@@ -17,6 +15,9 @@ import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import javax.inject.Singleton;
 
@@ -68,5 +69,4 @@ public class AppModule {
     public PostManager providesPostManager() {
         return new LocalPostManager();
     }
-
 }

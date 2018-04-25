@@ -1,6 +1,6 @@
 package com.example.thienpro.mvp_firebase.view;
 
-import com.example.thienpro.mvp_firebase.view.bases.BaseView;
+import com.example.thienpro.mvp_firebase.bases.BaseView;
 
 /**
  * Created by ThienPro on 11/9/2017.
@@ -20,4 +20,6 @@ public interface LoginView extends BaseView {
     void onShowPasswordClick();
 
     void onForgotPasswordClick();
+
+    void showLoginMessage(String email);
 }

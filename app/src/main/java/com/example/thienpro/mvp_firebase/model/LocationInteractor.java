@@ -7,15 +7,15 @@ import java.util.ArrayList;
 
 public interface LocationInteractor {
     interface GetLocationCallback {
-        void getLocation(DatabaseError e, UserLocation location);
+        void onFinish(DatabaseError e, UserLocation location);
     }
 
     interface PushLocationCallback {
-        void pushLocation(Exception e);
+        void onFinish(Exception e);
     }
 
     interface GetListLocationCallback {
-        void listLocation(ArrayList<UserLocation> locations, DatabaseError e);
+        void onFinish(ArrayList<UserLocation> locations, DatabaseError e);
     }
 
     void pushLocation(UserLocation location, PushLocationCallback callback);

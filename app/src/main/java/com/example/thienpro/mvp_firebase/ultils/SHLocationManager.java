@@ -5,10 +5,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
-import android.support.v4.app.ActivityCompat;
+import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -21,73 +22,41 @@ import com.google.android.gms.tasks.OnSuccessListener;
  */
 
 public class SHLocationManager {
-    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
-    private static OnCurrentLocationCallback callback;
+    private static final String permissions[] = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
-    private static boolean checkPermission(final Context context) {
-        if (ContextCompat.checkSelfPermission(context,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-                new AlertDialog.Builder(context)
-                        .setTitle("Quyền truy cập vị trí")
-                        .setMessage("Hãy cấp quyền truy cập vị trí")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //Prompt the user once explanation has been shown
-                                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        MY_PERMISSIONS_REQUEST_LOCATION);
-                            }
-                        })
-                        .create()
-                        .show();
-                LogUltil.log(SHLocationManager.class, "CHECKED");
-
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions((Activity) context,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION);
+    public static boolean checkPermission(Context context) {
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false;
             }
-            return false;
-        } else {
-            return true;
         }
+        return true;
     }
 
-    public static void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults, Context context) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    LogUltil.log(SHLocationManager.class, "Request Per");
-
-                    // permission was granted, yay! Do the
-                    // location-related task you need to do.
-                    if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                        //Request location updates:
-//                        locationManager.requestLocationUpdates(provider, 400, 1, this);
-
-//                        getCurrentLocation(context, callback);
-                        getCurrentLocation(context, callback);
-                    }
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-//                    getCurrentLocation(context, callback);
-                }
-                return;
-            }
+    public static void checkLocationEnable(final Activity activity) {
+        LocationManager manager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            //Ask the user to enable GPS
+            new AlertDialog.Builder(activity)
+                    .setTitle("Vị trí")
+                    .setCancelable(false)
+                    .setMessage("Mở vị trí để sử dụng tính năng này!!!")
+                    .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //Launch settings, allowing user to make a change
+                            Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            activity.startActivity(i);
+                        }
+                    })
+                    .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //No location service, no Activity
+                            activity.finish();
+                        }
+                    })
+                    .create().show();
         }
     }
 
@@ -96,7 +65,6 @@ public class SHLocationManager {
     }
 
     public static void getCurrentLocation(final Context context, final OnCurrentLocationCallback locationCallback) {
-        callback = locationCallback;
         FusedLocationProviderClient currentLocation = LocationServices.getFusedLocationProviderClient(context);
 
         if (checkPermission(context)) {
@@ -107,9 +75,9 @@ public class SHLocationManager {
                         Location location1 = new Location(LocationManager.PASSIVE_PROVIDER);
                         location1.setLatitude(10.7993946);
                         location1.setLongitude(106.613679);
-                        callback.callback(location1);
+                        locationCallback.callback(location1);
                     } else
-                        callback.callback(location);
+                        locationCallback.callback(location);
                 }
             });
         }

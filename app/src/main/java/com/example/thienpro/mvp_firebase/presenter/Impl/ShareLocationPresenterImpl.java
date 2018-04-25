@@ -3,6 +3,7 @@ package com.example.thienpro.mvp_firebase.presenter.Impl;
 import android.content.Context;
 import android.location.Location;
 
+import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
 import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.model.LocationInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
@@ -10,7 +11,6 @@ import com.example.thienpro.mvp_firebase.model.entity.UserLocation;
 import com.example.thienpro.mvp_firebase.presenter.ShareLocationPresenter;
 import com.example.thienpro.mvp_firebase.ultils.SHLocationManager;
 import com.example.thienpro.mvp_firebase.view.ShareLocationView;
-import com.example.thienpro.mvp_firebase.view.bases.BasePresentermpl;
 import com.google.firebase.database.DatabaseError;
 
 import java.text.SimpleDateFormat;
@@ -29,15 +29,12 @@ public class ShareLocationPresenterImpl extends BasePresentermpl<ShareLocationVi
 
     public ShareLocationPresenterImpl(LocationInteractor locationInteractor, UserManager userManager) {
         this.locationInteractor = locationInteractor;
-        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         this.userManager = userManager;
     }
 
     @Override
     public void pushLocation(final Context context) {
-        if (scheduledExecutorService.isShutdown()) {
-            scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        }
+        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {
@@ -59,11 +56,13 @@ public class ShareLocationPresenterImpl extends BasePresentermpl<ShareLocationVi
 
                 locationInteractor.pushLocation(currentLocation, new LocationInteractor.PushLocationCallback() {
                     @Override
-                    public void pushLocation(Exception e) {
+                    public void onFinish(Exception e) {
+                        if (getView() == null)
+                            return;
                         if (e != null) {
                             getView().showExceptionError(e);
                         } else {
-                            getView().showMessenger("Đang chia sẻ vị trí");
+                            getView().showSharingMessage();
                         }
                     }
                 });
@@ -74,15 +73,19 @@ public class ShareLocationPresenterImpl extends BasePresentermpl<ShareLocationVi
     @Override
     public void stopPushLocation() {
         scheduledExecutorService.shutdown();
-        getView().showMessenger("Dừng chia sẻ vị tri");
+        getView().showStopShareMessage();
     }
 
     @Override
     public void getListLocation() {
+        if (getView() == null)
+            return;
         getView().showLoadingDialog();
         locationInteractor.getListLocation(new LocationInteractor.GetListLocationCallback() {
             @Override
-            public void listLocation(ArrayList<UserLocation> locations, DatabaseError e) {
+            public void onFinish(ArrayList<UserLocation> locations, DatabaseError e) {
+                if (getView() == null)
+                    return;
                 getView().hideLoadingDialog();
                 if (e != null) {
                     getView().showDatabaseError(e);
