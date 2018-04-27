@@ -115,8 +115,23 @@ public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBin
     }
 
     @Override
+    public void onImageClick(String imageUrl) {
+        ImageZoomActivity.startActivity(this, imageUrl);
+    }
+
+    @Override
     public void onEditPost(Post post) {
 
+    }
+
+    @Override
+    public void onAvatarClick(String avatar) {
+        ImageZoomActivity.startActivity(this, avatar);
+    }
+
+    @Override
+    public void onCoverClick(String cover) {
+        ImageZoomActivity.startActivity(this, cover);
     }
 
     @Override

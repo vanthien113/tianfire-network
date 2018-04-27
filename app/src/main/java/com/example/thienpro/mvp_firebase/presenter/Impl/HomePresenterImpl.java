@@ -1,9 +1,11 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
 import com.example.thienpro.mvp_firebase.manager.PostManager;
+import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
+import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.HomePresenter;
 import com.example.thienpro.mvp_firebase.view.HomeView;
 import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
@@ -19,6 +21,7 @@ public class HomePresenterImpl extends BasePresentermpl<HomeView> implements Hom
     private UserInteractor userInteractor;
     private PostInteractor postInteractor;
     private PostManager postManager;
+
     private PostManager.OnPostChangeListener listener = new PostManager.OnPostChangeListener() {
         @Override
         public void onChange() {

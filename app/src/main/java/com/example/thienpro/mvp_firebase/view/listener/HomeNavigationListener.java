@@ -20,4 +20,6 @@ public interface HomeNavigationListener {
     void navigationToEditInfoActivity();
 
     void navigationToSearchActivity();
+
+    void navigationToImageZoomActivity(String imageUrl);
 }

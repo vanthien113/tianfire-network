@@ -25,6 +25,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:onClick="@{()->event.onCoverClick()}"
                 android:id="@+id/iv_cover"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -35,6 +36,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.example.thienpro.mvp_firebase.ultils.widget.CricleImage
+                android:onClick="@{()->event.onAvatarClick()}"
                 android:id="@+id/iv_avatar"
                 android:layout_width="100dp"
                 android:layout_height="100dp"

@@ -151,4 +151,9 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
     public void onFriendProfile(String userId) {
         navigationListener.navigationToFriendProfileActivity(userId);
     }
+
+    @Override
+    public void onImageClick(String imageUrl) {
+        navigationListener.navigationToImageZoomActivity(imageUrl);
+    }
 }

@@ -1,7 +1,6 @@
 package com.example.thienpro.mvp_firebase.manager.impl;
 
 import android.content.SharedPreferences;
-import android.support.annotation.Nullable;
 
 import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.model.entity.User;
@@ -12,7 +11,6 @@ import java.util.List;
 
 public class LocalUserManager implements UserManager {
     private SharedPreferences sharedPreferences;
-    private User currentUser;
     private List<OnUserChangeListener> observer = new ArrayList<>();
     private Gson gson;
 
@@ -22,18 +20,10 @@ public class LocalUserManager implements UserManager {
     }
 
     @Override
-    @Nullable
-    public User getCurrentUser() {
-        return currentUser;
-    }
-
-    @Override
     public void updateCurrentUser(User user) {
-        currentUser = user;
-
         for (OnUserChangeListener listener : observer) {
             if (listener != null) {
-                listener.onChange(currentUser);
+                listener.onChange(user);
                 sharedPreferences.edit().putString("user", gson.toJson(user)).apply();
             }
         }
@@ -41,6 +31,21 @@ public class LocalUserManager implements UserManager {
 
     public User getUser() {
         return gson.fromJson(sharedPreferences.getString("user", ""), User.class);
+    }
+
+    @Override
+    public void updateAvatar(String avatarUrl) {
+        User newUser = getUser();
+        newUser.setAvatar(avatarUrl);
+
+        updateCurrentUser(newUser);
+    }
+
+    @Override
+    public void updateCover(String coverUrl) {
+        User newUser = getUser();
+        newUser.setCover(coverUrl);
+        updateCurrentUser(newUser);
     }
 
     @Override

@@ -18,9 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LocationInteractorImpl implements LocationInteractor {
-    private static final String LOCATION = "locations";
-
+public class LocationInteractorImpl extends BaseInteractorImpl implements LocationInteractor {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
@@ -36,9 +34,9 @@ public class LocationInteractorImpl implements LocationInteractor {
 
         Map<String, Object> postValues = location.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/locations/" + userId, postValues);
+        childUpdates.put(userId, postValues);
 
-        mDatabase.updateChildren(childUpdates).addOnFailureListener(new OnFailureListener() {
+        mDatabase.child(LOCATIONS).updateChildren(childUpdates).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 callback.onFinish(e);
@@ -49,12 +47,11 @@ public class LocationInteractorImpl implements LocationInteractor {
                 callback.onFinish(null);
             }
         });
-
     }
 
     @Override
     public void getLocation(String userId, final GetLocationCallback callback) {
-        mDatabase.child(LOCATION).child(userId).addValueEventListener(new ValueEventListener() {
+        mDatabase.child(LOCATIONS).child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 UserLocation userLocation = dataSnapshot.getValue(UserLocation.class);
@@ -71,7 +68,7 @@ public class LocationInteractorImpl implements LocationInteractor {
 
     @Override
     public void getListLocation(final GetListLocationCallback callback) {
-        mDatabase.child(LOCATION).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(LOCATIONS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<UserLocation> listLocation = new ArrayList<>();

@@ -38,7 +38,7 @@ public class ShareLocationPresenterImpl extends BasePresentermpl<ShareLocationVi
         scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {
-                getLocation(context, userManager.getCurrentUser());
+                getLocation(context, userManager.getUser());
             }
         }, 0, 5, TimeUnit.SECONDS);
     }

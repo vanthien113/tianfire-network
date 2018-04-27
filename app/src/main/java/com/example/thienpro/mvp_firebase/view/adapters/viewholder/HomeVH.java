@@ -73,6 +73,7 @@ public class HomeVH extends RecyclerView.ViewHolder implements ItemListPostView 
                                 listener.onDownload(post.getImage());
                             }
                         })
+                        .setCancelable(true)
                         .setNegativeButton(R.string.huy, null)
                         .setMessage(R.string.tai_anh_xuong_may_cua_ban)
                         .create()
@@ -80,6 +81,11 @@ public class HomeVH extends RecyclerView.ViewHolder implements ItemListPostView 
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onImageClick() {
+        listener.onImageClick(post.getImage());
     }
 
     @Override

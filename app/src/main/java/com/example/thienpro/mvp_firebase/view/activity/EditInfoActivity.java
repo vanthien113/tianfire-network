@@ -44,7 +44,7 @@ public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> impl
 
         getBinding().setEvent(this);
 
-        getBinding().setData(userManager.getCurrentUser());
+        getBinding().setData(userManager.getUser());
 
         if (userManager.getUser().getSex())
             getBinding().rbNam.setChecked(true);

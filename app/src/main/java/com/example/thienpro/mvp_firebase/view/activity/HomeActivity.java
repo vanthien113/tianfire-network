@@ -156,4 +156,9 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements H
     public void navigationToSearchActivity() {
         SearchUserActivity.startActivity(this);
     }
+
+    @Override
+    public void navigationToImageZoomActivity(String imageUrl) {
+        ImageZoomActivity.startActivity(this, imageUrl);
+    }
 }

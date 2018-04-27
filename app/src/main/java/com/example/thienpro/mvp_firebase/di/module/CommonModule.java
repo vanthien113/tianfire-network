@@ -92,8 +92,8 @@ public class CommonModule {
     }
 
     @Provides
-    public PostPresenter providePostPresenter(PostInteractor postInteractor) {
-        return new PostPresenterImpl(postInteractor);
+    public PostPresenter providePostPresenter(PostInteractor postInteractor, UserManager userManager) {
+        return new PostPresenterImpl(postInteractor, userManager);
     }
 
     @Provides

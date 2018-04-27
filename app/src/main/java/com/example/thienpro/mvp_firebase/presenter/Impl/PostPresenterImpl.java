@@ -7,12 +7,14 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 
 import com.esafirm.imagepicker.model.Image;
+import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
+import com.example.thienpro.mvp_firebase.manager.UserManager;
+import com.example.thienpro.mvp_firebase.model.Impl.BaseInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.presenter.PostPresenter;
 import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
 import com.example.thienpro.mvp_firebase.view.PostView;
 import com.example.thienpro.mvp_firebase.view.activity.PostActivity;
-import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
 
 import java.util.List;
 
@@ -25,18 +27,31 @@ import static android.app.Activity.RESULT_OK;
 public class PostPresenterImpl extends BasePresentermpl<PostView> implements PostPresenter {
     private PostInteractor postInteractor;
     private Uri filePath;
+    private UserManager userManager;
 
-    public PostPresenterImpl(PostInteractor postInteractor) {
+    public PostPresenterImpl(PostInteractor postInteractor, UserManager userManager) {
         this.postInteractor = postInteractor;
+        this.userManager = userManager;
     }
 
     @Override
-    public void newPost(String content) {
+    public void newPost(final String content) {
         if (getView() == null)
             return;
         getView().showLoadingDialog();
 
-        postInteractor.writeNewPost(content, filePath, new PostInteractor.ExceptionCallback() {
+        if (filePath != null) {
+            postInteractor.uploadImage(filePath, BaseInteractorImpl.IMAGES, new PostInteractor.GetStringCallback() {
+                @Override
+                public void onFinish(Exception e, String string) {
+                    post(content, string);
+                }
+            });
+        } else post(content, null);
+    }
+
+    private void post(String content, String imageUrl) {
+        postInteractor.writeNewPost(userManager.getUser().getName(), userManager.getUser().getAvatar(), content, imageUrl, new PostInteractor.ExceptionCallback() {
             @Override
             public void onFinish(Exception e) {
                 if (getView() == null)

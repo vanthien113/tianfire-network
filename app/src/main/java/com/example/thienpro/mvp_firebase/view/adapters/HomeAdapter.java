@@ -61,5 +61,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeVH> {
         void onDownload(String imageUrl);
 
         void onFriendProfile(String userId);
+
+        void onImageClick(String imageUrl);
     }
 }

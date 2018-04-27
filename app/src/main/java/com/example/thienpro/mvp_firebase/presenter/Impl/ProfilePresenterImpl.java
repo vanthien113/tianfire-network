@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.esafirm.imagepicker.model.Image;
+import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
 import com.example.thienpro.mvp_firebase.manager.PostManager;
 import com.example.thienpro.mvp_firebase.manager.UserManager;
+import com.example.thienpro.mvp_firebase.model.Impl.BaseInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
@@ -14,7 +16,6 @@ import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.ProfilePresenter;
 import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
-import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
 import com.example.thienpro.mvp_firebase.view.fragment.ProfileFragment;
 import com.google.firebase.database.DatabaseError;
 
@@ -22,12 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
-
-/**
- * - Presenter: Là lớp xử lý logic từ dữ liệu nhận được.
- * - Nhận dữ liệu từ lớp Model
- * - Đẩy dữ liệu lên lớp V.
- */
 
 /**
  * Created by ThienPro on 11/16/2017.
@@ -133,7 +128,7 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
             if (images != null && images.size() > 0) {
                 Image image = images.get(0);
 
-                changeCover(SHBitmapHelper.getUriAndCompressBitmap(context, image.getPath()));
+                uploadCoverImage(SHBitmapHelper.getUriAndCompressBitmap(context, image.getPath()));
             }
         }
     }
@@ -142,34 +137,58 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
         if (getView() == null)
             return;
         getView().showLoading();
-        userInteractor.addAvatar(uri, new UserInteractor.StringCallback() {
+
+        userInteractor.uploadImage(uri, BaseInteractorImpl.AVATARS, new PostInteractor.GetStringCallback() {
             @Override
-            public void onFinish(Exception e, String uri) {
+            public void onFinish(Exception e, String string) {
+                addAvatar(string);
+            }
+        });
+    }
+
+    private void addAvatar(final String avatarUrl) {
+        userInteractor.addAvatar(avatarUrl, new UserInteractor.ExceptionCheckCallback() {
+            @Override
+            public void onFinish(Exception e) {
                 if (getView() == null)
                     return;
                 getView().hideLoading();
                 if (e != null) {
                     getView().showExceptionError(e);
                 } else {
+                    postManager.postChange();
+                    userManager.updateAvatar(avatarUrl);
                     getView().showChangeComplete();
                 }
             }
         });
     }
 
-    private void changeCover(final Uri uri) {
+    private void uploadCoverImage(final Uri uri) {
         if (getView() == null)
             return;
         getView().showLoading();
-        userInteractor.addCover(uri, new UserInteractor.StringCallback() {
+
+        userInteractor.uploadImage(uri, BaseInteractorImpl.COVER, new PostInteractor.GetStringCallback() {
             @Override
-            public void onFinish(Exception e, String uri) {
+            public void onFinish(Exception e, String string) {
+                addCover(string);
+            }
+        });
+    }
+
+    private void addCover(final String coverUrl) {
+        userInteractor.addCover(coverUrl, new UserInteractor.ExceptionCheckCallback() {
+            @Override
+            public void onFinish(Exception e) {
                 if (getView() == null)
                     return;
                 getView().hideLoading();
                 if (e != null) {
                     getView().showExceptionError(e);
                 } else {
+                    postManager.postChange();
+                    userManager.updateAvatar(coverUrl);
                     getView().showChangeComplete();
                 }
             }

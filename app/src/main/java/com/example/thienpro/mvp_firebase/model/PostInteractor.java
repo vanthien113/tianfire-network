@@ -1,7 +1,5 @@
 package com.example.thienpro.mvp_firebase.model;
 
-import android.net.Uri;
-
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.google.firebase.database.DatabaseError;
 
@@ -11,7 +9,7 @@ import java.util.ArrayList;
  * Created by ThienPro on 11/28/2017.
  */
 
-public interface PostInteractor {
+public interface PostInteractor extends BaseInteractor{
     interface ExceptionCallback {
         void onFinish(Exception e);
     }
@@ -24,7 +22,11 @@ public interface PostInteractor {
         void onFinish(DatabaseError e, ArrayList<String> listPicture);
     }
 
-    void writeNewPost(String content, Uri filePath, ExceptionCallback callback);
+    interface GetStringCallback {
+        void onFinish(Exception e, String string);
+    }
+
+    void writeNewPost(String userName, String avatar, String content, String filePath, ExceptionCallback callback);
 
     void loadPersonalPost(ListPostCallback callback);
 

@@ -11,6 +11,7 @@ import com.example.thienpro.mvp_firebase.view.adapters.ProfileAdapter;
 public class ItemProfileHeaderVH extends RecyclerView.ViewHolder implements ItemProfileHeaderView {
     protected ItemProfileHeaderBinding binding;
     private ProfileAdapter.ItemProfileClickListener listener;
+    private User user;
 
     public ItemProfileHeaderVH(ItemProfileHeaderBinding binding, ProfileAdapter.ItemProfileClickListener listener) {
         super(binding.getRoot());
@@ -21,6 +22,7 @@ public class ItemProfileHeaderVH extends RecyclerView.ViewHolder implements Item
     public void bind(User user) {
         binding.setData(user);
         binding.setEvent(this);
+        this.user = user;
 
         SHBitmapHelper.bindImage(binding.ivAvatar, user.getAvatar());
         SHBitmapHelper.bindImage(binding.ivCover, user.getCover());
@@ -48,5 +50,15 @@ public class ItemProfileHeaderVH extends RecyclerView.ViewHolder implements Item
     @Override
     public void onPost() {
         listener.onPost();
+    }
+
+    @Override
+    public void onAvatarClick() {
+        listener.onAvatarClick(user.getAvatar());
+    }
+
+    @Override
+    public void onCoverClick() {
+        listener.onCoverClick(user.getCover());
     }
 }

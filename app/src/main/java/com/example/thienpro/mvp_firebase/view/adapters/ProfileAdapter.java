@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int HEADER = 0;
     private final int POST = 1;
+
     private HomeAdapter.ListPostMenuListener postMenuListeneristener;
     private User user;
     private ArrayList<Post> lisPost;
@@ -80,5 +81,9 @@ public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         void onDeletePost(Post post);
 
         void onEditPost(Post post);
+
+        void onAvatarClick(String avatar);
+
+        void onCoverClick(String cover);
     }
 }

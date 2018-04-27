@@ -13,9 +13,11 @@ public interface UserManager {
 
     void logout();
 
-    User getCurrentUser();
-
     void updateCurrentUser(User user);
 
     User getUser();
+
+    void updateAvatar(String avatarUrl);
+
+    void updateCover(String coverUrl);
 }

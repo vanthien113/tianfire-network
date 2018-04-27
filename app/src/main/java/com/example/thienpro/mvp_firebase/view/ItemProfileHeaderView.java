@@ -10,4 +10,8 @@ public interface ItemProfileHeaderView {
     void onClearTextClick();
 
     void onPost();
+
+    void onAvatarClick();
+
+    void onCoverClick();
 }

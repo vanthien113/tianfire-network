@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.example.thienpro.mvp_firebase.R;
+import com.example.thienpro.mvp_firebase.bases.BaseFragment;
 import com.example.thienpro.mvp_firebase.databinding.FragmentProfileBinding;
 import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
@@ -19,7 +20,6 @@ import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
 import com.example.thienpro.mvp_firebase.view.ProfileView;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
 import com.example.thienpro.mvp_firebase.view.adapters.ProfileAdapter;
-import com.example.thienpro.mvp_firebase.bases.BaseFragment;
 import com.example.thienpro.mvp_firebase.view.listener.HomeNavigationListener;
 
 import java.util.ArrayList;
@@ -78,7 +78,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
                 RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(0);
                 if (holder != null && holder.itemView != null) {
                     float fy = holder.itemView.getY();
-                    getBinding().etSearch.setTranslationY(fy/3);
+                    getBinding().etSearch.setTranslationY(fy / 3);
 
                 }
             }
@@ -125,7 +125,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
 
     @Override
     public void onShowListPictureClick() {
-        navigationListener.navigationToPictureActivity(userManager.getCurrentUser().getId());
+        navigationListener.navigationToPictureActivity(userManager.getUser().getId());
     }
 
     @Override
@@ -169,6 +169,16 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
     }
 
     @Override
+    public void onAvatarClick(String avatar) {
+        navigationListener.navigationToImageZoomActivity(avatar);
+    }
+
+    @Override
+    public void onCoverClick(String cover) {
+        navigationListener.navigationToImageZoomActivity(cover);
+    }
+
+    @Override
     public void onDeletePost(Post post) {
         presenter.deletePost(post);
     }
@@ -181,6 +191,11 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
     @Override
     public void onFriendProfile(String userId) {
         navigationListener.navigationToFriendProfileActivity(userId);
+    }
+
+    @Override
+    public void onImageClick(String imageUrl) {
+        navigationListener.navigationToImageZoomActivity(imageUrl);
     }
 
     @Override
