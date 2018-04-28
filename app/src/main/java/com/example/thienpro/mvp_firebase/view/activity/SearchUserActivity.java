@@ -52,12 +52,6 @@ public class SearchUserActivity extends BaseActivity<ActivitySearchUserBinding> 
             }
         });
 
-        getBinding().tbSearch.getImageBack().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
     }
 
     @Override

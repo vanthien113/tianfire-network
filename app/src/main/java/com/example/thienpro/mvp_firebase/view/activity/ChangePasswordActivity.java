@@ -28,13 +28,6 @@ public class ChangePasswordActivity extends BaseActivity<ActivityChangePasswordB
         presenter = getAppComponent().getCommonComponent().getChangePasswordPresenter();
         presenter.attachView(this);
         getBinding().setEvent(this);
-
-        getBinding().tbChangePass.getImageBack().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
     }
 
     @Override

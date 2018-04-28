@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.example.thienpro.mvp_firebase.R;
+import com.example.thienpro.mvp_firebase.bases.BaseFragment;
 import com.example.thienpro.mvp_firebase.databinding.FragmentHomeBinding;
 import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
@@ -16,7 +17,6 @@ import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
 import com.example.thienpro.mvp_firebase.view.HomeView;
 import com.example.thienpro.mvp_firebase.view.activity.EditPostActivity;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
-import com.example.thienpro.mvp_firebase.bases.BaseFragment;
 import com.example.thienpro.mvp_firebase.view.listener.HomeNavigationListener;
 
 import java.util.ArrayList;
@@ -116,7 +116,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
 
     @Override
     protected void screenResume() {
-
     }
 
     @Override
@@ -126,8 +125,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
     @Override
     public void onDestroy() {
         super.onDestroy();
-        presenter.detach();
-
     }
 
     @Override

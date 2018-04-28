@@ -119,7 +119,7 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
             if (images != null && images.size() > 0) {
                 Image image = images.get(0);
 
-                changeAvatar(SHBitmapHelper.getUriAndCompressBitmap(context, image.getPath()));
+                uploadAvatarImage(SHBitmapHelper.getUriAndCompressBitmap(context, image.getPath()));
             }
             return;
         }
@@ -133,7 +133,7 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
         }
     }
 
-    private void changeAvatar(final Uri uri) {
+    private void uploadAvatarImage(final Uri uri) {
         if (getView() == null)
             return;
         getView().showLoading();
@@ -188,7 +188,7 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
                     getView().showExceptionError(e);
                 } else {
                     postManager.postChange();
-                    userManager.updateAvatar(coverUrl);
+                    userManager.updateCover(coverUrl);
                     getView().showChangeComplete();
                 }
             }
@@ -197,15 +197,15 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
 
     @Override
     public void attachView(ProfileView view) {
-        super.attachView(view);
         userManager.addOnUserChangeListener(onUserChangeListener);
         postManager.addOnPostChangeListener(onPostChangeListener);
+        super.attachView(view);
     }
 
     @Override
     public void detach() {
-        super.detach();
         userManager.removeUserChangeListener(onUserChangeListener);
         postManager.removePostChangeListener(onPostChangeListener);
+        super.detach();
     }
 }

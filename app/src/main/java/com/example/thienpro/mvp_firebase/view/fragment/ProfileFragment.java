@@ -59,7 +59,6 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
 
         getBinding().rvProfile.setLayoutManager(LayoutUltils.getLinearLayoutManager(getContext()));
 
-        presenter.getUser();
         presenter.loadPost();
 
         getBinding().srlProfile.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -210,7 +209,6 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
     public void onDestroy() {
         super.onDestroy();
         presenter.detach();
-
     }
 
     @Override

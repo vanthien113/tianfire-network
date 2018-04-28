@@ -49,13 +49,6 @@ public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBin
         presenter.getFriendInfomation(userId);
 
         getBinding().setEvent(this);
-
-        viewDataBinding.tbProfile.getImageBack().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
     }
 
     @Override

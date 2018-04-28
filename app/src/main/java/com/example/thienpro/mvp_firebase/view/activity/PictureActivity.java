@@ -43,13 +43,6 @@ public class PictureActivity extends BaseActivity<ActivityPictureBinding> implem
         getBinding().setEvent(this);
 
         onChangeViewTypeClick();
-
-        getBinding().tbPicture.getImageBack().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
     }
 
     @Override

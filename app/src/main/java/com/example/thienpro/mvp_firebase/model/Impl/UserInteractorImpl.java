@@ -157,11 +157,15 @@ public class UserInteractorImpl extends BaseInteractorImpl implements UserIntera
                 ArrayList<User> list = new ArrayList<>();
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     User user = dsp.getValue(User.class);
-                    if (user.getName().contains(userName)) {
+                    if (user.getName().toLowerCase().contains(userName.toLowerCase())) {
                         list.add(user);
                     }
                 }
-                callBack.onFinish(null, list);
+                if (list.size() == 0) {
+                    callBack.onFinish(null, null);
+                } else {
+                    callBack.onFinish(null, list);
+                }
             }
 
             @Override
@@ -215,15 +219,10 @@ public class UserInteractorImpl extends BaseInteractorImpl implements UserIntera
                                     public void onFailure(@NonNull Exception e) {
                                         callback.onFinish(e);
                                     }
-                                })
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        callback.onFinish(null);
-                                    }
                                 });
                     }
                 }
+                callback.onFinish(null);
             }
 
             @Override

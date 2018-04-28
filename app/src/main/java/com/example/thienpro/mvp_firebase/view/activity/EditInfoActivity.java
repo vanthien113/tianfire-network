@@ -2,15 +2,14 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.View;
 import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
+import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 import com.example.thienpro.mvp_firebase.databinding.ActivityEditinfoBinding;
 import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.presenter.EditInfoPresenter;
 import com.example.thienpro.mvp_firebase.view.EditInfoView;
-import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
@@ -49,13 +48,6 @@ public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> impl
         if (userManager.getUser().getSex())
             getBinding().rbNam.setChecked(true);
         else getBinding().rbNu.setChecked(true);
-
-        getBinding().tbEditInfo.getImageBack().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
     }
 
     @Override
@@ -117,6 +109,5 @@ public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> impl
     @Override
     protected void destroyScreen() {
         presenter.detach();
-
     }
 }

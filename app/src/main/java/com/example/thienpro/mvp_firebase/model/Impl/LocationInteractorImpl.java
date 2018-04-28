@@ -68,7 +68,7 @@ public class LocationInteractorImpl extends BaseInteractorImpl implements Locati
 
     @Override
     public void getListLocation(final GetListLocationCallback callback) {
-        mDatabase.child(LOCATIONS).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(LOCATIONS).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<UserLocation> listLocation = new ArrayList<>();

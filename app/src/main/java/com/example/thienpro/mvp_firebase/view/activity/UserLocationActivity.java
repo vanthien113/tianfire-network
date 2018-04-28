@@ -52,13 +52,6 @@ public class UserLocationActivity extends BaseActivity<ActivityUserLocationBindi
 
             presenter.getUserLocation(location.getId());
         }
-
-        getBinding().tbLocation.getImageBack().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
     }
 
     private void initMap() {

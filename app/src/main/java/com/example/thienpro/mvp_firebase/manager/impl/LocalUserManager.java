@@ -24,9 +24,9 @@ public class LocalUserManager implements UserManager {
         for (OnUserChangeListener listener : observer) {
             if (listener != null) {
                 listener.onChange(user);
-                sharedPreferences.edit().putString("user", gson.toJson(user)).apply();
             }
         }
+        sharedPreferences.edit().putString("user", gson.toJson(user)).apply();
     }
 
     public User getUser() {
