@@ -3,9 +3,9 @@ package com.example.thienpro.mvp_firebase.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.DividerItemDecoration;
-import android.view.View;
 
 import com.example.thienpro.mvp_firebase.R;
+import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 import com.example.thienpro.mvp_firebase.databinding.ActivityShareLocationBinding;
 import com.example.thienpro.mvp_firebase.model.entity.UserLocation;
 import com.example.thienpro.mvp_firebase.presenter.ShareLocationPresenter;
@@ -13,7 +13,6 @@ import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
 import com.example.thienpro.mvp_firebase.ultils.SHLocationManager;
 import com.example.thienpro.mvp_firebase.view.ShareLocationView;
 import com.example.thienpro.mvp_firebase.view.adapters.ShareLocationAdapter;
-import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 
 import java.util.ArrayList;
 
@@ -45,13 +44,6 @@ public class ShareLocationActivity extends BaseActivity<ActivityShareLocationBin
 
         getBinding().rvLocation.setLayoutManager(LayoutUltils.getLinearLayoutManager(this));
         getBinding().rvLocation.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-
-        getBinding().tbShareLocation.getImageBack().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
     }
 
     @Override
@@ -88,8 +80,10 @@ public class ShareLocationActivity extends BaseActivity<ActivityShareLocationBin
 
     @Override
     protected void resumeScreen() {
+        if (!SHLocationManager.checkPermission(this)) {
+            getBinding().cbLocation.setEnabled(false);
+        }
         SHLocationManager.checkLocationEnable(this);
-
     }
 
     @Override

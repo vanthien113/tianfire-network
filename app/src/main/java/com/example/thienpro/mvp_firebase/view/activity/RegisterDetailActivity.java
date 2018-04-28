@@ -32,13 +32,6 @@ public class RegisterDetailActivity extends BaseActivity<ActivityRegisterAddDeta
     @Override
     protected void init() {
         getBinding().setEvent(this);
-
-        getBinding().tbRegister.getImageBack().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
     }
 
     @Override

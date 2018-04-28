@@ -9,10 +9,10 @@ import android.net.Uri;
 import android.provider.Settings;
 
 import com.example.thienpro.mvp_firebase.R;
+import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 import com.example.thienpro.mvp_firebase.databinding.ActivityHomeBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeFragmentPagerAdapter;
-import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 import com.example.thienpro.mvp_firebase.view.listener.HomeNavigationListener;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -48,9 +48,8 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements H
     private void requestPermission() {
         Dexter.withActivity(this)
                 .withPermissions(
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.CAMERA,
                         Manifest.permission.ACCESS_FINE_LOCATION)
                 .withListener(new MultiplePermissionsListener() {
                     @Override
@@ -155,5 +154,10 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements H
     @Override
     public void navigationToSearchActivity() {
         SearchUserActivity.startActivity(this);
+    }
+
+    @Override
+    public void navigationToImageZoomActivity(String imageUrl) {
+        ImageZoomActivity.startActivity(this, imageUrl);
     }
 }

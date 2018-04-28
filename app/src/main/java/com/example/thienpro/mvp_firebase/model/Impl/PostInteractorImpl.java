@@ -1,12 +1,11 @@
 package com.example.thienpro.mvp_firebase.model.Impl;
 
-import android.annotation.SuppressLint;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
+import com.example.thienpro.mvp_firebase.ultils.SHDateTimeFormat;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -20,148 +19,45 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by ThienPro on 11/17/2017.
  */
 
-public class PostInteractorImpl implements PostInteractor {
-    private static final String POSTS = "posts";
-    private static final String USERS = "users";
-
-    private static final String ID = "id";
-    private static final String NAME = "name";
-    private static final String POST = "post";
-    private static final String IMAGE = "image";
-    private static final String AVATAR = "avatar";
-    private static final String TIMEPOST = "timePost";
-
+public class PostInteractorImpl extends BaseInteractorImpl implements PostInteractor {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private ArrayList<Post> postList;
-    private Date today;
-    private String day;
-    private SimpleDateFormat simpleDateFormat;
-    private FirebaseStorage storage;
-    private StorageReference storageReference;
-    private StorageReference ref;
 
     public PostInteractorImpl() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
         postList = new ArrayList<>();
     }
 
-    @SuppressLint("SimpleDateFormat")
     @Override
-    public void writeNewPost(final String content, final Uri filePath, final ExceptionCallback callback) {
-        today = new Date();
-        today.getDate();
-        simpleDateFormat = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
-        day = simpleDateFormat.format(today);
-
-        if (filePath != null) {
-            ref = storageReference.child("images/" + UUID.randomUUID().toString());
-            ref.putFile(filePath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            //get url image
-                            ref.getDownloadUrl()
-                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(final Uri uri) {
-                                            //Up Post with Image
-                                            mDatabase.child(USERS).child(user.getUid()).addValueEventListener(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                                                    String name = (String) map.get(NAME);
-                                                    String avatar = (String) map.get(AVATAR);
-
-                                                    Post post = new Post(user.getUid(), name, day, content, uri.toString(), avatar);
-                                                    mDatabase.child(POSTS).child(day).setValue(post)
-                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                @Override
-                                                                public void onComplete(@NonNull Task<Void> task) {
-                                                                    callback.onFinish(null);
-                                                                }
-                                                            }) //setValue để thêm node
-                                                            .addOnFailureListener(new OnFailureListener() {
-                                                                @Override
-                                                                public void onFailure(@NonNull Exception e) {
-                                                                    callback.onFinish(e);
-                                                                }
-                                                            });
-                                                }
-
-                                                @Override
-                                                public void onCancelled(DatabaseError databaseError) {
-
-                                                }
-                                            });
-
-
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception exception) {
-                                            callback.onFinish(exception);
-                                        }
-                                    });
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            callback.onFinish(e);
-
-                        }
-                    });
-        } else {
-            mDatabase.child(USERS).child(user.getUid()).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                    String name = (String) map.get(NAME);
-                    String avatar = (String) map.get(AVATAR);
-
-                    Post post = new Post(user.getUid(), name, day, content, null, avatar);
-                    mDatabase.child(POSTS).child(day).setValue(post)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    callback.onFinish(null);
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    callback.onFinish(e);
-                                }
-                            });
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
+    public void writeNewPost(String userName, String avatar, final String content, final String filePath, final ExceptionCallback callback) {
+        Post post = new Post(user.getUid(), userName, SHDateTimeFormat.getPostCurrentTime(), content, filePath, avatar);
+        mDatabase.child(POSTS).child(SHDateTimeFormat.getPostCurrentTime()).setValue(post)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        callback.onFinish(null);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.onFinish(e);
+                    }
+                });
     }
 
     @Override
@@ -215,22 +111,9 @@ public class PostInteractorImpl implements PostInteractor {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 //Delete Image in storage
-                if (!TextUtils.isEmpty(post.getImage())) {
-                    StorageReference photoRef = storage.getReferenceFromUrl(post.getImage());
-                    photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            callback.onFinish(null);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            callback.onFinish(exception);
-                        }
-                    });
-                } else {
-                    callback.onFinish(null);
-                }
+
+                deleteImage(post.getImage(), callback);
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -240,13 +123,32 @@ public class PostInteractorImpl implements PostInteractor {
         });
     }
 
+    private void deleteImage(String imageUrl, final ExceptionCallback callback) {
+        if (!TextUtils.isEmpty(imageUrl)) {
+            StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl);
+            photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    callback.onFinish(null);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    callback.onFinish(exception);
+                }
+            });
+        } else {
+            callback.onFinish(null);
+        }
+    }
+
     @Override
     public void editPost(Post post, final ExceptionCallback callback) {
         Map<String, Object> postValues = post.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/posts/" + post.getTimePost(), postValues);
+        childUpdates.put(post.getTimePost(), postValues);
 
-        mDatabase.updateChildren(childUpdates)
+        mDatabase.child(POSTS).updateChildren(childUpdates)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -311,4 +213,6 @@ public class PostInteractorImpl implements PostInteractor {
             }
         });
     }
+
+
 }

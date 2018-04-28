@@ -3,17 +3,16 @@ package com.example.thienpro.mvp_firebase.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
+import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 import com.example.thienpro.mvp_firebase.databinding.ActivityPostBinding;
 import com.example.thienpro.mvp_firebase.presenter.PostPresenter;
 import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
 import com.example.thienpro.mvp_firebase.view.PostView;
-import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 
 /**
  * Created by ThienPro on 11/28/2017.
@@ -58,9 +57,7 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
 
     @Override
     public void navigationToHome() {
-        ActivityCompat.finishAffinity(this);
-        HomeActivity.startActiviry(this);
-        finish();
+        onBackPressed();
     }
 
     @Override

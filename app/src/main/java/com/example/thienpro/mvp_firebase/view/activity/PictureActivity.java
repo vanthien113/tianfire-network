@@ -21,6 +21,7 @@ public class PictureActivity extends BaseActivity<ActivityPictureBinding> implem
     private PicturePresenter presenter;
     private PictureAdapter adapter;
     private String userId;
+    private int type;
 
     public static void startActivity(Context context, String userId) {
         Intent intent = new Intent(context, PictureActivity.class);
@@ -42,13 +43,6 @@ public class PictureActivity extends BaseActivity<ActivityPictureBinding> implem
         getBinding().setEvent(this);
 
         onChangeViewTypeClick();
-
-        getBinding().tbPicture.getImageBack().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
     }
 
     @Override
@@ -73,7 +67,7 @@ public class PictureActivity extends BaseActivity<ActivityPictureBinding> implem
 
     @Override
     public void showPicture(ArrayList<String> listPicture) {
-        adapter = new PictureAdapter(listPicture);
+        adapter = new PictureAdapter(listPicture, type);
         getBinding().rvPicture.setAdapter(adapter);
     }
 
@@ -81,8 +75,10 @@ public class PictureActivity extends BaseActivity<ActivityPictureBinding> implem
     public void onChangeViewTypeClick() {
         if (getBinding().rbOne.isChecked()) {
             getBinding().rvPicture.setLayoutManager(LayoutUltils.getLinearLayoutManager(this));
+            type = 0;
         } else {
             getBinding().rvPicture.setLayoutManager(new GridLayoutManager(this, 2));
+            type = 1;
         }
 
         presenter.getPicture(userId);

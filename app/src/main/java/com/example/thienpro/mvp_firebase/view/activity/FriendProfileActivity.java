@@ -2,19 +2,19 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.View;
 
 import com.example.thienpro.mvp_firebase.R;
+import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 import com.example.thienpro.mvp_firebase.databinding.ActivityFriendProfileBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.FriendProfilePresenter;
+import com.example.thienpro.mvp_firebase.ultils.DownloadUltil;
 import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
 import com.example.thienpro.mvp_firebase.view.FriendProfileView;
 import com.example.thienpro.mvp_firebase.view.adapters.FriendProfileAdapter;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
 import com.example.thienpro.mvp_firebase.view.adapters.ProfileAdapter;
-import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 
 import java.util.ArrayList;
 
@@ -28,9 +28,7 @@ public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBin
 
     public static void startActivity(Context context, String userId) {
         Intent intent = new Intent(context, FriendProfileActivity.class);
-
         intent.putExtra(USER_ID, userId);
-
         context.startActivity(intent);
     }
 
@@ -49,13 +47,6 @@ public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBin
         presenter.getFriendInfomation(userId);
 
         getBinding().setEvent(this);
-
-        viewDataBinding.tbProfile.getImageBack().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
     }
 
     @Override
@@ -106,7 +97,7 @@ public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBin
 
     @Override
     public void onDownload(String imageUrl) {
-
+        DownloadUltil.startDownload(this, imageUrl);
     }
 
     @Override
@@ -115,8 +106,23 @@ public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBin
     }
 
     @Override
+    public void onImageClick(String imageUrl) {
+        ImageZoomActivity.startActivity(this, imageUrl);
+    }
+
+    @Override
     public void onEditPost(Post post) {
 
+    }
+
+    @Override
+    public void onAvatarClick(String avatar) {
+        ImageZoomActivity.startActivity(this, avatar);
+    }
+
+    @Override
+    public void onCoverClick(String cover) {
+        ImageZoomActivity.startActivity(this, cover);
     }
 
     @Override

@@ -12,16 +12,18 @@ import java.util.ArrayList;
 
 public class PictureAdapter extends RecyclerView.Adapter<PictureVH> {
     private ArrayList<String> listPicture;
+    private int type;
 
-    public PictureAdapter(ArrayList<String> listPicture) {
+    public PictureAdapter(ArrayList<String> listPicture, int type) {
         this.listPicture = listPicture;
+        this.type = type;
     }
 
     @Override
     public PictureVH onCreateViewHolder(ViewGroup parent, int viewType) {
         ItemPictureBinding binding = ItemPictureBinding.inflate(LayoutInflater.from(parent.getContext()));
         binding.getRoot().setLayoutParams(LayoutUltils.getRecyclerViewLayoutParams());
-        return new PictureVH(binding);
+        return new PictureVH(binding, type);
     }
 
     @Override

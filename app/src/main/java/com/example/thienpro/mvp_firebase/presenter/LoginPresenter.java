@@ -13,4 +13,6 @@ public interface LoginPresenter extends BasePresenter<LoginView> {
     void onSignIn(String email, String password);
 
     void forgotPassword(String email);
+
+    void getUserInfo();
 }

@@ -1,6 +1,5 @@
 package com.example.thienpro.mvp_firebase.model.Impl;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
@@ -19,12 +18,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /*
  *- Lớp M: xử lý dữ liệu -> Trả dữ liệu về P thông qua callback
@@ -34,18 +31,7 @@ import java.util.UUID;
  * Created by ThienPro on 11/10/2017.
  */
 
-public class UserInteractorImpl implements UserInteractor {
-    private static final String USERS = "users";
-    private static final String POSTS = "posts";
-    private static final String AVATARS = "avatars";
-
-    private static final String EMAIL = "email";
-    private static final String NAME = "name";
-    private static final String ADDRESS = "address";
-    private static final String SEX = "sex";
-    private static final String AVATAR = "avatar";
-    private static final String COVER = "cover";
-
+public class UserInteractorImpl extends BaseInteractorImpl implements UserInteractor {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser users;
@@ -171,11 +157,15 @@ public class UserInteractorImpl implements UserInteractor {
                 ArrayList<User> list = new ArrayList<>();
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     User user = dsp.getValue(User.class);
-                    if (user.getName().contains(userName)) {
+                    if (user.getName().toLowerCase().contains(userName.toLowerCase())) {
                         list.add(user);
                     }
                 }
-                callBack.onFinish(null, list);
+                if (list.size() == 0) {
+                    callBack.onFinish(null, null);
+                } else {
+                    callBack.onFinish(null, list);
+                }
             }
 
             @Override
@@ -193,22 +183,31 @@ public class UserInteractorImpl implements UserInteractor {
         result.put(ADDRESS, address);
         result.put(SEX, sex);
 
-        mDatabase.child(USERS).child(userId).updateChildren(result).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                callback.onFinish(e);
-            }
-        });
+        mDatabase.child(USERS).child(userId).updateChildren(result)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        updateUseInfoInPost(name, callback);
+                    }
+                })
 
-        //Edit name in post
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.onFinish(e);
+                    }
+                });
+    }
+
+    private void updateUseInfoInPost(final String name, final ExceptionCheckCallback callback) {
         mDatabase.child(POSTS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     @SuppressWarnings("unchecked")
                     Map<String, Object> map = (Map<String, Object>) dsp.getValue();
-                    String id = (String) map.get("id");
-                    String timePost = (String) map.get("timePost");
+                    String id = (String) map.get(ID);
+                    String timePost = (String) map.get(TIMEPOST);
 
                     if (id.equals(users.getUid())) {
                         HashMap<String, Object> result = new HashMap<>();
@@ -220,15 +219,10 @@ public class UserInteractorImpl implements UserInteractor {
                                     public void onFailure(@NonNull Exception e) {
                                         callback.onFinish(e);
                                     }
-                                })
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        callback.onFinish(null);
-                                    }
                                 });
                     }
                 }
+                callback.onFinish(null);
             }
 
             @Override
@@ -239,57 +233,57 @@ public class UserInteractorImpl implements UserInteractor {
         });
     }
 
-    public void addAvatar(final Uri uri, final StringCallback callback) {
-        //Up im
-        if (uri != null) {
-            ref = storageReference.child("avatars/" + UUID.randomUUID().toString());
-            ref.putFile(uri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            ref.getDownloadUrl()
-                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(final Uri uri) {
-                                            editAvartInPost(uri, callback);
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            callback.onFinish(e, null);
-                                        }
-                                    });
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            callback.onFinish(e, null);
-                        }
-                    });
-        }
+    @Override
+    public void addAvatar(String avatarUrl, ExceptionCheckCallback callback) {
+        editAvatarInUser(avatarUrl, callback);
     }
 
-    private void editAvartInPost(final Uri uri, final StringCallback callback) {
-        //Edit avatar in post
+    @Override
+    public void addCover(final String coverUrl, final ExceptionCheckCallback callback) {
+        String userId = users.getUid();
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put(COVER, coverUrl);
+
+        mDatabase.child(USERS).child(userId).updateChildren(result)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        callback.onFinish(null);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.onFinish(e);
+                    }
+                });
+    }
+
+    private void editAvatarInPost(final String avatarUrl, final ExceptionCheckCallback callback) {
         mDatabase.child(POSTS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     @SuppressWarnings("unchecked")
                     Map<String, Object> map = (Map<String, Object>) dsp.getValue();
-                    String id = (String) map.get("id");
-                    String timePost = (String) map.get("timePost");
+                    String id = (String) map.get(ID);
+                    String timePost = (String) map.get(TIMEPOST);
 
                     if (id.equals(users.getUid().toString())) {
                         HashMap<String, Object> result = new HashMap<>();
-                        result.put(AVATAR, uri.toString());
+                        result.put(AVATAR, avatarUrl);
 
                         mDatabase.child(POSTS).child(timePost).updateChildren(result).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                editAvatarInUser(uri, callback);
+                                callback.onFinish(null);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                callback.onFinish(e);
+
                             }
                         });
                     }
@@ -303,79 +297,26 @@ public class UserInteractorImpl implements UserInteractor {
         });
     }
 
-    private void editAvatarInUser(final Uri uri, final StringCallback callback) {
-        //add in user
+    private void editAvatarInUser(final String avatarUrl, final ExceptionCheckCallback callback) {
         String userId = users.getUid();
 
         HashMap<String, Object> result = new HashMap<>();
-        result.put(AVATAR, uri.toString());
+        result.put(AVATAR, avatarUrl);
 
         mDatabase.child(USERS).child(userId).updateChildren(result)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        callback.onFinish(null, uri.toString());
+                        editAvatarInPost(avatarUrl, callback);
 
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        callback.onFinish(e, null);
+                        callback.onFinish(e);
                     }
                 });
-    }
-
-    @Override
-    public void addCover(final Uri coverUri, final StringCallback callback) {
-        //Up im
-
-        if (coverUri != null) {
-            ref = storageReference.child("covers/" + UUID.randomUUID().toString());
-            ref.putFile(coverUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            ref.getDownloadUrl()
-                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(final Uri uri) {
-                                            //add in usr
-                                            String userId = users.getUid();
-
-                                            HashMap<String, Object> result = new HashMap<>();
-                                            result.put(COVER, uri.toString());
-
-                                            mDatabase.child(USERS).child(userId).updateChildren(result)
-                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            callback.onFinish(null, uri.toString());
-                                                        }
-                                                    })
-                                                    .addOnFailureListener(new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception e) {
-                                                            callback.onFinish(e, null);
-                                                        }
-                                                    });
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            callback.onFinish(e, null);
-                                        }
-                                    });
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            callback.onFinish(e, null);
-                        }
-                    });
-        }
     }
 
     @Override
@@ -395,7 +336,7 @@ public class UserInteractorImpl implements UserInteractor {
     public void getUser(final UserCallback callback, boolean loadUser) {
         users = FirebaseAuth.getInstance().getCurrentUser();
 
-        ValueEventListener valueEventListener = new ValueEventListener() {
+        mDatabase.child(USERS).child(users.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
@@ -406,9 +347,7 @@ public class UserInteractorImpl implements UserInteractor {
             public void onCancelled(DatabaseError databaseError) {
                 callback.onFinish(databaseError, null);
             }
-        };
-
-        mDatabase.child(USERS).child(users.getUid()).addValueEventListener(valueEventListener);
+        });
     }
 
     public void sigIn(String email, String password, final ExceptionCheckCallback callback) {

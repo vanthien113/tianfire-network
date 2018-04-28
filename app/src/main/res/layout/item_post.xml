@@ -94,6 +94,7 @@
                     android:textSize="@dimen/text_size_standard" />
 
                 <ImageView
+                    android:onClick="@{()->event.onImageClick()}"
                     android:id="@+id/iv_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

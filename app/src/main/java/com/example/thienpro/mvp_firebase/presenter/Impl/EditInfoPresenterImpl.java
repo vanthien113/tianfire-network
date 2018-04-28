@@ -3,12 +3,13 @@ package com.example.thienpro.mvp_firebase.presenter.Impl;
 import android.content.Context;
 import android.content.Intent;
 
+import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
 import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
+import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.EditInfoPresenter;
 import com.example.thienpro.mvp_firebase.view.EditInfoView;
 import com.example.thienpro.mvp_firebase.view.activity.EditInfoActivity;
-import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -43,9 +44,20 @@ public class EditInfoPresenterImpl extends BasePresentermpl<EditInfoView> implem
                     getView().showExceptionError(e);
                 } else {
                     getView().showChangeInfoComplete();
+                    updateUserInUserManager(name, address, sex);
                 }
             }
         });
+    }
+
+    private void updateUserInUserManager(String name, final String address, final boolean sex) {
+        User newUser = userManager.getUser();
+        newUser.setName(name);
+        newUser.setAddress(address);
+        newUser.setSex(sex);
+
+        getView().showChangeInfoComplete();
+        userManager.updateCurrentUser(newUser);
     }
 
     @Override
@@ -58,5 +70,15 @@ public class EditInfoPresenterImpl extends BasePresentermpl<EditInfoView> implem
             } else if (resultCode == RESULT_CANCELED) {
             }
         }
+    }
+
+    @Override
+    public void attachView(EditInfoView view) {
+        super.attachView(view);
+    }
+
+    @Override
+    public void detach() {
+        super.detach();
     }
 }

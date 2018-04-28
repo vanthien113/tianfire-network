@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by ThienPro on 11/28/2017.
  */
-public interface UserInteractor {
+public interface UserInteractor extends BaseInteractor{
     interface BooleanCheckCallback {
         void onFinish(boolean checker);
     }
@@ -39,9 +39,9 @@ public interface UserInteractor {
 
     void getUser(UserCallback callback, boolean loadUser);
 
-    void addAvatar(final Uri uri, final StringCallback callback);
+    void addAvatar(final String avatarUrl, final ExceptionCheckCallback callback);
 
-    void addCover(final Uri coverUri, StringCallback callback);
+    void addCover(final String coverUrl, ExceptionCheckCallback callback);
 
     void updateUser(final String name, String address, Boolean sex, final ExceptionCheckCallback callback);
 

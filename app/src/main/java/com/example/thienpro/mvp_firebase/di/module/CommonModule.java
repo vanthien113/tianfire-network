@@ -36,8 +36,6 @@ import com.example.thienpro.mvp_firebase.presenter.ShareLocationPresenter;
 import com.example.thienpro.mvp_firebase.presenter.UserLocationPresenter;
 import com.example.thienpro.mvp_firebase.presenter.VerifiEmailPresenter;
 
-import java.util.concurrent.ScheduledExecutorService;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -52,13 +50,13 @@ public class CommonModule {
     }
 
     @Provides
-    public LoginPresenter providesLoginPresenter(UserInteractor userInteractor) {
-        return new LoginPresenterImpl(userInteractor);
+    public LoginPresenter providesLoginPresenter(UserInteractor userInteractor, UserManager userManager) {
+        return new LoginPresenterImpl(userInteractor, userManager);
     }
 
     @Provides
-    public HomePresenter providesHomePresenter(UserInteractor userInteractor, PostInteractor postInteractor, PostManager postManager) {
-        return new HomePresenterImpl(userInteractor, postInteractor, postManager);
+    public HomePresenter providesHomePresenter(UserInteractor userInteractor, PostInteractor postInteractor, PostManager postManager, UserManager userManager) {
+        return new HomePresenterImpl(userInteractor, postInteractor, postManager, userManager);
     }
 
     @Provides
@@ -77,8 +75,8 @@ public class CommonModule {
     }
 
     @Provides
-    public EditPostPresenter providesEditPostPresenter(PostInteractor postInteractor) {
-        return new EditPostPresenterImpl(postInteractor);
+    public EditPostPresenter providesEditPostPresenter(PostInteractor postInteractor, PostManager postManager) {
+        return new EditPostPresenterImpl(postInteractor, postManager);
     }
 
     @Provides
@@ -92,8 +90,8 @@ public class CommonModule {
     }
 
     @Provides
-    public PostPresenter providePostPresenter(PostInteractor postInteractor) {
-        return new PostPresenterImpl(postInteractor);
+    public PostPresenter providePostPresenter(PostInteractor postInteractor, UserManager userManager, PostManager postManager) {
+        return new PostPresenterImpl(postInteractor, userManager, postManager);
     }
 
     @Provides

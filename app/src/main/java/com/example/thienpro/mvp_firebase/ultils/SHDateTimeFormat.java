@@ -68,7 +68,7 @@ public class SHDateTimeFormat {
     }
 
     public static String changeDateFormat(String date) {
-        if(TextUtils.isEmpty(date)){
+        if (TextUtils.isEmpty(date)) {
             return "";
         }
         Date time;
@@ -88,5 +88,14 @@ public class SHDateTimeFormat {
 
     public static Date getDateCurrent() {
         return Calendar.getInstance().getTime();
+    }
+
+    public static String getPostCurrentTime() {
+        SimpleDateFormat simpleDateFormat;
+
+        Date today = new Date();
+        today.getDate();
+        simpleDateFormat = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
+        return simpleDateFormat.format(today);
     }
 }
