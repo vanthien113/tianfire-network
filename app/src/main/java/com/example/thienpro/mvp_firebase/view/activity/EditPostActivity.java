@@ -18,9 +18,7 @@ public class EditPostActivity extends BaseActivity<ActivityEditPostBinding> impl
 
     public static void start(Context context, Post post) {
         Intent intent = new Intent(context, EditPostActivity.class);
-
         intent.putExtra(POST, post);
-
         context.startActivity(intent);
     }
 

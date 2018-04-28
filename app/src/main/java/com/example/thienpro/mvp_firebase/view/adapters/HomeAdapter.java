@@ -7,11 +7,11 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.example.thienpro.mvp_firebase.databinding.ItemActivityHomeBinding;
+import com.example.thienpro.mvp_firebase.databinding.ItemPostBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
-import com.example.thienpro.mvp_firebase.view.adapters.viewholder.HomeVH;
+import com.example.thienpro.mvp_firebase.view.adapters.viewholder.ItemPostVH;
 
 import java.util.ArrayList;
 
@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * Created by ThienPro on 11/11/2017.
  */
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeVH> {
+public class HomeAdapter extends RecyclerView.Adapter<ItemPostVH> {
     private ArrayList<Post> mLisPost;
     private Context context;
     private ListPostMenuListener listener;
@@ -33,14 +33,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeVH> {
     }
 
     @Override
-    public HomeVH onCreateViewHolder(ViewGroup parent, int viewType) {
-        ItemActivityHomeBinding binding = ItemActivityHomeBinding.inflate(LayoutInflater.from(parent.getContext()));
+    public ItemPostVH onCreateViewHolder(ViewGroup parent, int viewType) {
+        ItemPostBinding binding = ItemPostBinding.inflate(LayoutInflater.from(parent.getContext()));
         binding.getRoot().setLayoutParams(LayoutUltils.getRecyclerViewLayoutParams());
-        return new HomeVH(binding, listener, user);
+        return new ItemPostVH(binding, listener, user);
     }
 
     @Override
-    public void onBindViewHolder(HomeVH holder, int position) {
+    public void onBindViewHolder(ItemPostVH holder, int position) {
         Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
         animation.setDuration(1000);
         holder.itemView.startAnimation(animation);

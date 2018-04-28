@@ -1,15 +1,17 @@
 package com.example.thienpro.mvp_firebase.view.fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.example.thienpro.mvp_firebase.R;
+import com.example.thienpro.mvp_firebase.bases.BaseFragment;
 import com.example.thienpro.mvp_firebase.databinding.FragmentSettingBinding;
 import com.example.thienpro.mvp_firebase.presenter.SettingPresenter;
 import com.example.thienpro.mvp_firebase.view.SettingView;
-import com.example.thienpro.mvp_firebase.bases.BaseFragment;
 import com.example.thienpro.mvp_firebase.view.listener.HomeNavigationListener;
 
 /**
@@ -47,7 +49,20 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> implem
 
     @Override
     public void onLogout() {
-        presenter.logOut();
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.dang_xuat)
+                .setCancelable(false)
+                .setPositiveButton(R.string.dang_xuat, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        presenter.logOut();
+                    }
+                })
+                .setCancelable(true)
+                .setNegativeButton(R.string.huy, null)
+                .setMessage(R.string.ban_thuc_su_muon_dang_xuat_khoi_thiet_bi_nay)
+                .create()
+                .show();
     }
 
     @Override

@@ -4,12 +4,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.example.thienpro.mvp_firebase.databinding.ItemActivityHomeBinding;
+import com.example.thienpro.mvp_firebase.databinding.ItemPostBinding;
 import com.example.thienpro.mvp_firebase.databinding.ItemProfileHeaderBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
-import com.example.thienpro.mvp_firebase.view.adapters.viewholder.HomeVH;
+import com.example.thienpro.mvp_firebase.view.adapters.viewholder.ItemPostVH;
 import com.example.thienpro.mvp_firebase.view.adapters.viewholder.ItemFriendProfileHeaderVH;
 import com.example.thienpro.mvp_firebase.view.adapters.viewholder.ItemFriendProfilePostVH;
 
@@ -37,7 +37,7 @@ public class FriendProfileAdapter extends RecyclerView.Adapter<RecyclerView.View
             binding.getRoot().setLayoutParams(LayoutUltils.getRecyclerViewLayoutParams());
             return new ItemFriendProfileHeaderVH(binding, listener);
         } else if (viewType == POST) {
-            ItemActivityHomeBinding binding = ItemActivityHomeBinding.inflate(LayoutInflater.from(parent.getContext()));
+            ItemPostBinding binding = ItemPostBinding.inflate(LayoutInflater.from(parent.getContext()));
             binding.getRoot().setLayoutParams(LayoutUltils.getRecyclerViewLayoutParams());
             return new ItemFriendProfilePostVH(binding, listPostMenuListener, null);
         }
@@ -49,8 +49,8 @@ public class FriendProfileAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemFriendProfileHeaderVH) {
             ((ItemFriendProfileHeaderVH) holder).bind(user);
-        } else if (holder instanceof HomeVH) {
-            ((HomeVH) holder).bind(lisPost.get(position - 1));
+        } else if (holder instanceof ItemPostVH) {
+            ((ItemPostVH) holder).bind(lisPost.get(position - 1));
         }
     }
 

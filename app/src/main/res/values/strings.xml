@@ -55,6 +55,10 @@
     <string name="cap_quyen_ung_dung">Cấp quyền ứng dụng</string>
     <string name="cap_quyen_message">Ứng dụng sẽ hoạt động không ổn định nếu không được cấp quyền đầy đủ!!!</string>
     <string name="cap_quyen">Cấp quyền</string>
+    <string name="ban_thuc_su_muon_xoa_bai_viet_nay">Bạn thực sự muốn xóa bài viết này?</string>
+    <string name="xoa">Xóa</string>
+    <string name="ban_thuc_su_muon_dang_xuat_khoi_thiet_bi_nay">Bạn thực sự muốn đăng xuất khỏi thiết bị này?</string>
+    <string name="xoa_bai_viet">Xóa bài viết!</string>
 
 
     <string-array name="province_arrays">

@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import com.example.thienpro.mvp_firebase.R;
-import com.example.thienpro.mvp_firebase.databinding.ItemActivityHomeBinding;
+import com.example.thienpro.mvp_firebase.databinding.ItemPostBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.ultils.SHStringHelper;
@@ -21,14 +21,14 @@ import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
  * Created by ThienPro on 11/11/2017.
  */
 
-public class HomeVH extends RecyclerView.ViewHolder implements ItemListPostView {
-    protected ItemActivityHomeBinding binding;
+public class ItemPostVH extends RecyclerView.ViewHolder implements ItemListPostView {
+    protected ItemPostBinding binding;
     private PopupMenu popupMenu;
     private HomeAdapter.ListPostMenuListener listener;
     private User user;
     private Post post;
 
-    public HomeVH(ItemActivityHomeBinding binding, HomeAdapter.ListPostMenuListener listener, User user) {
+    public ItemPostVH(ItemPostBinding binding, HomeAdapter.ListPostMenuListener listener, User user) {
         super(binding.getRoot());
         this.user = user;
         this.binding = binding;
@@ -115,8 +115,21 @@ public class HomeVH extends RecyclerView.ViewHolder implements ItemListPostView 
         listener.onFriendProfile(post.getId());
     }
 
-    private void deletePost(Post post) {
-        listener.onDeletePost(post);
+    private void deletePost(final Post post) {
+        new AlertDialog.Builder(binding.getRoot().getContext())
+                .setTitle(R.string.xoa_bai_viet)
+                .setCancelable(false)
+                .setPositiveButton(R.string.xoa, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        listener.onDeletePost(post);
+                    }
+                })
+                .setCancelable(true)
+                .setNegativeButton(R.string.huy, null)
+                .setMessage(R.string.ban_thuc_su_muon_xoa_bai_viet_nay)
+                .create()
+                .show();
     }
 
     private void editPost(Post post) {

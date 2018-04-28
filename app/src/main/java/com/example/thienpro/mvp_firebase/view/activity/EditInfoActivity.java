@@ -40,9 +40,7 @@ public class EditInfoActivity extends BaseActivity<ActivityEditinfoBinding> impl
         presenter.attachView(this);
 
         userManager = getAppComponent().getUserManager();
-
         getBinding().setEvent(this);
-
         getBinding().setData(userManager.getUser());
 
         if (userManager.getUser().getSex())
