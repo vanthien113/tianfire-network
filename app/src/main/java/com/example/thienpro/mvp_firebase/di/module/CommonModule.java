@@ -75,8 +75,8 @@ public class CommonModule {
     }
 
     @Provides
-    public EditPostPresenter providesEditPostPresenter(PostInteractor postInteractor) {
-        return new EditPostPresenterImpl(postInteractor);
+    public EditPostPresenter providesEditPostPresenter(PostInteractor postInteractor, PostManager postManager) {
+        return new EditPostPresenterImpl(postInteractor, postManager);
     }
 
     @Provides
@@ -90,8 +90,8 @@ public class CommonModule {
     }
 
     @Provides
-    public PostPresenter providePostPresenter(PostInteractor postInteractor, UserManager userManager) {
-        return new PostPresenterImpl(postInteractor, userManager);
+    public PostPresenter providePostPresenter(PostInteractor postInteractor, UserManager userManager, PostManager postManager) {
+        return new PostPresenterImpl(postInteractor, userManager, postManager);
     }
 
     @Provides

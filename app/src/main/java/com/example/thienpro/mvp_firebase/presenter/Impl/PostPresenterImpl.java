@@ -8,6 +8,7 @@ import android.net.Uri;
 
 import com.esafirm.imagepicker.model.Image;
 import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
+import com.example.thienpro.mvp_firebase.manager.PostManager;
 import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.model.Impl.BaseInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
@@ -28,10 +29,12 @@ public class PostPresenterImpl extends BasePresentermpl<PostView> implements Pos
     private PostInteractor postInteractor;
     private Uri filePath;
     private UserManager userManager;
+    private PostManager postManager;
 
-    public PostPresenterImpl(PostInteractor postInteractor, UserManager userManager) {
+    public PostPresenterImpl(PostInteractor postInteractor, UserManager userManager, PostManager postManager) {
         this.postInteractor = postInteractor;
         this.userManager = userManager;
+        this.postManager = postManager;
     }
 
     @Override
@@ -60,6 +63,7 @@ public class PostPresenterImpl extends BasePresentermpl<PostView> implements Pos
                 if (e != null) {
                     getView().showExceptionError(e);
                 } else {
+                    postManager.postChange();
                     getView().navigationToHome();
                 }
             }

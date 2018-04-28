@@ -15,12 +15,6 @@ import com.google.firebase.database.DatabaseError;
 public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements LoginPresenter {
     private UserInteractor userInteractor;
     private UserManager userManager;
-    private UserManager.OnUserChangeListener onUserChangeListener = new UserManager.OnUserChangeListener() {
-        @Override
-        public void onChange(User newUser) {
-            getView().navigationToHome();
-        }
-    };
 
     public LoginPresenterImpl(UserInteractor userInteractor, UserManager userManager) {
         this.userInteractor = userInteractor;
@@ -100,6 +94,7 @@ public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements L
                     getView().showDatabaseError(error);
                 } else {
                     userManager.updateCurrentUser(user);
+                    getView().navigationToHome();
                 }
             }
         }, false);
@@ -107,13 +102,11 @@ public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements L
 
     @Override
     public void attachView(LoginView view) {
-        userManager.addOnUserChangeListener(onUserChangeListener);
         super.attachView(view);
     }
 
     @Override
     public void detach() {
-        userManager.removeUserChangeListener(onUserChangeListener);
         super.detach();
     }
 }

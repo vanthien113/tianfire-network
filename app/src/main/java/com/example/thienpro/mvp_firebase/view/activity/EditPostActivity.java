@@ -4,11 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.example.thienpro.mvp_firebase.R;
+import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 import com.example.thienpro.mvp_firebase.databinding.ActivityEditPostBinding;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.presenter.EditPostPresenter;
 import com.example.thienpro.mvp_firebase.view.EditPostView;
-import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 
 public class EditPostActivity extends BaseActivity<ActivityEditPostBinding> implements EditPostView {
     private static String POST = "post";
@@ -67,6 +67,6 @@ public class EditPostActivity extends BaseActivity<ActivityEditPostBinding> impl
 
     @Override
     public void navigationToHome() {
-        HomeActivity.startActiviry(this);
+        onBackPressed();
     }
 }

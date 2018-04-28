@@ -55,10 +55,14 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
 
     @Override
     public void loadPost() {
+        if (getView() == null)
+            return;
         getView().showLoading();
         postInteractor.loadPersonalPost(new PostInteractor.ListPostCallback() {
             @Override
             public void onFinish(DatabaseError e, ArrayList<Post> listPost) {
+                if (getView() == null)
+                    return;
                 getView().hideLoading();
 
                 if (e == null) {
