@@ -36,8 +36,8 @@ public class BaseInteractorImpl implements BaseInteractor {
     public BaseInteractorImpl() {
     }
 
-    public void uploadImage(Uri uri, String child, final PostInteractor.GetStringCallback callback) {
-        ref = FirebaseStorage.getInstance().getReference().child(child).child(UUID.randomUUID().toString());
+    public void uploadImage(Uri uri, String child, String userId, final PostInteractor.GetStringCallback callback) {
+        ref = FirebaseStorage.getInstance().getReference().child(child).child(userId).child(UUID.randomUUID().toString());
         ref.putFile(uri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override

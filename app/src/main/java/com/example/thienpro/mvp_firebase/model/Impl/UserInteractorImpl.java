@@ -1,6 +1,7 @@
 package com.example.thienpro.mvp_firebase.model.Impl;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
@@ -288,6 +289,7 @@ public class UserInteractorImpl extends BaseInteractorImpl implements UserIntera
                         });
                     }
                 }
+                callback.onFinish(null);
             }
 
             @Override

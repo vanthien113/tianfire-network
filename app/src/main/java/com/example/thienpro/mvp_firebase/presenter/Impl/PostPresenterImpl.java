@@ -44,7 +44,7 @@ public class PostPresenterImpl extends BasePresentermpl<PostView> implements Pos
         getView().showLoadingDialog();
 
         if (filePath != null) {
-            postInteractor.uploadImage(filePath, BaseInteractorImpl.IMAGES, new PostInteractor.GetStringCallback() {
+            postInteractor.uploadImage(filePath, BaseInteractorImpl.IMAGES, userManager.getUser().getId(), new PostInteractor.GetStringCallback() {
                 @Override
                 public void onFinish(Exception e, String string) {
                     post(content, string);
