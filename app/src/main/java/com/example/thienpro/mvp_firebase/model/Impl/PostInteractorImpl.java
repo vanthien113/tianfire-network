@@ -61,7 +61,7 @@ public class PostInteractorImpl extends BaseInteractorImpl implements PostIntera
     }
 
     @Override
-    public void loadPersonalPost(final ListPostCallback callback) {
+    public void loadPersonalPost(final String userId, final ListPostCallback callback) {
         final ArrayList<Post> posts = new ArrayList<>();
 
         mDatabase.child(POSTS).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -69,7 +69,7 @@ public class PostInteractorImpl extends BaseInteractorImpl implements PostIntera
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     Post post = dsp.getValue(Post.class);
-                    if (post.getId().equals(user.getUid())) {
+                    if (post.getId().equals(userId)) {
                         posts.add(post);
                     }
                 }

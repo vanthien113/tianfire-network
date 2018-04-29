@@ -1,5 +1,6 @@
 package com.example.thienpro.mvp_firebase.model;
 
+import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.google.firebase.database.DatabaseError;
 
@@ -28,7 +29,7 @@ public interface PostInteractor extends BaseInteractor{
 
     void writeNewPost(String userName, String avatar, String content, String filePath, ExceptionCallback callback);
 
-    void loadPersonalPost(ListPostCallback callback);
+    void loadPersonalPost(String userId, ListPostCallback callback);
 
     void loadAllPost(ListPostCallback callback);
 

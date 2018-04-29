@@ -29,7 +29,7 @@ public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements L
                     return;
                 getView().hideLoadingDialog();
                 if (checker) {
-                    getView().navigationToHome();
+                    getUserInfo();
                 } else {
                     getView().navigationToVerifiEmail();
                 }
@@ -49,7 +49,7 @@ public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements L
                     return;
                 getView().hideLoadingDialog();
                 if (e == null) {
-                    getUserInfo();
+                    signedInCheck();
                 } else {
                     getView().showExceptionError(e);
                 }
@@ -95,6 +95,7 @@ public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements L
                 } else {
                     userManager.updateCurrentUser(user);
                     getView().navigationToHome();
+
                 }
             }
         }, false);

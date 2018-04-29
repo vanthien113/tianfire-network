@@ -1,6 +1,7 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
 import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
+import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.presenter.VerifiEmailPresenter;
 import com.example.thienpro.mvp_firebase.view.VerifiEmailView;

@@ -58,7 +58,7 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
         if (getView() == null)
             return;
         getView().showLoading();
-        postInteractor.loadPersonalPost(new PostInteractor.ListPostCallback() {
+        postInteractor.loadPersonalPost(userManager.getUser().getId(), new PostInteractor.ListPostCallback() {
             @Override
             public void onFinish(DatabaseError e, ArrayList<Post> listPost) {
                 if (getView() == null)
@@ -142,7 +142,7 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
             return;
         getView().showLoading();
 
-        userInteractor.uploadImage(uri, BaseInteractorImpl.AVATARS, new PostInteractor.GetStringCallback() {
+        userInteractor.uploadImage(uri, BaseInteractorImpl.AVATARS, userManager.getUser().getId(), new PostInteractor.GetStringCallback() {
             @Override
             public void onFinish(Exception e, String string) {
                 addAvatar(string);
@@ -173,7 +173,7 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
             return;
         getView().showLoading();
 
-        userInteractor.uploadImage(uri, BaseInteractorImpl.COVER, new PostInteractor.GetStringCallback() {
+        userInteractor.uploadImage(uri, BaseInteractorImpl.COVER, userManager.getUser().getId(), new PostInteractor.GetStringCallback() {
             @Override
             public void onFinish(Exception e, String string) {
                 addCover(string);
