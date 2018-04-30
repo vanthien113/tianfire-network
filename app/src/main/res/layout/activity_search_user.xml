@@ -11,26 +11,26 @@
             android:id="@+id/tb_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:setTitle="Tìm kiếm người dùng" />
+            app:setTitle="@string/tim_kiem_nguoi_dung" />
 
         <EditText
             android:id="@+id/et_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_margin="@dimen/space_normal"
+            android:layout_marginTop="@dimen/space_normal"
             android:background="@drawable/background_button_non_radius"
-            android:hint="Tìm kiếm người dùng"
+            android:hint="@string/tim_kiem_nguoi_dung"
             android:maxLength="20"
             android:maxLines="1"
-            android:padding="10dp"
-            android:textSize="12sp" />
+            android:padding="@dimen/space_normal"
+            android:textSize="@dimen/text_size_small" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp" />
+            android:layout_margin="@dimen/space_normal" />
 
     </LinearLayout>
 </layout>

@@ -16,10 +16,10 @@
             android:id="@+id/textView6"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="50dp"
-            android:text="Email chứa đường link xác nhận tài khoản đã được gửi đên địa chỉ email của bạn. Nếu bạn đã xác nhận, hãy nhấn Tiếp tục"
+            android:layout_marginEnd="@dimen/space_normal"
+            android:layout_marginStart="@dimen/space_normal"
+            android:layout_marginTop="@dimen/space_xxxxxxx_large"
+            android:text="@string/xac_thuc_tai_khoan_message"
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -29,9 +29,7 @@
             android:id="@+id/tv_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/space_x_large"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -40,10 +38,8 @@
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="100dp"
-            android:text="Xác thực tài khoản"
+            android:text="@string/xac_thuc_tai_khoan"
             android:textSize="@dimen/text_size_xxlarge"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -54,9 +50,7 @@
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_margin="@dimen/space_normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -67,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="@{()->event.onCancelClick()}"
-                android:text="Hủy" />
+                android:text="@string/huy" />
 
             <Button
                 android:id="@+id/bt_next"
@@ -75,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="@{()->event.onNextClick()}"
-                android:text="Tiếp tục" />
+                android:text="@string/tiep_tuc" />
         </LinearLayout>
 
     </android.support.constraint.ConstraintLayout>

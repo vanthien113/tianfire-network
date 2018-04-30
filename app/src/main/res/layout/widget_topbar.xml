@@ -8,10 +8,10 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginBottom="10dp"
+        android:layout_height="@dimen/height_normal"
+        android:layout_marginBottom="@dimen/space_normal"
         android:background="@color/colorGray"
-        android:elevation="5dp"
+        android:elevation="@dimen/space_small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">

@@ -14,4 +14,49 @@
 
     <style name="DarkTheme" parent="Theme.AppCompat.NoActionBar" />
 
+    <style name="TextViewRegisterTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/space_large</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextViewMenu">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginLeft">@dimen/space_large</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="ImageViewMenu">
+        <item name="android:layout_width">@dimen/witdh_small</item>
+        <item name="android:layout_height">@dimen/height_small</item>
+        <item name="android:layout_marginLeft">@dimen/space_large</item>
+    </style>
+
+    <style name="TextViewRegisterInput">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginRight">@dimen/space_large</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:imeOptions">actionNext</item>
+        <item name="android:inputType">text</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:scrollbars">horizontal</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="ButtonBottom">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:layout_marginLeft">@dimen/space_large</item>
+        <item name="android:layout_marginRight">@dimen/space_large</item>
+        <item name="android:padding">@dimen/space_large</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

@@ -59,6 +59,31 @@
     <string name="xoa">Xóa</string>
     <string name="ban_thuc_su_muon_dang_xuat_khoi_thiet_bi_nay">Bạn thực sự muốn đăng xuất khỏi thiết bị này?</string>
     <string name="xoa_bai_viet">Xóa bài viết!</string>
+    <string name="email_da_duoc_gui_ve">Email đã được gửi về</string>
+    <string name="thay_doi_mat_khau">Thay đổi mật khẩu</string>
+    <string name="nhap_mat_khau_moi">Nhập mật khẩu mới:</string>
+    <string name="nhap_mat_khau_moi_hint">Nhập mật khẩu mới</string>
+    <string name="nhap_lai_mat_khau_moi">Nhập lại mật khẩu mới:</string>
+    <string name="nhap_lai_mat_khau_moi_hint">Nhập lại mật khẩu mới</string>
+    <string name="cap_nhat">Cập nhật</string>
+    <string name="email">Email:</string>
+    <string name="ho_ten">Họ tên</string>
+    <string name="dia_chi">Địa chỉ:</string>
+    <string name="tianfire_network">TianFire Network</string>
+    <string name="quen_mat_khau">Quên mật khẩu</string>
+    <string name="che_do_xem">Chế độ xem</string>
+    <string name="hang_don">Hàng đơn</string>
+    <string name="hang_doi">Hàng đôi</string>
+    <string name="password">Password:</string>
+    <string name="repassword">RePassword:</string>
+    <string name="tiep_tuc">Tiếp tục</string>
+    <string name="tim_kiem_nguoi_dung">Tìm kiếm người dùng</string>
+    <string name="chia_se_vi_tri">Chia sẻ vị trí</string>
+    <string name="xac_thuc_tai_khoan_message">Email chứa đường link xác nhận tài khoản đã được gửi đên địa chỉ email của bạn. Nếu bạn đã xác nhận, hãy nhấn Tiếp tục</string>
+    <string name="xac_thuc_tai_khoan">Xác thực tài khoản</string>
+    <string name="thong_tin">Thông tin</string>
+    <string name="hom_nay_ban_cam_thay_the_nao">Hôm nay bạn cảm thấy thế nào?</string>
+    <string name="anh">Ảnh</string>
 
 
     <string-array name="province_arrays">

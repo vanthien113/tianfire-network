@@ -23,6 +23,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class UserLocationActivity extends BaseActivity<ActivityUserLocationBinding> implements OnMapReadyCallback, UserLocationView {
+    private static String LOCATION = "location";
+
     private GoogleMap map;
     private UserLocation location;
     private UserLocationPresenter presenter;
@@ -30,7 +32,7 @@ public class UserLocationActivity extends BaseActivity<ActivityUserLocationBindi
 
     public static void startActivity(Context context, UserLocation location) {
         Intent intent = new Intent(context, UserLocationActivity.class);
-        intent.putExtra("location", location);
+        intent.putExtra(LOCATION, location);
         context.startActivity(intent);
     }
 
@@ -48,7 +50,7 @@ public class UserLocationActivity extends BaseActivity<ActivityUserLocationBindi
         initMap();
 
         if (getIntent() != null) {
-            location = (UserLocation) getIntent().getSerializableExtra("location");
+            location = (UserLocation) getIntent().getSerializableExtra(LOCATION);
 
             presenter.getUserLocation(location.getId());
         }

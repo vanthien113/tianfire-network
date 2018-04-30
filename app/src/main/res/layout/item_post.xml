@@ -28,13 +28,13 @@
 
             <com.example.thienpro.mvp_firebase.ultils.widget.CricleImage
                 android:id="@+id/iv_avatar"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="8dp"
+                android:layout_width="@dimen/witdh_small"
+                android:layout_height="@dimen/height_small"
+                android:layout_marginLeft="@dimen/space_large"
+                android:layout_marginTop="@dimen/space_normal"
                 android:onClick="@{()->event.onFriendProfileClick(data)}"
                 app:borderColor="@color/colorWhite"
-                app:borderWidth="1dp"
+                app:borderWidth="@dimen/space_smallest"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,9 +42,9 @@
                 android:id="@+id/tv_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="@dimen/space_normal"
                 android:layout_marginLeft="@dimen/space_large"
-                android:layout_marginRight="8dp"
+                android:layout_marginRight="@dimen/space_normal"
                 android:layout_marginStart="@dimen/space_large"
                 android:onClick="@{()->event.onFriendProfileClick(data)}"
                 android:text="@{data.name}"
@@ -59,8 +59,8 @@
                 android:id="@+id/tv_time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginEnd="@dimen/space_normal"
+                android:layout_marginRight="@dimen/space_smallest"
                 android:text="@{SHDateTimeFormat.changeDateFormat(data.timePost)}"
                 android:textColor="@color/colorGrayDark"
                 android:textSize="@dimen/text_size_standard"
@@ -73,12 +73,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_margin="@dimen/space_small"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -94,22 +89,19 @@
                     android:textSize="@dimen/text_size_standard" />
 
                 <ImageView
-                    android:onClick="@{()->event.onImageClick()}"
                     android:id="@+id/iv_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp" />
+                    android:layout_margin="@dimen/space_normal"
+                    android:onClick="@{()->event.onImageClick()}" />
             </LinearLayout>
 
             <ImageButton
                 android:id="@+id/ib_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginEnd="@dimen/space_normal"
+                android:layout_marginRight="@dimen/space_normal"
                 android:background="@drawable/ic_more_vert"
                 android:onClick="@{()->event.onMenuClick(data)}"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"

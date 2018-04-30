@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:setTitle="Chia sẻ vị trí" />
+            app:setTitle="@string/chia_se_vi_tri" />
 
         <fragment
             android:id="@+id/map"
@@ -34,14 +34,10 @@
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_margin="@dimen/space_x_large"
             android:onClick="@{()->event.onSendToMapClick()}"
             android:src="@drawable/ic_direction"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-
-
     </android.support.constraint.ConstraintLayout>
 </layout>
