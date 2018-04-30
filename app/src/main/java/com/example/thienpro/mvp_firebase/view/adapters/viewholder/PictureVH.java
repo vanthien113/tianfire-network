@@ -12,10 +12,9 @@ import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.databinding.ItemPictureBinding;
 import com.example.thienpro.mvp_firebase.ultils.DownloadUltil;
 import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
-import com.example.thienpro.mvp_firebase.view.ItemPictureView;
 import com.example.thienpro.mvp_firebase.view.activity.ImageZoomActivity;
 
-public class PictureVH extends RecyclerView.ViewHolder implements ItemPictureView {
+public class PictureVH extends RecyclerView.ViewHolder {
     private ItemPictureBinding binding;
     private String picture;
     private int type;

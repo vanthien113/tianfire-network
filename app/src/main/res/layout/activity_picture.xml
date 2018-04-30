@@ -25,11 +25,7 @@
             android:id="@+id/linearLayout2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_margin="@dimen/space_normal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tb_picture">
@@ -38,13 +34,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
-                android:text="Chế độ xem" />
+                android:layout_marginLeft="@dimen/space_small"
+                android:text="@string/che_do_xem" />
 
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="@dimen/space_small"
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -53,15 +49,15 @@
                     android:layout_height="wrap_content"
                     android:checked="true"
                     android:onClick="@{()->event.onChangeViewTypeClick()}"
-                    android:text="Hàng đơn" />
+                    android:text="@string/hang_don" />
 
                 <RadioButton
                     android:id="@+id/rb_double"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="@dimen/space_small"
                     android:onClick="@{()->event.onChangeViewTypeClick()}"
-                    android:text="Hàng đôi" />
+                    android:text="@string/hang_doi" />
             </RadioGroup>
         </LinearLayout>
 
@@ -69,15 +65,9 @@
             android:id="@+id/rv_picture"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_margin="@dimen/space_normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 

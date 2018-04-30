@@ -7,10 +7,6 @@
         <import type="com.example.thienpro.mvp_firebase.ultils.SHDateTimeFormat" />
 
         <variable
-            name="event"
-            type="com.example.thienpro.mvp_firebase.view.ItemFriendProfileView" />
-
-        <variable
             name="data"
             type="com.example.thienpro.mvp_firebase.model.entity.Post" />
     </data>

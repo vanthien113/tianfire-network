@@ -17,35 +17,23 @@
             android:id="@+id/tb_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:setTitle="Đăng kí tài khoản"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:setTitle="@string/dang_ki_tai_khoan" />
 
         <TextView
             android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space_large"
-            android:text="Họ tên"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            style="@style/TextViewRegisterTitle"
+            android:text="@string/ho_ten"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tb_register" />
 
         <EditText
             android:id="@+id/et_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:background="@color/colorWhite"
+            style="@style/TextViewRegisterInput"
+            android:layout_marginLeft="@dimen/space_xxxxxxx_large"
             android:hint="@string/nhap_ho_ten"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:maxLength="30"
-            android:maxLines="1"
-            android:scrollbars="horizontal"
-            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/textView10"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView10"
@@ -53,27 +41,17 @@
 
         <TextView
             android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:text="Địa chỉ:"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            style="@style/TextViewRegisterTitle"
+            android:text="@string/dia_chi"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
         <EditText
-            android:editable="false"
-            android:hint="Nhập địa chỉ"
-            android:background="@android:color/transparent"
-            android:onClick="@{()->event.onAddressClick()}"
             android:id="@+id/tv_address"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:textSize="14sp"
+            style="@style/TextViewRegisterInput"
+            android:editable="false"
+            android:hint="@string/nhap_dia_chi"
+            android:onClick="@{()->event.onAddressClick()}"
             app:layout_constraintBottom_toBottomOf="@+id/textView11"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/et_name"
@@ -83,17 +61,8 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space_large"
-            android:layout_marginTop="20dp"
-            android:imeOptions="actionNext"
-            android:inputType="text"
-            android:maxLines="1"
-            android:scrollbars="horizontal"
+            style="@style/TextViewRegisterTitle"
             android:text="@string/gioi_tinh"
-            android:textSize="16sp"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
@@ -122,19 +91,12 @@
         </RadioGroup>
 
         <Button
-            android:layout_marginEnd="@dimen/space_large"
-            android:layout_marginStart="@dimen/space_large"
             android:id="@+id/bt_register"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            style="@style/ButtonBottom"
             android:onClick="@{()->event.onNextClick()}"
-            android:padding="@dimen/space_large"
-            android:text="Tiếp tục"
-            android:textSize="16sp"
+            android:text="@string/tiep_tuc"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.033"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

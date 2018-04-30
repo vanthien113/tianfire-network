@@ -25,10 +25,10 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:onClick="@{()->event.onCoverClick()}"
                 android:id="@+id/iv_cover"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:onClick="@{()->event.onCoverClick()}"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -36,17 +36,17 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.example.thienpro.mvp_firebase.ultils.widget.CricleImage
-                android:onClick="@{()->event.onAvatarClick()}"
                 android:id="@+id/iv_avatar"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
+                android:layout_width="@dimen/width_large"
+                android:layout_height="@dimen/height_large"
+                android:layout_marginBottom="@dimen/space_normal"
+                android:layout_marginLeft="@dimen/space_normal"
+                android:layout_marginStart="@dimen/space_normal"
                 android:layout_marginTop="100dp"
+                android:onClick="@{()->event.onAvatarClick()}"
                 android:src="@color/cardview_dark_background"
                 app:borderColor="@color/colorWhite"
-                app:borderWidth="1dp"
+                app:borderWidth="@dimen/space_smallest"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -54,29 +54,25 @@
             <com.example.thienpro.mvp_firebase.ultils.widget.BoderTextView
                 android:id="@+id/tv_name"
                 android:layout_width="0dp"
-                android:layout_height="21dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="8dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space_normal"
                 android:text="@{data.name}"
                 android:textColor="@color/colorBlack"
-                android:textSize="18sp"
+                android:textSize="@dimen/text_size_xlarge"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_avatar"
                 app:layout_constraintTop_toTopOf="@+id/iv_avatar"
-                app:outerShadowRadius="1dp"
+                app:outerShadowRadius="@dimen/space_smallest"
                 app:strokeColor="@color/colorWhite"
                 app:strokeJoinStyle="round"
-                app:strokeWidth="1dp" />
+                app:strokeWidth="@dimen/space_smallest" />
 
             <ImageView
                 android:id="@+id/iv_changeAvatar"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/space_xxx_large"
+                android:layout_height="@dimen/space_xxx_large"
                 android:onClick="@{()->event.onChangeAvatar()}"
                 android:src="@drawable/ic_camera"
                 android:tint="@color/colorWhite"
@@ -86,11 +82,9 @@
 
             <ImageView
                 android:id="@+id/iv_changeCover"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_width="@dimen/space_xxx_large"
+                android:layout_height="@dimen/space_xxx_large"
+                android:layout_margin="@dimen/space_normal"
                 android:onClick="@{()->event.onChangeCover()}"
                 android:src="@drawable/ic_camera"
                 android:tint="@color/colorWhite"
@@ -102,18 +96,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginBottom="@dimen/space_normal"
+            android:layout_marginTop="@dimen/space_small"
             android:background="@color/colorWhite"
             android:orientation="horizontal"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingBottom="@dimen/space_normal"
+            android:paddingTop="@dimen/space_small">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Thông tin"
+                android:text="@string/thong_tin"
                 android:textAlignment="center" />
 
             <TextView
@@ -121,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="@{()->event.onShowListPictureClick()}"
-                android:text="Ảnh"
+                android:text="@string/anh"
                 android:textAlignment="center" />
         </LinearLayout>
 
@@ -129,9 +123,9 @@
             android:id="@+id/tv_post"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="@dimen/space_normal"
             android:background="@color/colorWhite"
-            android:hint="Hôm nay bạn cảm thấy thế nào?"
+            android:hint="@string/hom_nay_ban_cam_thay_the_nao"
             android:onClick="@{()->event.onPost()}"
             android:paddingBottom="@dimen/space_large"
             android:paddingLeft="@dimen/space_large"
