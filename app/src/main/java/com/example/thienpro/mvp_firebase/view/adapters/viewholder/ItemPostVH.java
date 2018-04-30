@@ -49,7 +49,7 @@ public class ItemPostVH extends RecyclerView.ViewHolder implements ItemListPostV
         binding.setData(post);
 
         if (user != null) {
-            if (user.getName().equals(post.getName())) {
+            if (user.getId().equals(post.getId())) {
                 binding.ibMenu.setVisibility(View.VISIBLE);
             } else {
                 binding.ibMenu.setVisibility(View.INVISIBLE);

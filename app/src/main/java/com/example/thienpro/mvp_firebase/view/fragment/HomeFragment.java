@@ -29,7 +29,6 @@ import java.util.Collections;
 public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements HomeView, HomeAdapter.ListPostMenuListener {
     private HomeAdapter homeAdapter;
     private HomePresenter presenter;
-    private ArrayList<Post> listPost;
     private HomeNavigationListener navigationListener;
     private UserManager userManager;
 
@@ -60,43 +59,33 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
         getBinding().srlHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadData();
+                presenter.loadAllListPost();
                 getBinding().srlHome.setRefreshing(false);
             }
         });
     }
 
-    public void loadData() {
-        if (listPost != null) {
-            listPost.clear();
-            presenter.loadAllListPost();
-        }
-    }
-
     @Override
     public void showAllPost(ArrayList<Post> list) {
         Collections.reverse(list);
-        listPost = list;
 
-        homeAdapter = new HomeAdapter(listPost, getContext(), this, userManager.getUser());
+        homeAdapter = new HomeAdapter(list, getContext(), this, userManager.getUser());
         getBinding().rvHome.setAdapter(homeAdapter);
     }
 
     @Override
     public void reloadPost() {
-        loadData();
+        presenter.loadAllListPost();
     }
 
     @Override
     public void showLoadingPb() {
         getBinding().srlHome.setRefreshing(true);
-
     }
 
     @Override
     public void hideLoadingPb() {
         getBinding().srlHome.setRefreshing(false);
-
     }
 
     @Override
