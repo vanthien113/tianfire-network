@@ -118,8 +118,8 @@ public class CommonModule {
     }
 
     @Provides
-    public SearchUserPresenter provideSearchUserPresenter(UserInteractor userInteractor) {
-        return new SearchUserPresenterImpl(userInteractor);
+    public SearchUserPresenter provideSearchUserPresenter(UserManager userManager) {
+        return new SearchUserPresenterImpl(userManager);
     }
 
     @Provides

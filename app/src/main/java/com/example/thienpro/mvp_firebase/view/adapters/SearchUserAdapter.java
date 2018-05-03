@@ -9,15 +9,19 @@ import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
 import com.example.thienpro.mvp_firebase.view.adapters.viewholder.SearchUserVH;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserVH> {
-    private ArrayList<User> list;
+    private List<User> list;
     private SearchUserClickListener listener;
 
-    public SearchUserAdapter(ArrayList<User> list, SearchUserClickListener listener) {
-        this.list = list;
+    public SearchUserAdapter(SearchUserClickListener listener) {
         this.listener = listener;
+    }
+
+    public void updateAdapter(List<User> list) {
+        this.list = list;
+        notifyDataSetChanged();
     }
 
     @Override

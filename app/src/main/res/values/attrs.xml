@@ -3,6 +3,12 @@
     <declare-styleable name="Topbar">
         <attr name="setTitle" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="TopbarPost">
+        <attr name="setPostTitle" format="string" />
+        <attr name="setEditMode" format="boolean" />
+    </declare-styleable>
+
     <declare-styleable name="CircleImageView">
         <attr name="borderWidth" format="dimension" />
         <attr name="borderOverlay" format="boolean" />

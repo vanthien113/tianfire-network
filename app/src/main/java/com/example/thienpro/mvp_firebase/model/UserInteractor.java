@@ -3,7 +3,6 @@ package com.example.thienpro.mvp_firebase.model;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.google.firebase.database.DatabaseError;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,10 +23,6 @@ public interface UserInteractor extends BaseInteractor {
 
     interface StringCallback {
         void onFinish(Exception e, String string);
-    }
-
-    interface SearchUserCallBack {
-        void onFinish(DatabaseError e, ArrayList<User> list);
     }
 
     interface UsersCallBack {
@@ -57,8 +52,6 @@ public interface UserInteractor extends BaseInteractor {
     void forgotPassword(String email, ExceptionCheckCallback callback);
 
     void getFriendInfomation(String userId, UserCallback callback);
-
-    void searchUser(String userName, SearchUserCallBack callBack);
 
     void getAllUser(UsersCallBack callBack);
 }

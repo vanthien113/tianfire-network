@@ -23,11 +23,15 @@ public class FriendProfileAdapter extends RecyclerView.Adapter<RecyclerView.View
     private HomeAdapter.ListPostMenuListener listPostMenuListener;
     private ProfileAdapter.ItemProfileClickListener listener;
 
-    public FriendProfileAdapter(ArrayList<Post> mLisPost, User user, HomeAdapter.ListPostMenuListener listPostMenuListener, ProfileAdapter.ItemProfileClickListener listener) {
+    public FriendProfileAdapter(User user, HomeAdapter.ListPostMenuListener listPostMenuListener, ProfileAdapter.ItemProfileClickListener listener) {
         this.user = user;
-        this.lisPost = mLisPost;
         this.listPostMenuListener = listPostMenuListener;
         this.listener = listener;
+    }
+
+    public void updateAdapter(ArrayList<Post> mLisPost){
+        this.lisPost = mLisPost;
+        notifyDataSetChanged();
     }
 
     @Override

@@ -150,32 +150,6 @@ public class UserInteractorImpl extends BaseInteractorImpl implements UserIntera
     }
 
     @Override
-    public void searchUser(final String userName, final SearchUserCallBack callBack) {
-        mDatabase.child(USERS).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<User> list = new ArrayList<>();
-                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    User user = dsp.getValue(User.class);
-                    if (user.getName().toLowerCase().contains(userName.toLowerCase())) {
-                        list.add(user);
-                    }
-                }
-                if (list.size() == 0) {
-                    callBack.onFinish(null, null);
-                } else {
-                    callBack.onFinish(null, list);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                callBack.onFinish(databaseError, null);
-            }
-        });
-    }
-
-    @Override
     public void getAllUser(final UsersCallBack callBack) {
         mDatabase.child(USERS).addValueEventListener(new ValueEventListener() {
             @Override

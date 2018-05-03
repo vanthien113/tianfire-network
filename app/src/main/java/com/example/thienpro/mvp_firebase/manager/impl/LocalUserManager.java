@@ -81,9 +81,20 @@ public class LocalUserManager implements UserManager {
     }
 
     @Override
+    public List<User> searchUserByName(String name) {
+        List<User> users = new ArrayList<>();
+
+        for (User user : this.users) {
+            if (user.getName().toLowerCase().contains(name.toLowerCase())) {
+                users.add(user);
+            }
+        }
+        return users;
+    }
+
+    @Override
     public void logout() {
         sharedPreferences.edit().putString("user", "").apply();
-        sharedPreferences.edit().putString("users", "").apply();
     }
 
     @Override

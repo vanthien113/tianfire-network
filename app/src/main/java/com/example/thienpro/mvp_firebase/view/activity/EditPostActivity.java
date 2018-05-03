@@ -2,6 +2,9 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Toast;
 
 import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.bases.BaseActivity;
@@ -36,6 +39,22 @@ public class EditPostActivity extends BaseActivity<ActivityEditPostBinding> impl
 
         getBinding().setPost(post);
         getBinding().setEvent(this);
+
+        getBinding().tbEditPost.getIvPost().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (validate(getBinding().getPost().getPost()))
+                    presenter.editPost(getBinding().getPost());
+            }
+        });
+    }
+
+    private boolean validate(String post) {
+        if (TextUtils.isEmpty(post)) {
+            Toast.makeText(this, R.string.hay_nhap_cam_nhan_cua_ban, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -56,11 +75,6 @@ public class EditPostActivity extends BaseActivity<ActivityEditPostBinding> impl
     protected void destroyScreen() {
         presenter.detach();
 
-    }
-
-    @Override
-    public void onPostClick() {
-        presenter.editPost(getBinding().getPost());
     }
 
     @Override

@@ -34,4 +34,6 @@ public interface UserManager {
     void removeListUserUpdateListener(OnListUserUpdated listener);
 
     User searchUser(String id);
+
+    List<User> searchUserByName(String name);
 }

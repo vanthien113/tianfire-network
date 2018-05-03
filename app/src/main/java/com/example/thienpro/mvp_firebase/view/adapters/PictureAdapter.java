@@ -14,9 +14,13 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureVH> {
     private ArrayList<String> listPicture;
     private int type;
 
-    public PictureAdapter(ArrayList<String> listPicture, int type) {
+    public PictureAdapter() {
+    }
+
+    public void updateAdapter(ArrayList<String> listPicture, int type) {
         this.listPicture = listPicture;
         this.type = type;
+        notifyDataSetChanged();
     }
 
     @Override
