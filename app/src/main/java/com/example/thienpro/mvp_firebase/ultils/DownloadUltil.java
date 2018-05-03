@@ -21,7 +21,7 @@ public class DownloadUltil {
             String url = urlImage;
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
             request.setDescription("Đang tải");
-            request.setTitle("TianFire Network " + UUID.randomUUID().toString());
+            request.setTitle("TianFireNetwork" + UUID.randomUUID().toString());
             // in order for this if to run, you must use the android 3.2 to compile your app
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                 request.allowScanningByMediaScanner();

@@ -2,15 +2,18 @@ package com.example.thienpro.mvp_firebase.di.module;
 
 import com.example.thienpro.mvp_firebase.manager.PostManager;
 import com.example.thienpro.mvp_firebase.manager.UserManager;
+import com.example.thienpro.mvp_firebase.model.CommentInteractor;
 import com.example.thienpro.mvp_firebase.model.LocationInteractor;
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.presenter.ChangePasswordPresenter;
+import com.example.thienpro.mvp_firebase.presenter.CommentPresenter;
 import com.example.thienpro.mvp_firebase.presenter.EditInfoPresenter;
 import com.example.thienpro.mvp_firebase.presenter.EditPostPresenter;
 import com.example.thienpro.mvp_firebase.presenter.FriendProfilePresenter;
 import com.example.thienpro.mvp_firebase.presenter.HomePresenter;
 import com.example.thienpro.mvp_firebase.presenter.Impl.ChangePasswordPresenterImpl;
+import com.example.thienpro.mvp_firebase.presenter.Impl.CommentPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.Impl.EditInfoPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.Impl.EditPostPresenterImpl;
 import com.example.thienpro.mvp_firebase.presenter.Impl.FriendProfilePresenterImpl;
@@ -117,5 +120,10 @@ public class CommonModule {
     @Provides
     public SearchUserPresenter provideSearchUserPresenter(UserInteractor userInteractor) {
         return new SearchUserPresenterImpl(userInteractor);
+    }
+
+    @Provides
+    public CommentPresenter provideCommentPresenter(CommentInteractor commentInteractor, UserManager userManager) {
+        return new CommentPresenterImpl(commentInteractor, userManager);
     }
 }

@@ -111,8 +111,12 @@ public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBin
     }
 
     @Override
-    public void onEditPost(Post post) {
+    public void onCommentClick(Post post) {
+        CommentActivity.startActivity(this, post);
+    }
 
+    @Override
+    public void onEditPost(Post post) {
     }
 
     @Override

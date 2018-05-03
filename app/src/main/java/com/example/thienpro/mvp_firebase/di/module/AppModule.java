@@ -7,6 +7,8 @@ import com.example.thienpro.mvp_firebase.manager.PostManager;
 import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.manager.impl.LocalPostManager;
 import com.example.thienpro.mvp_firebase.manager.impl.LocalUserManager;
+import com.example.thienpro.mvp_firebase.model.CommentInteractor;
+import com.example.thienpro.mvp_firebase.model.Impl.CommentInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.Impl.LocationInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.Impl.PostInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.Impl.UserInteractorImpl;
@@ -15,9 +17,6 @@ import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 import javax.inject.Singleton;
 
@@ -68,5 +67,11 @@ public class AppModule {
     @Singleton
     public PostManager providesPostManager() {
         return new LocalPostManager();
+    }
+
+    @Provides
+    @Singleton
+    public CommentInteractor providesCommentInteractor() {
+        return new CommentInteractorImpl();
     }
 }

@@ -1,13 +1,8 @@
 package com.example.thienpro.mvp_firebase.model.entity;
 
-import android.annotation.SuppressLint;
-
 import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -23,11 +23,15 @@ public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private ArrayList<Post> lisPost;
     private ItemProfileClickListener listener;
 
-    public ProfileAdapter(ArrayList<Post> mLisPost, User user, ItemProfileClickListener listener, HomeAdapter.ListPostMenuListener postMenuListeneristener) {
-        this.lisPost = mLisPost;
+    public ProfileAdapter(User user, ItemProfileClickListener listener, HomeAdapter.ListPostMenuListener postMenuListeneristener) {
         this.user = user;
         this.listener = listener;
         this.postMenuListeneristener = postMenuListeneristener;
+    }
+
+    public void updateAdapter(ArrayList<Post> mLisPost){
+        this.lisPost = mLisPost;
+        notifyDataSetChanged();
     }
 
     @Override

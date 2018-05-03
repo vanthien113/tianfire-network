@@ -7,8 +7,6 @@ public interface ItemProfileHeaderView {
 
     void onShowListPictureClick();
 
-    void onClearTextClick();
-
     void onPost();
 
     void onAvatarClick();

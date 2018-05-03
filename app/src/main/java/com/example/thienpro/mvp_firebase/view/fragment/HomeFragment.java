@@ -51,9 +51,13 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
 
         userManager = getAppComponent().getUserManager();
 
+        getBinding().rvHome.setLayoutManager(LayoutUltils.getLinearLayoutManager(getContext()));
+
+        homeAdapter = new HomeAdapter(getContext(), this, userManager.getUser());
+        getBinding().rvHome.setAdapter(homeAdapter);
+
         presenter.loadAllListPost();
 
-        getBinding().rvHome.setLayoutManager(LayoutUltils.getLinearLayoutManager(getContext()));
         getBinding().setEvent(this);
 
         getBinding().srlHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -68,9 +72,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
     @Override
     public void showAllPost(ArrayList<Post> list) {
         Collections.reverse(list);
-
-        homeAdapter = new HomeAdapter(list, getContext(), this, userManager.getUser());
-        getBinding().rvHome.setAdapter(homeAdapter);
+        homeAdapter.updateAdapter(list);
     }
 
     @Override
@@ -141,5 +143,10 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
     @Override
     public void onImageClick(String imageUrl) {
         navigationListener.navigationToImageZoomActivity(imageUrl);
+    }
+
+    @Override
+    public void onCommentClick(Post post) {
+        navigationListener.navigationToCommentActicity(post);
     }
 }

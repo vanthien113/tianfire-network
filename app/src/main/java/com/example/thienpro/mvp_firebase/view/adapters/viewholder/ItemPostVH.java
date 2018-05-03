@@ -15,6 +15,7 @@ import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.ultils.SHStringHelper;
 import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
 import com.example.thienpro.mvp_firebase.view.ItemListPostView;
+import com.example.thienpro.mvp_firebase.view.activity.CommentActivity;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
 
 /**
@@ -113,6 +114,11 @@ public class ItemPostVH extends RecyclerView.ViewHolder implements ItemListPostV
     @Override
     public void onFriendProfileClick(Post post) {
         listener.onFriendProfile(post.getId());
+    }
+
+    @Override
+    public void onCommentClick() {
+        listener.onCommentClick(binding.getData());
     }
 
     private void deletePost(final Post post) {

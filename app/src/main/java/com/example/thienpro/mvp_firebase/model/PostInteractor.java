@@ -1,6 +1,5 @@
 package com.example.thienpro.mvp_firebase.model;
 
-import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.google.firebase.database.DatabaseError;
 
@@ -11,10 +10,6 @@ import java.util.ArrayList;
  */
 
 public interface PostInteractor extends BaseInteractor{
-    interface ExceptionCallback {
-        void onFinish(Exception e);
-    }
-
     interface ListPostCallback {
         void onFinish(DatabaseError e, ArrayList<Post> listPost);
     }

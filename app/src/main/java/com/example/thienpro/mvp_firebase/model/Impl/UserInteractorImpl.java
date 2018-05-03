@@ -1,7 +1,6 @@
 package com.example.thienpro.mvp_firebase.model.Impl;
 
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
@@ -167,6 +166,26 @@ public class UserInteractorImpl extends BaseInteractorImpl implements UserIntera
                 } else {
                     callBack.onFinish(null, list);
                 }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callBack.onFinish(databaseError, null);
+            }
+        });
+    }
+
+    @Override
+    public void getAllUser(final UsersCallBack callBack) {
+        mDatabase.child(USERS).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<User> list = new ArrayList<>();
+                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                    User user = dsp.getValue(User.class);
+                    list.add(user);
+                }
+                callBack.onFinish(null, list);
             }
 
             @Override

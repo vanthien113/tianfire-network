@@ -1,7 +1,7 @@
 package com.example.thienpro.mvp_firebase.view;
 
-import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.bases.BaseView;
+import com.example.thienpro.mvp_firebase.model.entity.Post;
 
 import java.util.ArrayList;
 

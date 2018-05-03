@@ -33,13 +33,11 @@ public class PostInteractorImpl extends BaseInteractorImpl implements PostIntera
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
-    private ArrayList<Post> postList;
 
     public PostInteractorImpl() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-        postList = new ArrayList<>();
     }
 
     @Override

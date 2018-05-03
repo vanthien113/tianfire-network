@@ -18,12 +18,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorGray">
+        android:background="@color/colorGray"
+        android:orientation="vertical">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
             android:background="@color/colorWhite">
 
             <com.example.thienpro.mvp_firebase.ultils.widget.CricleImage
@@ -108,5 +108,26 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/iv_avatar" />
         </android.support.constraint.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorGray" />
+
+        <LinearLayout
+            android:id="@+id/ll_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:background="@color/colorWhite"
+            android:onClick="@{()->event.onCommentClick()}">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:padding="5dp"
+                android:text="Bình luận" />
+        </LinearLayout>
     </LinearLayout>
 </layout>
