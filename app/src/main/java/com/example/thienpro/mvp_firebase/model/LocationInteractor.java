@@ -18,7 +18,7 @@ public interface LocationInteractor {
         void onFinish(ArrayList<UserLocation> locations, DatabaseError e);
     }
 
-    void pushLocation(UserLocation location, PushLocationCallback callback);
+    void pushLocation(String userId, double lat, double lng, String pushTime, PushLocationCallback callback);
 
     void getLocation(String userId, GetLocationCallback callback);
 

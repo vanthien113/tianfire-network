@@ -44,10 +44,6 @@ public class ItemProfileHeaderVH extends RecyclerView.ViewHolder implements Item
     }
 
     @Override
-    public void onClearTextClick() {
-    }
-
-    @Override
     public void onPost() {
         listener.onPost();
     }

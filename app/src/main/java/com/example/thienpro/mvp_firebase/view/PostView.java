@@ -9,11 +9,7 @@ import com.example.thienpro.mvp_firebase.bases.BaseView;
  */
 
 public interface PostView extends BaseView{
-    void onPostClick();
-
     void navigationToHome();
-
-    void onInsertImageClick();
 
     void onDeleteImageClick();
 

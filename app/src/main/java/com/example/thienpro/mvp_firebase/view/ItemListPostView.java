@@ -8,4 +8,6 @@ public interface ItemListPostView {
     void onMenuClick(Post post);
 
     void onFriendProfileClick(Post post);
+
+    void onCommentClick();
 }

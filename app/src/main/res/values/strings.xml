@@ -84,6 +84,9 @@
     <string name="thong_tin">Thông tin</string>
     <string name="hom_nay_ban_cam_thay_the_nao">Hôm nay bạn cảm thấy thế nào?</string>
     <string name="anh">Ảnh</string>
+    <string name="chinh_sua_bai_viet">Chỉnh sửa bài viết</string>
+    <string name="ban_hay_nhap_binh_luan_truoc_khi_dang">Bạn hãy nhập bình luận trước khi đăng!</string>
+    <string name="ban_muon_xoa_binh_luan_nay">Bạn muốn xóa bình luận này?</string>
 
 
     <string-array name="province_arrays">

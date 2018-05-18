@@ -37,14 +37,23 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
         presenter = getAppComponent().getCommonComponent().getPostPresenter();
         presenter.attachView(this);
         getBinding().setEvent(this);
-    }
 
-    @Override
-    public void onPostClick() {
-        String post = getBinding().etPost.getText().toString();
-        if (validate(post)) {
-            presenter.newPost(post);
-        }
+        getBinding().tbPost.getIvChoosePhoto().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SHBitmapHelper.takePhoto(PostActivity.this, REQUEST_CODE_IMAGE);
+            }
+        });
+
+        getBinding().tbPost.getIvPost().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String post = getBinding().etPost.getText().toString();
+                if (validate(post)) {
+                    presenter.newPost(post);
+                }
+            }
+        });
     }
 
     private boolean validate(String post) {
@@ -58,11 +67,6 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
     @Override
     public void navigationToHome() {
         onBackPressed();
-    }
-
-    @Override
-    public void onInsertImageClick() {
-        SHBitmapHelper.takePhoto(this, REQUEST_CODE_IMAGE);
     }
 
     @Override

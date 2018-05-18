@@ -1,16 +1,14 @@
 package com.example.thienpro.mvp_firebase.model;
 
-import android.net.Uri;
-
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.google.firebase.database.DatabaseError;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ThienPro on 11/28/2017.
  */
-public interface UserInteractor extends BaseInteractor{
+public interface UserInteractor extends BaseInteractor {
     interface BooleanCheckCallback {
         void onFinish(boolean checker);
     }
@@ -27,8 +25,8 @@ public interface UserInteractor extends BaseInteractor{
         void onFinish(Exception e, String string);
     }
 
-    interface SearchUserCallBack {
-        void onFinish(DatabaseError e, ArrayList<User> list);
+    interface UsersCallBack {
+        void onFinish(DatabaseError e, List<User> list);
     }
 
     void sigIn(String email, String password, ExceptionCheckCallback loginCheckCallback);
@@ -55,5 +53,5 @@ public interface UserInteractor extends BaseInteractor{
 
     void getFriendInfomation(String userId, UserCallback callback);
 
-    void searchUser(String userName, SearchUserCallBack callBack);
+    void getAllUser(UsersCallBack callBack);
 }

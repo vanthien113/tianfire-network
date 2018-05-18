@@ -160,4 +160,9 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements H
     public void navigationToImageZoomActivity(String imageUrl) {
         ImageZoomActivity.startActivity(this, imageUrl);
     }
+
+    @Override
+    public void navigationToCommentActicity(Post post) {
+        CommentActivity.startActivity(this, post);
+    }
 }

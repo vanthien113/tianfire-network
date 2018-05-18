@@ -22,4 +22,6 @@ public interface HomeNavigationListener {
     void navigationToSearchActivity();
 
     void navigationToImageZoomActivity(String imageUrl);
+
+    void navigationToCommentActicity(Post post);
 }

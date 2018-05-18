@@ -16,6 +16,8 @@ public interface ProfilePresenter extends BasePresenter<ProfileView> {
 
     void getUser();
 
+    void getAllUser();
+
     void deletePost(Post post);
 
     void onActivityResult(Context context, int requestCode, int resultCode, Intent data);

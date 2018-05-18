@@ -25,11 +25,15 @@ public class HomeAdapter extends RecyclerView.Adapter<ItemPostVH> {
     private ListPostMenuListener listener;
     private User user;
 
-    public HomeAdapter(ArrayList<Post> mLisPost, Context context, ListPostMenuListener listener, User user) {
-        this.mLisPost = mLisPost;
+    public HomeAdapter(Context context, ListPostMenuListener listener, User user) {
         this.context = context;
         this.listener = listener;
         this.user = user;
+    }
+
+    public void updateAdapter(ArrayList<Post> mLisPost) {
+        this.mLisPost = mLisPost;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -41,9 +45,9 @@ public class HomeAdapter extends RecyclerView.Adapter<ItemPostVH> {
 
     @Override
     public void onBindViewHolder(ItemPostVH holder, int position) {
-        Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
-        animation.setDuration(1000);
-        holder.itemView.startAnimation(animation);
+//        Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+//        animation.setDuration(1000);
+//        holder.itemView.startAnimation(animation);
 
         holder.bind(mLisPost.get(position));
     }
@@ -63,5 +67,7 @@ public class HomeAdapter extends RecyclerView.Adapter<ItemPostVH> {
         void onFriendProfile(String userId);
 
         void onImageClick(String imageUrl);
+
+        void onCommentClick(Post post);
     }
 }

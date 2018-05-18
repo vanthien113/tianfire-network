@@ -2,6 +2,7 @@ package com.example.thienpro.mvp_firebase.di.component;
 
 import com.example.thienpro.mvp_firebase.di.module.CommonModule;
 import com.example.thienpro.mvp_firebase.presenter.ChangePasswordPresenter;
+import com.example.thienpro.mvp_firebase.presenter.CommentPresenter;
 import com.example.thienpro.mvp_firebase.presenter.EditInfoPresenter;
 import com.example.thienpro.mvp_firebase.presenter.EditPostPresenter;
 import com.example.thienpro.mvp_firebase.presenter.FriendProfilePresenter;
@@ -53,4 +54,6 @@ public interface CommonComponent {
     VerifiEmailPresenter getVerifiEmailPresenter();
 
     SearchUserPresenter getSearchUserPresenter();
+
+    CommentPresenter getCommentPresenter();
 }

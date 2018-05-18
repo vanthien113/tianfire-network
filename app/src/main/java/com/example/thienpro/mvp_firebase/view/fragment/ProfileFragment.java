@@ -58,8 +58,11 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
         userManager = getAppComponent().getUserManager();
 
         getBinding().rvProfile.setLayoutManager(LayoutUltils.getLinearLayoutManager(getContext()));
+        adapter = new ProfileAdapter(userManager.getUser(), this, this);
+        getBinding().rvProfile.setAdapter(adapter);
 
         presenter.loadPost();
+        presenter.getAllUser();
 
         getBinding().srlProfile.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -108,8 +111,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
     @Override
     public void showListPost(ArrayList<Post> listPost) {
         Collections.reverse(listPost);
-        adapter = new ProfileAdapter(listPost, userManager.getUser(), this, this);
-        getBinding().rvProfile.setAdapter(adapter);
+        adapter.updateAdapter(listPost, userManager.getUser());
     }
 
     @Override
@@ -195,6 +197,11 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
     @Override
     public void onImageClick(String imageUrl) {
         navigationListener.navigationToImageZoomActivity(imageUrl);
+    }
+
+    @Override
+    public void onCommentClick(Post post) {
+        navigationListener.navigationToCommentActicity(post);
     }
 
     @Override

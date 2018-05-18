@@ -15,56 +15,14 @@
         android:background="@color/colorWhite"
         android:orientation="vertical">
 
-        <Toolbar
-            android:id="@+id/toolbar2"
-            android:layout_width="match_parent"
+        <com.example.thienpro.mvp_firebase.ultils.widget.PostTopbar
+            android:id="@+id/tb_post"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/colorGray"
-            android:elevation="@dimen/elevation_normal">
-
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/constraintLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="@dimen/witdh_small"
-                    android:layout_height="@dimen/height_small"
-                    android:onClick="@{()->event.onInsertImageClick()}"
-                    android:src="@drawable/ic_take_picture"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/dang_bai_viet"
-                    android:textAlignment="center"
-                    android:textSize="@dimen/text_size_xxlarge"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/iv_post"
-                    app:layout_constraintStart_toEndOf="@+id/imageView2"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/iv_post"
-                    android:layout_width="@dimen/witdh_small"
-                    android:layout_height="@dimen/height_small"
-                    android:layout_marginRight="@dimen/space_normal"
-                    android:onClick="@{()->event.onPostClick()}"
-                    android:src="@drawable/ic_complete"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </android.support.constraint.ConstraintLayout>
-        </Toolbar>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:setPostTitle="Đăng bài viết" />
 
         <EditText
             android:id="@+id/et_post"
@@ -76,9 +34,10 @@
             android:hint="@string/hay_nhap_cam_nhan_cua_ban"
             android:inputType="textMultiLine"
             android:scrollbars="vertical"
+            android:textSize="@dimen/text_size_standard"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar2" />
+            app:layout_constraintTop_toBottomOf="@+id/tb_post" />
 
         <ImageView
             android:id="@+id/iv_uploaded"

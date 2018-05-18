@@ -1,7 +1,6 @@
 package com.example.thienpro.mvp_firebase.model.Impl;
 
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.User;
@@ -50,6 +49,7 @@ public class UserInteractorImpl extends BaseInteractorImpl implements UserIntera
 
     @Override
     public void verifiEmail(final StringCallback callback) {
+        users = FirebaseAuth.getInstance().getCurrentUser();
         if (users != null) {
             users.reload();
             if (users.isEmailVerified()) {
@@ -151,22 +151,16 @@ public class UserInteractorImpl extends BaseInteractorImpl implements UserIntera
     }
 
     @Override
-    public void searchUser(final String userName, final SearchUserCallBack callBack) {
-        mDatabase.child(USERS).addListenerForSingleValueEvent(new ValueEventListener() {
+    public void getAllUser(final UsersCallBack callBack) {
+        mDatabase.child(USERS).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<User> list = new ArrayList<>();
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     User user = dsp.getValue(User.class);
-                    if (user.getName().toLowerCase().contains(userName.toLowerCase())) {
-                        list.add(user);
-                    }
+                    list.add(user);
                 }
-                if (list.size() == 0) {
-                    callBack.onFinish(null, null);
-                } else {
-                    callBack.onFinish(null, list);
-                }
+                callBack.onFinish(null, list);
             }
 
             @Override

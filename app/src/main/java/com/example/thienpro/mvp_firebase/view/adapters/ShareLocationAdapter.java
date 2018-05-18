@@ -15,9 +15,13 @@ public class ShareLocationAdapter extends RecyclerView.Adapter<ShareLocationVH> 
     private ArrayList<UserLocation> listLocation;
     private ShareLocationAdapter.ListLocationListener listener;
 
-    public ShareLocationAdapter(ArrayList<UserLocation> listLocation, ShareLocationAdapter.ListLocationListener listener) {
+    public ShareLocationAdapter(ShareLocationAdapter.ListLocationListener listener) {
         this.listener = listener;
+    }
+
+    public void updateAdapter(ArrayList<UserLocation> listLocation) {
         this.listLocation = listLocation;
+        notifyDataSetChanged();
     }
 
     @Override

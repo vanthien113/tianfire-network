@@ -23,7 +23,6 @@ public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBin
 
     private String userId;
     private FriendProfilePresenter presenter;
-    private User user;
     private FriendProfileAdapter adapter;
 
     public static void startActivity(Context context, String userId) {
@@ -111,8 +110,12 @@ public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBin
     }
 
     @Override
-    public void onEditPost(Post post) {
+    public void onCommentClick(Post post) {
+        CommentActivity.startActivity(this, post);
+    }
 
+    @Override
+    public void onEditPost(Post post) {
     }
 
     @Override
@@ -127,16 +130,14 @@ public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBin
 
     @Override
     public void showListPost(ArrayList<Post> listPost) {
-        adapter = new FriendProfileAdapter(listPost, user, this, this);
-
-        getBinding().rvProfile.setLayoutManager(LayoutUltils.getLinearLayoutManager(this));
-        getBinding().rvProfile.setAdapter(adapter);
-
+        adapter.updateAdapter(listPost);
     }
 
     @Override
     public void showUserInfomation(User user) {
-        this.user = user;
+        adapter = new FriendProfileAdapter(user, this, this);
+        getBinding().rvProfile.setLayoutManager(LayoutUltils.getLinearLayoutManager(this));
+        getBinding().rvProfile.setAdapter(adapter);
         getBinding().tbProfile.setTvTitle(user.getName());
     }
 

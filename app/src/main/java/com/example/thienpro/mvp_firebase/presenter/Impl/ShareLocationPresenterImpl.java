@@ -6,7 +6,6 @@ import android.location.Location;
 import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
 import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.model.LocationInteractor;
-import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.model.entity.UserLocation;
 import com.example.thienpro.mvp_firebase.presenter.ShareLocationPresenter;
 import com.example.thienpro.mvp_firebase.ultils.SHLocationManager;
@@ -38,12 +37,12 @@ public class ShareLocationPresenterImpl extends BasePresentermpl<ShareLocationVi
         scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {
-                getLocation(context, userManager.getUser());
+                getLocation(context);
             }
         }, 0, 5, TimeUnit.SECONDS);
     }
 
-    private void getLocation(Context context, final User user) {
+    private void getLocation(Context context) {
         SHLocationManager.getCurrentLocation(context, new SHLocationManager.OnCurrentLocationCallback() {
             @Override
             public void callback(Location location) {
@@ -52,9 +51,7 @@ public class ShareLocationPresenterImpl extends BasePresentermpl<ShareLocationVi
                 simpleDateFormat = new SimpleDateFormat("dd:MM:yyyy HH:mm:ss");
                 String day = simpleDateFormat.format(today);
 
-                final UserLocation currentLocation = new UserLocation(user.getName(), user.getId(), location.getLongitude(), location.getLatitude(), day);
-
-                locationInteractor.pushLocation(currentLocation, new LocationInteractor.PushLocationCallback() {
+                locationInteractor.pushLocation(userManager.getUser().getId(), location.getLatitude(), location.getLongitude(), day, new LocationInteractor.PushLocationCallback() {
                     @Override
                     public void onFinish(Exception e) {
                         if (getView() == null)
@@ -90,6 +87,9 @@ public class ShareLocationPresenterImpl extends BasePresentermpl<ShareLocationVi
                 if (e != null) {
                     getView().showDatabaseError(e);
                 } else {
+                    for (UserLocation userLocation : locations) {
+                        userLocation.setName(userManager.searchUser(userLocation.getUserId()).getName());
+                    }
                     getView().showListLocation(locations);
                 }
             }

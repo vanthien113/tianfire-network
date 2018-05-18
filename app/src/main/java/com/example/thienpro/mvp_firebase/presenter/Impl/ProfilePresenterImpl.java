@@ -96,6 +96,16 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
     }
 
     @Override
+    public void getAllUser() {
+        userInteractor.getAllUser(new UserInteractor.UsersCallBack() {
+            @Override
+            public void onFinish(DatabaseError e, List<User> list) {
+                userManager.updateListUser(list);
+            }
+        });
+    }
+
+    @Override
     public void deletePost(Post post) {
         if (getView() == null)
             return;

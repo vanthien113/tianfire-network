@@ -40,10 +40,13 @@ public class ShareLocationActivity extends BaseActivity<ActivityShareLocationBin
             getBinding().cbLocation.setChecked(true);
         }
 
-        presenter.getListLocation();
+        adapter = new ShareLocationAdapter(this);
+        getBinding().rvLocation.setAdapter(adapter);
 
         getBinding().rvLocation.setLayoutManager(LayoutUltils.getLinearLayoutManager(this));
         getBinding().rvLocation.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+        presenter.getListLocation();
     }
 
     @Override
@@ -59,8 +62,7 @@ public class ShareLocationActivity extends BaseActivity<ActivityShareLocationBin
 
     @Override
     public void showListLocation(ArrayList<UserLocation> listLocation) {
-        adapter = new ShareLocationAdapter(listLocation, this);
-        getBinding().rvLocation.setAdapter(adapter);
+        adapter.updateAdapter(listLocation);
     }
 
     @Override

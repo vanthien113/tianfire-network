@@ -20,8 +20,10 @@ public class BaseInteractorImpl implements BaseInteractor {
     public static final String IMAGES = "images";
     public static final String AVATARS = "avatars";
     public static final String COVER = "cover";
+    public static final String COMMENTS = "comments";
 
     protected static final String ID = "id";
+    protected static final String USERID = "userId";
     protected static final String NAME = "name";
     protected static final String POST = "post";
     protected static final String IMAGE = "image";

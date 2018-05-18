@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class UserLocation implements Serializable {
     private String name;
-    private String id;
+    private String userId;
     private double lng;
     private double lat;
     private String time;
@@ -16,9 +16,9 @@ public class UserLocation implements Serializable {
     public UserLocation() {
     }
 
-    public UserLocation(String name, String id, double lng, double lat, String time) {
+    public UserLocation(String name, String userId, double lng, double lat, String time) {
         this.name = name;
-        this.id = id;
+        this.userId = userId;
         this.lng = lng;
         this.lat = lat;
         this.time = time;
@@ -32,12 +32,12 @@ public class UserLocation implements Serializable {
         this.name = name;
     }
 
-    public String getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public double getLng() {
@@ -71,7 +71,7 @@ public class UserLocation implements Serializable {
         result.put("lat", lat);
         result.put("time", time);
         result.put("name", name);
-        result.put("id", id);
+        result.put("userId", userId);
         return result;
     }
 }

@@ -29,12 +29,15 @@ public class LocationInteractorImpl extends BaseInteractorImpl implements Locati
         user = mAuth.getCurrentUser();
     }
 
-    public void pushLocation(UserLocation location, final PushLocationCallback callback) {
-        String userId = user.getUid();
-
-        Map<String, Object> postValues = location.toMap();
+    @Override
+    public void pushLocation(String userId, double lat, double lng, String pushTime, final PushLocationCallback callback) {
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put(userId, postValues);
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("userId", userId);
+        result.put("lat", lat);
+        result.put("lng", lng);
+        result.put("time", pushTime);
+        childUpdates.put(userId, result);
 
         mDatabase.child(LOCATIONS).updateChildren(childUpdates).addOnFailureListener(new OnFailureListener() {
             @Override

@@ -4,18 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 
 import com.example.thienpro.mvp_firebase.R;
+import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 import com.example.thienpro.mvp_firebase.databinding.ActivitySearchUserBinding;
 import com.example.thienpro.mvp_firebase.model.entity.User;
 import com.example.thienpro.mvp_firebase.presenter.SearchUserPresenter;
 import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
 import com.example.thienpro.mvp_firebase.view.SearchUserView;
 import com.example.thienpro.mvp_firebase.view.adapters.SearchUserAdapter;
-import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class SearchUserActivity extends BaseActivity<ActivitySearchUserBinding> implements SearchUserView, SearchUserAdapter.SearchUserClickListener {
     private SearchUserPresenter presenter;
@@ -34,6 +33,10 @@ public class SearchUserActivity extends BaseActivity<ActivitySearchUserBinding> 
     protected void init() {
         presenter = getAppComponent().getCommonComponent().getSearchUserPresenter();
         presenter.attachView(this);
+
+        adapter = new SearchUserAdapter(this);
+        getBinding().rvSearch.setLayoutManager(LayoutUltils.getLinearLayoutManager(this));
+        getBinding().rvSearch.setAdapter(adapter);
 
         getBinding().etSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -75,11 +78,8 @@ public class SearchUserActivity extends BaseActivity<ActivitySearchUserBinding> 
     }
 
     @Override
-    public void showUserSearched(ArrayList<User> userList) {
-        adapter = new SearchUserAdapter(userList, this);
-
-        getBinding().rvSearch.setLayoutManager(LayoutUltils.getLinearLayoutManager(this));
-        getBinding().rvSearch.setAdapter(adapter);
+    public void showUserSearched(List<User> userList) {
+        adapter.updateAdapter(userList);
     }
 
     @Override

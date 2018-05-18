@@ -7,8 +7,9 @@ import com.example.thienpro.mvp_firebase.R;
 import com.example.thienpro.mvp_firebase.bases.BaseActivity;
 import com.example.thienpro.mvp_firebase.databinding.ActivityImageZoomBinding;
 import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
+import com.example.thienpro.mvp_firebase.view.ImageZoomView;
 
-public class ImageZoomActivity extends BaseActivity<ActivityImageZoomBinding> {
+public class ImageZoomActivity extends BaseActivity<ActivityImageZoomBinding> implements ImageZoomView{
     private static String IMAGE = "image";
 
     public static void startActivity(Context context, String imageUrl) {
@@ -26,6 +27,8 @@ public class ImageZoomActivity extends BaseActivity<ActivityImageZoomBinding> {
     protected void init() {
         String imageUrl = getIntent().getStringExtra(IMAGE);
         SHBitmapHelper.bindImage(getBinding().ivImage, imageUrl);
+
+        getBinding().setEvent(this);
     }
 
     @Override
@@ -46,5 +49,10 @@ public class ImageZoomActivity extends BaseActivity<ActivityImageZoomBinding> {
     @Override
     protected void destroyScreen() {
 
+    }
+
+    @Override
+    public void onBackClick() {
+        onBackPressed();
     }
 }

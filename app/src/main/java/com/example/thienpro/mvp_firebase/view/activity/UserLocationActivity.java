@@ -52,7 +52,7 @@ public class UserLocationActivity extends BaseActivity<ActivityUserLocationBindi
         if (getIntent() != null) {
             location = (UserLocation) getIntent().getSerializableExtra(LOCATION);
 
-            presenter.getUserLocation(location.getId());
+            presenter.getUserLocation(location.getUserId());
         }
     }
 

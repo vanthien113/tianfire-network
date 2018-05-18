@@ -13,6 +13,8 @@ public class LocalUserManager implements UserManager {
     private SharedPreferences sharedPreferences;
     private List<OnUserChangeListener> observer = new ArrayList<>();
     private Gson gson;
+    private List<OnListUserUpdated> usersObserver = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
     public LocalUserManager(Gson gson, SharedPreferences sharedPreferences) {
         this.sharedPreferences = sharedPreferences;
@@ -46,6 +48,48 @@ public class LocalUserManager implements UserManager {
         User newUser = getUser();
         newUser.setCover(coverUrl);
         updateCurrentUser(newUser);
+    }
+
+    @Override
+    public void updateListUser(List<User> users) {
+        for (OnListUserUpdated listener : usersObserver) {
+            if (listener != null) {
+                listener.onChange(users);
+            }
+        }
+        this.users = users;
+    }
+
+    @Override
+    public void addOnListUserUpdateListener(OnListUserUpdated listener) {
+        usersObserver.add(listener);
+    }
+
+    @Override
+    public void removeListUserUpdateListener(OnListUserUpdated listener) {
+        usersObserver.remove(listener);
+    }
+
+    @Override
+    public User searchUser(String id) {
+        for (User user : users) {
+            if (user.getId().equals(id)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<User> searchUserByName(String name) {
+        List<User> users = new ArrayList<>();
+
+        for (User user : this.users) {
+            if (user.getName().toLowerCase().contains(name.toLowerCase())) {
+                users.add(user);
+            }
+        }
+        return users;
     }
 
     @Override
