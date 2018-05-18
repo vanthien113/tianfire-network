@@ -34,6 +34,7 @@
             android:hint="@string/hay_nhap_cam_nhan_cua_ban"
             android:inputType="textMultiLine"
             android:scrollbars="vertical"
+            android:textSize="@dimen/text_size_standard"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tb_post" />

@@ -23,10 +23,12 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private Post post;
     private List<Comment> comments;
     private User currentUser;
+    private ItemCommentClickListener listener;
 
-    public CommentAdapter(Post post, User currentUser) {
+    public CommentAdapter(Post post, User currentUser, ItemCommentClickListener listener) {
         this.post = post;
         this.currentUser = currentUser;
+        this.listener = listener;
     }
 
     public void updateAdapter(List<Comment> comments) {
@@ -45,7 +47,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         ItemCommentBinding binding = ItemCommentBinding.inflate(LayoutInflater.from(parent.getContext()));
         binding.getRoot().setLayoutParams(LayoutUltils.getRecyclerViewLayoutParams());
 
-        return new ItemCommentVH(binding);
+        return new ItemCommentVH(binding, listener, currentUser);
     }
 
     @Override
@@ -69,5 +71,11 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public int getItemCount() {
         return comments == null ? 1 : comments.size() + 1;
+    }
+
+    public interface ItemCommentClickListener {
+        void onDeleteComment(Comment data);
+
+        void onUserClick(String userId);
     }
 }

@@ -11,4 +11,6 @@ public interface CommentView extends BaseView {
     void showComments(List<Comment> comments);
 
     void clearComment();
+
+    void showDeleteCommentMessage();
 }

@@ -13,4 +13,6 @@ public interface CommentInteractor extends BaseInteractor {
     void writeComment(String userId, String content, String commentTime, String postTime, ExceptionCallback callback);
 
     void getComment(String postTime, GetCommentCallBack callBack);
+
+    void deleteComment(String commentTime, String postTime, ExceptionCallback callback);
 }

@@ -53,4 +53,18 @@ public class CommentPresenterImpl extends BasePresentermpl<CommentView> implemen
             }
         });
     }
+
+    @Override
+    public void deleteComment(Comment comment, String postTime) {
+        commentInteractor.deleteComment(comment.getCommentTime(), postTime, new BaseInteractor.ExceptionCallback() {
+            @Override
+            public void onFinish(Exception e) {
+                if (e != null) {
+                    getView().showExceptionError(e);
+                } else {
+                    getView().showDeleteCommentMessage();
+                }
+            }
+        });
+    }
 }

@@ -58,7 +58,6 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
         userManager = getAppComponent().getUserManager();
 
         getBinding().rvProfile.setLayoutManager(LayoutUltils.getLinearLayoutManager(getContext()));
-
         adapter = new ProfileAdapter(userManager.getUser(), this, this);
         getBinding().rvProfile.setAdapter(adapter);
 
@@ -112,7 +111,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
     @Override
     public void showListPost(ArrayList<Post> listPost) {
         Collections.reverse(listPost);
-        adapter.updateAdapter(listPost);
+        adapter.updateAdapter(listPost, userManager.getUser());
     }
 
     @Override

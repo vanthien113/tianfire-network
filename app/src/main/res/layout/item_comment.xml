@@ -4,11 +4,16 @@
     <data>
 
         <variable
+            name="event"
+            type="com.example.thienpro.mvp_firebase.view.ItemCommentView" />
+
+        <variable
             name="data"
             type="com.example.thienpro.mvp_firebase.model.entity.Comment" />
     </data>
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/cl_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -28,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="8dp"
+            android:onClick="@{()->event.onUserClick(data.userId)}"
             android:text="@{data.userName}"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"

@@ -30,6 +30,7 @@
             app:setPostTitle="Chỉnh sửa bài viết" />
 
         <EditText
+            android:textSize="@dimen/text_size_standard"
             android:id="@+id/et_post"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -49,6 +49,7 @@ public class UserInteractorImpl extends BaseInteractorImpl implements UserIntera
 
     @Override
     public void verifiEmail(final StringCallback callback) {
+        users = FirebaseAuth.getInstance().getCurrentUser();
         if (users != null) {
             users.reload();
             if (users.isEmailVerified()) {

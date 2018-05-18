@@ -37,13 +37,14 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.533" />
 
+
         <TextView
+            android:textSize="@dimen/text_size_large"
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/chinh_sua_bai_viet"
             android:textAlignment="center"
-            android:textSize="@dimen/text_size_xxlarge"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -4,8 +4,10 @@ import android.support.annotation.NonNull;
 
 import com.example.thienpro.mvp_firebase.model.CommentInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.Comment;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -61,6 +63,22 @@ public class CommentInteractorImpl extends BaseInteractorImpl implements Comment
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 callBack.onFinish(databaseError, null);
+            }
+        });
+    }
+
+    @Override
+    public void deleteComment(String commentTime, String postTime, final ExceptionCallback callback) {
+        mDatabase.child(POSTS).child(postTime).child(COMMENTS).child(commentTime).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                callback.onFinish(null);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callback.onFinish(e);
             }
         });
     }

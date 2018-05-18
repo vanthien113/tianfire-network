@@ -64,7 +64,7 @@
                 android:layout_marginRight="@dimen/space_smallest"
                 android:text="@{SHDateTimeFormat.changeDateFormat(data.timePost)}"
                 android:textColor="@color/colorGrayDark"
-                android:textSize="@dimen/text_size_standard"
+                android:textSize="@dimen/text_size_small"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
                 app:layout_constraintEnd_toStartOf="@+id/ib_menu"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -124,6 +124,7 @@
             android:onClick="@{()->event.onCommentClick()}">
 
             <TextView
+                android:textSize="@dimen/text_size_small"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"

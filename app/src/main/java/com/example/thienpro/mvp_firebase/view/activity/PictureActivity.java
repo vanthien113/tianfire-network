@@ -41,9 +41,6 @@ public class PictureActivity extends BaseActivity<ActivityPictureBinding> implem
         userId = getIntent().getStringExtra(USER_ID);
         getBinding().setEvent(this);
 
-        adapter = new PictureAdapter();
-        getBinding().rvPicture.setAdapter(adapter);
-
         onChangeViewTypeClick();
     }
 
@@ -69,7 +66,8 @@ public class PictureActivity extends BaseActivity<ActivityPictureBinding> implem
 
     @Override
     public void showPicture(ArrayList<String> listPicture) {
-        adapter.updateAdapter(listPicture, type);
+        adapter = new PictureAdapter(listPicture, type);
+        getBinding().rvPicture.setAdapter(adapter);
     }
 
     @Override

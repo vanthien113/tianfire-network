@@ -18,7 +18,7 @@ import com.example.thienpro.mvp_firebase.view.adapters.CommentAdapter;
 
 import java.util.List;
 
-public class CommentActivity extends BaseActivity<ActivityCommentBinding> implements CommentView {
+public class CommentActivity extends BaseActivity<ActivityCommentBinding> implements CommentView, CommentAdapter.ItemCommentClickListener {
     private static String POST = "comment";
 
     private CommentAdapter adapter;
@@ -46,7 +46,7 @@ public class CommentActivity extends BaseActivity<ActivityCommentBinding> implem
         post = (Post) getIntent().getSerializableExtra(POST);
         currentUser = getAppComponent().getUserManager().getUser();
 
-        adapter = new CommentAdapter(post, currentUser);
+        adapter = new CommentAdapter(post, currentUser, this);
 
         getBinding().rvComment.setLayoutManager(LayoutUltils.getLinearLayoutManager(this));
         getBinding().rvComment.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -84,7 +84,7 @@ public class CommentActivity extends BaseActivity<ActivityCommentBinding> implem
 
     private boolean validate(String content) {
         if (TextUtils.isEmpty(content)) {
-            showToastMessage("Hãy nhập bình luận của bạn trước khi đăng!");
+            showToastMessage(R.string.ban_hay_nhap_binh_luan_truoc_khi_dang);
             return false;
         }
         return true;
@@ -99,5 +99,20 @@ public class CommentActivity extends BaseActivity<ActivityCommentBinding> implem
     @Override
     public void clearComment() {
         getBinding().etComment.setText(null);
+    }
+
+    @Override
+    public void showDeleteCommentMessage() {
+        showToastMessage(R.string.da_xoa);
+    }
+
+    @Override
+    public void onDeleteComment(Comment data) {
+        presenter.deleteComment(data, post.getTimePost());
+    }
+
+    @Override
+    public void onUserClick(String userId) {
+        FriendProfileActivity.startActivity(this, userId);
     }
 }
