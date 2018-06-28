@@ -34,36 +34,25 @@ public class ShareLocationPresenterImpl extends BasePresentermpl<ShareLocationVi
     @Override
     public void pushLocation(final Context context) {
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
-            @Override
-            public void run() {
-                getLocation(context);
-            }
-        }, 0, 5, TimeUnit.SECONDS);
+        scheduledExecutorService.scheduleWithFixedDelay(() -> getLocation(context), 0, 5, TimeUnit.SECONDS);
     }
 
     private void getLocation(Context context) {
-        SHLocationManager.getCurrentLocation(context, new SHLocationManager.OnCurrentLocationCallback() {
-            @Override
-            public void callback(Location location) {
-                today = new Date();
-                today.getDate();
-                simpleDateFormat = new SimpleDateFormat("dd:MM:yyyy HH:mm:ss");
-                String day = simpleDateFormat.format(today);
+        SHLocationManager.getCurrentLocation(context, location -> {
+            today = new Date();
+            today.getDate();
+            simpleDateFormat = new SimpleDateFormat("dd:MM:yyyy HH:mm:ss");
+            String day = simpleDateFormat.format(today);
 
-                locationInteractor.pushLocation(userManager.getUser().getId(), location.getLatitude(), location.getLongitude(), day, new LocationInteractor.PushLocationCallback() {
-                    @Override
-                    public void onFinish(Exception e) {
-                        if (getView() == null)
-                            return;
-                        if (e != null) {
-                            getView().showExceptionError(e);
-                        } else {
-                            getView().showSharingMessage();
-                        }
-                    }
-                });
-            }
+            locationInteractor.pushLocation(userManager.getUser().getId(), location.getLatitude(), location.getLongitude(), day, e -> {
+                if (getView() == null)
+                    return;
+                if (e != null) {
+                    getView().showExceptionError(e);
+                } else {
+                    getView().showSharingMessage();
+                }
+            });
         });
     }
 
@@ -78,20 +67,17 @@ public class ShareLocationPresenterImpl extends BasePresentermpl<ShareLocationVi
         if (getView() == null)
             return;
         getView().showLoadingDialog();
-        locationInteractor.getListLocation(new LocationInteractor.GetListLocationCallback() {
-            @Override
-            public void onFinish(ArrayList<UserLocation> locations, DatabaseError e) {
-                if (getView() == null)
-                    return;
-                getView().hideLoadingDialog();
-                if (e != null) {
-                    getView().showDatabaseError(e);
-                } else {
-                    for (UserLocation userLocation : locations) {
-                        userLocation.setName(userManager.searchUser(userLocation.getUserId()).getName());
-                    }
-                    getView().showListLocation(locations);
+        locationInteractor.getListLocation((locations, e) -> {
+            if (getView() == null)
+                return;
+            getView().hideLoadingDialog();
+            if (e != null) {
+                getView().showDatabaseError(e);
+            } else {
+                for (UserLocation userLocation : locations) {
+                    userLocation.setName(userManager.searchUser(userLocation.getUserId()).getName());
                 }
+                getView().showListLocation(locations);
             }
         });
     }

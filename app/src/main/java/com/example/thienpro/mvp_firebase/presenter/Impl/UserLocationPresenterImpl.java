@@ -22,23 +22,15 @@ public class UserLocationPresenterImpl extends BasePresentermpl<UserLocationView
 
     @Override
     public void getUserLocation(final String userId) {
-        scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
-            @Override
-            public void run() {
-                interactor.getLocation(userId, new LocationInteractor.GetLocationCallback() {
-                    @Override
-                    public void onFinish(DatabaseError e, UserLocation location) {
-                        if (getView() == null)
-                            return;
-                        if (e != null) {
-                            getView().showDatabaseError(e);
-                        } else {
-                            getView().showUserLocation(location);
-                        }
-                    }
-                });
+        scheduledExecutorService.scheduleWithFixedDelay(() -> interactor.getLocation(userId, (e, location) -> {
+            if (getView() == null)
+                return;
+            if (e != null) {
+                getView().showDatabaseError(e);
+            } else {
+                getView().showUserLocation(location);
             }
-        }, 0, 5, TimeUnit.SECONDS);
+        }), 0, 5, TimeUnit.SECONDS);
 
     }
 

@@ -64,12 +64,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
         presenter.loadPost();
         presenter.getAllUser();
 
-        getBinding().srlProfile.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                presenter.loadPost();
-            }
-        });
+        getBinding().srlProfile.setOnRefreshListener(() -> presenter.loadPost());
 
         getBinding().setEvent(this);
 
@@ -86,12 +81,9 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
             }
         });
 
-        getBinding().etSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean focused) {
-                if (focused) {
-                    view.setTranslationY(0f);
-                }
+        getBinding().etSearch.setOnFocusChangeListener((view1, focused) -> {
+            if (focused) {
+                view1.setTranslationY(0f);
             }
         });
     }

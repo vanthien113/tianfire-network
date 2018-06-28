@@ -17,17 +17,14 @@ public class ChangePasswordPresenterImpl extends BasePresentermpl<ChangePassword
         if (getView() == null)
             return;
         getView().showLoadingDialog();
-        userInteractor.changePassword(password, new UserInteractor.ExceptionCheckCallback() {
-            @Override
-            public void onFinish(Exception e) {
-                if (getView() == null)
-                    return;
-                getView().hideLoadingDialog();
-                if (e != null) {
-                    getView().showExceptionError(e);
-                } else {
-                    getView().showChangePasswordComplete();
-                }
+        userInteractor.changePassword(password, e -> {
+            if (getView() == null)
+                return;
+            getView().hideLoadingDialog();
+            if (e != null) {
+                getView().showExceptionError(e);
+            } else {
+                getView().showChangePasswordComplete();
             }
         });
     }

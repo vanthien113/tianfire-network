@@ -44,28 +44,20 @@ public class PostPresenterImpl extends BasePresentermpl<PostView> implements Pos
         getView().showLoadingDialog();
 
         if (filePath != null) {
-            postInteractor.uploadImage(filePath, BaseInteractorImpl.IMAGES, userManager.getUser().getId(), new PostInteractor.GetStringCallback() {
-                @Override
-                public void onFinish(Exception e, String string) {
-                    post(content, string);
-                }
-            });
+            postInteractor.uploadImage(filePath, BaseInteractorImpl.IMAGES, userManager.getUser().getId(), (e, string) -> post(content, string));
         } else post(content, null);
     }
 
     private void post(String content, String imageUrl) {
-        postInteractor.writeNewPost(userManager.getUser().getName(), userManager.getUser().getAvatar(), content, imageUrl, new PostInteractor.ExceptionCallback() {
-            @Override
-            public void onFinish(Exception e) {
-                if (getView() == null)
-                    return;
-                getView().hideLoadingDialog();
-                if (e != null) {
-                    getView().showExceptionError(e);
-                } else {
-                    postManager.postChange();
-                    getView().navigationToHome();
-                }
+        postInteractor.writeNewPost(userManager.getUser().getName(), userManager.getUser().getAvatar(), content, imageUrl, e -> {
+            if (getView() == null)
+                return;
+            getView().hideLoadingDialog();
+            if (e != null) {
+                getView().showExceptionError(e);
+            } else {
+                postManager.postChange();
+                getView().navigationToHome();
             }
         });
     }

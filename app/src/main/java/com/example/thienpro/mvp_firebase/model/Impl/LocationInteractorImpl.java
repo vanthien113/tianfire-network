@@ -39,17 +39,9 @@ public class LocationInteractorImpl extends BaseInteractorImpl implements Locati
         result.put("time", pushTime);
         childUpdates.put(userId, result);
 
-        mDatabase.child(LOCATIONS).updateChildren(childUpdates).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                callback.onFinish(e);
-            }
-        }).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                callback.onFinish(null);
-            }
-        });
+        mDatabase.child(LOCATIONS).updateChildren(childUpdates)
+                .addOnFailureListener(e -> callback.onFinish(e))
+                .addOnSuccessListener(aVoid -> callback.onFinish(null));
     }
 
     @Override

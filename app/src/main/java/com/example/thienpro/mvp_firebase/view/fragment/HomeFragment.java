@@ -60,12 +60,9 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
 
         getBinding().setEvent(this);
 
-        getBinding().srlHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                presenter.loadAllListPost();
-                getBinding().srlHome.setRefreshing(false);
-            }
+        getBinding().srlHome.setOnRefreshListener(() -> {
+            presenter.loadAllListPost();
+            getBinding().srlHome.setRefreshing(false);
         });
     }
 

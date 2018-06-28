@@ -1,15 +1,10 @@
 package com.example.thienpro.mvp_firebase.model.Impl;
 
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.model.entity.Post;
 import com.example.thienpro.mvp_firebase.ultils.SHDateTimeFormat;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,18 +39,8 @@ public class PostInteractorImpl extends BaseInteractorImpl implements PostIntera
     public void writeNewPost(String userName, String avatar, final String content, final String filePath, final ExceptionCallback callback) {
         Post post = new Post(user.getUid(), userName, SHDateTimeFormat.getPostCurrentTime(), content, filePath, avatar);
         mDatabase.child(POSTS).child(SHDateTimeFormat.getPostCurrentTime()).setValue(post)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        callback.onFinish(null);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callback.onFinish(e);
-                    }
-                });
+                .addOnCompleteListener(task -> callback.onFinish(null))
+                .addOnFailureListener(e -> callback.onFinish(e));
     }
 
     @Override
@@ -105,36 +90,18 @@ public class PostInteractorImpl extends BaseInteractorImpl implements PostIntera
 
     @Override
     public void deletePost(final Post post, final ExceptionCallback callback) {
-        mDatabase.child(POSTS).child(post.getTimePost()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                //Delete Image in storage
+        mDatabase.child(POSTS).child(post.getTimePost()).removeValue().addOnCompleteListener(task -> {
+            //Delete Image in storage
 
-                deleteImage(post.getImage(), callback);
+            deleteImage(post.getImage(), callback);
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                callback.onFinish(e);
-            }
-        });
+        }).addOnFailureListener(e -> callback.onFinish(e));
     }
 
     private void deleteImage(String imageUrl, final ExceptionCallback callback) {
         if (!TextUtils.isEmpty(imageUrl)) {
             StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl);
-            photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    callback.onFinish(null);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    callback.onFinish(exception);
-                }
-            });
+            photoRef.delete().addOnSuccessListener(aVoid -> callback.onFinish(null)).addOnFailureListener(exception -> callback.onFinish(exception));
         } else {
             callback.onFinish(null);
         }
@@ -147,18 +114,8 @@ public class PostInteractorImpl extends BaseInteractorImpl implements PostIntera
         childUpdates.put(post.getTimePost(), postValues);
 
         mDatabase.child(POSTS).updateChildren(childUpdates)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        callback.onFinish(null);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callback.onFinish(e);
-                    }
-                });
+                .addOnCompleteListener(task -> callback.onFinish(null))
+                .addOnFailureListener(e -> callback.onFinish(e));
     }
 
     @Override
@@ -211,6 +168,4 @@ public class PostInteractorImpl extends BaseInteractorImpl implements PostIntera
             }
         });
     }
-
-
 }

@@ -40,12 +40,9 @@ public class EditPostActivity extends BaseActivity<ActivityEditPostBinding> impl
         getBinding().setPost(post);
         getBinding().setEvent(this);
 
-        getBinding().tbEditPost.getIvPost().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (validate(getBinding().getPost().getPost()))
-                    presenter.editPost(getBinding().getPost());
-            }
+        getBinding().tbEditPost.getIvPost().setOnClickListener(view -> {
+            if (validate(getBinding().getPost().getPost()))
+                presenter.editPost(getBinding().getPost());
         });
     }
 

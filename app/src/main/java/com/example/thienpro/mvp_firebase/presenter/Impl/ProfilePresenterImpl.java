@@ -19,7 +19,6 @@ import com.example.thienpro.mvp_firebase.view.ProfileView;
 import com.example.thienpro.mvp_firebase.view.fragment.ProfileFragment;
 import com.google.firebase.database.DatabaseError;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -33,18 +32,8 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
     private UserInteractor userInteractor;
     private UserManager userManager;
     private PostManager postManager;
-    private UserManager.OnUserChangeListener onUserChangeListener = new UserManager.OnUserChangeListener() {
-        @Override
-        public void onChange(User newUser) {
-            getView().onUserUpdated();
-        }
-    };
-    private PostManager.OnPostChangeListener onPostChangeListener = new PostManager.OnPostChangeListener() {
-        @Override
-        public void onChange() {
-            getView().onUserUpdated();
-        }
-    };
+    private UserManager.OnUserChangeListener onUserChangeListener = newUser -> getView().onUserUpdated();
+    private PostManager.OnPostChangeListener onPostChangeListener = () -> getView().onUserUpdated();
 
     public ProfilePresenterImpl(UserManager userManager, PostInteractor postInteractor, UserInteractor userInteractor, PostManager postManager) {
         this.postInteractor = postInteractor;
@@ -58,18 +47,15 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
         if (getView() == null)
             return;
         getView().showLoading();
-        postInteractor.loadPersonalPost(userManager.getUser().getId(), new PostInteractor.ListPostCallback() {
-            @Override
-            public void onFinish(DatabaseError e, ArrayList<Post> listPost) {
-                if (getView() == null)
-                    return;
-                getView().hideLoading();
+        postInteractor.loadPersonalPost(userManager.getUser().getId(), (e, listPost) -> {
+            if (getView() == null)
+                return;
+            getView().hideLoading();
 
-                if (e == null) {
-                    getView().showListPost(listPost);
-                } else {
-                    getView().showDatabaseError(e);
-                }
+            if (e == null) {
+                getView().showListPost(listPost);
+            } else {
+                getView().showDatabaseError(e);
             }
         });
     }
@@ -79,30 +65,22 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
         if (getView() == null)
             return;
         getView().showLoadingDialog();
-        userInteractor.getUser(new UserInteractor.UserCallback() {
-            @Override
-            public void onFinish(DatabaseError error, User user) {
-                if (getView() == null)
-                    return;
-                getView().hideLoadingDialog();
-                if (error != null) {
-                    getView().showDatabaseError(error);
-                } else {
-                    userManager.updateCurrentUser(user);
-                    postManager.postChange();
-                }
+        userInteractor.getUser((error, user) -> {
+            if (getView() == null)
+                return;
+            getView().hideLoadingDialog();
+            if (error != null) {
+                getView().showDatabaseError(error);
+            } else {
+                userManager.updateCurrentUser(user);
+                postManager.postChange();
             }
         }, true);
     }
 
     @Override
     public void getAllUser() {
-        userInteractor.getAllUser(new UserInteractor.UsersCallBack() {
-            @Override
-            public void onFinish(DatabaseError e, List<User> list) {
-                userManager.updateListUser(list);
-            }
-        });
+        userInteractor.getAllUser((e, list) -> userManager.updateListUser(list));
     }
 
     @Override
@@ -110,18 +88,15 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
         if (getView() == null)
             return;
         getView().showLoadingDialog();
-        postInteractor.deletePost(post, new PostInteractor.ExceptionCallback() {
-            @Override
-            public void onFinish(Exception e) {
-                if (getView() == null)
-                    return;
-                getView().hideLoadingDialog();
-                if (e != null) {
-                    getView().showExceptionError(e);
-                } else {
-                    getView().showDeleteComplete();
-                    postManager.postChange();
-                }
+        postInteractor.deletePost(post, e -> {
+            if (getView() == null)
+                return;
+            getView().hideLoadingDialog();
+            if (e != null) {
+                getView().showExceptionError(e);
+            } else {
+                getView().showDeleteComplete();
+                postManager.postChange();
             }
         });
     }
@@ -152,28 +127,20 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
             return;
         getView().showLoading();
 
-        userInteractor.uploadImage(uri, BaseInteractorImpl.AVATARS, userManager.getUser().getId(), new PostInteractor.GetStringCallback() {
-            @Override
-            public void onFinish(Exception e, String string) {
-                addAvatar(string);
-            }
-        });
+        userInteractor.uploadImage(uri, BaseInteractorImpl.AVATARS, userManager.getUser().getId(), (e, string) -> addAvatar(string));
     }
 
     private void addAvatar(final String avatarUrl) {
-        userInteractor.addAvatar(avatarUrl, new UserInteractor.ExceptionCheckCallback() {
-            @Override
-            public void onFinish(Exception e) {
-                if (getView() == null)
-                    return;
-                getView().hideLoading();
-                if (e != null) {
-                    getView().showExceptionError(e);
-                } else {
-                    postManager.postChange();
-                    userManager.updateAvatar(avatarUrl);
-                    getView().showChangeComplete();
-                }
+        userInteractor.addAvatar(avatarUrl, e -> {
+            if (getView() == null)
+                return;
+            getView().hideLoading();
+            if (e != null) {
+                getView().showExceptionError(e);
+            } else {
+                postManager.postChange();
+                userManager.updateAvatar(avatarUrl);
+                getView().showChangeComplete();
             }
         });
     }
@@ -183,28 +150,20 @@ public class ProfilePresenterImpl extends BasePresentermpl<ProfileView> implemen
             return;
         getView().showLoading();
 
-        userInteractor.uploadImage(uri, BaseInteractorImpl.COVER, userManager.getUser().getId(), new PostInteractor.GetStringCallback() {
-            @Override
-            public void onFinish(Exception e, String string) {
-                addCover(string);
-            }
-        });
+        userInteractor.uploadImage(uri, BaseInteractorImpl.COVER, userManager.getUser().getId(), (e, string) -> addCover(string));
     }
 
     private void addCover(final String coverUrl) {
-        userInteractor.addCover(coverUrl, new UserInteractor.ExceptionCheckCallback() {
-            @Override
-            public void onFinish(Exception e) {
-                if (getView() == null)
-                    return;
-                getView().hideLoading();
-                if (e != null) {
-                    getView().showExceptionError(e);
-                } else {
-                    postManager.postChange();
-                    userManager.updateCover(coverUrl);
-                    getView().showChangeComplete();
-                }
+        userInteractor.addCover(coverUrl, e -> {
+            if (getView() == null)
+                return;
+            getView().hideLoading();
+            if (e != null) {
+                getView().showExceptionError(e);
+            } else {
+                postManager.postChange();
+                userManager.updateCover(coverUrl);
+                getView().showChangeComplete();
             }
         });
     }

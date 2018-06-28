@@ -81,13 +81,10 @@ public class UserLocationActivity extends BaseActivity<ActivityUserLocationBindi
 
     @Override
     public void onSendToMapClick() {
-        SHLocationManager.getCurrentLocation(this, new SHLocationManager.OnCurrentLocationCallback() {
-            @Override
-            public void callback(Location location) {
-                LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(SHLocationManager.mapUrl(currentLatLng, friendtLatLng)));
-                startActivity(intent);
-            }
+        SHLocationManager.getCurrentLocation(this, location -> {
+            LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(SHLocationManager.mapUrl(currentLatLng, friendtLatLng)));
+            startActivity(intent);
         });
     }
 

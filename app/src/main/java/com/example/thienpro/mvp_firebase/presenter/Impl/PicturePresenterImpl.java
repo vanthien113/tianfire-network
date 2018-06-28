@@ -21,17 +21,14 @@ public class PicturePresenterImpl extends BasePresentermpl<PictureView> implemen
             return;
         getView().showLoadingDialog();
 
-        postInteractor.getPicture(userId, new PostInteractor.GetPictureCallback() {
-            @Override
-            public void onFinish(DatabaseError e, ArrayList<String> listPicture) {
-                if (getView() == null)
-                    return;
-                getView().hideLoadingDialog();
-                if (e != null) {
-                    getView().showDatabaseError(e);
-                } else {
-                    getView().showPicture(listPicture);
-                }
+        postInteractor.getPicture(userId, (e, listPicture) -> {
+            if (getView() == null)
+                return;
+            getView().hideLoadingDialog();
+            if (e != null) {
+                getView().showDatabaseError(e);
+            } else {
+                getView().showPicture(listPicture);
             }
         });
     }

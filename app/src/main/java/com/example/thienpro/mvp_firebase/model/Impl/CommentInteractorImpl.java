@@ -16,6 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class CommentInteractorImpl extends BaseInteractorImpl implements CommentInteractor {
     private DatabaseReference mDatabase;
@@ -32,19 +33,8 @@ public class CommentInteractorImpl extends BaseInteractorImpl implements Comment
         result.put("commentTime", commentTime);
 
         mDatabase.child(POSTS).child(postTime).child(COMMENTS).child(commentTime).updateChildren(result)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        callback.onFinish(null);
-                    }
-                })
-
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callback.onFinish(e);
-                    }
-                });
+                .addOnSuccessListener(aVoid -> callback.onFinish(null))
+                .addOnFailureListener(e -> callback.onFinish(e));
     }
 
     @Override
@@ -52,7 +42,7 @@ public class CommentInteractorImpl extends BaseInteractorImpl implements Comment
         mDatabase.child(POSTS).child(postTime).child(COMMENTS).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<Comment> list = new ArrayList<>();
+                List<Comment> list = new ArrayList<>();
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     Comment comment = dsp.getValue(Comment.class);
                     list.add(comment);
@@ -69,17 +59,8 @@ public class CommentInteractorImpl extends BaseInteractorImpl implements Comment
 
     @Override
     public void deleteComment(String commentTime, String postTime, final ExceptionCallback callback) {
-        mDatabase.child(POSTS).child(postTime).child(COMMENTS).child(commentTime).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                callback.onFinish(null);
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                callback.onFinish(e);
-            }
-        });
+        mDatabase.child(POSTS).child(postTime).child(COMMENTS).child(commentTime).removeValue()
+                .addOnCompleteListener(task -> callback.onFinish(null))
+                .addOnFailureListener(e -> callback.onFinish(e));
     }
 }

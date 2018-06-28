@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.example.thienpro.mvp_firebase.di.component.AppComponent;
 import com.example.thienpro.mvp_firebase.di.component.DaggerAppComponent;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class ProjectApplication extends Application {
     private AppComponent appComponent;
@@ -11,6 +12,9 @@ public class ProjectApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
         getAppComponent().inject(this);
     }
 

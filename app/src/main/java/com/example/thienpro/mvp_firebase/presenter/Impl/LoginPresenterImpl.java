@@ -22,17 +22,14 @@ public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements L
     }
 
     public void signedInCheck() {
-        userInteractor.signedInCheck(new UserInteractor.BooleanCheckCallback() {
-            @Override
-            public void onFinish(boolean checker) {
-                if (getView() == null)
-                    return;
-                getView().hideLoadingDialog();
-                if (checker) {
-                    getUserInfo();
-                } else {
-                    getView().navigationToVerifiEmail();
-                }
+        userInteractor.signedInCheck(checker -> {
+            if (getView() == null)
+                return;
+            getView().hideLoadingDialog();
+            if (checker) {
+                getUserInfo();
+            } else {
+                getView().navigationToVerifiEmail();
             }
         });
     }
@@ -42,17 +39,14 @@ public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements L
             return;
         getView().showLoadingDialog();
 
-        userInteractor.sigIn(email, password, new UserInteractor.ExceptionCheckCallback() {
-            @Override
-            public void onFinish(Exception e) {
-                if (getView() == null)
-                    return;
-                getView().hideLoadingDialog();
-                if (e == null) {
-                    signedInCheck();
-                } else {
-                    getView().showExceptionError(e);
-                }
+        userInteractor.sigIn(email, password, e -> {
+            if (getView() == null)
+                return;
+            getView().hideLoadingDialog();
+            if (e == null) {
+                signedInCheck();
+            } else {
+                getView().showExceptionError(e);
             }
         });
     }
@@ -63,17 +57,14 @@ public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements L
             return;
         getView().showLoadingDialog();
 
-        userInteractor.forgotPassword(email, new UserInteractor.ExceptionCheckCallback() {
-            @Override
-            public void onFinish(Exception e) {
-                if (getView() == null)
-                    return;
-                getView().hideLoadingDialog();
-                if (e != null) {
-                    getView().showExceptionError(e);
-                } else {
-                    getView().showLoginMessage(email);
-                }
+        userInteractor.forgotPassword(email, e -> {
+            if (getView() == null)
+                return;
+            getView().hideLoadingDialog();
+            if (e != null) {
+                getView().showExceptionError(e);
+            } else {
+                getView().showLoginMessage(email);
             }
         });
     }
@@ -84,19 +75,16 @@ public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements L
             return;
         getView().showLoadingDialog();
 
-        userInteractor.getUser(new UserInteractor.UserCallback() {
-            @Override
-            public void onFinish(DatabaseError error, User user) {
-                if (getView() == null)
-                    return;
-                getView().hideLoadingDialog();
-                if (error != null) {
-                    getView().showDatabaseError(error);
-                } else {
-                    userManager.updateCurrentUser(user);
-                    getView().navigationToHome();
+        userInteractor.getUser((error, user) -> {
+            if (getView() == null)
+                return;
+            getView().hideLoadingDialog();
+            if (error != null) {
+                getView().showDatabaseError(error);
+            } else {
+                userManager.updateCurrentUser(user);
+                getView().navigationToHome();
 
-                }
             }
         }, false);
     }

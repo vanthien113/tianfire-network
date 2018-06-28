@@ -1,7 +1,6 @@
 package com.example.thienpro.mvp_firebase.presenter.Impl;
 
 import com.example.thienpro.mvp_firebase.bases.BasePresentermpl;
-import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.model.UserInteractor;
 import com.example.thienpro.mvp_firebase.presenter.VerifiEmailPresenter;
 import com.example.thienpro.mvp_firebase.view.VerifiEmailView;
@@ -19,18 +18,15 @@ public class VerifiEmailPresenterImpl extends BasePresentermpl<VerifiEmailView> 
 
     @Override
     public void verifiEmail() {
-        userInteractor.verifiEmail(new UserInteractor.StringCallback() {
-            @Override
-            public void onFinish(Exception checker, String email) {
-                if (getView() == null)
-                    return;
-                if (checker == null && email == null) {
-                    getView().navigationToHome();
-                } else if (checker == null && email != null) {
-                    getView().sendverifiEmailComplete(email);
-                } else {
-                    getView().sendverifiEmailFail(email);
-                }
+        userInteractor.verifiEmail((checker, email) -> {
+            if (getView() == null)
+                return;
+            if (checker == null && email == null) {
+                getView().navigationToHome();
+            } else if (checker == null && email != null) {
+                getView().sendverifiEmailComplete(email);
+            } else {
+                getView().sendverifiEmailFail(email);
             }
         });
     }

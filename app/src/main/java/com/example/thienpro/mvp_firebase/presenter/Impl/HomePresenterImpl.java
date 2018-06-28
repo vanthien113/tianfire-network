@@ -23,19 +23,9 @@ public class HomePresenterImpl extends BasePresentermpl<HomeView> implements Hom
     private PostManager postManager;
     private UserManager userManager;
 
-    private UserManager.OnUserChangeListener onUserChangeListener = new UserManager.OnUserChangeListener() {
-        @Override
-        public void onChange(User newUser) {
-            getView().reloadPost();
-        }
-    };
+    private UserManager.OnUserChangeListener onUserChangeListener = newUser -> getView().reloadPost();
 
-    private PostManager.OnPostChangeListener listener = new PostManager.OnPostChangeListener() {
-        @Override
-        public void onChange() {
-            getView().reloadPost();
-        }
-    };
+    private PostManager.OnPostChangeListener listener = () -> getView().reloadPost();
 
     public HomePresenterImpl(UserInteractor userInteractor, PostInteractor postInteractor, PostManager postManager, UserManager userManager) {
         this.postInteractor = postInteractor;
@@ -49,17 +39,14 @@ public class HomePresenterImpl extends BasePresentermpl<HomeView> implements Hom
             return;
         getView().showLoadingPb();
 
-        postInteractor.loadAllPost(new PostInteractor.ListPostCallback() {
-            @Override
-            public void onFinish(DatabaseError e, ArrayList<Post> listPost) {
-                if (getView() == null)
-                    return;
-                getView().hideLoadingPb();
-                if (e == null) {
-                    getView().showAllPost(listPost);
-                } else {
-                    getView().showDatabaseError(e);
-                }
+        postInteractor.loadAllPost((e, listPost) -> {
+            if (getView() == null)
+                return;
+            getView().hideLoadingPb();
+            if (e == null) {
+                getView().showAllPost(listPost);
+            } else {
+                getView().showDatabaseError(e);
             }
         });
     }
@@ -69,19 +56,16 @@ public class HomePresenterImpl extends BasePresentermpl<HomeView> implements Hom
             return;
         getView().showLoadingDialog();
 
-        postInteractor.deletePost(post, new PostInteractor.ExceptionCallback() {
-            @Override
-            public void onFinish(Exception e) {
-                if (getView() == null)
-                    return;
-                getView().hideLoadingDialog();
+        postInteractor.deletePost(post, e -> {
+            if (getView() == null)
+                return;
+            getView().hideLoadingDialog();
 
-                if (e != null) {
-                    getView().showExceptionError(e);
-                } else {
-                    postManager.postChange();
-                    getView().showDeteleComplete();
-                }
+            if (e != null) {
+                getView().showExceptionError(e);
+            } else {
+                postManager.postChange();
+                getView().showDeteleComplete();
             }
         });
     }

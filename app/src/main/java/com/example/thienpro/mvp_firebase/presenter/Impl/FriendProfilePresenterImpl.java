@@ -26,18 +26,15 @@ public class FriendProfilePresenterImpl extends BasePresentermpl<FriendProfileVi
             return;
         getView().showLoadingDialog();
 
-        userInteractor.getFriendInfomation(userId, new UserInteractor.UserCallback() {
-            @Override
-            public void onFinish(DatabaseError e, User user) {
-                if (getView() == null)
-                    return;
-                getView().hideLoadingDialog();
-                if (e != null) {
-                    getView().showDatabaseError(e);
-                } else {
-                    getView().showUserInfomation(user);
-                    getView().getFriendPost();
-                }
+        userInteractor.getFriendInfomation(userId, (e, user) -> {
+            if (getView() == null)
+                return;
+            getView().hideLoadingDialog();
+            if (e != null) {
+                getView().showDatabaseError(e);
+            } else {
+                getView().showUserInfomation(user);
+                getView().getFriendPost();
             }
         });
     }
@@ -47,17 +44,14 @@ public class FriendProfilePresenterImpl extends BasePresentermpl<FriendProfileVi
         if (getView() == null)
             return;
         getView().showLoadingDialog();
-        postInteractor.getFriendPost(userId, new PostInteractor.ListPostCallback() {
-            @Override
-            public void onFinish(DatabaseError e, ArrayList<Post> post) {
-                if (getView() == null)
-                    return;
-                getView().hideLoadingDialog();
-                if (e != null) {
-                    getView().showDatabaseError(e);
-                } else {
-                    getView().showListPost(post);
-                }
+        postInteractor.getFriendPost(userId, (e, post) -> {
+            if (getView() == null)
+                return;
+            getView().hideLoadingDialog();
+            if (e != null) {
+                getView().showDatabaseError(e);
+            } else {
+                getView().showListPost(post);
             }
         });
     }

@@ -62,25 +62,17 @@ public class ItemPostVH extends RecyclerView.ViewHolder implements ItemListPostV
     }
 
     private void downloadImageEvent() {
-        binding.ivImage.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                new AlertDialog.Builder(binding.getRoot().getContext())
-                        .setTitle(R.string.tai_xuong)
-                        .setCancelable(false)
-                        .setPositiveButton(R.string.tai, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                listener.onDownload(post.getImage());
-                            }
-                        })
-                        .setCancelable(true)
-                        .setNegativeButton(R.string.huy, null)
-                        .setMessage(R.string.tai_anh_xuong_may_cua_ban)
-                        .create()
-                        .show();
-                return false;
-            }
+        binding.ivImage.setOnLongClickListener(view -> {
+            new AlertDialog.Builder(binding.getRoot().getContext())
+                    .setTitle(R.string.tai_xuong)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.tai, (dialogInterface, i) -> listener.onDownload(post.getImage()))
+                    .setCancelable(true)
+                    .setNegativeButton(R.string.huy, null)
+                    .setMessage(R.string.tai_anh_xuong_may_cua_ban)
+                    .create()
+                    .show();
+            return false;
         });
     }
 
@@ -93,21 +85,16 @@ public class ItemPostVH extends RecyclerView.ViewHolder implements ItemListPostV
     public void onMenuClick(final Post post) {
         popupMenu.show();
 
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.mn_edit_post:
-                        editPost(post);
-                        break;
-                    case R.id.mn_delete_post:
-                        deletePost(post);
-                        break;
-                }
-                return false;
+        popupMenu.setOnMenuItemClickListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.mn_edit_post:
+                    editPost(post);
+                    break;
+                case R.id.mn_delete_post:
+                    deletePost(post);
+                    break;
             }
-
-
+            return false;
         });
     }
 
@@ -125,12 +112,7 @@ public class ItemPostVH extends RecyclerView.ViewHolder implements ItemListPostV
         new AlertDialog.Builder(binding.getRoot().getContext())
                 .setTitle(R.string.xoa_bai_viet)
                 .setCancelable(false)
-                .setPositiveButton(R.string.xoa, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        listener.onDeletePost(post);
-                    }
-                })
+                .setPositiveButton(R.string.xoa, (dialogInterface, i) -> listener.onDeletePost(post))
                 .setCancelable(true)
                 .setNegativeButton(R.string.huy, null)
                 .setMessage(R.string.ban_thuc_su_muon_xoa_bai_viet_nay)
