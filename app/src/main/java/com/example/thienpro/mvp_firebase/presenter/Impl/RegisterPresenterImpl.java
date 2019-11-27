@@ -18,9 +18,16 @@ public class RegisterPresenterImpl extends BasePresentermpl<RegisterView> implem
 
     @Override
     public void register(String email, String password, String name, String address, boolean sex) {
+        if(getView() == null){
+            return;
+        }
+        getView().showLoadingDialog();
+
         userInteractor.register(email, password, name, address, sex, checker -> {
             if (getView() == null)
                 return;
+            getView().hideLoadingDialog();
+
             if (checker == null) {
                 getView().navigationToVerifiEmail();
             } else {

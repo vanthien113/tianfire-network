@@ -8,13 +8,13 @@ import com.example.thienpro.mvp_firebase.databinding.ItemPictureBinding;
 import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
 import com.example.thienpro.mvp_firebase.view.adapters.viewholder.PictureVH;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class PictureAdapter extends RecyclerView.Adapter<PictureVH> {
-    private ArrayList<String> listPicture;
+    private List<String> listPicture;
     private int type;
 
-    public PictureAdapter(ArrayList<String> listPicture, int type) {
+    public PictureAdapter(List<String> listPicture, int type) {
         this.listPicture = listPicture;
         this.type = type;
     }

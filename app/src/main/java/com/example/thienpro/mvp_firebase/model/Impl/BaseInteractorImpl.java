@@ -28,20 +28,22 @@ public class BaseInteractorImpl implements BaseInteractor {
     protected static final String EMAIL = "email";
     protected static final String ADDRESS = "address";
     protected static final String SEX = "sex";
+    protected static final String CONTENT = "content";
+    protected static final String COMMENTTIME = "commentTime";
 
     protected StorageReference ref;
 
     public BaseInteractorImpl() {
     }
 
-    public void uploadImage(Uri uri, String child, String userId, final PostInteractor.GetStringCallback callback) {
+    public void uploadImage(Uri uri, String child, String userId, PostInteractor.GetStringCallback callback) {
         ref = FirebaseStorage.getInstance().getReference().child(child).child(userId).child(UUID.randomUUID().toString());
         ref.putFile(uri)
                 .addOnSuccessListener(taskSnapshot -> getDownloadImageUrl(callback))
                 .addOnFailureListener(e -> callback.onFinish(e, null));
     }
 
-    private void getDownloadImageUrl(final PostInteractor.GetStringCallback callback) {
+    private void getDownloadImageUrl(PostInteractor.GetStringCallback callback) {
         ref.getDownloadUrl()
                 .addOnSuccessListener(uri -> callback.onFinish(null, uri.toString()))
                 .addOnFailureListener(exception -> callback.onFinish(exception, null));

@@ -67,6 +67,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
         <EditText
+            android:inputType="textPassword"
             android:id="@+id/et_repassword"
             style="@style/TextViewRegisterInput"
             android:hint="@string/nhap_lai_password"

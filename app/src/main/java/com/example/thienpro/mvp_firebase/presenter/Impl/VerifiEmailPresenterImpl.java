@@ -18,9 +18,16 @@ public class VerifiEmailPresenterImpl extends BasePresentermpl<VerifiEmailView> 
 
     @Override
     public void verifiEmail() {
+        if (getView() == null) {
+            return;
+        }
+        getView().showLoadingDialog();
+
         userInteractor.verifiEmail((checker, email) -> {
             if (getView() == null)
                 return;
+            getView().hideLoadingDialog();
+
             if (checker == null && email == null) {
                 getView().navigationToHome();
             } else if (checker == null && email != null) {

@@ -12,7 +12,7 @@ import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
 import com.example.thienpro.mvp_firebase.view.adapters.viewholder.ItemPostVH;
 import com.example.thienpro.mvp_firebase.view.adapters.viewholder.ItemProfileHeaderVH;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int HEADER = 0;
@@ -20,7 +20,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private HomeAdapter.ListPostMenuListener postMenuListeneristener;
     private User user;
-    private ArrayList<Post> lisPost;
+    private List<Post> lisPost;
     private ItemProfileClickListener listener;
 
     public ProfileAdapter(User user, ItemProfileClickListener listener, HomeAdapter.ListPostMenuListener postMenuListeneristener) {
@@ -29,7 +29,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.postMenuListeneristener = postMenuListeneristener;
     }
 
-    public void updateAdapter(ArrayList<Post> mLisPost, User user) {
+    public void updateAdapter(List<Post> mLisPost, User user) {
         this.lisPost = mLisPost;
         this.user = user;
         notifyDataSetChanged();

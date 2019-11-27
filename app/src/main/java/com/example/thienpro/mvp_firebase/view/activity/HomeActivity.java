@@ -24,7 +24,9 @@ import java.util.List;
 
 public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements HomeNavigationListener {
     public static void startActiviry(Context context) {
-        context.startActivity(new Intent(context, HomeActivity.class));
+        Intent intent = new Intent(context, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
     }
 
     @Override

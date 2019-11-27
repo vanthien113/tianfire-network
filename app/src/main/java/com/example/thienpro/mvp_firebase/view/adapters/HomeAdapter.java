@@ -14,13 +14,14 @@ import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
 import com.example.thienpro.mvp_firebase.view.adapters.viewholder.ItemPostVH;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ThienPro on 11/11/2017.
  */
 
 public class HomeAdapter extends RecyclerView.Adapter<ItemPostVH> {
-    private ArrayList<Post> mLisPost;
+    private List<Post> mLisPost;
     private Context context;
     private ListPostMenuListener listener;
     private User user;
@@ -31,7 +32,7 @@ public class HomeAdapter extends RecyclerView.Adapter<ItemPostVH> {
         this.user = user;
     }
 
-    public void updateAdapter(ArrayList<Post> mLisPost) {
+    public void updateAdapter(List<Post> mLisPost) {
         this.mLisPost = mLisPost;
         notifyDataSetChanged();
     }

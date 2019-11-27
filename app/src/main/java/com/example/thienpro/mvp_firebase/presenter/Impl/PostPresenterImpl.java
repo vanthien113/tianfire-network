@@ -13,6 +13,7 @@ import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.model.Impl.BaseInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.presenter.PostPresenter;
+import com.example.thienpro.mvp_firebase.ultils.SHDateTimeFormat;
 import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
 import com.example.thienpro.mvp_firebase.view.PostView;
 import com.example.thienpro.mvp_firebase.view.activity.PostActivity;
@@ -49,7 +50,7 @@ public class PostPresenterImpl extends BasePresentermpl<PostView> implements Pos
     }
 
     private void post(String content, String imageUrl) {
-        postInteractor.writeNewPost(userManager.getUser().getName(), userManager.getUser().getAvatar(), content, imageUrl, e -> {
+        postInteractor.writeNewPost(userManager.getUser().getName(), userManager.getUser().getAvatar(), content, imageUrl, SHDateTimeFormat.getPostCurrentTime(), e -> {
             if (getView() == null)
                 return;
             getView().hideLoadingDialog();

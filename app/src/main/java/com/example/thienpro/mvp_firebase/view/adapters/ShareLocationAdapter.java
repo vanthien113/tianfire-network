@@ -9,17 +9,17 @@ import com.example.thienpro.mvp_firebase.model.entity.UserLocation;
 import com.example.thienpro.mvp_firebase.ultils.LayoutUltils;
 import com.example.thienpro.mvp_firebase.view.adapters.viewholder.ShareLocationVH;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ShareLocationAdapter extends RecyclerView.Adapter<ShareLocationVH> {
-    private ArrayList<UserLocation> listLocation;
+    private List<UserLocation> listLocation;
     private ShareLocationAdapter.ListLocationListener listener;
 
     public ShareLocationAdapter(ShareLocationAdapter.ListLocationListener listener) {
         this.listener = listener;
     }
 
-    public void updateAdapter(ArrayList<UserLocation> listLocation) {
+    public void updateAdapter(List<UserLocation> listLocation) {
         this.listLocation = listLocation;
         notifyDataSetChanged();
     }

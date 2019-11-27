@@ -22,10 +22,16 @@ public class LoginPresenterImpl extends BasePresentermpl<LoginView> implements L
     }
 
     public void signedInCheck() {
+        if(getView() == null){
+            return;
+        }
+
+//        getView().showLoadingDialog();
+
         userInteractor.signedInCheck(checker -> {
             if (getView() == null)
                 return;
-            getView().hideLoadingDialog();
+//            getView().hideLoadingDialog();
             if (checker) {
                 getUserInfo();
             } else {

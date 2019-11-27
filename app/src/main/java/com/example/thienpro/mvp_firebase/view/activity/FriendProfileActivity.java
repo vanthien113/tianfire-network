@@ -16,7 +16,7 @@ import com.example.thienpro.mvp_firebase.view.adapters.FriendProfileAdapter;
 import com.example.thienpro.mvp_firebase.view.adapters.HomeAdapter;
 import com.example.thienpro.mvp_firebase.view.adapters.ProfileAdapter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBinding> implements FriendProfileView, HomeAdapter.ListPostMenuListener, ProfileAdapter.ItemProfileClickListener {
     private static String USER_ID = "userId";
@@ -129,7 +129,7 @@ public class FriendProfileActivity extends BaseActivity<ActivityFriendProfileBin
     }
 
     @Override
-    public void showListPost(ArrayList<Post> listPost) {
+    public void showListPost(List<Post> listPost) {
         adapter.updateAdapter(listPost);
     }
 

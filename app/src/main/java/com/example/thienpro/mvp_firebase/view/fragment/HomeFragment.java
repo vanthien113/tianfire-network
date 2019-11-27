@@ -21,6 +21,7 @@ import com.example.thienpro.mvp_firebase.view.listener.HomeNavigationListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by ThienPro on 11/22/2017.
@@ -67,7 +68,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
     }
 
     @Override
-    public void showAllPost(ArrayList<Post> list) {
+    public void showAllPost(List<Post> list) {
         Collections.reverse(list);
         homeAdapter.updateAdapter(list);
     }

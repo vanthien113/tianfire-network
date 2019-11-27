@@ -9,16 +9,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-/*
- *- Lớp M: xử lý dữ liệu -> Trả dữ liệu về P thông qua callback
- * */
 
 /**
  * Created by ThienPro on 11/10/2017.
@@ -26,73 +20,61 @@ import java.util.Map;
 
 public class UserInteractorImpl extends BaseInteractorImpl implements UserInteractor {
     private DatabaseReference mDatabase;
-    private FirebaseAuth mAuth;
     private FirebaseUser users;
-    private FirebaseStorage storage;
-    private StorageReference storageReference;
-    private StorageReference ref;
 
     public UserInteractorImpl() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mAuth = FirebaseAuth.getInstance();
-        users = mAuth.getCurrentUser();
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
     }
 
     @Override
-    public void verifiEmail(final StringCallback callback) {
+    public void verifiEmail(StringCallback callback) {
         users = FirebaseAuth.getInstance().getCurrentUser();
-        if (users != null) {
-            users.reload();
+        if (users == null) {
+            return;
+        }
+
+        users.reload().addOnSuccessListener(aVoid -> {
             if (users.isEmailVerified()) {
                 callback.onFinish(null, null);
-            } else if (!users.isEmailVerified()) {
-
+            } else {
                 //send email
                 users.sendEmailVerification()
-                        .addOnCompleteListener(task -> callback.onFinish(null, users.getEmail()))
+                        .addOnSuccessListener(task -> callback.onFinish(null, users.getEmail()))
                         .addOnFailureListener(e -> callback.onFinish(e, users.getEmail()));
             }
-        }
+        });
     }
 
-    public void register(final String email, String password, final String name, final String address, final boolean sex, final ExceptionCheckCallback callback) {
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                    //add user to database
-                    if (task.isSuccessful()) {
-                        users = mAuth.getCurrentUser();
-                        User user = new User(users.getUid(), email, name, address, sex, null, null);
-                        mDatabase.child(USERS).child(users.getUid()).setValue(user)
-                                .addOnCompleteListener(task1 -> callback.onFinish(null))
-                                .addOnFailureListener(e -> callback.onFinish(e));
-                    }
-                })
+    public void register(String email, String password, String name, String address, boolean sex, ExceptionCheckCallback callback) {
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+                .addOnSuccessListener(task ->
+                        mDatabase.child(USERS).child(task.getUser().getUid())
+                                .setValue(new User(task.getUser().getUid(), email, name, address, sex, null, null))
+                                .addOnSuccessListener(task1 -> callback.onFinish(null))
+                                .addOnFailureListener(e -> callback.onFinish(e)))
                 .addOnFailureListener(e -> callback.onFinish(e));
     }
 
     @Override
-    public void changePassword(String password, final ExceptionCheckCallback callback) {
-        users.updatePassword(password)
-                .addOnCompleteListener(task -> callback.onFinish(null))
+    public void changePassword(String password, ExceptionCheckCallback callback) {
+        FirebaseAuth.getInstance().getCurrentUser().updatePassword(password)
+                .addOnSuccessListener(task -> callback.onFinish(null))
                 .addOnFailureListener(e -> callback.onFinish(e));
     }
 
     @Override
-    public void forgotPassword(String email, final ExceptionCheckCallback callback) {
+    public void forgotPassword(String email, ExceptionCheckCallback callback) {
         FirebaseAuth.getInstance().sendPasswordResetEmail(email)
-                .addOnCompleteListener(task -> callback.onFinish(null))
+                .addOnSuccessListener(task -> callback.onFinish(null))
                 .addOnFailureListener(e -> callback.onFinish(e));
     }
 
     @Override
-    public void getFriendInfomation(String userId, final UserCallback callback) {
+    public void getFriendInfomation(String userId, UserCallback callback) {
         mDatabase.child(USERS).child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                callback.onFinish(null, user);
+                callback.onFinish(null, dataSnapshot.getValue(User.class));
             }
 
             @Override
@@ -103,14 +85,13 @@ public class UserInteractorImpl extends BaseInteractorImpl implements UserIntera
     }
 
     @Override
-    public void getAllUser(final UsersCallBack callBack) {
+    public void getAllUser(UsersCallBack callBack) {
         mDatabase.child(USERS).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<User> list = new ArrayList<>();
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    User user = dsp.getValue(User.class);
-                    list.add(user);
+                    list.add(dsp.getValue(User.class));
                 }
                 callBack.onFinish(null, list);
             }
@@ -122,20 +103,18 @@ public class UserInteractorImpl extends BaseInteractorImpl implements UserIntera
         });
     }
 
-    public void updateUser(final String name, String address, Boolean sex, final ExceptionCheckCallback callback) {
-        String userId = users.getUid();
-
+    public void updateUser(String name, String address, Boolean sex, ExceptionCheckCallback callback) {
         HashMap<String, Object> result = new HashMap<>();
         result.put(NAME, name);
         result.put(ADDRESS, address);
         result.put(SEX, sex);
 
-        mDatabase.child(USERS).child(userId).updateChildren(result)
+        mDatabase.child(USERS).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).updateChildren(result)
                 .addOnSuccessListener(aVoid -> updateUseInfoInPost(name, callback))
                 .addOnFailureListener(e -> callback.onFinish(e));
     }
 
-    private void updateUseInfoInPost(final String name, final ExceptionCheckCallback callback) {
+    private void updateUseInfoInPost(String name, ExceptionCheckCallback callback) {
         mDatabase.child(POSTS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -145,11 +124,12 @@ public class UserInteractorImpl extends BaseInteractorImpl implements UserIntera
                     String id = (String) map.get(ID);
                     String timePost = (String) map.get(TIMEPOST);
 
-                    if (id.equals(users.getUid())) {
+                    if (id.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                         HashMap<String, Object> result = new HashMap<>();
                         result.put(NAME, name);
 
-                        mDatabase.child(POSTS).child(timePost).updateChildren(result)
+                        mDatabase.child(POSTS).child(timePost)
+                                .updateChildren(result)
                                 .addOnFailureListener(e -> callback.onFinish(e));
                     }
                 }
@@ -170,28 +150,25 @@ public class UserInteractorImpl extends BaseInteractorImpl implements UserIntera
     }
 
     @Override
-    public void addCover(final String coverUrl, final ExceptionCheckCallback callback) {
-        String userId = users.getUid();
-
+    public void addCover(String coverUrl, ExceptionCheckCallback callback) {
         HashMap<String, Object> result = new HashMap<>();
         result.put(COVER, coverUrl);
 
-        mDatabase.child(USERS).child(userId).updateChildren(result)
-                .addOnCompleteListener(task -> callback.onFinish(null))
+        mDatabase.child(USERS).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).updateChildren(result)
+                .addOnSuccessListener(task -> callback.onFinish(null))
                 .addOnFailureListener(e -> callback.onFinish(e));
     }
 
-    private void editAvatarInPost(final String avatarUrl, final ExceptionCheckCallback callback) {
+    private void editAvatarInPost(String avatarUrl, ExceptionCheckCallback callback) {
         mDatabase.child(POSTS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    @SuppressWarnings("unchecked")
                     Map<String, Object> map = (Map<String, Object>) dsp.getValue();
                     String id = (String) map.get(ID);
                     String timePost = (String) map.get(TIMEPOST);
 
-                    if (id.equals(users.getUid().toString())) {
+                    if (id.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                         HashMap<String, Object> result = new HashMap<>();
                         result.put(AVATAR, avatarUrl);
 
@@ -210,14 +187,12 @@ public class UserInteractorImpl extends BaseInteractorImpl implements UserIntera
         });
     }
 
-    private void editAvatarInUser(final String avatarUrl, final ExceptionCheckCallback callback) {
-        String userId = users.getUid();
-
+    private void editAvatarInUser(String avatarUrl, ExceptionCheckCallback callback) {
         HashMap<String, Object> result = new HashMap<>();
         result.put(AVATAR, avatarUrl);
 
-        mDatabase.child(USERS).child(userId).updateChildren(result)
-                .addOnCompleteListener(task -> editAvatarInPost(avatarUrl, callback))
+        mDatabase.child(USERS).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).updateChildren(result)
+                .addOnSuccessListener(task -> editAvatarInPost(avatarUrl, callback))
                 .addOnFailureListener(e -> callback.onFinish(e));
     }
 
@@ -225,42 +200,35 @@ public class UserInteractorImpl extends BaseInteractorImpl implements UserIntera
     public void signedInCheck(BooleanCheckCallback loginCheck) {
         users = FirebaseAuth.getInstance().getCurrentUser();
         if (users != null) {
-            users.reload();
-            if (users.isEmailVerified()) {
-                loginCheck.onFinish(true);
-            } else if (!users.isEmailVerified()) {
-                loginCheck.onFinish(false);
-            }
+            users.reload().addOnSuccessListener(aVoid -> {
+                if (users.isEmailVerified()) {
+                    loginCheck.onFinish(true);
+                } else if (!users.isEmailVerified()) {
+                    loginCheck.onFinish(false);
+                }
+            });
         }
     }
 
     @Override
-    public void getUser(final UserCallback callback, boolean loadUser) {
-        users = FirebaseAuth.getInstance().getCurrentUser();
+    public void getUser(UserCallback callback, boolean loadUser) {
+        mDatabase.child(USERS).child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        callback.onFinish(null, dataSnapshot.getValue(User.class));
+                    }
 
-        mDatabase.child(USERS).child(users.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                callback.onFinish(null, user);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                callback.onFinish(databaseError, null);
-            }
-        });
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        callback.onFinish(databaseError, null);
+                    }
+                });
     }
 
-    public void sigIn(String email, String password, final ExceptionCheckCallback callback) {
-        mAuth = FirebaseAuth.getInstance();
-
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        callback.onFinish(null);
-                    }
-                })
+    public void sigIn(String email, String password, ExceptionCheckCallback callback) {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener(task -> callback.onFinish(null))
                 .addOnFailureListener(e -> callback.onFinish(e));
     }
 

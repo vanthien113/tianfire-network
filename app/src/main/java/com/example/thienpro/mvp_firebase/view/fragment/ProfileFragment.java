@@ -24,6 +24,7 @@ import com.example.thienpro.mvp_firebase.view.listener.HomeNavigationListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by ThienPro on 11/22/2017.
@@ -101,7 +102,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
     }
 
     @Override
-    public void showListPost(ArrayList<Post> listPost) {
+    public void showListPost(List<Post> listPost) {
         Collections.reverse(listPost);
         adapter.updateAdapter(listPost, userManager.getUser());
     }

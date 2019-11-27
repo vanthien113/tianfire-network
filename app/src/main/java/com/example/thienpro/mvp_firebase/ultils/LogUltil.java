@@ -4,6 +4,6 @@ import android.util.Log;
 
 public class LogUltil {
     public static void log(Class className, Object object) {
-        Log.e("THIEN", className.getSimpleName() + ": " + object.toString());
+//        Log.e("THIEN", className.getSimpleName() + ": " + object.toString());
     }
 }

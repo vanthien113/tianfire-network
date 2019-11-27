@@ -180,6 +180,9 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
 
     @Override
     public void showLoadingDialog() {
+        if (loadingDialog == null) {
+            loadingDialog = new LoadingDialog(this);
+        }
         loadingDialog.show();
     }
 

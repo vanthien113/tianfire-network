@@ -4,6 +4,7 @@ import com.example.thienpro.mvp_firebase.model.entity.UserLocation;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface LocationInteractor {
     interface GetLocationCallback {
@@ -15,7 +16,7 @@ public interface LocationInteractor {
     }
 
     interface GetListLocationCallback {
-        void onFinish(ArrayList<UserLocation> locations, DatabaseError e);
+        void onFinish(List<UserLocation> locations, DatabaseError e);
     }
 
     void pushLocation(String userId, double lat, double lng, String pushTime, PushLocationCallback callback);
