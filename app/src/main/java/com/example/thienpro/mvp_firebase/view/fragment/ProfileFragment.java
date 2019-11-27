@@ -24,6 +24,7 @@ import com.example.thienpro.mvp_firebase.view.listener.HomeNavigationListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by ThienPro on 11/22/2017.
@@ -64,12 +65,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
         presenter.loadPost();
         presenter.getAllUser();
 
-        getBinding().srlProfile.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                presenter.loadPost();
-            }
-        });
+        getBinding().srlProfile.setOnRefreshListener(() -> presenter.loadPost());
 
         getBinding().setEvent(this);
 
@@ -86,12 +82,9 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
             }
         });
 
-        getBinding().etSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean focused) {
-                if (focused) {
-                    view.setTranslationY(0f);
-                }
+        getBinding().etSearch.setOnFocusChangeListener((view1, focused) -> {
+            if (focused) {
+                view1.setTranslationY(0f);
             }
         });
     }
@@ -109,7 +102,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> implem
     }
 
     @Override
-    public void showListPost(ArrayList<Post> listPost) {
+    public void showListPost(List<Post> listPost) {
         Collections.reverse(listPost);
         adapter.updateAdapter(listPost, userManager.getUser());
     }

@@ -38,30 +38,17 @@ public class PictureVH extends RecyclerView.ViewHolder {
     }
 
     private void downloadImageEvent() {
-        binding.ivPicture.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                new AlertDialog.Builder(binding.getRoot().getContext())
-                        .setTitle(R.string.tai_xuong)
-                        .setCancelable(true)
-                        .setPositiveButton(R.string.tai, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                DownloadUltil.startDownload(binding.getRoot().getContext(), picture);
-                            }
-                        })
-                        .setNegativeButton(R.string.huy, null)
-                        .setMessage(R.string.tai_anh_xuong_may_cua_ban)
-                        .create()
-                        .show();
-                return false;
-            }
+        binding.ivPicture.setOnLongClickListener(view -> {
+            new AlertDialog.Builder(binding.getRoot().getContext())
+                    .setTitle(R.string.tai_xuong)
+                    .setCancelable(true)
+                    .setPositiveButton(R.string.tai, (dialogInterface, i) -> DownloadUltil.startDownload(binding.getRoot().getContext(), picture))
+                    .setNegativeButton(R.string.huy, null)
+                    .setMessage(R.string.tai_anh_xuong_may_cua_ban)
+                    .create()
+                    .show();
+            return false;
         });
-        binding.ivPicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ImageZoomActivity.startActivity(binding.getRoot().getContext(), picture);
-            }
-        });
+        binding.ivPicture.setOnClickListener(view -> ImageZoomActivity.startActivity(binding.getRoot().getContext(), picture));
     }
 }

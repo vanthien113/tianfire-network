@@ -13,6 +13,7 @@ import com.example.thienpro.mvp_firebase.view.PictureView;
 import com.example.thienpro.mvp_firebase.view.adapters.PictureAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PictureActivity extends BaseActivity<ActivityPictureBinding> implements PictureView {
     private static String USER_ID = "userId";
@@ -65,7 +66,7 @@ public class PictureActivity extends BaseActivity<ActivityPictureBinding> implem
     }
 
     @Override
-    public void showPicture(ArrayList<String> listPicture) {
+    public void showPicture(List<String> listPicture) {
         adapter = new PictureAdapter(listPicture, type);
         getBinding().rvPicture.setAdapter(adapter);
     }

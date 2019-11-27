@@ -38,20 +38,12 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
         presenter.attachView(this);
         getBinding().setEvent(this);
 
-        getBinding().tbPost.getIvChoosePhoto().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SHBitmapHelper.takePhoto(PostActivity.this, REQUEST_CODE_IMAGE);
-            }
-        });
+        getBinding().tbPost.getIvChoosePhoto().setOnClickListener(view -> SHBitmapHelper.takePhoto(PostActivity.this, REQUEST_CODE_IMAGE));
 
-        getBinding().tbPost.getIvPost().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String post = getBinding().etPost.getText().toString();
-                if (validate(post)) {
-                    presenter.newPost(post);
-                }
+        getBinding().tbPost.getIvPost().setOnClickListener(view -> {
+            String post = getBinding().etPost.getText().toString();
+            if (validate(post)) {
+                presenter.newPost(post);
             }
         });
     }

@@ -22,17 +22,14 @@ public class EditPostPresenterImpl extends BasePresentermpl<EditPostView> implem
             return;
         getView().showLoadingDialog();
 
-        postInteractor.editPost(post, new PostInteractor.ExceptionCallback() {
-            @Override
-            public void onFinish(Exception e) {
-                if (getView() == null)
-                    return;
-                getView().hideLoadingDialog();
-                if (e != null) {
-                } else {
-                    postManager.postChange();
-                    getView().navigationToHome();
-                }
+        postInteractor.editPost(post, e -> {
+            if (getView() == null)
+                return;
+            getView().hideLoadingDialog();
+            if (e != null) {
+            } else {
+                postManager.postChange();
+                getView().navigationToHome();
             }
         });
     }

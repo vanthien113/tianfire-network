@@ -2,7 +2,6 @@ package com.example.thienpro.mvp_firebase.view.fragment;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -52,12 +51,7 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> implem
         new AlertDialog.Builder(getContext())
                 .setTitle(R.string.dang_xuat)
                 .setCancelable(false)
-                .setPositiveButton(R.string.dang_xuat, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        presenter.logOut();
-                    }
-                })
+                .setPositiveButton(R.string.dang_xuat, (dialogInterface, i) -> presenter.logOut())
                 .setCancelable(true)
                 .setNegativeButton(R.string.huy, null)
                 .setMessage(R.string.ban_thuc_su_muon_dang_xuat_khoi_thiet_bi_nay)

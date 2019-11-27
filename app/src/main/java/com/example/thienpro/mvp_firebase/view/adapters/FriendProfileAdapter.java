@@ -14,11 +14,12 @@ import com.example.thienpro.mvp_firebase.view.adapters.viewholder.ItemFriendProf
 import com.example.thienpro.mvp_firebase.view.adapters.viewholder.ItemFriendProfilePostVH;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FriendProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int HEADER = 0;
     private final int POST = 1;
-    private ArrayList<Post> lisPost;
+    private List<Post> lisPost;
     private User user;
     private HomeAdapter.ListPostMenuListener listPostMenuListener;
     private ProfileAdapter.ItemProfileClickListener listener;
@@ -29,7 +30,7 @@ public class FriendProfileAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.listener = listener;
     }
 
-    public void updateAdapter(ArrayList<Post> mLisPost){
+    public void updateAdapter(List<Post> mLisPost){
         this.lisPost = mLisPost;
         notifyDataSetChanged();
     }

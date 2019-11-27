@@ -18,16 +18,20 @@ public class RegisterPresenterImpl extends BasePresentermpl<RegisterView> implem
 
     @Override
     public void register(String email, String password, String name, String address, boolean sex) {
-        userInteractor.register(email, password, name, address, sex, new UserInteractor.ExceptionCheckCallback() {
-            @Override
-            public void onFinish(Exception checker) {
-                if (getView() == null)
-                    return;
-                if (checker == null) {
-                    getView().navigationToVerifiEmail();
-                } else {
-                    getView().showExceptionError(checker);
-                }
+        if(getView() == null){
+            return;
+        }
+        getView().showLoadingDialog();
+
+        userInteractor.register(email, password, name, address, sex, checker -> {
+            if (getView() == null)
+                return;
+            getView().hideLoadingDialog();
+
+            if (checker == null) {
+                getView().navigationToVerifiEmail();
+            } else {
+                getView().showExceptionError(checker);
             }
         });
     }

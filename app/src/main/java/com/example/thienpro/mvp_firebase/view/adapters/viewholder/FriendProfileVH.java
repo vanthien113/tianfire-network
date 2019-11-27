@@ -36,24 +36,16 @@ public class FriendProfileVH extends RecyclerView.ViewHolder {
     }
 
     private void downloadImageEvent(){
-        binding.ivImage.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                new AlertDialog.Builder(binding.getRoot().getContext())
-                        .setTitle(R.string.tai_xuong)
-                        .setCancelable(false)
-                        .setPositiveButton(R.string.tai, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                DownloadUltil.startDownload(binding.getRoot().getContext(), picture);
-                            }
-                        })
-                        .setNegativeButton(R.string.huy, null)
-                        .setMessage(R.string.tai_anh_xuong_may_cua_ban)
-                        .create()
-                        .show();
-                return false;
-            }
+        binding.ivImage.setOnLongClickListener(view -> {
+            new AlertDialog.Builder(binding.getRoot().getContext())
+                    .setTitle(R.string.tai_xuong)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.tai, (dialogInterface, i) -> DownloadUltil.startDownload(binding.getRoot().getContext(), picture))
+                    .setNegativeButton(R.string.huy, null)
+                    .setMessage(R.string.tai_anh_xuong_may_cua_ban)
+                    .create()
+                    .show();
+            return false;
         });
     }
 }

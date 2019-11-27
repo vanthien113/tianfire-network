@@ -21,6 +21,7 @@ import com.example.thienpro.mvp_firebase.view.listener.HomeNavigationListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by ThienPro on 11/22/2017.
@@ -60,17 +61,14 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
 
         getBinding().setEvent(this);
 
-        getBinding().srlHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                presenter.loadAllListPost();
-                getBinding().srlHome.setRefreshing(false);
-            }
+        getBinding().srlHome.setOnRefreshListener(() -> {
+            presenter.loadAllListPost();
+            getBinding().srlHome.setRefreshing(false);
         });
     }
 
     @Override
-    public void showAllPost(ArrayList<Post> list) {
+    public void showAllPost(List<Post> list) {
         Collections.reverse(list);
         homeAdapter.updateAdapter(list);
     }

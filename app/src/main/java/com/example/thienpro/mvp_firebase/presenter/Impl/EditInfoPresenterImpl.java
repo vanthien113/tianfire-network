@@ -34,18 +34,15 @@ public class EditInfoPresenterImpl extends BasePresentermpl<EditInfoView> implem
             return;
         getView().showLoadingDialog();
 
-        userInteractor.updateUser(name, address, sex, new UserInteractor.ExceptionCheckCallback() {
-            @Override
-            public void onFinish(Exception e) {
-                if (getView() == null)
-                    return;
-                getView().hideLoadingDialog();
-                if (e != null) {
-                    getView().showExceptionError(e);
-                } else {
-                    getView().showChangeInfoComplete();
-                    updateUserInUserManager(name, address, sex);
-                }
+        userInteractor.updateUser(name, address, sex, e -> {
+            if (getView() == null)
+                return;
+            getView().hideLoadingDialog();
+            if (e != null) {
+                getView().showExceptionError(e);
+            } else {
+                getView().showChangeInfoComplete();
+                updateUserInUserManager(name, address, sex);
             }
         });
     }

@@ -2,6 +2,7 @@ package com.example.thienpro.mvp_firebase.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 
 import com.example.thienpro.mvp_firebase.R;
@@ -15,6 +16,7 @@ import com.example.thienpro.mvp_firebase.view.ShareLocationView;
 import com.example.thienpro.mvp_firebase.view.adapters.ShareLocationAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ShareLocationActivity extends BaseActivity<ActivityShareLocationBinding> implements ShareLocationView, ShareLocationAdapter.ListLocationListener {
     private ShareLocationPresenter presenter;
@@ -41,8 +43,8 @@ public class ShareLocationActivity extends BaseActivity<ActivityShareLocationBin
         }
 
         adapter = new ShareLocationAdapter(this);
+        adapter.setHasStableIds(true);
         getBinding().rvLocation.setAdapter(adapter);
-
         getBinding().rvLocation.setLayoutManager(LayoutUltils.getLinearLayoutManager(this));
         getBinding().rvLocation.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
@@ -61,7 +63,7 @@ public class ShareLocationActivity extends BaseActivity<ActivityShareLocationBin
     }
 
     @Override
-    public void showListLocation(ArrayList<UserLocation> listLocation) {
+    public void showListLocation(List<UserLocation> listLocation) {
         adapter.updateAdapter(listLocation);
     }
 
@@ -101,6 +103,5 @@ public class ShareLocationActivity extends BaseActivity<ActivityShareLocationBin
     @Override
     public void showListLocation(UserLocation location) {
         UserLocationActivity.startActivity(this, location);
-
     }
 }

@@ -37,15 +37,15 @@ public interface UserInteractor extends BaseInteractor {
 
     void getUser(UserCallback callback, boolean loadUser);
 
-    void addAvatar(final String avatarUrl, final ExceptionCheckCallback callback);
+    void addAvatar(String avatarUrl, ExceptionCheckCallback callback);
 
-    void addCover(final String coverUrl, ExceptionCheckCallback callback);
+    void addCover(String coverUrl, ExceptionCheckCallback callback);
 
-    void updateUser(final String name, String address, Boolean sex, final ExceptionCheckCallback callback);
+    void updateUser(String name, String address, Boolean sex, ExceptionCheckCallback callback);
 
     void verifiEmail(StringCallback callback);
 
-    void register(final String email, String password, final String name, final String address, final boolean sex, ExceptionCheckCallback callback);
+    void register(String email, String password, String name, String address, boolean sex, ExceptionCheckCallback callback);
 
     void changePassword(String password, ExceptionCheckCallback callback);
 

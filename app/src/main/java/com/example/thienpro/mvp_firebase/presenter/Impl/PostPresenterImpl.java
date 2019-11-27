@@ -13,6 +13,7 @@ import com.example.thienpro.mvp_firebase.manager.UserManager;
 import com.example.thienpro.mvp_firebase.model.Impl.BaseInteractorImpl;
 import com.example.thienpro.mvp_firebase.model.PostInteractor;
 import com.example.thienpro.mvp_firebase.presenter.PostPresenter;
+import com.example.thienpro.mvp_firebase.ultils.SHDateTimeFormat;
 import com.example.thienpro.mvp_firebase.ultils.widget.SHBitmapHelper;
 import com.example.thienpro.mvp_firebase.view.PostView;
 import com.example.thienpro.mvp_firebase.view.activity.PostActivity;
@@ -44,28 +45,20 @@ public class PostPresenterImpl extends BasePresentermpl<PostView> implements Pos
         getView().showLoadingDialog();
 
         if (filePath != null) {
-            postInteractor.uploadImage(filePath, BaseInteractorImpl.IMAGES, userManager.getUser().getId(), new PostInteractor.GetStringCallback() {
-                @Override
-                public void onFinish(Exception e, String string) {
-                    post(content, string);
-                }
-            });
+            postInteractor.uploadImage(filePath, BaseInteractorImpl.IMAGES, userManager.getUser().getId(), (e, string) -> post(content, string));
         } else post(content, null);
     }
 
     private void post(String content, String imageUrl) {
-        postInteractor.writeNewPost(userManager.getUser().getName(), userManager.getUser().getAvatar(), content, imageUrl, new PostInteractor.ExceptionCallback() {
-            @Override
-            public void onFinish(Exception e) {
-                if (getView() == null)
-                    return;
-                getView().hideLoadingDialog();
-                if (e != null) {
-                    getView().showExceptionError(e);
-                } else {
-                    postManager.postChange();
-                    getView().navigationToHome();
-                }
+        postInteractor.writeNewPost(userManager.getUser().getName(), userManager.getUser().getAvatar(), content, imageUrl, SHDateTimeFormat.getPostCurrentTime(), e -> {
+            if (getView() == null)
+                return;
+            getView().hideLoadingDialog();
+            if (e != null) {
+                getView().showExceptionError(e);
+            } else {
+                postManager.postChange();
+                getView().navigationToHome();
             }
         });
     }

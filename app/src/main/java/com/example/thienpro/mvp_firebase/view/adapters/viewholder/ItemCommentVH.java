@@ -37,26 +37,18 @@ public class ItemCommentVH extends RecyclerView.ViewHolder implements ItemCommen
     }
 
     private void setEvent() {
-        binding.clComment.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                if (comment.getUserId().equals(currentUser.getId())) {
-                    new AlertDialog.Builder(binding.getRoot().getContext())
-                            .setTitle(R.string.xoa)
-                            .setMessage(R.string.ban_muon_xoa_binh_luan_nay)
-                            .setPositiveButton(R.string.xoa, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    listener.onDeleteComment(binding.getData());
-                                }
-                            })
-                            .setNegativeButton(R.string.huy, null)
-                            .setCancelable(true)
-                            .create()
-                            .show();
-                }
-                return false;
+        binding.clComment.setOnLongClickListener(view -> {
+            if (comment.getUserId().equals(currentUser.getId())) {
+                new AlertDialog.Builder(binding.getRoot().getContext())
+                        .setTitle(R.string.xoa)
+                        .setMessage(R.string.ban_muon_xoa_binh_luan_nay)
+                        .setPositiveButton(R.string.xoa, (dialogInterface, i) -> listener.onDeleteComment(binding.getData()))
+                        .setNegativeButton(R.string.huy, null)
+                        .setCancelable(true)
+                        .create()
+                        .show();
             }
+            return false;
         });
     }
 
